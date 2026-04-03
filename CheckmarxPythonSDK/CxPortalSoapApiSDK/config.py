@@ -24,17 +24,17 @@ def construct_configuration() -> Configuration:
     old_config = get_config(config_default=config_default, section="checkmarx", prefix="cxsast_")
     new_config = get_config(config_default=config_default, section="CxSAST", prefix="cxsast_")
     config = old_config
-    if new_config.get("base_url"):
+    if new_config.get("base_url") != "http://localhost:79":
         config = new_config
     return Configuration(
                 server_base_url=config.get("base_url"),
                 token_url=f"{config.get('base_url')}/cxrestapi/auth/identity/connect/token",
                 username=config.get("username"),
                 password=config.get("password"),
-                grant_type=config.get("grant_type"),
-                scope=config.get("scope"),
-                client_id=config.get("client_id"),
-                client_secret=config.get("client_secret"),
+                grant_type="password",
+                scope="offline_access sast_api",
+                client_id="resource_owner_sast_client",
+                client_secret="014DF517-39D1-4453-B7B3-9930C563627C",
                 timeout=config.get("timeout"),
                 verify=config.get("verify"),
                 cert=config.get("cert"),
