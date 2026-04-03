@@ -184,6 +184,35 @@ class RepoManagerAPI(object):
             params=params,
         )
         return GithubApp(**response.json())
+    
+    def create_token_for_github_app(
+        self,
+        auth_code: str,
+    ) -> bool:
+        origin = self.check_origin("GITHUBAPP")
+        origin_index = self.origin_dict.get(origin)
+        url = f"{self.base_url}/{origin_index}/token"
+        params = {
+            "authCode": auth_code,
+        }
+        COOKIE = "apt.sid=AP-JMSS596DXCOP-2-1775181116176-45868282; apt.uid=AP-JMSS596DXCOP-2-1775181116178-82487213.0.2.146d83cb-86cc-463f-8ba3-f6a5625c20e3"
+        REFERER = "https://sng.ast.checkmarx.net/applicationsAndProjects/projects?tableConfig=%7B%22search%22%3A%7B%22text%22%3A%22%22%7D%2C%22sorting%22%3A%7B%22columnKey%22%3A%22lastScanDate%22%2C%22order%22%3A%22descend%22%7D%2C%22filters%22%3A%7B%22isDeployed%22%3A%5B%22All%22%5D%7D%2C%22pagination%22%3A%7B%22pageSize%22%3A25%2C%22currentPage%22%3A1%7D%2C%22grouping%22%3A%7B%22groups%22%3A%5B%5D%2C%22groupsState%22%3A%5B%5D%7D%7D"
+
+        headers = {
+            "cxorigin": "Integrations MFE", 
+            "origin": "https://sng.ast.checkmarx.net",
+            "cookie": COOKIE,
+            "referer": REFERER,
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "sec-fetch-site": "same-origin",
+        }
+        response = self.api_client.call_api(
+            method="POST",
+            url=url,
+            params=params,
+            headers=headers,
+        )
+        return response.status_code == 200
 
     def get_all_repo_orgs_for_a_scm_type(
         self,
