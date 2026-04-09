@@ -17,6 +17,6 @@ def construct_queries_tree(item):
         title=item.get("title"),
         key=item.get("key"),
         children=[
-            construct_queries_tree(child) for child in item.get("children", [])
+            construct_queries_tree(child) for child in (item.get("children") or [])
         ]
     )

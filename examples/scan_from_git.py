@@ -21,7 +21,6 @@ from datetime import datetime
 from CheckmarxPythonSDK.CxRestAPISDK import TeamAPI
 from CheckmarxPythonSDK.CxRestAPISDK import ProjectsAPI
 from CheckmarxPythonSDK.CxRestAPISDK import ScansAPI
-from CheckmarxPythonSDK.CxRestAPISDK.config import config
 
 
 def scan_from_git(team_full_name, project_name, report_type, git_repo_url, branch, report_folder=None):
@@ -138,5 +137,5 @@ if __name__ == "__main__":
                   report_type="PDF",
                   git_repo_url="https://github.com/CSPF-Founder/JavaVulnerableLab.git",
                   branch="refs/heads/master",
-                  report_folder=config.get("report_folder")
+                  report_folder="E:\\"
                   )

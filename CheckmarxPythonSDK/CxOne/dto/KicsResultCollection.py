@@ -12,7 +12,7 @@ class KicsResultCollection:
 def construct_kics_result_collection(item):
     return KicsResultCollection(
         results=[
-            construct_kics_result(result) for result in item.get("results", [])
+            construct_kics_result(result) for result in (item.get("results") or [])
         ],
         total_count=item.get("totalCount"),
     )

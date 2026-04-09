@@ -21,7 +21,7 @@ def construct_scan_info_collection(item):
     return ScanInfoCollection(
         total_count=item.get("totalCount"),
         scans=[
-            construct_scan_info(scan_info) for scan_info in item.get("scans", [])
+            construct_scan_info(scan_info) for scan_info in (item.get("scans") or [])
         ],
         missing=item.get("missing")
     )

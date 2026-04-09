@@ -34,6 +34,6 @@ def construct_query_description(item):
         cause=item.get("cause"),
         general_recommendations=item.get("generalRecommendations"),
         sample=[
-            construct_query_description_sample_code(sample_code) for sample_code in item.get("sample", [])
+            construct_query_description_sample_code(sample_code) for sample_code in (item.get("sample") or [])
         ]
     )

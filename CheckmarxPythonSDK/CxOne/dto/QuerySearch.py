@@ -14,6 +14,6 @@ def construct_query_search(item):
     return QuerySearch(
         query=construct_queries(item.get("query")),
         results=[
-            construct_query_result(query_result) for query_result in item.get("results", [])
+            construct_query_result(query_result) for query_result in (item.get("results") or [])
         ]
     )

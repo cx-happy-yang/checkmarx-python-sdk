@@ -13,6 +13,6 @@ def construct_sessions(item):
     return Sessions(
         available=item.get("available"),
         metadata=[
-            construct_session(session) for session in item.get("metadata", [])
+            construct_session(session) for session in (item.get("metadata") or [])
         ]
     )

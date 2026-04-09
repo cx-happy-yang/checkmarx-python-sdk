@@ -25,7 +25,7 @@ def construct_bfl_tree(item):
         id=item.get("id"),
         bfl=construct_result_node(item.get("bfl")),
         results=[
-            construct_sast_result(result) for result in item.get("results", [])
+            construct_sast_result(result) for result in (item.get("results") or [])
         ],
         additional_properties=item.get("additionalProperties")
     )

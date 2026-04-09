@@ -14,7 +14,7 @@ class PaginatedAccountsListResponse:
 def construct_paginated_accounts_list_response(item):
     return {
             "data": [
-                construct_cloud_insight_account(account) for account in item.get("data", [])
+                construct_cloud_insight_account(account) for account in (item.get("data") or [])
             ],
             "total": item.get("total"),
             "currentPage": item.get("currentPage"),

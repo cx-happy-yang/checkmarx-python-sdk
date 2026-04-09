@@ -12,7 +12,7 @@ class ResultsResponse:
 def construct_results_response(item):
     return ResultsResponse(
         data=[
-            construct_result_response(result) for result in item.get("data", [])
+            construct_result_response(result) for result in (item.get("data") or [])
         ],
         total_count=item.get("totalCount")
     )

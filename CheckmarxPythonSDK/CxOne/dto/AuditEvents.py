@@ -13,9 +13,9 @@ class AuditEvents:
 def construct_audit_events(item):
     return AuditEvents(
         links=[
-            construct_audit_event_link(link) for link in item.get("links", [])
+            construct_audit_event_link(link) for link in (item.get("links") or [])
         ],
         events=[
-            construct_audit_event(event) for event in item.get("events", [])
+            construct_audit_event(event) for event in (item.get("events") or [])
         ],
     )

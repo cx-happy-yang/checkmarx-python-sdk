@@ -29,7 +29,7 @@ class ScanInput:
             "handler": self.handler.to_dict(),
             "project": self.project.to_dict() if self.project else self.project,
             "config": [
-                config.to_dict() for config in self.configs or []
+                config.to_dict() for config in (self.configs or [])
             ],
             "tags": self.tags
         }

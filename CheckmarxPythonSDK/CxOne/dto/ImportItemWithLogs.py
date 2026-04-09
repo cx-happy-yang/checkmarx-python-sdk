@@ -25,6 +25,6 @@ def construct_import_item_with_logs(item):
         status=item.get("status"),
         created_at=item.get("createdAt"),
         logs=[
-            construct_log_item(log_item) for log_item in item.get("logs", [])
+            construct_log_item(log_item) for log_item in (item.get("logs") or [])
         ]
     )

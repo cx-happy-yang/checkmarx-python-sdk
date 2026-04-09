@@ -27,6 +27,6 @@ def construct_client_with_resource(item):
                 "type": resource.get("type"),
                 "name": resource.get("name"),
                 "roles": resource.get("roles")
-            } for resource in item.get("resources")
+            } for resource in (item.get("resources") or [])
         ]
     )

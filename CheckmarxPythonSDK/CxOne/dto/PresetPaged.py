@@ -19,6 +19,6 @@ def construct_preset_paged(item):
     return PresetPaged(
         total_count=item.get("totalCount"),
         presets=[
-            construct_preset_summary(preset) for preset in item.get("presets", [])
+            construct_preset_summary(preset) for preset in (item.get("presets") or [])
         ]
     )

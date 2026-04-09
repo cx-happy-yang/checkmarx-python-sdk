@@ -25,6 +25,6 @@ def construct_tree(item):
         name=item.get("name"),
         is_dir=item.get("IsDir"),
         files=[
-            construct_file_info(file) for file in item.get("Files", [])
+            construct_file_info(file) for file in (item.get("Files") or [])
         ]
     )

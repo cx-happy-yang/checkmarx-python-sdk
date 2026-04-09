@@ -27,7 +27,7 @@ def construct_predicate_with_comments_json(item):
         state=item.get("state"),
         comment=item.get("comment"),
         comments_json=[
-            construct_comment_json(comment) for comment in item.get("commentsJSON")
+            construct_comment_json(comment) for comment in (item.get("commentsJSON") or [])
         ],
         created_by=item.get("createdBy"),
         created_at=item.get("createdAt"),

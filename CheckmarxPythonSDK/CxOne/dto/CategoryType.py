@@ -28,6 +28,6 @@ def construct_category_type(item):
         sast_id=item.get("sastId"),
         order=item.get("order"),
         categories=[
-            construct_category(category) for category in item.get("categories", [])
+            construct_category(category) for category in (item.get("categories") or [])
         ]
     )

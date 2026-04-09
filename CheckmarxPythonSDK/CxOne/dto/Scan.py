@@ -53,7 +53,7 @@ def construct_scan(item):
         id=item.get("id"),
         status=item.get("status"),
         status_details=[
-            construct_status_details(detail) for detail in item.get("statusDetails", [])
+            construct_status_details(detail) for detail in (item.get("statusDetails") or [])
         ],
         position_in_queue=item.get("positionInQueue"),
         project_id=item.get("projectId"),

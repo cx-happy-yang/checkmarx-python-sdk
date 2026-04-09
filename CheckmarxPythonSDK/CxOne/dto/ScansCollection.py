@@ -22,6 +22,6 @@ def construct_scans_collection(item):
         total_count=item.get("totalCount"),
         filtered_total_count=item.get("filteredTotalCount"),
         scans=[
-            construct_scan(scan) for scan in item.get("scans", [])
+            construct_scan(scan) for scan in (item.get("scans") or [])
         ]
     )

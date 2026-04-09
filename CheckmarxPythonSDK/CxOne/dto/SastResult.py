@@ -79,7 +79,7 @@ def construct_sast_result(result):
         status=result.get("status"),
         found_at=result.get("foundAt"),
         nodes=[
-            construct_result_node(node) for node in result.get("nodes", [])
+            construct_result_node(node) for node in (result.get("nodes") or [])
         ],
         state=result.get("state"),
         change_details=construct_change_details(result.get("changeDetails"))

@@ -54,6 +54,10 @@ from .apisecAPI import (
     ApiSecAPI,
     get_scan_apisec_risk_overview,
 )
+from .logsAPI import (
+    LogsAPI,
+    get_log,
+)
 from .applicationsAPI import (
     ApplicationsAPI,
     create_an_application,

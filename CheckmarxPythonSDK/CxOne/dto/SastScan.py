@@ -34,6 +34,6 @@ def construct_sast_scan(item):
         running_at=item.get("runningAt"),
         engine=item.get("engine"),
         properties=[
-            construct_property(scan_property) for scan_property in item.get("properties", [])
+            construct_property(scan_property) for scan_property in (item.get("properties") or [])
         ]
     )

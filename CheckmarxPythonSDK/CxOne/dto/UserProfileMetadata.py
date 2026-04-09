@@ -19,6 +19,6 @@ class UserProfileMetadata:
 
 def construct_user_profile_metadata(item):
     return UserProfileMetadata(
-        attributes=[construct_user_profile_attribute_metadata(attribute) for attribute in item.get("attributes")],
-        groups=[construct_user_profile_attribute_group_metadata(group) for group in item.get("groups")],
+        attributes=[construct_user_profile_attribute_metadata(attribute) for attribute in (item.get("attributes") or [])],
+        groups=[construct_user_profile_attribute_group_metadata(group) for group in (item.get("groups") or [])],
     )

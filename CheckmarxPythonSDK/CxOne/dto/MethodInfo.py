@@ -34,6 +34,6 @@ def construct_method_info(item):
         return_type=item.get("returnType"),
         kind=item.get("kind"),
         parameters=[
-            construct_method_parameter(method_param) for method_param in item.get("parameters", [])
+            construct_method_parameter(method_param) for method_param in (item.get("parameters") or [])
         ]
     )

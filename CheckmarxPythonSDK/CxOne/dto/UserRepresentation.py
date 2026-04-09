@@ -86,18 +86,18 @@ def construct_user_representation(item):
         federation_link=item.get("federationLink"),
         service_account_client_id=item.get("serviceAccountClientId"),
         attributes=item.get("attributes"),
-        credentials=[construct_credential_representation(credential) for credential in item.get("credentials")],
+        credentials=[construct_credential_representation(credential) for credential in (item.get("credentials") or [])],
         disable_able_credential_types=item.get("disableableCredentialTypes"),
         required_actions=item.get("requiredActions"),
         federated_identities=[
-            construct_federated_identity_representation(identity) for identity in item.get("federatedIdentities")
+            construct_federated_identity_representation(identity) for identity in (item.get("federatedIdentities") or [])
         ],
         realm_roles=item.get("realmRoles"),
         client_roles=item.get("clientRoles"),
-        client_consents=[construct_user_consent_representation(consent) for consent in item.get("clientConsents")],
+        client_consents=[construct_user_consent_representation(consent) for consent in (item.get("clientConsents") or [])],
         not_before=item.get("notBefore"),
         application_roles=item.get("applicationRoles"),
-        social_links=[construct_social_link_representation(social_link) for social_link in item.get("socialLinks")],
+        social_links=[construct_social_link_representation(social_link) for social_link in (item.get("socialLinks") or [])],
         groups=item.get("groups"),
         access=item.get("access"),
         user_profile_metadata=construct_user_profile_metadata(item.get("userProfileMetadata")),

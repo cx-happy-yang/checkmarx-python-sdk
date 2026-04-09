@@ -17,7 +17,7 @@ def construct_predicate_history(item):
         similarity_id=item.get("similarityId"),
         project_id=item.get("projectId"),
         predicates=[
-           construct_predicate_with_comment_json(predicate) for predicate in item.get("predicates", [])
+           construct_predicate_with_comment_json(predicate) for predicate in (item.get("predicates") or [])
         ],
         total_count=item.get("totalCount")
     )
