@@ -42,10 +42,7 @@ if __name__ == '__main__':
         timeout=config.get("timeout"),
         verify=config.get("verify"),
         cert=config.get("cert"),
-        proxies={
-            "http": config.get("proxy"),
-            "https": config.get("proxy"),
-        }
+        proxy=config.get("proxy")
     )
     api_client = ApiClient(configuration=configuration)
     response = api_client.get_request("/api/projects")

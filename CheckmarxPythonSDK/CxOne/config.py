@@ -41,10 +41,7 @@ def construct_configuration() -> Configuration:
                 timeout=int(config.get("timeout")),
                 verify=config.get("verify"),
                 cert=config.get("cert"),
-                proxies={
-                    "http": config.get("proxy"),
-                    "https": config.get("proxy"),
-                },
+                proxy=config.get("proxy"),
                 logging_level=config.get("logging_level"),
                 max_retries=int(config.get("max_retries")),
                 rate_limit_capacity=int(config.get("rate_limit_capacity")),

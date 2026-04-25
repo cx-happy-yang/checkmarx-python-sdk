@@ -30,8 +30,5 @@ def construct_configuration() -> Configuration:
         timeout=config.get("timeout"),
         verify=config.get("verify"),
         cert=config.get("cert"),
-        proxies={
-            "http": config.get("proxy"),
-            "https": config.get("proxy"),
-        }
+        proxy=config.get("proxy")
     )

@@ -26,7 +26,7 @@ def create_session(configuration: Configuration) -> httpx.Client:
     return httpx.Client(
         verify=verify,
         cert=configuration.cert,
-        proxies=configuration.proxies,
+        proxy=configuration.proxy,
         transport=httpx.HTTPTransport(retries=3),
     )
 
