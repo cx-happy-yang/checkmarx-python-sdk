@@ -8,7 +8,7 @@ from os.path import exists
 from typing import List, Union
 from CheckmarxPythonSDK.configuration import Configuration
 from CheckmarxPythonSDK.CxPortalSoapApiSDK.config import construct_configuration
-from .zeepClient import ZeepClient
+from .sudsClient import SudsClient
 
 
 class CxPortalWebService(object):
@@ -17,13 +17,13 @@ class CxPortalWebService(object):
         if configuration is None:
             configuration = construct_configuration()
             # configuration.is_sast_portal = True
-        self.zeep_client = ZeepClient(
+        self.suds_client = SudsClient(
             relative_web_interface_url="/CxWebInterface/Portal/CxWebService.asmx?wsdl",
             configuration=configuration,
         )
 
     def add_license_expiration_notification(self) -> dict:
-        response = self.zeep_client.execute("AddLicenseExpirationNotification", sessionID="0")
+        response = self.suds_client.execute("AddLicenseExpirationNotification", sessionID="0")
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"]
@@ -54,13 +54,13 @@ class CxPortalWebService(object):
                 'IsDuplicate': False
             }
         """
-        factory = self.zeep_client.factory
+        factory = self.suds_client.factory
         query_id_list = factory.ArrayOfLong(query_ids)
         cx_preset_detail = factory.CxPresetDetails(
             queryIds=query_id_list, id=0, name=name, owningteam=1, isPublic=True,
             isUserAllowToUpdate=True, isUserAllowToDelete=True, IsDuplicate=False
         )
-        response = self.zeep_client.execute("CreateNewPreset", sessionId="0", presrt=cx_preset_detail)
+        response = self.suds_client.execute("CreateNewPreset", sessionId="0", presrt=cx_preset_detail)
         preset = response.preset
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -150,7 +150,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        factory = self.zeep_client.factory
+        factory = self.suds_client.factory
         query_ids = factory.ArrayOfLong(queries_ids)
         queries = factory.CxWSQueriesFilter(All=queries_all, IDs=query_ids)
 
@@ -239,7 +239,7 @@ class CxPortalWebService(object):
         )
         filtered_report_request = factory.CxWSFilteredReportRequest(Type=report_type, ScanID=scan_id,
                                                                     DisplayData=display_data)
-        response = self.zeep_client.execute(
+        response = self.suds_client.execute(
             "CreateScanReport", SessionID="0", Report=filtered_report_request
         )
 
@@ -258,7 +258,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("DeletePreset", sessionId="0", id=preset_id)
+        response = self.suds_client.execute("DeletePreset", sessionId="0", id=preset_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"]
@@ -273,7 +273,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("DeleteProject", sessionID="0", projectID=project_id)
+        response = self.suds_client.execute("DeleteProject", sessionID="0", projectID=project_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"]
@@ -289,13 +289,13 @@ class CxPortalWebService(object):
         Returns:
            dict
         """
-        factory = self.zeep_client.factory
+        factory = self.suds_client.factory
         cx_ws_request_delete_projects = factory.CxWSRequestDeleteProjects(
             SessionID="0",
             ProjectIDs=factory.ArrayOfLong(project_ids),
             Flags=factory.DeleteFlags([flag])
         )
-        response = self.zeep_client.execute("DeleteProjects", request=cx_ws_request_delete_projects)
+        response = self.suds_client.execute("DeleteProjects", request=cx_ws_request_delete_projects)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -314,7 +314,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("ExportPreset", sessionId="0", presetId=preset_id)
+        response = self.suds_client.execute("ExportPreset", sessionId="0", presetId=preset_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -331,9 +331,9 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        factory = self.zeep_client.factory
+        factory = self.suds_client.factory
         query_ids = factory.ArrayOfLong(queries_ids)
-        response = self.zeep_client.execute("ExportQueries", sessionId="0", queryIds=query_ids)
+        response = self.suds_client.execute("ExportQueries", sessionId="0", queryIds=query_ids)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -359,7 +359,7 @@ class CxPortalWebService(object):
                 ]
             }
         """
-        response = self.zeep_client.execute("GetAssociatedGroupsList", SessionID="0")
+        response = self.suds_client.execute("GetAssociatedGroupsList", SessionID="0")
         group_list = response.GroupList
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -386,7 +386,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetCompareScanResults", sessionId="0", oldScanId=old_scan_id,
+        response = self.suds_client.execute("GetCompareScanResults", sessionId="0", oldScanId=old_scan_id,
                                             newScanId=new_scan_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -429,7 +429,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetImportQueriesStatus", sessionId="0", requestId=request_id)
+        response = self.suds_client.execute("GetImportQueriesStatus", sessionId="0", requestId=request_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -464,7 +464,7 @@ class CxPortalWebService(object):
                 }
             }
         """
-        response = self.zeep_client.execute(
+        response = self.suds_client.execute(
             "GetPathCommentsHistory", sessionId="0", scanId=scan_id, pathId=path_id, labelType=label_type
         )
         path = response.Path
@@ -498,7 +498,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        factory = self.zeep_client.factory
+        factory = self.suds_client.factory
         if pivot_view_client_type not in [
             "AllProjectScans", "LastMonthProjectScans", "ProjectsLastScan", "LastWeekOWASPTop10"
         ]:
@@ -528,7 +528,7 @@ class CxPortalWebService(object):
         pivot_data_request = factory.CxPivotDataRequest(
             ViewName=pivot_view_client_type, Criteria=array_of_pivot_client_base_param
         )
-        response = self.zeep_client.execute("GetPivotData", SessionID="0", PivotParams=pivot_data_request)
+        response = self.suds_client.execute("GetPivotData", SessionID="0", PivotParams=pivot_data_request)
         return response
 
     def get_queries_categories(self) -> dict:
@@ -537,7 +537,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetQueriesCategories", sessionId="0")
+        response = self.suds_client.execute("GetQueriesCategories", sessionId="0")
         categories = response.QueriesCategories.CxQueryCategory
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -556,7 +556,7 @@ class CxPortalWebService(object):
         }
 
     def get_query_collection(self) -> dict:
-        response = self.zeep_client.execute("GetQueryCollection", sessionId="0")
+        response = self.suds_client.execute("GetQueryCollection", sessionId="0")
         query_groups = []
         for query_group in response.QueryGroups.CxWSQueryGroup:
             if query_group.Queries:
@@ -660,7 +660,7 @@ class CxPortalWebService(object):
         Returns:
            dict
         """
-        response = self.zeep_client.execute("GetQueryDescriptionByQueryId", sessionId="0",
+        response = self.suds_client.execute("GetQueryDescriptionByQueryId", sessionId="0",
                                             queryId=query_id)
         return {
             "IsSuccesfull": response.IsSuccesfull,
@@ -720,7 +720,7 @@ class CxPortalWebService(object):
         Returns:
             dict
         """
-        response = self.zeep_client.execute("GetPresetList", SessionID="0")
+        response = self.suds_client.execute("GetPresetList", SessionID="0")
         preset_list = response.PresetList
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -772,7 +772,7 @@ class CxPortalWebService(object):
                 }
             ]
         """
-        response = self.zeep_client.execute("GetProjectsDisplayData", sessionID="0")
+        response = self.suds_client.execute("GetProjectsDisplayData", sessionID="0")
         project_list = response.projectList
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -805,7 +805,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetResultPath", sessionId="0", scanId=scan_id, pathId=path_id)
+        response = self.suds_client.execute("GetResultPath", sessionId="0", scanId=scan_id, pathId=path_id)
         item = response.Path
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -843,7 +843,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetResultsForScan", sessionID="0", scanId=scan_id)
+        response = self.suds_client.execute("GetResultsForScan", sessionID="0", scanId=scan_id)
         scan_results_list = response.Results.CxWSSingleResultData
         return {
             "IsSuccesfull": response["IsSuccesfull"],
@@ -880,7 +880,7 @@ class CxPortalWebService(object):
 
         """
 
-        response = self.zeep_client.execute("GetServerLicenseData", sessionID="0")
+        response = self.suds_client.execute("GetServerLicenseData", sessionID="0")
         supported_languages = response.SupportedLanguages
         return {
             "ExpirationDate": response["ExpirationDate"],
@@ -909,7 +909,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetServerLicenseSummary", sessionID="0")
+        response = self.suds_client.execute("GetServerLicenseSummary", sessionID="0")
         supported_languages = response.SupportedLanguages
         return {
             "ExpirationDate": response["ExpirationDate"],
@@ -940,7 +940,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetUserProfileData", sessionID="0")
+        response = self.suds_client.execute("GetUserProfileData", sessionID="0")
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -953,7 +953,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("GetVersionNumber")
+        response = self.suds_client.execute("GetVersionNumber")
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -990,7 +990,7 @@ class CxPortalWebService(object):
 
         with open(imported_file_path, "rb") as xml_file:
             imported_file = xml_file.read()
-        response = self.zeep_client.execute("ImportPreset", sessionId="0", importedFile=imported_file)
+        response = self.suds_client.execute("ImportPreset", sessionId="0", importedFile=imported_file)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -1014,7 +1014,7 @@ class CxPortalWebService(object):
         with open(imported_file_path, "rb") as xml_file:
             imported_file = xml_file.read()
 
-        response = self.zeep_client.execute("ImportQueries", sessionId="0", importedFile=imported_file)
+        response = self.suds_client.execute("ImportQueries", sessionId="0", importedFile=imported_file)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -1031,7 +1031,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("LockScan", i_SessionID="0", i_ScanID=scan_id)
+        response = self.suds_client.execute("LockScan", i_SessionID="0", i_ScanID=scan_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -1046,7 +1046,7 @@ class CxPortalWebService(object):
         Returns:
 
         """
-        response = self.zeep_client.execute("PostponeScan", sessionID="0", RunId=str(scan_id))
+        response = self.suds_client.execute("PostponeScan", sessionID="0", RunId=str(scan_id))
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],
@@ -1061,7 +1061,7 @@ class CxPortalWebService(object):
             Returns:
 
             """
-        response = self.zeep_client.execute("UnlockScan", i_SessionID="0", i_ScanID=scan_id)
+        response = self.suds_client.execute("UnlockScan", i_SessionID="0", i_ScanID=scan_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
             "ErrorMessage": response["ErrorMessage"],

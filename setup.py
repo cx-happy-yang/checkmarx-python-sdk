@@ -38,7 +38,7 @@ setup(
     install_requires=[
         "requests>=2.13.0",
         "requests-toolbelt>=0.9.1",
-        "zeep>=4.1.0",
+        "suds-community>=1.1.0",
         "Deprecated>=1.2.13",
         "inflection>=0.5.1",
         "typing-extensions>=3.6.2"

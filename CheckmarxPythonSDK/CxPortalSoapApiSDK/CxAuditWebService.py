@@ -1,6 +1,6 @@
 from CheckmarxPythonSDK.configuration import Configuration
 from CheckmarxPythonSDK.CxPortalSoapApiSDK.config import construct_configuration
-from .zeepClient import ZeepClient
+from .sudsClient import SudsClient
 
 
 class CxAuditWebService(object):
@@ -9,13 +9,13 @@ class CxAuditWebService(object):
         if configuration is None:
             configuration = construct_configuration()
             # configuration.is_sast_portal = True
-        self.zeep_client = ZeepClient(
+        self.suds_client = SudsClient(
                 relative_web_interface_url="/cxwebinterface/Audit/CxAuditWebService.asmx?wsdl",
                 configuration=configuration,
             )
 
     def get_files_extensions(self) -> dict:
-        response = self.zeep_client.execute("GetFilesExtensions", sessionId="0")
+        response = self.suds_client.execute("GetFilesExtensions", sessionId="0")
         return {
             "IsSuccesfull": response.IsSuccesfull,
             "ErrorMessage": response.ErrorMessage,
@@ -35,7 +35,7 @@ class CxAuditWebService(object):
         }
 
     def get_source_code_for_scan(self, scan_id: int) -> dict:
-        response = self.zeep_client.execute("GetSourceCodeForScan", sessionID="0", scanId=scan_id)
+        response = self.suds_client.execute("GetSourceCodeForScan", sessionID="0", scanId=scan_id)
         return {
             "IsSuccesfull": response.IsSuccesfull,
             "ErrorMessage": response.ErrorMessage,
@@ -46,7 +46,7 @@ class CxAuditWebService(object):
         }
 
     def upload_queries(self, query_groups: dict) -> dict:
-        factory = self.zeep_client.factory
+        factory = self.suds_client.factory
         qgs = factory.ArrayOfCxWSQueryGroup([
             factory.CxWSQueryGroup(
                 Name=qg["Name"],
@@ -96,7 +96,7 @@ class CxAuditWebService(object):
                 LanguageStateDate=qg["LanguageStateDate"]
                 ) for qg in query_groups
             ])
-        response = self.zeep_client.execute(operation_name="UploadQueries", sessionId="0", queries=qgs)
+        response = self.suds_client.execute(operation_name="UploadQueries", sessionId="0", queries=qgs)
         return {
             "IsSuccesfull": response.IsSuccesfull,
             "ErrorMessage": response.ErrorMessage
