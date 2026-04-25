@@ -1,4 +1,4 @@
-from requests import Response
+from httpx import Response
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List

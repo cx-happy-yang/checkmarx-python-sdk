@@ -5,7 +5,6 @@ import os
 import json
 from os.path import normpath, exists, abspath
 
-from requests_toolbelt import MultipartEncoder
 from CheckmarxPythonSDK.utilities.compat import OK, CREATED, NO_CONTENT, ACCEPTED
 from .sast.projects.dto import CxLink, CxProject, CxPreset
 from .sast.engines.dto import CxEngineServer, CxEngineConfiguration
@@ -1178,12 +1177,10 @@ class ScansAPI(object):
             })
             if run_post_scan_only_when_new_results:
                 pass
-        m = MultipartEncoder(
-            fields=fields
-        )
-        headers = {"Content-Type": m.content_type + "; v={}".format(api_version)}
+        files = {k: v for k, v in fields.items() if isinstance(v, tuple)}
+        data = {k: v for k, v in fields.items() if not isinstance(v, tuple)}
         response = self.api_client.post_request(
-            relative_url=relative_url, data=m, headers=get_headers(api_version, headers))
+            relative_url=relative_url, files=files, data=data, headers=get_headers(api_version))
         if response.status_code == CREATED:
             a_dict = response.json()
             result = CxCreateNewScanResponse(

@@ -2,7 +2,6 @@ from typing import List
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxRestAPISDK.config import construct_configuration, get_headers
 import os
-from requests_toolbelt import MultipartEncoder
 from CheckmarxPythonSDK.utilities.compat import OK, ACCEPTED
 from .osa.dto import (
     CxOsaScanDetail, CxOsaState, CxOsaLicense, CxOsaLibrary, CxOsaMatchType,
@@ -159,17 +158,12 @@ class OsaAPI(object):
         """
         result = None
         file_name = os.path.basename(zipped_source_path)
-        m = MultipartEncoder(
-            fields={
-                "projectId": str(project_id),
-                "origin": origin if origin else get_headers().get("cxOrigin"),
-                "zippedSource": (file_name, open(zipped_source_path, 'rb'), "application/zip")
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         relative_url = "/cxrestapi/osa/scans" + "?projectId={project_id}".format(project_id=project_id)
         response = self.api_client.post_request(
-            relative_url=relative_url, data=m, headers=get_headers(api_version, headers))
+            relative_url=relative_url,
+            data={"projectId": str(project_id), "origin": origin if origin else get_headers().get("cxOrigin")},
+            files={"zippedSource": (file_name, open(zipped_source_path, 'rb'), "application/zip")},
+            headers=get_headers(api_version))
         if response.status_code == ACCEPTED:
             result = response.json().get("scanId")
         return result

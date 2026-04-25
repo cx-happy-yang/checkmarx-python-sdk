@@ -3,7 +3,6 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxRestAPISDK.config import construct_configuration, get_headers
 import os
 import json
-from requests_toolbelt import MultipartEncoder
 from CheckmarxPythonSDK.utilities.compat import OK, CREATED, ACCEPTED, NO_CONTENT
 from CheckmarxPythonSDK.utilities.CxError import NotFoundError
 from .TeamAPI import TeamAPI
@@ -1022,16 +1021,11 @@ class ProjectsAPI(object):
         file_name = os.path.basename(private_key_file_path)
         with open(private_key_file_path, "rb") as a_file:
             file_content = a_file.read()
-        m = MultipartEncoder(
-            fields={
-                "url": url,
-                "branch": branch,
-                "privateKey": (file_name, file_content, "text/plain")
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         response = self.api_client.post_request(
-            relative_url=relative_url, data=m, headers=get_headers(api_version, headers))
+            relative_url=relative_url,
+            data={"url": url, "branch": branch},
+            files={"privateKey": (file_name, file_content, "text/plain")},
+            headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_remote_source_setting_to_svn_using_ssh(
@@ -1062,17 +1056,11 @@ class ProjectsAPI(object):
         # TODO check, when have svn + ssh
         relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/svn/ssh".format(id=project_id)
         file_name = os.path.basename(private_key_file_path)
-        m = MultipartEncoder(
-            fields={
-                "absoluteUrl": absolute_url,
-                "port": str(port),
-                "paths": str(paths),
-                "privateKey": (file_name, open(private_key_file_path, "rb"), "text/plain")
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         response = self.api_client.post_request(
-            relative_url=relative_url, data=m, headers=get_headers(api_version, headers))
+            relative_url=relative_url,
+            data={"absoluteUrl": absolute_url, "port": str(port), "paths": str(paths)},
+            files={"privateKey": (file_name, open(private_key_file_path, "rb"), "text/plain")},
+            headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def upload_source_code_zip_file(
@@ -1096,14 +1084,10 @@ class ProjectsAPI(object):
         """
         relative_url = "/cxrestapi/projects/{id}/sourceCode/attachments".format(id=project_id)
         file_name = os.path.basename(zip_file_path)
-        m = MultipartEncoder(
-            fields={
-                "zippedSource": (file_name, open(zip_file_path, 'rb'), "application/zip")
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         response = self.api_client.post_request(
-            relative_url=relative_url, data=m, headers=get_headers(api_version, headers))
+            relative_url=relative_url,
+            files={"zippedSource": (file_name, open(zip_file_path, 'rb'), "application/zip")},
+            headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_data_retention_settings_by_project_id(

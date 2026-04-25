@@ -1,58 +1,34 @@
 import certifi
 import functools
-import requests
+import httpx
+import ssl
 import time
 from typing import Callable, Union
-from urllib3.util import Retry
-from requests import Session
-from requests.adapters import HTTPAdapter
 from .configuration import Configuration
 from .rate_limiter import RateLimiter
 from CheckmarxPythonSDK.utilities.compat import (
     OK, UNAUTHORIZED, NO_CONTENT, CREATED, ACCEPTED
 )
-import ssl
-from urllib3.util.ssl_ import create_urllib3_context
 
 
-class CustomTLSAdapter(HTTPAdapter):
-    def __init__(self, *args, **kwargs):
-        self.ssl_context = None
-        super().__init__(*args, **kwargs)
-
-    def init_poolmanager(self, *args, **kwargs):
-        if self.ssl_context is None:
-            ctx = create_urllib3_context()
-            ctx.options |= ssl.OP_NO_SSLv2
-            ctx.options |= ssl.OP_NO_SSLv3
-            ctx.options |= ssl.OP_NO_TLSv1
-            ctx.options |= ssl.OP_NO_TLSv1_1
-            ctx.minimum_version = ssl.TLSVersion.TLSv1_2
-            ctx.maximum_version = ssl.TLSVersion.TLSv1_3
-            self.ssl_context = ctx
-        kwargs['ssl_context'] = self.ssl_context
-        return super().init_poolmanager(*args, **kwargs)
-
-    def send(self, request, **kwargs):
-        # If verify=False is passed to the request, disable hostname checking
-        verify = kwargs.get('verify', True)
-        if not verify and self.ssl_context:
-            self.ssl_context.check_hostname = False
-        return super().send(request, **kwargs)
-
-
-def create_session(configuration: Configuration) -> Session:
-    session = Session()
-    retries = Retry(
-        total=3,
-        backoff_factor=1,
-        status_forcelist=[500, 502, 503, 504],
-        allowed_methods={'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'},
+def create_session(configuration: Configuration) -> httpx.Client:
+    if configuration.verify is False:
+        verify = False
+    else:
+        ctx = ssl.create_default_context()
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        ctx.maximum_version = ssl.TLSVersion.TLSv1_3
+        if configuration.verify is True:
+            ctx.load_verify_locations(certifi.where())
+        else:
+            ctx.load_verify_locations(configuration.verify)
+        verify = ctx
+    return httpx.Client(
+        verify=verify,
+        cert=configuration.cert,
+        proxies=configuration.proxies,
+        transport=httpx.HTTPTransport(retries=3),
     )
-    session.mount('https://', CustomTLSAdapter(max_retries=retries))
-    session.mount('http://', HTTPAdapter(max_retries=retries))
-    session.verify = configuration.verify
-    return session
 
 
 def create_token_request_data(configuration: Configuration) -> dict:
@@ -131,6 +107,12 @@ def retry(max_retries: int = 1):
                         if response.status_code == 401:
                             if retries < max_retries:
                                 self.token_manager.refresh_token()
+                                retries += 1
+                                continue
+                            else:
+                                response.raise_for_status()
+                        elif response.status_code in (500, 502, 503, 504):
+                            if retries < max_retries:
                                 retries += 1
                                 continue
                             else:
@@ -217,9 +199,6 @@ class ApiClient:
             url=self.configuration.token_url,
             data=self.token_req_data,
             timeout=self.configuration.timeout,
-            verify=certifi.where() if self.configuration.verify is True else self.configuration.verify,
-            cert=self.configuration.cert,
-            proxies=self.configuration.proxies
         )
         auth_response.raise_for_status()
         return auth_response.json()["access_token"]
@@ -259,9 +238,6 @@ class ApiClient:
             auth=auth,
             timeout=self.configuration.timeout,
             headers=headers,
-            verify=certifi.where() if self.configuration.verify is True else self.configuration.verify,
-            cert=self.configuration.cert,
-            proxies=self.configuration.proxies
         )
         check_response(response)
         return response

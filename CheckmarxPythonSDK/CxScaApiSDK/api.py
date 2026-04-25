@@ -1,11 +1,10 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxScaApiSDK.config import construct_configuration
 from typing import List, Union
-from requests import Response
+from httpx import Response
 import json
 import os
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT, OK, CREATED, ACCEPTED
-from requests_toolbelt import MultipartEncoder
 agent_headers = {
     "user-agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -1851,13 +1850,10 @@ class Sca(object):
         file_name = os.path.basename(file_path_to_analyze)
         with open(file_path_to_analyze, "rb") as a_file:
             file_content = a_file.read()
-        m = MultipartEncoder(
-            fields={
-                "fileToAnalyse": (file_name, file_content, "text/plain")
-            }
+        response = self.api_client.post_request(
+            relative_url=url,
+            files={"fileToAnalyse": (file_name, file_content, "text/plain")},
         )
-        headers = {"Content-Type": m.content_type}
-        response = self.api_client.post_request(relative_url=url, data=m, headers=headers)
         if response.status_code == ACCEPTED:
             request_id = response.json().get("requestId")
         return request_id

@@ -2,7 +2,6 @@ from CheckmarxPythonSDK.api_client import ApiClient
 import os
 import json
 from typing import List, Union
-from requests_toolbelt import MultipartEncoder
 
 from CheckmarxPythonSDK.utilities.compat import OK, NO_CONTENT, CREATED
 from .accesscontrol.dto import (
@@ -1247,25 +1246,18 @@ class AccessControl:
         """
         result = False
         file_name = os.path.basename(certificate_file_path)
-        m = MultipartEncoder(
-            fields={
-                "CertificateFile": (file_name, open(certificate_file_path, 'r')),
-                "Active": active,
-                "Name": name,
-                "Issuer": issuer,
-                "LoginUrl": login_url,
-                "LogoutUrl": logout_url,
-                "ErrorUrl": error_url,
-                "SignAuthnRequest": sign_authn_request,
-                "AuthnRequestBinding": authn_request_binding,
-                "IsManualManagement": is_manual_management,
-                "DefaultTeamId": default_team_id,
-                "DefaultRoleId": default_role_id
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         relative_url = self.sast_ac + "/SamlIdentityProviders"
-        response = self.api_client.post_request(relative_url=relative_url, data=m, headers=headers, is_iam=self.is_iam)
+        response = self.api_client.post_request(
+            relative_url=relative_url,
+            files={"CertificateFile": (file_name, open(certificate_file_path, 'rb'))},
+            data={
+                "Active": str(active), "Name": name, "Issuer": issuer,
+                "LoginUrl": login_url, "LogoutUrl": logout_url, "ErrorUrl": error_url,
+                "SignAuthnRequest": str(sign_authn_request), "AuthnRequestBinding": authn_request_binding,
+                "IsManualManagement": str(is_manual_management),
+                "DefaultTeamId": str(default_team_id), "DefaultRoleId": str(default_role_id),
+            },
+            is_iam=self.is_iam)
         return response.status_code == CREATED
 
     def get_saml_identity_provider_by_id(self, saml_identity_provider_id: int) -> SAMLIdentityProvider:
@@ -1327,25 +1319,18 @@ class AccessControl:
         """
         result = False
         file_name = os.path.basename(certificate_file)
-        m = MultipartEncoder(
-            fields={
-                "CertificateFile": (file_name, open(certificate_file, 'r')),
-                "Active": active,
-                "Name": name,
-                "Issuer": issuer,
-                "LoginUrl": login_url,
-                "LogoutUrl": logout_url,
-                "ErrorUrl": error_url,
-                "SignAuthnRequest": sign_authn_request,
-                "AuthnRequestBinding": authn_request_binding,
-                "IsManualManagement": is_manual_management,
-                "DefaultTeamId": default_team_id,
-                "DefaultRoleId": default_role_id
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         relative_url = self.sast_ac + "/SamlIdentityProviders/{id}".format(id=saml_identity_provider_id)
-        response = self.api_client.put_request(relative_url=relative_url, data=m, headers=headers, is_iam=self.is_iam)
+        response = self.api_client.put_request(
+            relative_url=relative_url,
+            files={"CertificateFile": (file_name, open(certificate_file, 'rb'))},
+            data={
+                "Active": str(active), "Name": name, "Issuer": issuer,
+                "LoginUrl": login_url, "LogoutUrl": logout_url, "ErrorUrl": error_url,
+                "SignAuthnRequest": str(sign_authn_request), "AuthnRequestBinding": authn_request_binding,
+                "IsManualManagement": str(is_manual_management),
+                "DefaultTeamId": str(default_team_id), "DefaultRoleId": str(default_role_id),
+            },
+            is_iam=self.is_iam)
         return response.status_code == NO_CONTENT
 
     def delete_a_saml_identity_provider(self, saml_identity_provider_id: int) -> bool:
@@ -1472,16 +1457,12 @@ class AccessControl:
         """
         result = False
         file_name = os.path.basename(certificate_file)
-        m = MultipartEncoder(
-            fields={
-                "CertificateFile": (file_name, open(certificate_file, 'rb')),
-                "CertificatePassword": certificate_password,
-                "Issuer": issuer
-            }
-        )
-        headers = {"Content-Type": m.content_type}
         relative_url = self.sast_ac + "/SamlServiceProvider"
-        response = self.api_client.put_request(relative_url=relative_url, data=m, headers=headers, is_iam=self.is_iam)
+        response = self.api_client.put_request(
+            relative_url=relative_url,
+            files={"CertificateFile": (file_name, open(certificate_file, 'rb'))},
+            data={"CertificatePassword": certificate_password, "Issuer": issuer},
+            is_iam=self.is_iam)
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -2016,14 +1997,11 @@ class AccessControl:
         result = False
         relative_url = self.sast_ac + "/TokenSigningCertificate"
         file_name = os.path.basename(certificate_file_path)
-        m = MultipartEncoder(
-            fields={
-                "CertificateFile": (file_name, open(certificate_file_path, 'rb'), "application/zip"),
-                "CertificatePassword": str(certificate_password)
-            }
-        )
-        headers = {"Content-Type": m.content_type}
-        response = self.api_client.post_request(relative_url=relative_url, data=m, headers=headers, is_iam=self.is_iam)
+        response = self.api_client.post_request(
+            relative_url=relative_url,
+            files={"CertificateFile": (file_name, open(certificate_file_path, 'rb'), "application/zip")},
+            data={"CertificatePassword": str(certificate_password)},
+            is_iam=self.is_iam)
         return response.status_code == CREATED
 
     def get_all_users(self) -> List[User]:

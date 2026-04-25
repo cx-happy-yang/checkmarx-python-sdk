@@ -5,8 +5,8 @@ import logging
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from requests.exceptions import ChunkedEncodingError
-from requests import Response
+import httpx
+from httpx import Response
 from dataclasses import dataclass
 from .projectsAPI import get_all_projects
 
@@ -793,7 +793,7 @@ class RepoManagerAPI(object):
                     percentage = self.get_job_status()
                     logger.info(f"import percent: {percentage}")
                     time.sleep(delay_request_timeout)
-                except ChunkedEncodingError as e:
+                except httpx.RemoteProtocolError as e:
                     logger.info(f"ChunkedEncodingError: {e}")
                     continue
             time.sleep(delay_request_timeout)

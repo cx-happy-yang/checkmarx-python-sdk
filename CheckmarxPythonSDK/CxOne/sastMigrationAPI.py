@@ -1,7 +1,7 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from requests import Response
+from httpx import Response
 import json
 from .dto import (
     ImportItem, construct_import_item,

@@ -4,7 +4,6 @@ import os
 
 from CheckmarxPythonSDK.utilities.compat import OK
 from os.path import exists
-from requests_toolbelt import MultipartEncoder
 
 api_url = "/api/uploads"
 
@@ -44,15 +43,11 @@ class UploadsAPI(object):
         """
         if not zip_file_path or not exists(zip_file_path):
             print("zip file path: {} does not exist".format(zip_file_path))
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
         file_name = os.path.basename(zip_file_path)
-        m = MultipartEncoder(
-            fields={
-                "zippedSource": (file_name, open(zip_file_path, 'rb'), "application/zip")
-            }
+        response = self.api_client.call_api(
+            method="PUT", url=upload_link,
+            files={"zippedSource": (file_name, open(zip_file_path, 'rb'), "application/zip")},
         )
-        headers.update({"Content-Type": m.content_type})
-        response = self.api_client.call_api(method="PUT", url=upload_link, data=m, headers=headers)
         return response.status_code == OK
 
 

@@ -1,5 +1,4 @@
 # encoding: utf-8
-import certifi
 import functools
 from io import BytesIO
 from typing import Callable
@@ -11,32 +10,21 @@ from CheckmarxPythonSDK.CxPortalSoapApiSDK.config import construct_configuration
 
 
 class _RequestsTransport(Transport):
-    """suds transport backed by a requests.Session."""
+    """suds transport backed by an httpx.Client."""
 
-    def __init__(self, session, configuration):
+    def __init__(self, session):
         super().__init__()
         self.session = session
-        self._verify = certifi.where() if configuration.verify is True else configuration.verify
-        self._cert = configuration.cert
-        self._proxies = configuration.proxies
 
     def open(self, request):
-        response = self.session.get(
-            request.url,
-            verify=self._verify,
-            cert=self._cert,
-            proxies=self._proxies,
-        )
+        response = self.session.get(request.url)
         return BytesIO(response.content)
 
     def send(self, request):
         response = self.session.post(
             request.url,
-            data=request.message,
+            content=request.message,
             headers=dict(request.headers),
-            verify=self._verify,
-            cert=self._cert,
-            proxies=self._proxies,
         )
         return Reply(response.status_code, response.headers, response.content)
 
@@ -109,7 +97,7 @@ class SudsClient(ApiClient):
         wsdl_url = f"{configuration.server_base_url}{relative_web_interface_url}"
         self._client = Client(
             wsdl_url,
-            transport=_RequestsTransport(self.session, configuration),
+            transport=_RequestsTransport(self.session),
         )
         self._client.options.allowUnknownMessageParts = True
         self.factory = _SudsFactory(self._client.factory)
