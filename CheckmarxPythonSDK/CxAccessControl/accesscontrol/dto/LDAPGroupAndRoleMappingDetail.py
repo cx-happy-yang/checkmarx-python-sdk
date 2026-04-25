@@ -15,8 +15,8 @@ class LDAPGroupAndRoleMappingDetail(object):
         return {
             "roleId": self.role_id,
             "ldapGroupDn": self.ldap_group_dn,
-            "ldapGroupDisplayName": self.ldap_group_display_name
-      }
+            "ldapGroupDisplayName": self.ldap_group_display_name,
+        }
 
     def __str__(self):
         return """LDAPGroupAndRoleMappingDetail(role_id={}, ldap_group_dn={}, ldap_group_display_name={})""".format(

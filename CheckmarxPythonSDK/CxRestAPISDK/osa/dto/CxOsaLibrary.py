@@ -6,12 +6,30 @@ class CxOsaLibrary(object):
     osa libraries
     """
 
-    def __init__(self, library_id, name, version, release_date, high_unique_vulnerability_count,
-                 medium_unique_vulnerability_count, low_unique_vulnerability_count, not_exploitable_vulnerability_count,
-                 newest_version, newest_version_release_date, number_of_versions_since_last_update,
-                 confidence_level, match_type, licenses, outdated, severity, risk_score, locations, code_usage_status,
-                 code_reference_count, package_repository=None):
-
+    def __init__(
+        self,
+        library_id,
+        name,
+        version,
+        release_date,
+        high_unique_vulnerability_count,
+        medium_unique_vulnerability_count,
+        low_unique_vulnerability_count,
+        not_exploitable_vulnerability_count,
+        newest_version,
+        newest_version_release_date,
+        number_of_versions_since_last_update,
+        confidence_level,
+        match_type,
+        licenses,
+        outdated,
+        severity,
+        risk_score,
+        locations,
+        code_usage_status,
+        code_reference_count,
+        package_repository=None,
+    ):
         """
 
         Args:
@@ -66,10 +84,25 @@ class CxOsaLibrary(object):
                  number_of_versions_since_last_update={}, confidence_level={}, match_type={}, licenses={}, 
                  outdated={}, severity={}, risk_score={}, locations={}, code_usage_status={},
                  code_reference_count={}, package_repository={})""".format(
-            self.id, self.name, self.version, self.release_date, self.high_unique_vulnerability_count,
-            self.medium_unique_vulnerability_count, self.low_unique_vulnerability_count,
-            self.not_exploitable_vulnerability_count, self.newest_version, self.newest_version_release_date,
-            self.number_of_versions_since_last_update, self.confidence_level, self.match_type, self.licenses,
-            self.outdated, self.severity, self.risk_score, self.locations, self.code_usage_status,
-            self.code_reference_count, self.package_repository
+            self.id,
+            self.name,
+            self.version,
+            self.release_date,
+            self.high_unique_vulnerability_count,
+            self.medium_unique_vulnerability_count,
+            self.low_unique_vulnerability_count,
+            self.not_exploitable_vulnerability_count,
+            self.newest_version,
+            self.newest_version_release_date,
+            self.number_of_versions_since_last_update,
+            self.confidence_level,
+            self.match_type,
+            self.licenses,
+            self.outdated,
+            self.severity,
+            self.risk_score,
+            self.locations,
+            self.code_usage_status,
+            self.code_reference_count,
+            self.package_repository,
         )

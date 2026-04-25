@@ -16,19 +16,19 @@ class ScopeMappingRepresentation:
         result: Dict[str, Any] = {}
         if self.self is not None:
             value = self.self
-            result['self'] = value
+            result["self"] = value
         if self.client is not None:
             value = self.client
-            result['client'] = value
+            result["client"] = value
         if self.client_template is not None:
             value = self.client_template
-            result['clientTemplate'] = value
+            result["clientTemplate"] = value
         if self.client_scope is not None:
             value = self.client_scope
-            result['clientScope'] = value
+            result["clientScope"] = value
         if self.roles is not None:
             value = self.roles
-            result['roles'] = value
+            result["roles"] = value
         return result
 
     @classmethod
@@ -38,5 +38,5 @@ class ScopeMappingRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

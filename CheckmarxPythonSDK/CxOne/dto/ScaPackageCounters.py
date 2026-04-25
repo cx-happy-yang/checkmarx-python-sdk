@@ -48,5 +48,5 @@ def construct_sca_package_counters(item):
         outdated_counter=item.get("outdatedCounter"),
         risk_level_counters=item.get("riskLevelCounters"),
         license_counters=item.get("licenseCounters"),
-        package_counters=item.get("packageCounters")
+        package_counters=item.get("packageCounters"),
     )

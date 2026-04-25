@@ -11,6 +11,5 @@ class DebugMessageResponse:
 
 def construct_debug_message_response(item):
     return DebugMessageResponse(
-        data=item.get("data"),
-        total_count=item.get("totalCount")
+        data=item.get("data"), total_count=item.get("totalCount")
     )

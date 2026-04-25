@@ -17,22 +17,22 @@ class ProtocolMapperEvaluationRepresentation:
         result: Dict[str, Any] = {}
         if self.mapper_id is not None:
             value = self.mapper_id
-            result['mapperId'] = value
+            result["mapperId"] = value
         if self.mapper_name is not None:
             value = self.mapper_name
-            result['mapperName'] = value
+            result["mapperName"] = value
         if self.container_id is not None:
             value = self.container_id
-            result['containerId'] = value
+            result["containerId"] = value
         if self.container_name is not None:
             value = self.container_name
-            result['containerName'] = value
+            result["containerName"] = value
         if self.container_type is not None:
             value = self.container_type
-            result['containerType'] = value
+            result["containerType"] = value
         if self.protocol_mapper is not None:
             value = self.protocol_mapper
-            result['protocolMapper'] = value
+            result["protocolMapper"] = value
         return result
 
     @classmethod
@@ -42,5 +42,5 @@ class ProtocolMapperEvaluationRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

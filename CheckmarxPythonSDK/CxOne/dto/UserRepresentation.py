@@ -1,10 +1,21 @@
 from dataclasses import dataclass
 from typing import List
-from .CredentialRepresentation import CredentialRepresentation, construct_credential_representation
-from .FederatedIdentityRepresentation import (FederatedIdentityRepresentation,
-                                              construct_federated_identity_representation)
-from .SocialLinkRepresentation import SocialLinkRepresentation, construct_social_link_representation
-from .UserConsentRepresentation import UserConsentRepresentation, construct_user_consent_representation
+from .CredentialRepresentation import (
+    CredentialRepresentation,
+    construct_credential_representation,
+)
+from .FederatedIdentityRepresentation import (
+    FederatedIdentityRepresentation,
+    construct_federated_identity_representation,
+)
+from .SocialLinkRepresentation import (
+    SocialLinkRepresentation,
+    construct_social_link_representation,
+)
+from .UserConsentRepresentation import (
+    UserConsentRepresentation,
+    construct_user_consent_representation,
+)
 from .UserProfileMetadata import UserProfileMetadata, construct_user_profile_metadata
 
 
@@ -57,16 +68,20 @@ class UserRepresentation:
             "credentials": [credential.to_dict() for credential in self.credentials],
             "disableableCredentialTypes": self.disable_able_credential_types,
             "requiredActions": self.required_actions,
-            "federatedIdentities": [identity.to_dict() for identity in self.federated_identities],
+            "federatedIdentities": [
+                identity.to_dict() for identity in self.federated_identities
+            ],
             "realmRoles": self.realm_roles,
             "clientRoles": self.client_roles,
-            "clientConsents": [client_consent.to_dict() for client_consent in self.client_consents],
+            "clientConsents": [
+                client_consent.to_dict() for client_consent in self.client_consents
+            ],
             "notBefore": self.not_before,
             "applicationRoles": self.application_roles,
             "socialLinks": [social_link.to_dict() for social_link in self.social_links],
             "groups": self.groups,
             "access": self.access,
-            "userProfileMetadata": self.user_profile_metadata.to_dict()
+            "userProfileMetadata": self.user_profile_metadata.to_dict(),
         }
 
 
@@ -86,19 +101,31 @@ def construct_user_representation(item):
         federation_link=item.get("federationLink"),
         service_account_client_id=item.get("serviceAccountClientId"),
         attributes=item.get("attributes"),
-        credentials=[construct_credential_representation(credential) for credential in (item.get("credentials") or [])],
+        credentials=[
+            construct_credential_representation(credential)
+            for credential in (item.get("credentials") or [])
+        ],
         disable_able_credential_types=item.get("disableableCredentialTypes"),
         required_actions=item.get("requiredActions"),
         federated_identities=[
-            construct_federated_identity_representation(identity) for identity in (item.get("federatedIdentities") or [])
+            construct_federated_identity_representation(identity)
+            for identity in (item.get("federatedIdentities") or [])
         ],
         realm_roles=item.get("realmRoles"),
         client_roles=item.get("clientRoles"),
-        client_consents=[construct_user_consent_representation(consent) for consent in (item.get("clientConsents") or [])],
+        client_consents=[
+            construct_user_consent_representation(consent)
+            for consent in (item.get("clientConsents") or [])
+        ],
         not_before=item.get("notBefore"),
         application_roles=item.get("applicationRoles"),
-        social_links=[construct_social_link_representation(social_link) for social_link in (item.get("socialLinks") or [])],
+        social_links=[
+            construct_social_link_representation(social_link)
+            for social_link in (item.get("socialLinks") or [])
+        ],
         groups=item.get("groups"),
         access=item.get("access"),
-        user_profile_metadata=construct_user_profile_metadata(item.get("userProfileMetadata")),
+        user_profile_metadata=construct_user_profile_metadata(
+            item.get("userProfileMetadata")
+        ),
     )

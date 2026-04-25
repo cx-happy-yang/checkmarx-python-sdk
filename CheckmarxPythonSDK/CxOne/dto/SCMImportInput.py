@@ -35,7 +35,5 @@ class SCMImportInput:
             "organization": self.organization.to_dict(),
             "defaultProjectSettings": self.default_project_settings.to_dict(),
             "scanProjectsAfterImport": self.scan_projects_after_import,
-            "projects": [
-                project.to_dict() for project in (self.projects or [])
-            ]
+            "projects": [project.to_dict() for project in (self.projects or [])],
         }

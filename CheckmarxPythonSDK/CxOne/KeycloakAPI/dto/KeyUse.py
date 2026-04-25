@@ -19,4 +19,4 @@ class KeyUse:
             snake_data: Dict[str, Any] = {underscore(k): v for k, v in data.items()}
             return cls(**snake_data)
         else:
-            raise ValueError(f'Invalid data type for KeyUse: {type(data)}')
+            raise ValueError(f"Invalid data type for KeyUse: {type(data)}")

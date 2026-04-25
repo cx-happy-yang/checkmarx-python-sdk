@@ -1,5 +1,13 @@
 class ComponentExportRepresentation:
-    def __init__(self, config, component_export_representation_id, name, provider_id, sub_components, sub_type):
+    def __init__(
+        self,
+        config,
+        component_export_representation_id,
+        name,
+        provider_id,
+        sub_components,
+        sub_type,
+    ):
         self.config = config
         self.id = component_export_representation_id
         self.name = name
@@ -8,14 +16,16 @@ class ComponentExportRepresentation:
         self.subType = sub_type
 
     def __str__(self):
-        return f"ComponentExportRepresentation(" \
-               f"config={self.config} " \
-               f"id={self.id} " \
-               f"name={self.name} " \
-               f"providerId={self.providerId} " \
-               f"subComponents={self.subComponents} " \
-               f"subType={self.subType} " \
-               f")"
+        return (
+            f"ComponentExportRepresentation("
+            f"config={self.config} "
+            f"id={self.id} "
+            f"name={self.name} "
+            f"providerId={self.providerId} "
+            f"subComponents={self.subComponents} "
+            f"subType={self.subType} "
+            f")"
+        )
 
     def to_dict(self):
         return {

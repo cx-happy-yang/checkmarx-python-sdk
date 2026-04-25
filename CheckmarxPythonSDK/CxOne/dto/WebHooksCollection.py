@@ -14,5 +14,5 @@ def construct_web_hooks_collection(item):
         total_count=item.get("totalCount"),
         webhooks=[
             construct_web_hook(webhook) for webhook in (item.get("webhooks") or [])
-        ]
+        ],
     )

@@ -2,16 +2,33 @@
 
 
 class CxScanDetail(object):
-    """
+    """ """
 
-    """
-
-    def __init__(self, scan_id=None, project=None, status=None, scan_type=None, comment=None, date_and_time=None,
-                 results_statistics=None, scan_state=None, owner=None, origin=None, origin_url=None,
-                 initiator_name=None,
-                 owning_team_id=None, is_public=None, is_locked=None, is_incremental=None, scan_risk=None,
-                 scan_risk_severity=None, engine_server=None, finished_scan_status=None, partial_scan_reasons=None,
-                 custom_fields=None):
+    def __init__(
+        self,
+        scan_id=None,
+        project=None,
+        status=None,
+        scan_type=None,
+        comment=None,
+        date_and_time=None,
+        results_statistics=None,
+        scan_state=None,
+        owner=None,
+        origin=None,
+        origin_url=None,
+        initiator_name=None,
+        owning_team_id=None,
+        is_public=None,
+        is_locked=None,
+        is_incremental=None,
+        scan_risk=None,
+        scan_risk_severity=None,
+        engine_server=None,
+        finished_scan_status=None,
+        partial_scan_reasons=None,
+        custom_fields=None,
+    ):
         """
 
         Args:
@@ -66,9 +83,26 @@ class CxScanDetail(object):
                  owning_team_id={}, is_public={}, is_locked={}, is_incremental={}, scan_risk={},
                  scan_risk_severity={}, engine_server={}, finished_scan_status={}, partial_scan_reasons={},
                  custom_fields={})""".format(
-            self.id, self.project, self.status, self.scan_type, self.comment, self.date_and_time,
-            self.results_statistics, self.scan_state, self.owner, self.origin, self.origin_url, self.initiator_name,
-            self.owning_team_id, self.is_public, self.is_locked, self.is_incremental, self.scan_risk,
-            self.scan_risk_severity, self.engine_server, self.finished_scan_status, self.partial_scan_reasons,
-            self.custom_fields
+            self.id,
+            self.project,
+            self.status,
+            self.scan_type,
+            self.comment,
+            self.date_and_time,
+            self.results_statistics,
+            self.scan_state,
+            self.owner,
+            self.origin,
+            self.origin_url,
+            self.initiator_name,
+            self.owning_team_id,
+            self.is_public,
+            self.is_locked,
+            self.is_incremental,
+            self.scan_risk,
+            self.scan_risk_severity,
+            self.engine_server,
+            self.finished_scan_status,
+            self.partial_scan_reasons,
+            self.custom_fields,
         )

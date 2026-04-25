@@ -4,9 +4,11 @@ from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
 from .utilities import type_check
 from .dto import (
     ImportRequest,
-    ImportResults, construct_import_results,
+    ImportResults,
+    construct_import_results,
     TriageRequest,
-    TriageResponse, construct_triage_response,
+    TriageResponse,
+    construct_triage_response,
 )
 
 api_url = "/api/v1/byor"
@@ -31,7 +33,9 @@ class ByorResultsHandlerAPI(object):
         """
         type_check(import_request, ImportRequest)
         relative_url = api_url + "/imports"
-        response = self.api_client.post_request(relative_url=relative_url, json=import_request.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=import_request.to_dict()
+        )
         item = response.json()
         return construct_import_results(item)
 
@@ -45,7 +49,9 @@ class ByorResultsHandlerAPI(object):
             bool
         """
         relative_url = api_url + "/triage"
-        response = self.api_client.post_request(relative_url=relative_url, json=triage_request.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=triage_request.to_dict()
+        )
         return response.status_code == NO_CONTENT
 
     def get_triage(self, result_id: str, project_id: str) -> TriageResponse:
@@ -74,4 +80,6 @@ def save_triage(triage_request: TriageRequest) -> bool:
 
 
 def get_triage(result_id: str, project_id: str) -> TriageResponse:
-    return ByorResultsHandlerAPI().get_triage(result_id=result_id, project_id=project_id)
+    return ByorResultsHandlerAPI().get_triage(
+        result_id=result_id, project_id=project_id
+    )

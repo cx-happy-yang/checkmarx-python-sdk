@@ -13,6 +13,7 @@ class Tree:
         is_dir (bool): true if directory, otherwise false
         files (list of FileInfo):
     """
+
     full_path: str
     name: str
     is_dir: bool
@@ -24,7 +25,5 @@ def construct_tree(item):
         full_path=item.get("FullPath"),
         name=item.get("name"),
         is_dir=item.get("IsDir"),
-        files=[
-            construct_file_info(file) for file in (item.get("Files") or [])
-        ]
+        files=[construct_file_info(file) for file in (item.get("Files") or [])],
     )

@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import List
-from .QueryDescriptionSampleCode import QueryDescriptionSampleCode, construct_query_description_sample_code
+from .QueryDescriptionSampleCode import (
+    QueryDescriptionSampleCode,
+    construct_query_description_sample_code,
+)
 
 
 @dataclass
@@ -16,6 +19,7 @@ class QueryDescription:
         general_recommendations (str):
         sample (list of QueryDescriptionSampleCode):
     """
+
     query_id: str
     query_name: str
     result_description: str
@@ -34,6 +38,7 @@ def construct_query_description(item):
         cause=item.get("cause"),
         general_recommendations=item.get("generalRecommendations"),
         sample=[
-            construct_query_description_sample_code(sample_code) for sample_code in (item.get("sample") or [])
-        ]
+            construct_query_description_sample_code(sample_code)
+            for sample_code in (item.get("sample") or [])
+        ],
     )

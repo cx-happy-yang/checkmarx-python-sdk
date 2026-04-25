@@ -5,6 +5,7 @@ class CxIssueTrackingSystemType(object):
     """
     one of issue types
     """
+
     def __init__(self, issue_tracking_system_type_id, name, sub_task, fields):
         """
 
@@ -20,6 +21,8 @@ class CxIssueTrackingSystemType(object):
         self.fields = fields
 
     def __str__(self):
-        return "CxIssueTrackingSystemType(id={}, name={}, sub_task={}, fields={})".format(
-            self.id, self.name, self.sub_task, self.fields
+        return (
+            "CxIssueTrackingSystemType(id={}, name={}, sub_task={}, fields={})".format(
+                self.id, self.name, self.sub_task, self.fields
+            )
         )

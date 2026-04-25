@@ -16,13 +16,13 @@ class CloudInsightAccount:
 
 def construct_cloud_insight_account(item):
     return CloudInsightAccount(
-            id=item.get("id"),
-            name=item.get("name"),
-            credentials=item.get("credentials"),
-            account_type=item.get("accountType"),
-            tenant_id=item.get("tenantId"),
-            created_at=item.get("createdAt"),
-            updated_at=item.get("updatedAt"),
-            last_scan_date=item.get("lastScanDate"),
-            next_scan_date=item.get("nextScanDate"),
-        )
+        id=item.get("id"),
+        name=item.get("name"),
+        credentials=item.get("credentials"),
+        account_type=item.get("accountType"),
+        tenant_id=item.get("tenantId"),
+        created_at=item.get("createdAt"),
+        updated_at=item.get("updatedAt"),
+        last_scan_date=item.get("lastScanDate"),
+        next_scan_date=item.get("nextScanDate"),
+    )

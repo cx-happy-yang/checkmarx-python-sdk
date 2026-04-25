@@ -17,6 +17,4 @@ class CxScanType(object):
         self.value = value
 
     def __str__(self):
-        return "CxScanType(id={}, value={})".format(
-            self.id, self.value
-        )
+        return "CxScanType(id={}, value={})".format(self.id, self.value)

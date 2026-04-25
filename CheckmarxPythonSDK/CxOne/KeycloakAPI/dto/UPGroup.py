@@ -15,16 +15,16 @@ class UPGroup:
         result: Dict[str, Any] = {}
         if self.name is not None:
             value = self.name
-            result['name'] = value
+            result["name"] = value
         if self.display_header is not None:
             value = self.display_header
-            result['displayHeader'] = value
+            result["displayHeader"] = value
         if self.display_description is not None:
             value = self.display_description
-            result['displayDescription'] = value
+            result["displayDescription"] = value
         if self.annotations is not None:
             value = self.annotations
-            result['annotations'] = value
+            result["annotations"] = value
         return result
 
     @classmethod
@@ -34,5 +34,5 @@ class UPGroup:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

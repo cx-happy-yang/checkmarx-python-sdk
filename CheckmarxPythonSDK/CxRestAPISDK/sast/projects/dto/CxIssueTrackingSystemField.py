@@ -5,7 +5,16 @@ class CxIssueTrackingSystemField(object):
     """
     field
     """
-    def __init__(self, tracking_system_field_id, name, multiple, required, supported, allowed_values):
+
+    def __init__(
+        self,
+        tracking_system_field_id,
+        name,
+        multiple,
+        required,
+        supported,
+        allowed_values,
+    ):
         """
 
         Args:
@@ -26,5 +35,10 @@ class CxIssueTrackingSystemField(object):
     def __str__(self):
         return """CxIssueTrackingSystemField(id={}, name={], multiple={], required={], 
                 supported={], allowed_values={})""".format(
-            self.id, self.name, self.multiple, self.required, self.supported, self.allowed_values
+            self.id,
+            self.name,
+            self.multiple,
+            self.required,
+            self.supported,
+            self.allowed_values,
         )

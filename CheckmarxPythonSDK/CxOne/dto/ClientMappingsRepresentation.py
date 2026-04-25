@@ -5,11 +5,13 @@ class ClientMappingsRepresentation:
         self.mappings = mappings
 
     def __str__(self):
-        return f"ClientMappingsRepresentation(" \
-               f"client={self.client} " \
-               f"id={self.id} " \
-               f"mappings={self.mappings} " \
-               f")"
+        return (
+            f"ClientMappingsRepresentation("
+            f"client={self.client} "
+            f"id={self.id} "
+            f"mappings={self.mappings} "
+            f")"
+        )
 
     def to_dict(self):
         return {

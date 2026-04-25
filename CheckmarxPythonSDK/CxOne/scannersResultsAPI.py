@@ -16,8 +16,14 @@ class ScannersResultsAPI(object):
         self.api_client = api_client
 
     def get_all_scanners_results_by_scan_id(
-            self, scan_id: str, severity: List[str] = None, state: List[str] = None, status: List[str] = None,
-            offset: int = 0, limit: int = 20, sort: List[str] = ("+status", "+severity")
+        self,
+        scan_id: str,
+        severity: List[str] = None,
+        state: List[str] = None,
+        status: List[str] = None,
+        offset: int = 0,
+        limit: int = 20,
+        sort: List[str] = ("+status", "+severity"),
     ) -> dict:
         """
 
@@ -56,8 +62,13 @@ class ScannersResultsAPI(object):
 
         relative_url = api_url
         params = {
-            "scan-id": scan_id, "severity": severity, "state": state, "status": status, "offset": offset,
-            "limit": limit, "sort": ",".join(sort) if sort else None
+            "scan-id": scan_id,
+            "severity": severity,
+            "state": state,
+            "status": status,
+            "offset": offset,
+            "limit": limit,
+            "sort": ",".join(sort) if sort else None,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         response = response.json()
@@ -70,9 +81,20 @@ class ScannersResultsAPI(object):
 
 
 def get_all_scanners_results_by_scan_id(
-        scan_id: str, severity: List[str] = None, state: List[str] = None, status: List[str] = None,
-        offset: int = 0, limit: int = 20, sort: List[str] = ("+status", "+severity")
+    scan_id: str,
+    severity: List[str] = None,
+    state: List[str] = None,
+    status: List[str] = None,
+    offset: int = 0,
+    limit: int = 20,
+    sort: List[str] = ("+status", "+severity"),
 ) -> dict:
     return ScannersResultsAPI().get_all_scanners_results_by_scan_id(
-        scan_id=scan_id, severity=severity, state=state, status=status, offset=offset, limit=limit, sort=sort
+        scan_id=scan_id,
+        severity=severity,
+        state=state,
+        status=status,
+        offset=offset,
+        limit=limit,
+        sort=sort,
     )

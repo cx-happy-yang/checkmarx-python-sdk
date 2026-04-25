@@ -5,6 +5,7 @@ class CxIssueTrackingSystem(object):
     """
     issue tracking system
     """
+
     def __init__(self, tracking_system_id, name, tracking_system_type, url):
         """
 

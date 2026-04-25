@@ -5,6 +5,7 @@ class CxEngineConfiguration(object):
     """
     engine configuration
     """
+
     def __init__(self, engine_configuration_id=None, link=None, name=None):
         """
 

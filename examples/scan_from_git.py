@@ -15,6 +15,7 @@
 14. get report by id
 15[optional]. filter report results
 """
+
 import time
 from os.path import normpath, join, dirname, exists
 from datetime import datetime
@@ -23,7 +24,9 @@ from CheckmarxPythonSDK.CxRestAPISDK import ProjectsAPI
 from CheckmarxPythonSDK.CxRestAPISDK import ScansAPI
 
 
-def scan_from_git(team_full_name, project_name, report_type, git_repo_url, branch, report_folder=None):
+def scan_from_git(
+    team_full_name, project_name, report_type, git_repo_url, branch, report_folder=None
+):
     """
 
     Args:
@@ -58,23 +61,30 @@ def scan_from_git(team_full_name, project_name, report_type, git_repo_url, branc
         print("team: {} not exist".format(team_full_name))
         return
 
-    project_id = projects_api.get_project_id_by_project_name_and_team_full_name(project_name=project_name,
-                                                                                team_full_name=team_full_name)
+    project_id = projects_api.get_project_id_by_project_name_and_team_full_name(
+        project_name=project_name, team_full_name=team_full_name
+    )
 
     # 3. create project with default configuration, will get project id
     print("3. create project with default configuration, will get project id")
     if not project_id:
-        project = projects_api.create_project_with_default_configuration(project_name=project_name, team_id=team_id)
+        project = projects_api.create_project_with_default_configuration(
+            project_name=project_name, team_id=team_id
+        )
         project_id = project.id
     print("project_id: {}".format(project_id))
 
     # 4. set remote source setting to git
     print("4. set remote source setting to git")
-    projects_api.set_remote_source_setting_to_git(project_id=project_id, url=git_repo_url, branch=branch)
+    projects_api.set_remote_source_setting_to_git(
+        project_id=project_id, url=git_repo_url, branch=branch
+    )
 
     # 6. set data retention settings by project id
     print("6. set data retention settings by project id")
-    projects_api.set_data_retention_settings_by_project_id(project_id=project_id, scans_to_keep=3)
+    projects_api.set_data_retention_settings_by_project_id(
+        project_id=project_id, scans_to_keep=3
+    )
 
     # 7. define SAST scan settings
     print("7. define SAST scan settings")
@@ -82,8 +92,9 @@ def scan_from_git(team_full_name, project_name, report_type, git_repo_url, branc
     print("preset id: {}".format(preset_id))
     scan_api.define_sast_scan_settings(project_id=project_id, preset_id=preset_id)
 
-    projects_api.set_project_exclude_settings_by_project_id(project_id, exclude_folders_pattern="",
-                                                            exclude_files_pattern="")
+    projects_api.set_project_exclude_settings_by_project_id(
+        project_id, exclude_folders_pattern="", exclude_files_pattern=""
+    )
 
     # 8. create new scan, will get a scan id
     print("8. create new scan, will get a scan id")
@@ -124,18 +135,21 @@ def scan_from_git(team_full_name, project_name, report_type, git_repo_url, branc
     print("14. get report by id")
     report_content = scan_api.get_report_by_id(report_id)
 
-    time_stamp = datetime.now().strftime('_%Y_%m_%d_%H_%M_%S')
+    time_stamp = datetime.now().strftime("_%Y_%m_%d_%H_%M_%S")
 
-    file_name = normpath(join(report_folder, project_name + time_stamp + "." + report_type))
+    file_name = normpath(
+        join(report_folder, project_name + time_stamp + "." + report_type)
+    )
     with open(str(file_name), "wb") as f_out:
         f_out.write(report_content)
 
 
 if __name__ == "__main__":
-    scan_from_git(team_full_name="/CxServer",
-                  project_name="jvl_git",
-                  report_type="PDF",
-                  git_repo_url="https://github.com/CSPF-Founder/JavaVulnerableLab.git",
-                  branch="refs/heads/master",
-                  report_folder="E:\\"
-                  )
+    scan_from_git(
+        team_full_name="/CxServer",
+        project_name="jvl_git",
+        report_type="PDF",
+        git_repo_url="https://github.com/CSPF-Founder/JavaVulnerableLab.git",
+        branch="refs/heads/master",
+        report_folder="E:\\",
+    )

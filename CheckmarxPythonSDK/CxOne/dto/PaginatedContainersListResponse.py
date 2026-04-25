@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import List
-from .CloudInsightContainer import CloudInsightContainer, construct_cloud_insight_container
+from .CloudInsightContainer import (
+    CloudInsightContainer,
+    construct_cloud_insight_container,
+)
 
 
 @dataclass
@@ -14,7 +17,8 @@ class PaginatedContainersListResponse:
 def construct_paginated_containers_list_response(item):
     return PaginatedContainersListResponse(
         data=[
-            construct_cloud_insight_container(container) for container in (item.get("data") or [])
+            construct_cloud_insight_container(container)
+            for container in (item.get("data") or [])
         ],
         total=item.get("total"),
         current_page=item.get("currentPage"),

@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import List
-from .ProtocolMappersRepresentation import ProtocolMappersRepresentation, construct_protocol_mappers_representation
+from .ProtocolMappersRepresentation import (
+    ProtocolMappersRepresentation,
+    construct_protocol_mappers_representation,
+)
 
 
 @dataclass
@@ -54,11 +57,14 @@ def construct_client(item):
         front_channel_logout=item.get("frontchannelLogout"),
         protocol=item.get("protocol"),
         attributes=item.get("attributes"),
-        authentication_flow_binding_overrides=item.get("authenticationFlowBindingOverrides"),
+        authentication_flow_binding_overrides=item.get(
+            "authenticationFlowBindingOverrides"
+        ),
         full_scope_allowed=item.get("fullScopeAllowed"),
         node_re_registration_timeout=item.get("nodeReRegistrationTimeout"),
         protocol_mappers=[
-            construct_protocol_mappers_representation(mapper) for mapper in (item.get("protocolMappers") or [])
+            construct_protocol_mappers_representation(mapper)
+            for mapper in (item.get("protocolMappers") or [])
         ],
         default_client_scopes=item.get("defaultClientScopes"),
     )

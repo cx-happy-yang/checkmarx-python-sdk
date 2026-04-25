@@ -29,14 +29,17 @@ class CustomFieldsAPI(object):
         """
         result = []
         relative_url = "/cxrestapi/customFields"
-        response = self.api_client.get_request(relative_url=relative_url, headers=get_headers(api_version))
+        response = self.api_client.get_request(
+            relative_url=relative_url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [
                 CxCustomField(
                     custom_field_id=item.get("id"),
                     name=item.get("name"),
-                    is_mandatory=item.get("isMandatory")
-                ) for item in response.json()
+                    is_mandatory=item.get("isMandatory"),
+                )
+                for item in response.json()
             ]
         return result
 

@@ -29,5 +29,5 @@ def construct_predicate_with_comment_json(item):
         created_by=item.get("createdBy"),
         created_at=item.get("createdAt"),
         change_origin_type=item.get("changeOriginType"),
-        change_origin_name=item.get("changeOriginName")
+        change_origin_name=item.get("changeOriginName"),
     )

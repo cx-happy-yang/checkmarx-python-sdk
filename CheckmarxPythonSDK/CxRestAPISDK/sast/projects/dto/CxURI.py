@@ -17,6 +17,4 @@ class CxURI(object):
         self.port = port
 
     def __str__(self):
-        return "CxURI(absolute_url={}, port={})".format(
-            self.absolute_url, self.port
-        )
+        return "CxURI(absolute_url={}, port={})".format(self.absolute_url, self.port)

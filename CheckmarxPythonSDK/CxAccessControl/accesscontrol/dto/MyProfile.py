@@ -3,8 +3,22 @@
 
 class MyProfile(object):
 
-    def __init__(self, profile_id, username, first_name, last_name, email, phone_number, cellphone_number, job_title,
-                 other, country, locale_id, teams, authentication_provider_id):
+    def __init__(
+        self,
+        profile_id,
+        username,
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        cellphone_number,
+        job_title,
+        other,
+        country,
+        locale_id,
+        teams,
+        authentication_provider_id,
+    ):
         """
 
         Args:
@@ -40,7 +54,17 @@ class MyProfile(object):
         return """MyProfile(id={}, username={}, first_name={}, last_name={}, email={}, phone_number={}, 
         cellphone_number={}, job_title={}, other={}, country={}, locale_id={}, teams={}, 
         authentication_provider_id={})""".format(
-            self.id, self.username, self.first_name, self.last_name, self.email, self.phone_number,
-            self.cellphone_number, self.job_title, self.other, self.country, self.locale_id, self.teams,
-            self.authentication_provider_id
+            self.id,
+            self.username,
+            self.first_name,
+            self.last_name,
+            self.email,
+            self.phone_number,
+            self.cellphone_number,
+            self.job_title,
+            self.other,
+            self.country,
+            self.locale_id,
+            self.teams,
+            self.authentication_provider_id,
         )

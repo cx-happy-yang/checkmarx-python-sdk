@@ -1,5 +1,7 @@
 class ScopeRepresentation:
-    def __init__(self, display_name, icon_uri, scope_representation_id, name, policies, resources):
+    def __init__(
+        self, display_name, icon_uri, scope_representation_id, name, policies, resources
+    ):
         self.displayName = display_name
         self.iconUri = icon_uri
         self.id = scope_representation_id
@@ -8,14 +10,16 @@ class ScopeRepresentation:
         self.resources = resources
 
     def __str__(self):
-        return f"ScopeRepresentation(" \
-               f"displayName={self.displayName} " \
-               f"iconUri={self.iconUri} " \
-               f"id={self.id} " \
-               f"name={self.name} " \
-               f"policies={self.policies} " \
-               f"resources={self.resources} " \
-               f")"
+        return (
+            f"ScopeRepresentation("
+            f"displayName={self.displayName} "
+            f"iconUri={self.iconUri} "
+            f"id={self.id} "
+            f"name={self.name} "
+            f"policies={self.policies} "
+            f"resources={self.resources} "
+            f")"
+        )
 
     def to_dict(self):
         return {

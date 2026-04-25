@@ -53,10 +53,12 @@ class ScansODataAPI(object):
         Returns:
             number_of_loc (int)
         """
-        relative_url = "/Cxwebinterface/odata/v1/Scans({id})?$select=LOC".format(id=scan_id)
+        relative_url = "/Cxwebinterface/odata/v1/Scans({id})?$select=LOC".format(
+            id=scan_id
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         loc_list = response.json().get("value")
-        return loc_list[0].get('LOC')
+        return loc_list[0].get("LOC")
 
     def get_number_of_loc_scanned_for_all_scan(self) -> List[dict]:
         """
@@ -119,7 +121,9 @@ class ScansODataAPI(object):
             }
 
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans?$orderby=Id%20desc&$top=1".format(id=project_id)
+        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans?$orderby=Id%20desc&$top=1".format(
+            id=project_id
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         scan_data_list = response.json().get("value")
         return scan_data_list[0]
@@ -133,8 +137,12 @@ class ScansODataAPI(object):
         Returns:
             scan_id (int)
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans".format(id=project_id)
-        relative_url += "?$filter=IsIncremental%20eq%20false&$orderby=Id%20desc&$top=1&select=Id"
+        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans".format(
+            id=project_id
+        )
+        relative_url += (
+            "?$filter=IsIncremental%20eq%20false&$orderby=Id%20desc&$top=1&select=Id"
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         ids = response.json().get("value")
         return ids[0].get("Id")
@@ -164,14 +172,16 @@ class ScansODataAPI(object):
             'StatisticsUpToDate': 1, 'IsPublic': True, 'IsLocked': False
             }
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans".format(id=project_id)
+        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans".format(
+            id=project_id
+        )
         relative_url += "?$filter=IsIncremental%20eq%20false&$orderby=Id%20desc&$top=1"
         response = self.api_client.get_request(relative_url=relative_url)
         scan_data_list = response.json().get("value")
         return scan_data_list[0]
 
     def get_all_scans_within_a_predefined_time_range_and_their_h_m_l_values_for_a_project(
-            self, project_id: int, start_date: str, end_date: str
+        self, project_id: int, start_date: str, end_date: str
     ) -> List[dict]:
         """
         Requested result:list all scans carried out in a specific project within a predefined time range,
@@ -201,14 +211,20 @@ class ScansODataAPI(object):
                  }]
         """
 
-        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans?".format(id=project_id)
-        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(start_date=start_date)
+        relative_url = "/Cxwebinterface/odata/v1/Projects({id})/Scans?".format(
+            id=project_id
+        )
+        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(
+            start_date=start_date
+        )
         relative_url += "%20ScanRequestedOn%20lt%20{end_date}".format(end_date=end_date)
         relative_url += "&$select=Id,ScanRequestedOn,High,Medium,Low&$orderby=ScanRequestedOn%20desc"
-        return self.api_client.get_request(relative_url=relative_url).json().get("value")
+        return (
+            self.api_client.get_request(relative_url=relative_url).json().get("value")
+        )
 
     def get_the_state_of_each_scan_result_since_a_specific_date_for_a_project(
-            self, project_id: int, start_date: str
+        self, project_id: int, start_date: str
     ) -> List[dict]:
         """
         Requested result: for a specific project, list all the scans starting from a specific date, and for each scan
@@ -248,9 +264,13 @@ class ScansODataAPI(object):
 
         relative_url = "/Cxwebinterface/odata/v1/Scans?"
         relative_url += "$filter=ProjectId%20eq%20{id}%20and".format(id=project_id)
-        relative_url += "%20ScanRequestedOn%20gt%20{start_date}".format(start_date=start_date)
+        relative_url += "%20ScanRequestedOn%20gt%20{start_date}".format(
+            start_date=start_date
+        )
         relative_url += "&$expand=Results($expand=State;$select=Id,ScanId,StateId)"
-        item_list = self.api_client.get_request(relative_url=relative_url).json().get("value")
+        item_list = (
+            self.api_client.get_request(relative_url=relative_url).json().get("value")
+        )
         return item_list
 
     def get_all_scan_id_of_a_project(self, project_id: int) -> List[int]:
@@ -263,9 +283,16 @@ class ScansODataAPI(object):
             `list` of int
         """
 
-        url = "/Cxwebinterface/odata/v1/Projects({id})/Scans?$select=Id".format(id=project_id)
+        url = "/Cxwebinterface/odata/v1/Projects({id})/Scans?$select=Id".format(
+            id=project_id
+        )
 
-        return [item.get('Id') for item in self.api_client.get_request(relative_url=url).json().get("value")]
+        return [
+            item.get("Id")
+            for item in self.api_client.get_request(relative_url=url)
+            .json()
+            .get("value")
+        ]
 
 
 def get_all_data_for_a_specific_scan_id(scan_id: int) -> dict:
@@ -273,7 +300,9 @@ def get_all_data_for_a_specific_scan_id(scan_id: int) -> dict:
 
 
 def get_number_of_loc_scanned_for_a_specific_scan(scan_id: int) -> int:
-    return ScansODataAPI().get_number_of_loc_scanned_for_a_specific_scan(scan_id=scan_id)
+    return ScansODataAPI().get_number_of_loc_scanned_for_a_specific_scan(
+        scan_id=scan_id
+    )
 
 
 def get_number_of_loc_scanned_for_all_scan() -> List[dict]:
@@ -297,7 +326,7 @@ def get_last_full_scan_of_a_project(project_id: int) -> dict:
 
 
 def get_all_scans_within_a_predefined_time_range_and_their_h_m_l_values_for_a_project(
-        project_id: int, start_date: str, end_date: str
+    project_id: int, start_date: str, end_date: str
 ) -> List[dict]:
     return ScansODataAPI().get_all_scans_within_a_predefined_time_range_and_their_h_m_l_values_for_a_project(
         project_id=project_id, start_date=start_date, end_date=end_date
@@ -305,7 +334,7 @@ def get_all_scans_within_a_predefined_time_range_and_their_h_m_l_values_for_a_pr
 
 
 def get_the_state_of_each_scan_result_since_a_specific_date_for_a_project(
-        project_id: int, start_date: str
+    project_id: int, start_date: str
 ) -> List[dict]:
     return ScansODataAPI().get_the_state_of_each_scan_result_since_a_specific_date_for_a_project(
         project_id=project_id, start_date=start_date

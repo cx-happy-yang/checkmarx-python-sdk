@@ -3,9 +3,7 @@ class ClientPoliciesRepresentation:
         self.policies = policies
 
     def __str__(self):
-        return f"ClientPoliciesRepresentation(" \
-               f"policies={self.policies} " \
-               f")"
+        return f"ClientPoliciesRepresentation(" f"policies={self.policies} " f")"
 
     def to_dict(self):
         return {

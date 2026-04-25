@@ -5,6 +5,7 @@ class CxOsaLocation(object):
     """
     location
     """
+
     def __init__(self, path, match_type):
         """
 

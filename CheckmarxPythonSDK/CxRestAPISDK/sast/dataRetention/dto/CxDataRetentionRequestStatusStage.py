@@ -5,6 +5,7 @@ class CxDataRetentionRequestStatusStage(object):
     """
     data retention request status stage
     """
+
     def __init__(self, stage_id, value):
         """
 

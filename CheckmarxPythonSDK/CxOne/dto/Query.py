@@ -16,7 +16,8 @@ class Query:
         is_executable (bool):
         cx_description_id (int):
         query_description_id (str):
-   """
+    """
+
     id: int = None
     source: str = None
     level: str = None
@@ -40,5 +41,5 @@ def construct_query(item):
         severity=item.get("severity"),
         is_executable=item.get("isExecutable"),
         cx_description_id=item.get("cxDescriptionID"),
-        query_description_id=item.get("queryDescriptionID")
+        query_description_id=item.get("queryDescriptionID"),
     )

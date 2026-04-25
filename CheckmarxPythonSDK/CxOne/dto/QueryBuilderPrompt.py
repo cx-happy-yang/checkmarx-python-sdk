@@ -6,6 +6,4 @@ class QueryBuilderPrompt:
     prompt: str = None
 
     def to_dict(self):
-        return {
-            "prompt": self.prompt
-        }
+        return {"prompt": self.prompt}

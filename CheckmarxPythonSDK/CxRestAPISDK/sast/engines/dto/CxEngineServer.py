@@ -7,9 +7,23 @@ class CxEngineServer(object):
     engine server
     """
 
-    def __init__(self, engine_server_id=None, name=None, uri=None, min_loc=None, max_loc=None, max_scans=None,
-                 cx_version=None, operating_system=None, status=None, link=None, offline_reason_code=None,
-                 offline_reason_message=None, offline_reason_message_parameters=None, dedications=None):
+    def __init__(
+        self,
+        engine_server_id=None,
+        name=None,
+        uri=None,
+        min_loc=None,
+        max_loc=None,
+        max_scans=None,
+        cx_version=None,
+        operating_system=None,
+        status=None,
+        link=None,
+        offline_reason_code=None,
+        offline_reason_message=None,
+        offline_reason_message_parameters=None,
+        dedications=None,
+    ):
         """
 
         Args:
@@ -32,10 +46,14 @@ class CxEngineServer(object):
         """
         if dedications:
             if not isinstance(dedications, list):
-                raise ValueError("parameter dedications should be a list of CxEngineDedication")
+                raise ValueError(
+                    "parameter dedications should be a list of CxEngineDedication"
+                )
             for item in dedications:
                 if item and not isinstance(item, CxEngineDedication):
-                    raise ValueError("member of dedications should be CxEngineDedication")
+                    raise ValueError(
+                        "member of dedications should be CxEngineDedication"
+                    )
 
         self.id = engine_server_id
         self.name = name
@@ -57,8 +75,18 @@ class CxEngineServer(object):
                  cx_version={}, operating_system={}, status={}, link={}, 
                  offline_reason_code={}, offline_reason_message={}, 
                  offline_reason_message_parameters={}, dedications={})""".format(
-            self.id, self.name, self.uri, self.min_loc, self.max_loc, self.max_scans,
-            self.cx_version, self.operating_system, self.status, self.link,
-            self.offline_reason_code, self.offline_reason_message, self.offline_reason_message_parameters,
-            self.dedications
+            self.id,
+            self.name,
+            self.uri,
+            self.min_loc,
+            self.max_loc,
+            self.max_scans,
+            self.cx_version,
+            self.operating_system,
+            self.status,
+            self.link,
+            self.offline_reason_code,
+            self.offline_reason_message,
+            self.offline_reason_message_parameters,
+            self.dedications,
         )

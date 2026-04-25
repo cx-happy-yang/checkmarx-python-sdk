@@ -4,10 +4,12 @@ class ClientInitialAccessCreatePresentation:
         self.expiration = expiration
 
     def __str__(self):
-        return f"ClientInitialAccessCreatePresentation(" \
-               f"count={self.count} " \
-               f"expiration={self.expiration} " \
-               f")"
+        return (
+            f"ClientInitialAccessCreatePresentation("
+            f"count={self.count} "
+            f"expiration={self.expiration} "
+            f")"
+        )
 
     def to_dict(self):
         return {

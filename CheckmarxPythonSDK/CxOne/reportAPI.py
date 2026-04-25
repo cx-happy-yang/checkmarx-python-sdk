@@ -15,7 +15,9 @@ class ReportAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
 
-    def create_scan_report_v2(self, file_format: str, scan_engines: List[str], scan_id: str) -> str:
+    def create_scan_report_v2(
+        self, file_format: str, scan_engines: List[str], scan_id: str
+    ) -> str:
         """
 
         Args:
@@ -28,34 +30,36 @@ class ReportAPI(object):
         """
         report_url = f"{api_url}/v2"
 
-        post_data = json.dumps({
-            "fileFormat": file_format,
-            "reportName": "improved-scan-report",
-            "reportFilename": "",
-            "sections": [
-                "scan-information",
-                "results-overview",
-                "scan-results",
-                "categories",
-                "resolved-results",
-                "vulnerability-details"
-            ],
-            "entities": [
-                {
-                    "entity": "scan",
-                    "ids": [scan_id],
-                    "tags": []
-                }
-            ],
-            "filters": {
-                "scanners": scan_engines,
-                "severities": ["high", "medium", "low", "information"],
-                "states": ["to-verify", "confirmed", "urgent", "not-exploitable", "proposed-not-exploitable"],
-                "status": ["new", "recurrent"]
-            },
-            "reportType": "ui",
-            "emails": []
-        })
+        post_data = json.dumps(
+            {
+                "fileFormat": file_format,
+                "reportName": "improved-scan-report",
+                "reportFilename": "",
+                "sections": [
+                    "scan-information",
+                    "results-overview",
+                    "scan-results",
+                    "categories",
+                    "resolved-results",
+                    "vulnerability-details",
+                ],
+                "entities": [{"entity": "scan", "ids": [scan_id], "tags": []}],
+                "filters": {
+                    "scanners": scan_engines,
+                    "severities": ["high", "medium", "low", "information"],
+                    "states": [
+                        "to-verify",
+                        "confirmed",
+                        "urgent",
+                        "not-exploitable",
+                        "proposed-not-exploitable",
+                    ],
+                    "status": ["new", "recurrent"],
+                },
+                "reportType": "ui",
+                "emails": [],
+            }
+        )
 
         response = self.api_client.post_request(relative_url=report_url, data=post_data)
         report_json = response.json()
@@ -75,7 +79,9 @@ class ReportAPI(object):
                 time.sleep(2)
         return report_id
 
-    def create_scan_report(self, file_format: str, scan_id: str, project_id: str) -> str:
+    def create_scan_report(
+        self, file_format: str, scan_id: str, project_id: str
+    ) -> str:
         """
 
         Args:
@@ -88,27 +94,21 @@ class ReportAPI(object):
         """
         report_url = api_url
 
-        post_data = json.dumps({
-            "fileFormat": file_format,
-            "reportType": "ui",
-            "reportName": "scan-report",
-            "data": {
-                "scanId": scan_id,
-                "projectId": project_id,
-                "branchName": ".unknown",
-                "sections": [
-                    "ScanSummary",
-                    "ExecutiveSummary",
-                    "ScanResults"
-                ],
-                "scanners": [
-                    "SAST",
-                    "SCA",
-                    "KICS"
-                ],
-                "host": ""
+        post_data = json.dumps(
+            {
+                "fileFormat": file_format,
+                "reportType": "ui",
+                "reportName": "scan-report",
+                "data": {
+                    "scanId": scan_id,
+                    "projectId": project_id,
+                    "branchName": ".unknown",
+                    "sections": ["ScanSummary", "ExecutiveSummary", "ScanResults"],
+                    "scanners": ["SAST", "SCA", "KICS"],
+                    "host": "",
+                },
             }
-        })
+        )
 
         response = self.api_client.post_request(relative_url=report_url, data=post_data)
         report_json = response.json()
@@ -171,22 +171,24 @@ class ReportAPI(object):
         """
         report_url = f"/api/sca/export/requests"
 
-        data = json.dumps({
-            "ScanId": scan_id,
-            "FileFormat": "ScanReportJson",
-            "ExportParameters": {
-                "hideDevAndTestDependencies": False,
-                "showOnlyEffectiveLicenses": False,
-                "excludePackages": False,
-                "excludeLicenses": True,
-                "excludeVulnerabilities": False,
-                "excludePolicies": True
+        data = json.dumps(
+            {
+                "ScanId": scan_id,
+                "FileFormat": "ScanReportJson",
+                "ExportParameters": {
+                    "hideDevAndTestDependencies": False,
+                    "showOnlyEffectiveLicenses": False,
+                    "excludePackages": False,
+                    "excludeLicenses": True,
+                    "excludeVulnerabilities": False,
+                    "excludePolicies": True,
+                },
             }
-        })
+        )
 
         response = self.api_client.post_request(relative_url=report_url, data=data)
         response_json = response.json()
-        export_id = response_json['exportId']
+        export_id = response_json["exportId"]
         return export_id
 
     def get_sca_scan_report(self, export_id: str) -> dict:
@@ -219,12 +221,18 @@ class ReportAPI(object):
         return response.json()
 
 
-def create_scan_report_v2(file_format: str, scan_engines: List[str], scan_id: str) -> str:
-    return ReportAPI().create_scan_report_v2(file_format=file_format, scan_engines=scan_engines, scan_id=scan_id)
+def create_scan_report_v2(
+    file_format: str, scan_engines: List[str], scan_id: str
+) -> str:
+    return ReportAPI().create_scan_report_v2(
+        file_format=file_format, scan_engines=scan_engines, scan_id=scan_id
+    )
 
 
 def create_scan_report(file_format: str, scan_id: str, project_id: str) -> str:
-    return ReportAPI().create_scan_report(file_format=file_format, scan_id=scan_id, project_id=project_id)
+    return ReportAPI().create_scan_report(
+        file_format=file_format, scan_id=scan_id, project_id=project_id
+    )
 
 
 def get_scan_report(report_id: str) -> dict:

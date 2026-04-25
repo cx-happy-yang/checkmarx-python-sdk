@@ -1,7 +1,16 @@
 class CxLanguageStatistic(object):
 
-    def __init__(self, language, parsed_successfully_count, parsed_unsuccessfully_count, parsed_partially_count,
-                 successful_loc, unsuccessful_loc, scanned_successfully_loc_percentage, count_of_dom_objects):
+    def __init__(
+        self,
+        language,
+        parsed_successfully_count,
+        parsed_unsuccessfully_count,
+        parsed_partially_count,
+        successful_loc,
+        unsuccessful_loc,
+        scanned_successfully_loc_percentage,
+        count_of_dom_objects,
+    ):
         """
 
         Args:
@@ -32,5 +41,8 @@ class CxLanguageStatistic(object):
     def __str__(self):
         return """CxLanguageStatistic(language={}, parsed_files={}, scanned_loc_per_language={}, 
                 count_of_dom_object={})""".format(
-            self.language, self.parsed_files, self.scanned_loc_per_language, self.count_of_dom_object
+            self.language,
+            self.parsed_files,
+            self.scanned_loc_per_language,
+            self.count_of_dom_object,
         )

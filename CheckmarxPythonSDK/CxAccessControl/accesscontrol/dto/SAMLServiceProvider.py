@@ -3,7 +3,13 @@
 
 class SAMLServiceProvider(object):
 
-    def __init__(self, assertion_consumer_service_url, certificate_file_name, certificate_subject, issuer):
+    def __init__(
+        self,
+        assertion_consumer_service_url,
+        certificate_file_name,
+        certificate_subject,
+        issuer,
+    ):
         """
 
         Args:
@@ -20,5 +26,8 @@ class SAMLServiceProvider(object):
     def __str__(self):
         return """SAMLServiceProvider(assertion_consumer_service_url={}, certificate_file_name={}, 
         certificate_subject={}, issuer={})""".format(
-            self.assertion_consumer_service_url, self.certificate_file_name, self.certificate_subject, self.issuer
+            self.assertion_consumer_service_url,
+            self.certificate_file_name,
+            self.certificate_subject,
+            self.issuer,
         )

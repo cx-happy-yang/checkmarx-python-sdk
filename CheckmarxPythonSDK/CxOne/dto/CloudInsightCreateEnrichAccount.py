@@ -7,7 +7,4 @@ class CloudInsightCreateEnrichAccount:
     external_id: str = None  # A unique identifier provided by Checkmarx
 
     def to_dict(self):
-        return {
-                "name": self.name,
-                "externalID": self.external_id
-            }
+        return {"name": self.name, "externalID": self.external_id}

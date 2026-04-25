@@ -3,9 +3,23 @@
 
 class SAMLIdentityProvider(object):
 
-    def __init__(self, saml_identity_provider_id, certificate_file_name, certificate_subject, active, name, issuer,
-                 login_url, logout_url, error_url, sign_authn_request, authn_request_binding, is_manual_management,
-                 default_team_id, default_role_id):
+    def __init__(
+        self,
+        saml_identity_provider_id,
+        certificate_file_name,
+        certificate_subject,
+        active,
+        name,
+        issuer,
+        login_url,
+        logout_url,
+        error_url,
+        sign_authn_request,
+        authn_request_binding,
+        is_manual_management,
+        default_team_id,
+        default_role_id,
+    ):
         """
 
         Args:
@@ -43,7 +57,18 @@ class SAMLIdentityProvider(object):
         return """SAMLIdentityProvider(id={}, certificate_file_name={}, certificate_subject={}, active={}, name={}, 
         issuer={}, login_url={}, logout_url={}, error_url={}, sign_authn_request={}, authn_request_binding={}, 
         is_manual_management={}, default_team_id={}, default_role_id={})""".format(
-            self.id, self.certificate_file_name, self.certificate_subject, self.active, self.name, self.issuer,
-            self.login_url, self.logout_url, self.error_url, self.sign_authn_request, self.authn_request_binding,
-            self.is_manual_management, self.default_team_id, self.default_role_id
+            self.id,
+            self.certificate_file_name,
+            self.certificate_subject,
+            self.active,
+            self.name,
+            self.issuer,
+            self.login_url,
+            self.logout_url,
+            self.error_url,
+            self.sign_authn_request,
+            self.authn_request_binding,
+            self.is_manual_management,
+            self.default_team_id,
+            self.default_role_id,
         )

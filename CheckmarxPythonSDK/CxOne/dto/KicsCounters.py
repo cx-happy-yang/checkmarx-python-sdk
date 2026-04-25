@@ -21,6 +21,7 @@ class KicsCounters:
         platform_summary (list of dict): array of the result count grouped by platform.
         category_summary (list of dict): array of the result count grouped by category.
     """
+
     severity_counters: List[dict]
     status_counters: List[dict]
     state_counters: List[dict]
@@ -44,5 +45,5 @@ def construct_kics_counters(item):
         state_counters=item.get("stateCounters"),
         status_counters=item.get("statusCounters"),
         total_counter=item.get("totalCounter"),
-        source_file_counters=item.get("sourceFileCounters")
+        source_file_counters=item.get("sourceFileCounters"),
     )

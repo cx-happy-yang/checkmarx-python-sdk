@@ -14,5 +14,5 @@ def construct_execution_response(item):
     return ExecutionResponse(
         scan_id=item.get("scanId"),
         time_stamp=item.get("timeStamp"),
-        queries=item.get("queries")
+        queries=item.get("queries"),
     )

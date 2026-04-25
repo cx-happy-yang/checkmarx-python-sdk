@@ -13,6 +13,7 @@ class DefaultConfigOut:
         is_tenant_default (bool): Boolean when in use by tenant
         associated_projects (int): The number of associated projects
     """
+
     id: str
     name: str
     description: str

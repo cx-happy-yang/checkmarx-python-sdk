@@ -1,11 +1,29 @@
 class CxScanStatistics(object):
 
-    def __init__(self, statistics_id, scan_id, scan_status, product_version, engine_version, memory_peak_in_mb,
-                 virtual_memory_peak_in_mb, is_incremental_scan, results_count, total_unscanned_files_count,
-                 file_count_of_detected_but_not_scanned_languages, total_filtered_parsed_loc,
-                 total_unfiltered_parsed_loc, language_statistics, path_filter_pattern,
-                 failed_queries_count, succeeded_general_queries_count, failed_general_queries_count,
-                 failed_stages, engine_operating_system, engine_pack_version):
+    def __init__(
+        self,
+        statistics_id,
+        scan_id,
+        scan_status,
+        product_version,
+        engine_version,
+        memory_peak_in_mb,
+        virtual_memory_peak_in_mb,
+        is_incremental_scan,
+        results_count,
+        total_unscanned_files_count,
+        file_count_of_detected_but_not_scanned_languages,
+        total_filtered_parsed_loc,
+        total_unfiltered_parsed_loc,
+        language_statistics,
+        path_filter_pattern,
+        failed_queries_count,
+        succeeded_general_queries_count,
+        failed_general_queries_count,
+        failed_stages,
+        engine_operating_system,
+        engine_pack_version,
+    ):
         """
 
         Args:
@@ -41,7 +59,9 @@ class CxScanStatistics(object):
         self.is_incremental_scan = is_incremental_scan
         self.results_count = results_count
         self.total_unscanned_files_count = total_unscanned_files_count
-        self.file_count_of_detected_but_not_scanned_languages = file_count_of_detected_but_not_scanned_languages
+        self.file_count_of_detected_but_not_scanned_languages = (
+            file_count_of_detected_but_not_scanned_languages
+        )
         self.total_filtered_parsed_loc = total_filtered_parsed_loc
         self.total_unfiltered_parsed_loc = total_unfiltered_parsed_loc
         self.language_statistics = language_statistics
@@ -63,13 +83,25 @@ class CxScanStatistics(object):
                 path_filter_pattern={},  
                 failed_queries_count={}, general_queries={}, 
                 failed_stages={}, engine_operating_system={}, 
-                engine_pack_version={})""".format(self.id, self.scan_id, self.scan_status,
-                                                  self.product_version, self.engine_version, self.memory_peak_in_mb,
-                                                  self.virtual_memory_peak_in_mb, self.is_incremental_scan,
-                                                  self.results_count, self.total_unscanned_files_count,
-                                                  self.file_count_of_detected_but_not_scanned_languages,
-                                                  self.total_filtered_parsed_loc,
-                                                  self.total_unfiltered_parsed_loc, self.language_statistics,
-                                                  self.path_filter_pattern,
-                                                  self.failed_queries_count, self.general_queries, self.failed_stages,
-                                                  self.engine_operating_system, self.engine_pack_version)
+                engine_pack_version={})""".format(
+            self.id,
+            self.scan_id,
+            self.scan_status,
+            self.product_version,
+            self.engine_version,
+            self.memory_peak_in_mb,
+            self.virtual_memory_peak_in_mb,
+            self.is_incremental_scan,
+            self.results_count,
+            self.total_unscanned_files_count,
+            self.file_count_of_detected_but_not_scanned_languages,
+            self.total_filtered_parsed_loc,
+            self.total_unfiltered_parsed_loc,
+            self.language_statistics,
+            self.path_filter_pattern,
+            self.failed_queries_count,
+            self.general_queries,
+            self.failed_stages,
+            self.engine_operating_system,
+            self.engine_pack_version,
+        )

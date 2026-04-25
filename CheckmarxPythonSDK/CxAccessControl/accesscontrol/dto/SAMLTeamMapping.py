@@ -1,6 +1,13 @@
 class SAMLTeamMapping(object):
 
-    def __init__(self, saml_team_mapping_id, saml_identity_provider_id, team_id, team_full_path, saml_attribute_value):
+    def __init__(
+        self,
+        saml_team_mapping_id,
+        saml_identity_provider_id,
+        team_id,
+        team_full_path,
+        saml_attribute_value,
+    ):
         """
 
         Args:
@@ -18,5 +25,10 @@ class SAMLTeamMapping(object):
 
     def __str__(self):
         return """SAMLTeamMapping(id={}, saml_identity_provider_id={}, team_id={}, team_full_path={}, 
-        saml_attribute_value={})""".format(self.id, self.saml_identity_provider_id, self.team_id, self.team_full_path,
-                                           self.saml_attribute_value)
+        saml_attribute_value={})""".format(
+            self.id,
+            self.saml_identity_provider_id,
+            self.team_id,
+            self.team_full_path,
+            self.saml_attribute_value,
+        )

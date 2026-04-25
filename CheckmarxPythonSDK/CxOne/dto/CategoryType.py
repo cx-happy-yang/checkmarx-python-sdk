@@ -5,7 +5,6 @@ from typing import List
 
 @dataclass
 class CategoryType:
-
     """
     Attributes:
         id (int):
@@ -14,6 +13,7 @@ class CategoryType:
         order (int):
         categories (list of Category):
     """
+
     id: int = None
     name: str = None
     sast_id: int = None
@@ -29,5 +29,5 @@ def construct_category_type(item):
         order=item.get("order"),
         categories=[
             construct_category(category) for category in (item.get("categories") or [])
-        ]
+        ],
     )

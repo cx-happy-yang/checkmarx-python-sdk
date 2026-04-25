@@ -28,9 +28,7 @@ def construct_role_with_details(item):
         permissions=item.get("permissions"),
         custom_permissions=item.get("customPermissions"),
         attributes=[
-            {
-                "name": attribute.get("name"),
-                "value": attribute.get("value")
-            } for attribute in item.get("attributes")
-        ]
+            {"name": attribute.get("name"), "value": attribute.get("value")}
+            for attribute in item.get("attributes")
+        ],
     )

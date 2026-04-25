@@ -4,10 +4,12 @@ class ClientPolicyConditionRepresentation:
         self.configuration = configuration
 
     def __str__(self):
-        return f"ClientPolicyConditionRepresentation(" \
-               f"condition={self.condition} " \
-               f"configuration={self.configuration} " \
-               f")"
+        return (
+            f"ClientPolicyConditionRepresentation("
+            f"condition={self.condition} "
+            f"configuration={self.configuration} "
+            f")"
+        )
 
     def to_dict(self):
         return {

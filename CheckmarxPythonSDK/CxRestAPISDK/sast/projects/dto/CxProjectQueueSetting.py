@@ -1,7 +1,12 @@
 class CxProjectQueueSetting(object):
 
-    def __init__(self, queue_keep_mode=None, scans_type=None, include_scans_in_process=None,
-                 identical_code_only=None):
+    def __init__(
+        self,
+        queue_keep_mode=None,
+        scans_type=None,
+        include_scans_in_process=None,
+        identical_code_only=None,
+    ):
         """
 
         Args:
@@ -18,5 +23,8 @@ class CxProjectQueueSetting(object):
     def __str__(self):
         return """CxProjectQueueSetting(queue_keep_mode={}, scans_type={}, include_scans_in_process={},
                  identical_code_only={})""".format(
-            self.queue_keep_mode, self.scans_type, self.include_scans_in_process, self.identical_code_only
+            self.queue_keep_mode,
+            self.scans_type,
+            self.include_scans_in_process,
+            self.identical_code_only,
         )

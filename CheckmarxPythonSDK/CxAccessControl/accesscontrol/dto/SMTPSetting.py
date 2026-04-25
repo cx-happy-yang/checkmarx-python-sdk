@@ -3,7 +3,16 @@
 
 class SMTPSetting(object):
 
-    def __init__(self, smtp_settings_id, host, port, encryption_type, from_address, use_default_credentials, username):
+    def __init__(
+        self,
+        smtp_settings_id,
+        host,
+        port,
+        encryption_type,
+        from_address,
+        use_default_credentials,
+        username,
+    ):
         """
 
         Args:
@@ -26,5 +35,12 @@ class SMTPSetting(object):
 
     def __str__(self):
         return """SMTPSetting(id={}, host={}, port={}, encryption_type={}, from_address={], use_default_credentials={}, 
-        username={})""".format(self.id, self.host, self.port, self.encryption_type, self.from_address,
-                               self.use_default_credentials, self.username)
+        username={})""".format(
+            self.id,
+            self.host,
+            self.port,
+            self.encryption_type,
+            self.from_address,
+            self.use_default_credentials,
+            self.username,
+        )

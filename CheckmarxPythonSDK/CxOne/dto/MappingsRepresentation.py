@@ -4,10 +4,12 @@ class MappingsRepresentation:
         self.realmMappings = realm_mappings
 
     def __str__(self):
-        return f"MappingsRepresentation(" \
-               f"clientMappings={self.clientMappings} " \
-               f"realmMappings={self.realmMappings} " \
-               f")"
+        return (
+            f"MappingsRepresentation("
+            f"clientMappings={self.clientMappings} "
+            f"realmMappings={self.realmMappings} "
+            f")"
+        )
 
     def to_dict(self):
         return {

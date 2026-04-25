@@ -23,13 +23,13 @@ class CxCustomRemoteSourceSettings(object):
 
     def to_dict(self):
         return {
-                "path": self.path,
-                "preScanCommandId": self.pulling_command_id,
-                "credentials": {
-                    "userName": self.credentials.username,
-                    "password": self.credentials.password
-                }
-            }
+            "path": self.path,
+            "preScanCommandId": self.pulling_command_id,
+            "credentials": {
+                "userName": self.credentials.username,
+                "password": self.credentials.password,
+            },
+        }
 
     def __str__(self):
         return "CxCustomRemoteSourceSettings(path={}, pulling_command_id={}, link={}, credentials={})".format(

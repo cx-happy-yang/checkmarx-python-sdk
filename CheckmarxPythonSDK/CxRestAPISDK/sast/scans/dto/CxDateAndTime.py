@@ -5,7 +5,14 @@ class CxDateAndTime(object):
     """
     scan date and time
     """
-    def __init__(self, started_on=None, finished_on=None, engine_started_on=None, engine_finished_on=None):
+
+    def __init__(
+        self,
+        started_on=None,
+        finished_on=None,
+        engine_started_on=None,
+        engine_finished_on=None,
+    ):
         """
 
         Args:
@@ -21,5 +28,8 @@ class CxDateAndTime(object):
 
     def __str__(self):
         return "CxDateAndTime(started_on={}, finished_on={}, engine_started_on={}, engine_finished_on={})".format(
-            self.started_on, self.finished_on, self.engine_started_on, self.engine_finished_on
+            self.started_on,
+            self.finished_on,
+            self.engine_started_on,
+            self.engine_finished_on,
         )

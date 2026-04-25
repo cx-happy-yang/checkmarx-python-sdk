@@ -33,5 +33,5 @@ def construct_sca_containers_counters(item):
         state_vulnerabilities_counters=item.get("stateVulnerabilitiesCounters"),
         status_vulnerabilities_counters=item.get("statusVulnerabilitiesCounters"),
         age_vulnerabilities_counters=item.get("ageVulnerabilitiesCounters"),
-        package_vulnerabilities_counters=item.get("packageVulnerabilitiesCounters")
+        package_vulnerabilities_counters=item.get("packageVulnerabilitiesCounters"),
     )

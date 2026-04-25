@@ -4,10 +4,12 @@ class ProviderRepresentation:
         self.order = order
 
     def __str__(self):
-        return f"ProviderRepresentation(" \
-               f"operationalInfo={self.operationalInfo} " \
-               f"order={self.order} " \
-               f")"
+        return (
+            f"ProviderRepresentation("
+            f"operationalInfo={self.operationalInfo} "
+            f"order={self.order} "
+            f")"
+        )
 
     def to_dict(self):
         return {

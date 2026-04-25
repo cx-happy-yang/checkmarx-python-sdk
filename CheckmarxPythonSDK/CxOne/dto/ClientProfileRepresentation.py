@@ -5,11 +5,13 @@ class ClientProfileRepresentation:
         self.name = name
 
     def __str__(self):
-        return f"ClientProfileRepresentation(" \
-               f"description={self.description} " \
-               f"executors={self.executors} " \
-               f"name={self.name} " \
-               f")"
+        return (
+            f"ClientProfileRepresentation("
+            f"description={self.description} "
+            f"executors={self.executors} "
+            f"name={self.name} "
+            f")"
+        )
 
     def to_dict(self):
         return {

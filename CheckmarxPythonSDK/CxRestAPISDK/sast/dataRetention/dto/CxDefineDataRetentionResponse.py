@@ -5,6 +5,7 @@ class CxDefineDataRetentionResponse(object):
     """
     define data retention response
     """
+
     def __init__(self, data_retention_response_id, link):
         """
 

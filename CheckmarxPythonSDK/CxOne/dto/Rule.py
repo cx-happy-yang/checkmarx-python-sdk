@@ -13,14 +13,11 @@ class Rule:
         value (str): example: key;value  value of the rule, correlating to the rule type. key-value,
                 and list of ids, should be separated by semicolon (e.g 'key;value', 'id1;id2').
     """
+
     id: str
     type: str
     value: str
 
 
 def construct_rule(item):
-    return Rule(
-        id=item.get("id"),
-        type=item.get("type"),
-        value=item.get("value")
-    )
+    return Rule(id=item.get("id"), type=item.get("type"), value=item.get("value"))

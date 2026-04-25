@@ -25,7 +25,7 @@ def construct_session(item):
         source_id=item.get("sourceId"),
         worker_info=WorkerInfo(
             worker_id=item.get("workerInfo").get("worker_id"),
-            worker_address=item.get("workerInfo").get("worker_address")
+            worker_address=item.get("workerInfo").get("worker_address"),
         ),
-        status=item.get("status")
+        status=item.get("status"),
     )

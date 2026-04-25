@@ -5,19 +5,20 @@ from dataclasses import dataclass
 class ScanParameter:
     """
 
-     Args:
-         key (str): Parameter key
-         name (str): Name of the parameter
-         category (str): The category to which the parameter belongs
-         origin_level (str): The level on configuration in which the parameter is set
-                 [ Environment, Tenant, Project, ConfigAsCode, Scan ]
-         value (str): The value of the parameter
-         value_type (str): Describes the type of object this parameter represents
-                 [ String, List, Bool, Block, Secret ]
-         value_type_params (str, optional): Describes the possible list values of a list type parameter
-         allow_override (bool): Determines whether parameter can be overridden by parameters from higher levels
+    Args:
+        key (str): Parameter key
+        name (str): Name of the parameter
+        category (str): The category to which the parameter belongs
+        origin_level (str): The level on configuration in which the parameter is set
+                [ Environment, Tenant, Project, ConfigAsCode, Scan ]
+        value (str): The value of the parameter
+        value_type (str): Describes the type of object this parameter represents
+                [ String, List, Bool, Block, Secret ]
+        value_type_params (str, optional): Describes the possible list values of a list type parameter
+        allow_override (bool): Determines whether parameter can be overridden by parameters from higher levels
 
-     """
+    """
+
     key: str
     name: str
     category: str

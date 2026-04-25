@@ -5,12 +5,13 @@ from dataclasses import dataclass
 class AstIdWithName:
     """
 
-     Attributes:
-         id (str):
-         name (str):
-         brief_name (str):
-         parent_id (str)
-     """
+    Attributes:
+        id (str):
+        name (str):
+        brief_name (str):
+        parent_id (str)
+    """
+
     id: str
     name: str
     brief_name: str

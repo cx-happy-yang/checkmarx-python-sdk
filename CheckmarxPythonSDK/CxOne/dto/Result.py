@@ -25,6 +25,7 @@ class Result:
         vulnerability_details:
 
     """
+
     type: str
     id: str
     similarity_id: int
@@ -60,5 +61,5 @@ def construct_result(item):
         description=item.get("description"),
         data=item.get("data"),
         comments=item.get("comments"),
-        vulnerability_details=item.get("vulnerabilityDetails")
+        vulnerability_details=item.get("vulnerabilityDetails"),
     )

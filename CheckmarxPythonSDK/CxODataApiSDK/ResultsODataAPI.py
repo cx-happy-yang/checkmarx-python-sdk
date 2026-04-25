@@ -33,15 +33,13 @@ class ResultsODataAPI(object):
             ]
         """
 
-        url = "/Cxwebinterface/odata/v1/Scans({ScanId})/Results".format(
-            ScanId=scan_id
-        )
+        url = "/Cxwebinterface/odata/v1/Scans({ScanId})/Results".format(ScanId=scan_id)
 
         response = self.api_client.get_request(relative_url=url)
         return response.json().get("value")
 
     def get_the_query_that_was_run_for_a_particular_unique_scan_result(
-            self, result_id: int, scan_id: int
+        self, result_id: int, scan_id: int
     ) -> Union[str, None]:
         """
         Requested result: selects a particular unique scan result and lists the query (SQL Injection, etc.) that was run
@@ -56,7 +54,11 @@ class ResultsODataAPI(object):
         Returns:
             str
         """
-        relative_url = "/Cxwebinterface/odata/v1/Results(Id={id},ScanId={ScanId})".format(id=result_id, ScanId=scan_id)
+        relative_url = (
+            "/Cxwebinterface/odata/v1/Results(Id={id},ScanId={ScanId})".format(
+                id=result_id, ScanId=scan_id
+            )
+        )
         relative_url += "?$expand=Query($select=Name)"
         response = self.api_client.get_request(relative_url=relative_url)
         query_list = response.json().get("value")
@@ -67,7 +69,7 @@ class ResultsODataAPI(object):
         return query_list[0].get("Query").get("Name")
 
     def get_results_for_a_specific_scan_id_with_query_language_state(
-            self, scan_id: int, filter_false_positive: bool = False
+        self, scan_id: int, filter_false_positive: bool = False
     ) -> List[dict]:
         """
 
@@ -94,7 +96,9 @@ class ResultsODataAPI(object):
         """
         # have to put ScanId in url, otherwise would have deserialization error
         relative_url = "/Cxwebinterface/odata/v1/Scans({id})/Results".format(id=scan_id)
-        relative_url += "?$select=Id,ScanId,QueryId,SimilarityId,PathId&$expand=Query($select=Name;"
+        relative_url += (
+            "?$select=Id,ScanId,QueryId,SimilarityId,PathId&$expand=Query($select=Name;"
+        )
         relative_url += "$expand=QueryGroup($select=Name,LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
 
         if filter_false_positive:
@@ -115,15 +119,23 @@ class ResultsODataAPI(object):
                 "Origin": item.get("Scan").get("Origin"),
                 "LOC": item.get("Scan").get("LOC"),
                 "PathId": item.get("PathId"),
-            } for item in item_list
+            }
+            for item in item_list
         ]
 
-        results = sorted(results, key=lambda re: (re.get("Language"), re.get("QueryGroup"),
-                                                  re.get("QueryId"), re.get("ResultId"),))
+        results = sorted(
+            results,
+            key=lambda re: (
+                re.get("Language"),
+                re.get("QueryGroup"),
+                re.get("QueryId"),
+                re.get("ResultId"),
+            ),
+        )
         return results
 
     def get_results_group_by_query_id_and_add_count_json_format(
-            self, scan_id: int, filter_false_positive: bool = False, threshold: int = 0
+        self, scan_id: int, filter_false_positive: bool = False, threshold: int = 0
     ) -> List[dict]:
         """
 
@@ -142,6 +154,7 @@ class ResultsODataAPI(object):
         results = []
 
         from itertools import groupby
+
         # first group by LanguageName
         re = sorted(re, key=lambda result: result.get("Language"))
         for _, language_group in groupby(re, lambda result: result.get("Language")):
@@ -149,28 +162,26 @@ class ResultsODataAPI(object):
             language_name = l_list[0].get("Language")
             query_group_list = []
             results.append(
-                {
-                    "Language": language_name,
-                    "QueryGroupList": query_group_list
-                }
+                {"Language": language_name, "QueryGroupList": query_group_list}
             )
 
             # second group by QueryGroupName
             l_list = sorted(l_list, key=lambda result: result.get("QueryGroup"))
-            for _, query_group_group in groupby(l_list, lambda result: result.get("QueryGroup")):
+            for _, query_group_group in groupby(
+                l_list, lambda result: result.get("QueryGroup")
+            ):
                 l_query_group = list(query_group_group)
                 query_group_name = l_query_group[0].get("QueryGroup")
                 query_list = []
                 query_group_list.append(
-                    {
-                        "QueryGroup": query_group_name,
-                        "QueryList": query_list
-                    }
+                    {"QueryGroup": query_group_name, "QueryList": query_list}
                 )
 
                 # third group by QueryName/QueryId
                 l_query_group = sorted(l_query_group, key=lambda r: r.get("QueryId"))
-                for _, query_group in groupby(l_query_group, lambda r: r.get("QueryId")):
+                for _, query_group in groupby(
+                    l_query_group, lambda r: r.get("QueryId")
+                ):
                     l_query_name = list(query_group)
                     query_name = l_query_name[0].get("Query")
 
@@ -179,17 +190,12 @@ class ResultsODataAPI(object):
                     if count < threshold:
                         continue
 
-                    query_list.append(
-                        {
-                            "Query": query_name,
-                            "Count": count
-                        }
-                    )
+                    query_list.append({"Query": query_name, "Count": count})
 
         return results
 
     def get_results_for_a_specific_scan_id_with_similarity_ids(
-            self, scan_id: int, similarity_ids: List[int]
+        self, scan_id: int, similarity_ids: List[int]
     ) -> List[dict]:
         """
 
@@ -217,12 +223,12 @@ class ResultsODataAPI(object):
         """
 
         # have to put ScanId in url, otherwise would have deserialization error
-        url = "/Cxwebinterface/odata/v1/Scans({id})/Results?".format(
-            id=scan_id
-        )
+        url = "/Cxwebinterface/odata/v1/Scans({id})/Results?".format(id=scan_id)
 
-        url += "&$expand=Query($select=Name;$expand=QueryGroup($select=Name," \
-               " LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
+        url += (
+            "&$expand=Query($select=Name;$expand=QueryGroup($select=Name,"
+            " LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
+        )
 
         url += "&$filter=SimilarityId in ({similarity_id_list})".format(
             similarity_id_list=",".join([str(item) for item in similarity_ids])
@@ -234,31 +240,32 @@ class ResultsODataAPI(object):
         results = [
             {
                 "ResultId": item.get("Id"),
-                'ScanId': item.get("ScanId"),
+                "ScanId": item.get("ScanId"),
                 "SimilarityId": item.get("SimilarityId"),
-                'RawPriority': item.get("RawPriority"),
+                "RawPriority": item.get("RawPriority"),
                 "PathId": item.get("PathId"),
-                'ConfidenceLevel': item.get("ConfidenceLevel"),
-                'Date': item.get("Date"),
-                'Severity': item.get("Severity"),
-                'StateId': item.get("StateId"),
-                'AssignedToUserId': item.get("AssignedToUserId"),
-                'AssignedTo': item.get("AssignedTo"),
-                'Comment': item.get("Comment"),
+                "ConfidenceLevel": item.get("ConfidenceLevel"),
+                "Date": item.get("Date"),
+                "Severity": item.get("Severity"),
+                "StateId": item.get("StateId"),
+                "AssignedToUserId": item.get("AssignedToUserId"),
+                "AssignedTo": item.get("AssignedTo"),
+                "Comment": item.get("Comment"),
                 "QueryId": item.get("QueryId"),
-                'QueryVersionId': item.get("QueryVersionId"),
+                "QueryVersionId": item.get("QueryVersionId"),
                 "Language": item.get("Query").get("QueryGroup").get("LanguageName"),
                 "QueryGroup": item.get("Query").get("QueryGroup").get("Name"),
                 "Query": item.get("Query").get("Name"),
                 "ResultState": item.get("State").get("Name"),
                 "Origin": item.get("Scan").get("Origin"),
                 "LOC": item.get("Scan").get("LOC"),
-            } for item in item_list
+            }
+            for item in item_list
         ]
         return results
 
     def get_number_of_results_for_a_specific_scan_id_with_result_state(
-            self, scan_id: int, result_states: List[str]
+        self, scan_id: int, result_states: List[str]
     ) -> int:
         """
 
@@ -272,15 +279,23 @@ class ResultsODataAPI(object):
 
         """
         for state in result_states:
-            if state not in ["TO_VERIFY", "NOT_EXPLOITABLE", "CONFIRMED", "URGENT", "PROPOSED_NOT_EXPLOITABLE"]:
-                raise ValueError("result state should be in the list: TO_VERIFY, NOT_EXPLOITABLE, CONFIRMED, URGENT, "
-                                 "PROPOSED_NOT_EXPLOITABLE")
+            if state not in [
+                "TO_VERIFY",
+                "NOT_EXPLOITABLE",
+                "CONFIRMED",
+                "URGENT",
+                "PROPOSED_NOT_EXPLOITABLE",
+            ]:
+                raise ValueError(
+                    "result state should be in the list: TO_VERIFY, NOT_EXPLOITABLE, CONFIRMED, URGENT, "
+                    "PROPOSED_NOT_EXPLOITABLE"
+                )
         state_index_map = {
             "TO_VERIFY": 0,
             "NOT_EXPLOITABLE": 1,
             "CONFIRMED": 2,
             "URGENT": 3,
-            "PROPOSED_NOT_EXPLOITABLE": 4
+            "PROPOSED_NOT_EXPLOITABLE": 4,
         }
         state_id_list = [state_index_map.get(item) for item in result_states]
 
@@ -303,7 +318,7 @@ def get_results_for_a_specific_scan_id(scan_id: int) -> List[dict]:
 
 
 def get_the_query_that_was_run_for_a_particular_unique_scan_result(
-        result_id: int, scan_id: int
+    result_id: int, scan_id: int
 ) -> Union[str, None]:
     return ResultsODataAPI().get_the_query_that_was_run_for_a_particular_unique_scan_result(
         result_id=result_id, scan_id=scan_id
@@ -311,23 +326,27 @@ def get_the_query_that_was_run_for_a_particular_unique_scan_result(
 
 
 def get_results_for_a_specific_scan_id_with_query_language_state(
-        scan_id: int, filter_false_positive: bool = False
+    scan_id: int, filter_false_positive: bool = False
 ) -> List[dict]:
-    return ResultsODataAPI().get_results_for_a_specific_scan_id_with_query_language_state(
-        scan_id=scan_id, filter_false_positive=filter_false_positive
+    return (
+        ResultsODataAPI().get_results_for_a_specific_scan_id_with_query_language_state(
+            scan_id=scan_id, filter_false_positive=filter_false_positive
+        )
     )
 
 
 def get_results_group_by_query_id_and_add_count_json_format(
-        scan_id: int, filter_false_positive: bool = False, threshold: int = 0
+    scan_id: int, filter_false_positive: bool = False, threshold: int = 0
 ) -> List[dict]:
     return ResultsODataAPI().get_results_group_by_query_id_and_add_count_json_format(
-        scan_id=scan_id, filter_false_positive=filter_false_positive, threshold=threshold
+        scan_id=scan_id,
+        filter_false_positive=filter_false_positive,
+        threshold=threshold,
     )
 
 
 def get_results_for_a_specific_scan_id_with_similarity_ids(
-        scan_id: int, similarity_ids: List[int]
+    scan_id: int, similarity_ids: List[int]
 ) -> List[dict]:
     return ResultsODataAPI().get_results_for_a_specific_scan_id_with_similarity_ids(
         scan_id=scan_id, similarity_ids=similarity_ids
@@ -335,7 +354,7 @@ def get_results_for_a_specific_scan_id_with_similarity_ids(
 
 
 def get_number_of_results_for_a_specific_scan_id_with_result_state(
-        scan_id: int, result_states: List[str]
+    scan_id: int, result_states: List[str]
 ) -> int:
     return ResultsODataAPI().get_number_of_results_for_a_specific_scan_id_with_result_state(
         scan_id=scan_id, result_states=result_states

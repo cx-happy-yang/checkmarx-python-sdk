@@ -16,5 +16,5 @@ def construct_groups_with_resources_response(item):
         filtered_count=item.get("filteredCount"),
         groups=[
             construct_group_with_resource(group) for group in (item.get("groups") or [])
-        ]
+        ],
     )

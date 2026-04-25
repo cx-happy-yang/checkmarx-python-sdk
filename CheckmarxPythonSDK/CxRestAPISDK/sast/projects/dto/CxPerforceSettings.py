@@ -24,17 +24,14 @@ class CxPerforceSettings(object):
 
     def to_dict(self):
         return {
-                "credentials": {
-                    "userName": self.credentials.username,
-                    "password": self.credentials.password,
-                },
-                "uri": {
-                    "absoluteUrl": self.uri.absolute_url,
-                    "port": self.uri.port
-                },
-                "paths": self.paths,
-                "browseMode": self.browse_mode
-            }
+            "credentials": {
+                "userName": self.credentials.username,
+                "password": self.credentials.password,
+            },
+            "uri": {"absoluteUrl": self.uri.absolute_url, "port": self.uri.port},
+            "paths": self.paths,
+            "browseMode": self.browse_mode,
+        }
 
     def __str__(self):
         return "CxPerforceSettings(uri={}, paths={}, browse_mode={}, link={}, credentials={})".format(

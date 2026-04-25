@@ -17,5 +17,5 @@ class Contributors:
 def construct_contributors(item):
     return Contributors(
         allowed_contributors=item.get("allowedContributors"),
-        current_contributors=item.get("currentContributors")
+        current_contributors=item.get("currentContributors"),
     )

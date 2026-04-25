@@ -1,5 +1,13 @@
 class ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation:
-    def __init__(self, container_id, container_name, container_type, mapper_id, mapper_name, protocol_mapper):
+    def __init__(
+        self,
+        container_id,
+        container_name,
+        container_type,
+        mapper_id,
+        mapper_name,
+        protocol_mapper,
+    ):
         self.containerId = container_id
         self.containerName = container_name
         self.containerType = container_type
@@ -8,14 +16,16 @@ class ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation:
         self.protocolMapper = protocol_mapper
 
     def __str__(self):
-        return f"ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation(" \
-               f"containerId={self.containerId} " \
-               f"containerName={self.containerName} " \
-               f"containerType={self.containerType} " \
-               f"mapperId={self.mapperId} " \
-               f"mapperName={self.mapperName} " \
-               f"protocolMapper={self.protocolMapper} " \
-               f")"
+        return (
+            f"ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation("
+            f"containerId={self.containerId} "
+            f"containerName={self.containerName} "
+            f"containerType={self.containerType} "
+            f"mapperId={self.mapperId} "
+            f"mapperName={self.mapperName} "
+            f"protocolMapper={self.protocolMapper} "
+            f")"
+        )
 
     def to_dict(self):
         return {
@@ -28,7 +38,9 @@ class ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation:
         }
 
 
-def construct_client_scope_evaluate_resource_protocol_mapper_evaluation_representation(item):
+def construct_client_scope_evaluate_resource_protocol_mapper_evaluation_representation(
+    item,
+):
     return ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation(
         container_id=item.get("containerId"),
         container_name=item.get("containerName"),

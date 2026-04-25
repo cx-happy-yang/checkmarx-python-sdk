@@ -6,7 +6,9 @@ class CxPreset(object):
     the queries set
     """
 
-    def __init__(self, preset_id, name=None, owner_name=None, link=None, query_ids=None):
+    def __init__(
+        self, preset_id, name=None, owner_name=None, link=None, query_ids=None
+    ):
         """
 
         Args:

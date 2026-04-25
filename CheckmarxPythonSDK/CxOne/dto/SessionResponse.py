@@ -10,7 +10,5 @@ class SessionResponse:
 
 def construct_session_response(item):
     return SessionResponse(
-        id=item.get("id"),
-        status=item.get("status"),
-        scan_id=item.get("scanId")
+        id=item.get("id"), status=item.get("status"), scan_id=item.get("scanId")
     )

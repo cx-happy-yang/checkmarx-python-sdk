@@ -8,14 +8,16 @@ class SynchronizationResult:
         self.updated = updated
 
     def __str__(self):
-        return f"SynchronizationResult(" \
-               f"added={self.added} " \
-               f"failed={self.failed} " \
-               f"ignored={self.ignored} " \
-               f"removed={self.removed} " \
-               f"status={self.status} " \
-               f"updated={self.updated} " \
-               f")"
+        return (
+            f"SynchronizationResult("
+            f"added={self.added} "
+            f"failed={self.failed} "
+            f"ignored={self.ignored} "
+            f"removed={self.removed} "
+            f"status={self.status} "
+            f"updated={self.updated} "
+            f")"
+        )
 
     def to_dict(self):
         return {

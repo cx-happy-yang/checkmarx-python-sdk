@@ -24,14 +24,15 @@ class SastCounters:
         total_counter (int): Total number of results
         file_scanned_counter (int):
     """
+
     queries_counters: List[dict] = None
-    sink_file_counters: List[dict] = None,
+    sink_file_counters: List[dict] = (None,)
     language_counters: List[dict] = None
     compliance_counters: List[dict] = None
     severity_counters: List[dict] = None
     status_counters: List[dict] = None
     state_counters: List[dict] = None
-    severity_status_counters: List[dict] = None,
+    severity_status_counters: List[dict] = (None,)
     source_file_counters: List[dict] = None
     age_counters: List[dict] = None
     total_counter: int = None
@@ -51,5 +52,5 @@ def construct_sast_counters(item):
         source_file_counters=item.get("sourceFileCounters"),
         age_counters=item.get("ageCounters"),
         total_counter=item.get("totalCounter"),
-        file_scanned_counter=item.get("filesScannedCounter")
+        file_scanned_counter=item.get("filesScannedCounter"),
     )

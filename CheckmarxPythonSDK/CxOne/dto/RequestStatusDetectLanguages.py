@@ -10,6 +10,5 @@ class RequestStatusDetectLanguages:
 
 def construct_request_status_detect_languages(item):
     return RequestStatusDetectLanguages(
-        completed=item.get("completed"),
-        value=item.get("value")
+        completed=item.get("completed"), value=item.get("value")
     )

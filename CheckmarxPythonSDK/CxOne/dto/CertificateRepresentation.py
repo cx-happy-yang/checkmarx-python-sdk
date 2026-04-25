@@ -6,12 +6,14 @@ class CertificateRepresentation:
         self.publicKey = public_key
 
     def __str__(self):
-        return f"CertificateRepresentation(" \
-               f"certificate={self.certificate} " \
-               f"kid={self.kid} " \
-               f"privateKey={self.privateKey} " \
-               f"publicKey={self.publicKey} " \
-               f")"
+        return (
+            f"CertificateRepresentation("
+            f"certificate={self.certificate} "
+            f"kid={self.kid} "
+            f"privateKey={self.privateKey} "
+            f"publicKey={self.publicKey} "
+            f")"
+        )
 
     def to_dict(self):
         return {

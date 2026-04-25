@@ -3,13 +3,40 @@
 
 class LDAPServer(object):
 
-    def __init__(self, ldap_server_id, active, name, host, port, username, use_ssl, verify_ssl_certificate,
-                 ldap_directory_type, sso_enabled, mapped_domain_id, based_dn, additional_user_dn, user_object_filter,
-                 user_object_class, username_attribute, first_name_attribute, last_name_attribute, email_attribute,
-                 synchronization_enabled, default_team_id, default_role_id, update_team_and_role_upon_login_enabled,
-                 periodical_synchronization_enabled, advanced_team_and_role_mapping_enabled, additional_group_dn,
-                 group_object_class, group_object_filter, group_name_attribute, group_members_attribute,
-                 user_membership_attribute):
+    def __init__(
+        self,
+        ldap_server_id,
+        active,
+        name,
+        host,
+        port,
+        username,
+        use_ssl,
+        verify_ssl_certificate,
+        ldap_directory_type,
+        sso_enabled,
+        mapped_domain_id,
+        based_dn,
+        additional_user_dn,
+        user_object_filter,
+        user_object_class,
+        username_attribute,
+        first_name_attribute,
+        last_name_attribute,
+        email_attribute,
+        synchronization_enabled,
+        default_team_id,
+        default_role_id,
+        update_team_and_role_upon_login_enabled,
+        periodical_synchronization_enabled,
+        advanced_team_and_role_mapping_enabled,
+        additional_group_dn,
+        group_object_class,
+        group_object_filter,
+        group_name_attribute,
+        group_members_attribute,
+        user_membership_attribute,
+    ):
         """
 
         Args:
@@ -67,9 +94,13 @@ class LDAPServer(object):
         self.synchronization_enabled = synchronization_enabled
         self.default_team_id = default_team_id
         self.default_role_id = default_role_id
-        self.update_team_and_role_upon_login_enabled = update_team_and_role_upon_login_enabled
+        self.update_team_and_role_upon_login_enabled = (
+            update_team_and_role_upon_login_enabled
+        )
         self.periodical_synchronization_enabled = periodical_synchronization_enabled
-        self.advanced_team_and_role_mapping_enabled = advanced_team_and_role_mapping_enabled
+        self.advanced_team_and_role_mapping_enabled = (
+            advanced_team_and_role_mapping_enabled
+        )
         self.additional_group_dn = additional_group_dn
         self.group_object_class = group_object_class
         self.group_object_filter = group_object_filter
@@ -86,13 +117,35 @@ class LDAPServer(object):
         periodical_synchronization_enabled={}, advanced_team_and_role_mapping_enabled={}, additional_group_dn={},
         group_object_class={}, group_object_filter={}, group_name_attribute={}, group_members_attribute={}, 
         user_membership_attribute={})""".format(
-            self.id, self.active, self.name, self.host, self.port, self.username, self.use_ssl,
-            self.verify_ssl_certificate, self.ldap_directory_type, self.sso_enabled, self.mapped_domain_id,
-            self.based_dn, self.additional_user_dn, self.user_object_filter,
-            self.user_object_class, self.username_attribute, self.first_name_attribute, self.last_name_attribute,
-            self.email_attribute, self.synchronization_enabled, self.default_team_id, self.default_role_id,
-            self.update_team_and_role_upon_login_enabled, self.periodical_synchronization_enabled,
-            self.advanced_team_and_role_mapping_enabled, self.additional_group_dn,
-            self.group_object_class, self.group_object_filter, self.group_name_attribute, self.group_members_attribute,
-            self.user_membership_attribute
+            self.id,
+            self.active,
+            self.name,
+            self.host,
+            self.port,
+            self.username,
+            self.use_ssl,
+            self.verify_ssl_certificate,
+            self.ldap_directory_type,
+            self.sso_enabled,
+            self.mapped_domain_id,
+            self.based_dn,
+            self.additional_user_dn,
+            self.user_object_filter,
+            self.user_object_class,
+            self.username_attribute,
+            self.first_name_attribute,
+            self.last_name_attribute,
+            self.email_attribute,
+            self.synchronization_enabled,
+            self.default_team_id,
+            self.default_role_id,
+            self.update_team_and_role_upon_login_enabled,
+            self.periodical_synchronization_enabled,
+            self.advanced_team_and_role_mapping_enabled,
+            self.additional_group_dn,
+            self.group_object_class,
+            self.group_object_filter,
+            self.group_name_attribute,
+            self.group_members_attribute,
+            self.user_membership_attribute,
         )

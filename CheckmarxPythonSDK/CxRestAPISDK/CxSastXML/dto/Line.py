@@ -14,7 +14,4 @@ class Line:
 
 
 def construct_line(number, code):
-    return Line(
-        number=int(number),
-        code=code
-    )
+    return Line(number=int(number), code=code)

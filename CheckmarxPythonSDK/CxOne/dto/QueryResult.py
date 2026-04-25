@@ -8,7 +8,4 @@ class QueryResult:
 
 
 def construct_query_result(item):
-    return QueryResult(
-        content=item.get("content"),
-        line_number=item.get("lineNumber")
-    )
+    return QueryResult(content=item.get("content"), line_number=item.get("lineNumber"))

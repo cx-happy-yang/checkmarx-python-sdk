@@ -1,5 +1,14 @@
 class PartialImportRepresentation:
-    def __init__(self, clients, groups, identity_providers, if_resource_exists, policy, roles, users):
+    def __init__(
+        self,
+        clients,
+        groups,
+        identity_providers,
+        if_resource_exists,
+        policy,
+        roles,
+        users,
+    ):
         self.clients = clients
         self.groups = groups
         self.identityProviders = identity_providers
@@ -9,15 +18,17 @@ class PartialImportRepresentation:
         self.users = users
 
     def __str__(self):
-        return f"PartialImportRepresentation(" \
-               f"clients={self.clients} " \
-               f"groups={self.groups} " \
-               f"identityProviders={self.identityProviders} " \
-               f"ifResourceExists={self.ifResourceExists} " \
-               f"policy={self.policy} " \
-               f"roles={self.roles} " \
-               f"users={self.users} " \
-               f")"
+        return (
+            f"PartialImportRepresentation("
+            f"clients={self.clients} "
+            f"groups={self.groups} "
+            f"identityProviders={self.identityProviders} "
+            f"ifResourceExists={self.ifResourceExists} "
+            f"policy={self.policy} "
+            f"roles={self.roles} "
+            f"users={self.users} "
+            f")"
+        )
 
     def to_dict(self):
         return {

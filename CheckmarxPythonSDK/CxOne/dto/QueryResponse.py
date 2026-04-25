@@ -19,5 +19,5 @@ def construct_query_response(item):
         level=item.get("level"),
         path=item.get("path"),
         source=item.get("source"),
-        metadata=construct_metadata(item.get("metadata"))
+        metadata=construct_metadata(item.get("metadata")),
     )

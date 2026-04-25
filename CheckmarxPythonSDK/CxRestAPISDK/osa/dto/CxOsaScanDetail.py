@@ -5,8 +5,18 @@ class CxOsaScanDetail(object):
     """
     osa scan detail
     """
-    def __init__(self, findings_status, scan_detail_id, start_analyze_time, end_analyze_time, origin,
-                 source_code_origin, state, shared_source_location_paths):
+
+    def __init__(
+        self,
+        findings_status,
+        scan_detail_id,
+        start_analyze_time,
+        end_analyze_time,
+        origin,
+        source_code_origin,
+        state,
+        shared_source_location_paths,
+    ):
         """
 
         Args:
@@ -31,6 +41,12 @@ class CxOsaScanDetail(object):
     def __str__(self):
         return """CxOsaScanDetail(findings_status={}, id={}, start_analyze_time={}, end_analyze_time={}, 
                 origin={}, source_code_origin={}, state={}, shared_source_location_paths={})""".format(
-            self.findings_status, self.id, self.start_analyze_time, self.end_analyze_time,
-            self.origin, self.source_code_origin, self.state, self.shared_source_location_paths
+            self.findings_status,
+            self.id,
+            self.start_analyze_time,
+            self.end_analyze_time,
+            self.origin,
+            self.source_code_origin,
+            self.state,
+            self.shared_source_location_paths,
         )

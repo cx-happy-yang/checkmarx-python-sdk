@@ -1,6 +1,13 @@
 class RealmEventsConfigRepresentation:
-    def __init__(self, admin_events_details_enabled, admin_events_enabled, enabled_event_types, events_enabled,
-                 events_expiration, events_listeners):
+    def __init__(
+        self,
+        admin_events_details_enabled,
+        admin_events_enabled,
+        enabled_event_types,
+        events_enabled,
+        events_expiration,
+        events_listeners,
+    ):
         self.adminEventsDetailsEnabled = admin_events_details_enabled
         self.adminEventsEnabled = admin_events_enabled
         self.enabledEventTypes = enabled_event_types
@@ -9,14 +16,16 @@ class RealmEventsConfigRepresentation:
         self.eventsListeners = events_listeners
 
     def __str__(self):
-        return f"RealmEventsConfigRepresentation(" \
-               f"adminEventsDetailsEnabled={self.adminEventsDetailsEnabled} " \
-               f"adminEventsEnabled={self.adminEventsEnabled} " \
-               f"enabledEventTypes={self.enabledEventTypes} " \
-               f"eventsEnabled={self.eventsEnabled} " \
-               f"eventsExpiration={self.eventsExpiration} " \
-               f"eventsListeners={self.eventsListeners} " \
-               f")"
+        return (
+            f"RealmEventsConfigRepresentation("
+            f"adminEventsDetailsEnabled={self.adminEventsDetailsEnabled} "
+            f"adminEventsEnabled={self.adminEventsEnabled} "
+            f"enabledEventTypes={self.enabledEventTypes} "
+            f"eventsEnabled={self.eventsEnabled} "
+            f"eventsExpiration={self.eventsExpiration} "
+            f"eventsListeners={self.eventsListeners} "
+            f")"
+        )
 
     def to_dict(self):
         return {

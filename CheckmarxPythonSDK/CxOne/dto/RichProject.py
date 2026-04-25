@@ -57,6 +57,7 @@ class RichProject:
     repo_id: int = None
     scm_repo_id: str = None
 
+
 def construct_rich_project(item):
     return RichProject(
         id=item.get("id"),
@@ -71,5 +72,5 @@ def construct_rich_project(item):
         tags=item.get("tags"),
         criticality=item.get("criticality"),
         repo_id=item.get("repoId"),
-        scm_repo_id=item.get("scmRepoId")
+        scm_repo_id=item.get("scmRepoId"),
     )

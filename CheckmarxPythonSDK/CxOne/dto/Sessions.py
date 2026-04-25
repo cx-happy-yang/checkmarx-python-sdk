@@ -14,5 +14,5 @@ def construct_sessions(item):
         available=item.get("available"),
         metadata=[
             construct_session(session) for session in (item.get("metadata") or [])
-        ]
+        ],
     )

@@ -13,10 +13,7 @@ class CxSASTConfig(object):
         self.description = description
 
     def get_key_value_dict(self):
-        return {
-            "key": self.key,
-            "value": self.value
-        }
+        return {"key": self.key, "value": self.value}
 
     def __str__(self):
         return """CxSASTConfig(key={key}, value={value}, description={description})""".format(

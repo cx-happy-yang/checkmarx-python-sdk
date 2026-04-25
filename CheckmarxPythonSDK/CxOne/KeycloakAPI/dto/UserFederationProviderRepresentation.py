@@ -19,28 +19,28 @@ class UserFederationProviderRepresentation:
         result: Dict[str, Any] = {}
         if self.id is not None:
             value = self.id
-            result['id'] = value
+            result["id"] = value
         if self.display_name is not None:
             value = self.display_name
-            result['displayName'] = value
+            result["displayName"] = value
         if self.provider_name is not None:
             value = self.provider_name
-            result['providerName'] = value
+            result["providerName"] = value
         if self.config is not None:
             value = self.config
-            result['config'] = value
+            result["config"] = value
         if self.priority is not None:
             value = self.priority
-            result['priority'] = value
+            result["priority"] = value
         if self.full_sync_period is not None:
             value = self.full_sync_period
-            result['fullSyncPeriod'] = value
+            result["fullSyncPeriod"] = value
         if self.changed_sync_period is not None:
             value = self.changed_sync_period
-            result['changedSyncPeriod'] = value
+            result["changedSyncPeriod"] = value
         if self.last_sync is not None:
             value = self.last_sync
-            result['lastSync'] = value
+            result["lastSync"] = value
         return result
 
     @classmethod
@@ -50,5 +50,5 @@ class UserFederationProviderRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

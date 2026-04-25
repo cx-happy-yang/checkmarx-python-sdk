@@ -2,10 +2,10 @@
 
 
 class CxIssueTrackingSystemDetail(object):
-
     """
     issue tracking system
     """
+
     def __init__(self, tracking_system_detail_id, name, issue_types=None):
         """
 

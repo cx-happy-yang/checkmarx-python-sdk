@@ -50,5 +50,5 @@ def construct_scan_info(item):
         changed_files_count=item.get("changedFilesCount"),
         deleted_files_count=item.get("deletedFilesCount"),
         change_percentage=item.get("changePercent"),
-        query_preset=item.get("queryPreset")
+        query_preset=item.get("queryPreset"),
     )

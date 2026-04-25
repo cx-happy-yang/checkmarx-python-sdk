@@ -8,11 +8,11 @@ from .ResourceType import ResourceType
 class MultipleAssignmentInput:
     """
     Attributes:
-        entity_type (EntityType): type of entity. 
+        entity_type (EntityType): type of entity.
             Enum:[ group, user, client ]
-        resource_type (ResourceType): type of resource. 
+        resource_type (ResourceType): type of resource.
             Enum:  [ application, project, tenant ]
-        entity_roles (List[str]): The roles assigned for these 
+        entity_roles (List[str]): The roles assigned for these
             assignments. Note: If no role is assigned, then the
             default "base" role is applied for each entity.
         entities (List[str]):
@@ -27,9 +27,9 @@ class MultipleAssignmentInput:
 
     def to_dict(self):
         return {
-          "entityType": EntityType(self.entity_type),
-          "resourceType": ResourceType(self.resource_type),
-          "entityRoles": self.entity_roles,
-          "entities": self.entities,
-          "resources": self.resources
+            "entityType": EntityType(self.entity_type),
+            "resourceType": ResourceType(self.resource_type),
+            "entityRoles": self.entity_roles,
+            "entities": self.entities,
+            "resources": self.resources,
         }

@@ -18,25 +18,25 @@ class ComponentRepresentation:
         result: Dict[str, Any] = {}
         if self.id is not None:
             value = self.id
-            result['id'] = value
+            result["id"] = value
         if self.name is not None:
             value = self.name
-            result['name'] = value
+            result["name"] = value
         if self.provider_id is not None:
             value = self.provider_id
-            result['providerId'] = value
+            result["providerId"] = value
         if self.provider_type is not None:
             value = self.provider_type
-            result['providerType'] = value
+            result["providerType"] = value
         if self.parent_id is not None:
             value = self.parent_id
-            result['parentId'] = value
+            result["parentId"] = value
         if self.sub_type is not None:
             value = self.sub_type
-            result['subType'] = value
+            result["subType"] = value
         if self.config is not None:
             value = self.config
-            result['config'] = value
+            result["config"] = value
         return result
 
     @classmethod
@@ -46,5 +46,5 @@ class ComponentRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

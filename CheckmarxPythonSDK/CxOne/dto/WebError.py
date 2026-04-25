@@ -10,7 +10,5 @@ class WebError:
 
 def construct_web_error(item):
     return WebError(
-        code=item.get("code"),
-        message=item.get("message"),
-        data=item.get("data")
+        code=item.get("code"), message=item.get("message"), data=item.get("data")
     )

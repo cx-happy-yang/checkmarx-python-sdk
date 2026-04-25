@@ -18,5 +18,5 @@ def construct_protocol_mappers_representation(item):
         protocol=item.get("protocol"),
         protocol_mapper=item.get("protocolMapper"),
         consent_required=item.get("consentRequired"),
-        config=item.get("config")
+        config=item.get("config"),
     )

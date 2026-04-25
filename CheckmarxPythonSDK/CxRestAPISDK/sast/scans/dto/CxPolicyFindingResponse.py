@@ -5,6 +5,7 @@ class CxPolicyFindingResponse(object):
     """
     policy finding response
     """
+
     def __init__(self, policy_finding_id, link):
         """
 
@@ -16,6 +17,4 @@ class CxPolicyFindingResponse(object):
         self.link = link
 
     def __str__(self):
-        return "CxPolicyFindingResponse(id={}, link={})".format(
-            self.id, self.link
-        )
+        return "CxPolicyFindingResponse(id={}, link={})".format(self.id, self.link)

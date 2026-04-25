@@ -1,5 +1,7 @@
 class AddressClaimSet:
-    def __init__(self, country, formatted, locality, postal_code, region, street_address):
+    def __init__(
+        self, country, formatted, locality, postal_code, region, street_address
+    ):
         self.country = country
         self.formatted = formatted
         self.locality = locality
@@ -8,14 +10,16 @@ class AddressClaimSet:
         self.street_address = street_address
 
     def __str__(self):
-        return f"AddressClaimSet(" \
-               f"country={self.country} " \
-               f"formatted={self.formatted} " \
-               f"locality={self.locality} " \
-               f"postal_code={self.postal_code} " \
-               f"region={self.region} " \
-               f"street_address={self.street_address} " \
-               f")"
+        return (
+            f"AddressClaimSet("
+            f"country={self.country} "
+            f"formatted={self.formatted} "
+            f"locality={self.locality} "
+            f"postal_code={self.postal_code} "
+            f"region={self.region} "
+            f"street_address={self.street_address} "
+            f")"
+        )
 
     def to_dict(self):
         return {

@@ -18,25 +18,25 @@ class ProtocolMapperRepresentation:
         result: Dict[str, Any] = {}
         if self.id is not None:
             value = self.id
-            result['id'] = value
+            result["id"] = value
         if self.name is not None:
             value = self.name
-            result['name'] = value
+            result["name"] = value
         if self.protocol is not None:
             value = self.protocol
-            result['protocol'] = value
+            result["protocol"] = value
         if self.protocol_mapper is not None:
             value = self.protocol_mapper
-            result['protocolMapper'] = value
+            result["protocolMapper"] = value
         if self.consent_required is not None:
             value = self.consent_required
-            result['consentRequired'] = value
+            result["consentRequired"] = value
         if self.consent_text is not None:
             value = self.consent_text
-            result['consentText'] = value
+            result["consentText"] = value
         if self.config is not None:
             value = self.config
-            result['config'] = value
+            result["config"] = value
         return result
 
     @classmethod
@@ -46,5 +46,5 @@ class ProtocolMapperRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

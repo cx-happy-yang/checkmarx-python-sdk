@@ -2,8 +2,22 @@ from .Result import Result
 
 
 class Query:
-    def __init__(self, query_id, categories, cwe_id, query_name, query_group, severity, language, language_hash,
-                 language_change_date, severity_index, query_path, query_version_code, results=None):
+    def __init__(
+        self,
+        query_id,
+        categories,
+        cwe_id,
+        query_name,
+        query_group,
+        severity,
+        language,
+        language_hash,
+        language_change_date,
+        severity_index,
+        query_path,
+        query_version_code,
+        results=None,
+    ):
         """
 
         Args:
@@ -36,31 +50,33 @@ class Query:
         self.Results = results
 
     def __str__(self):
-        return "Query(query_id={query_id}, categories={categories}, cwe_id={cwe_id}, query_name={query_name}, "\
-               "query_group={query_group}, severity={severity}, language={language}, language_hash={language_hash}, "\
-               "language_change_date={language_change_date}, severity_index={severity_index}, "\
-               "query_path={query_path}, query_version_code={query_version_code}, results={results})".format(
-                    query_id=self.Id,
-                    categories=self.Categories,
-                    cwe_id=self.CweId,
-                    query_name=self.Name,
-                    query_group=self.Group,
-                    severity=self.Severity,
-                    language=self.Language,
-                    language_hash=self.LanguageHash,
-                    language_change_date=self.LanguageChangeDate,
-                    severity_index=self.SeverityIndex,
-                    query_path=self.QueryPath,
-                    query_version_code=self.QueryVersionCode,
-                    results=self.Results
-                )
+        return (
+            "Query(query_id={query_id}, categories={categories}, cwe_id={cwe_id}, query_name={query_name}, "
+            "query_group={query_group}, severity={severity}, language={language}, language_hash={language_hash}, "
+            "language_change_date={language_change_date}, severity_index={severity_index}, "
+            "query_path={query_path}, query_version_code={query_version_code}, results={results})".format(
+                query_id=self.Id,
+                categories=self.Categories,
+                cwe_id=self.CweId,
+                query_name=self.Name,
+                query_group=self.Group,
+                severity=self.Severity,
+                language=self.Language,
+                language_hash=self.LanguageHash,
+                language_change_date=self.LanguageChangeDate,
+                severity_index=self.SeverityIndex,
+                query_path=self.QueryPath,
+                query_version_code=self.QueryVersionCode,
+                results=self.Results,
+            )
+        )
 
 
 def construct_query(item, results=None):
     return Query(
         query_id=int(item.get("id")),
         categories=item.get("categories"),
-        cwe_id=int(item.get('cweId')),
+        cwe_id=int(item.get("cweId")),
         query_name=item.get("name"),
         query_group=item.get("group"),
         severity=item.get("Severity"),
@@ -70,5 +86,5 @@ def construct_query(item, results=None):
         severity_index=int(item.get("SeverityIndex")),
         query_path=item.get("QueryPath"),
         query_version_code=int(item.get("QueryVersionCode")),
-        results=results
+        results=results,
     )

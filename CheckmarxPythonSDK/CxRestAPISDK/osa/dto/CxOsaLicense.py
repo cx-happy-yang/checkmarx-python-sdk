@@ -6,8 +6,20 @@ class CxOsaLicense(object):
     the license of a third party library
     """
 
-    def __init__(self, license_id, name, risk_level, copyright_risk_score, patent_risk_score, copy_left, linking,
-                 royalty_free, reference_type, reference, url):
+    def __init__(
+        self,
+        license_id,
+        name,
+        risk_level,
+        copyright_risk_score,
+        patent_risk_score,
+        copy_left,
+        linking,
+        royalty_free,
+        reference_type,
+        reference,
+        url,
+    ):
         """
 
         Args:
@@ -38,6 +50,15 @@ class CxOsaLicense(object):
     def __str__(self):
         return """CxOsaLicenses(id={}, name={}, risk_level={}, copyright_risk_score={}, patent_risk_score={}, 
                 copy_left={}, linking={}, royalty_free={}, reference_type={}, reference={}, url={})""".format(
-            self.id, self.name, self.risk_level, self.copyright_risk_score, self.patent_risk_score,
-            self.copy_left, self.linking, self.royalty_free, self.reference_type, self.reference, self.url
+            self.id,
+            self.name,
+            self.risk_level,
+            self.copyright_risk_score,
+            self.patent_risk_score,
+            self.copy_left,
+            self.linking,
+            self.royalty_free,
+            self.reference_type,
+            self.reference,
+            self.url,
         )

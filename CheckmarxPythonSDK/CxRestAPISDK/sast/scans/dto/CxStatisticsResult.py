@@ -6,8 +6,15 @@ class CxStatisticsResult(object):
     statistics result
     """
 
-    def __init__(self, critical_severity=None, high_severity=None, medium_severity=None, low_severity=None, info_severity=None,
-                 statistics_calculation_date=None):
+    def __init__(
+        self,
+        critical_severity=None,
+        high_severity=None,
+        medium_severity=None,
+        low_severity=None,
+        info_severity=None,
+        statistics_calculation_date=None,
+    ):
         """
 
         Args:
@@ -33,5 +40,11 @@ class CxStatisticsResult(object):
                     low_severity: {}, 
                     info_severity:{},
                     statistics_calculation_date:{}
-                  )""".format(self.critical_severity, self.high_severity, self.medium_severity, self.low_severity, self.info_severity,
-                              self.statistics_calculation_date)
+                  )""".format(
+            self.critical_severity,
+            self.high_severity,
+            self.medium_severity,
+            self.low_severity,
+            self.info_severity,
+            self.statistics_calculation_date,
+        )

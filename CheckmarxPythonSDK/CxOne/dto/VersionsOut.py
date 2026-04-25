@@ -9,6 +9,7 @@ class VersionsOut:
         kics (str): IaC Security (KICS) engine version
         cx_one (str): CxOne version
     """
+
     sast: str
     kics: str
     cx_one: str
@@ -16,7 +17,5 @@ class VersionsOut:
 
 def construct_versions_out(item):
     return VersionsOut(
-        sast=item.get("SAST"),
-        kics=item.get("KICS"),
-        cx_one=item.get("CxOne")
+        sast=item.get("SAST"), kics=item.get("KICS"), cx_one=item.get("CxOne")
     )

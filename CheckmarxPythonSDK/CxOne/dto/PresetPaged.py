@@ -11,6 +11,7 @@ class PresetPaged:
         total_count (int):
         presets (list of PresetSummary):
     """
+
     total_count: int
     presets: List[PresetSummary]
 
@@ -20,5 +21,5 @@ def construct_preset_paged(item):
         total_count=item.get("totalCount"),
         presets=[
             construct_preset_summary(preset) for preset in (item.get("presets") or [])
-        ]
+        ],
     )

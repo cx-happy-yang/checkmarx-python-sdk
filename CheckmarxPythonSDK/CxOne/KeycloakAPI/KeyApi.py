@@ -12,23 +12,18 @@ class KeyApi:
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
 
-    def get_keys(self, 
-            realm: str
-        ) -> KeysMetadataRepresentation:
+    def get_keys(self, realm: str) -> KeysMetadataRepresentation:
         """
-        
+
         Args:
             realm (str):  [required]
-        
+
         Returns:
             KeysMetadataRepresentation
-        
+
         URL:
             Relative path: /{realm}/keys
         """
         relative_url = f"{api_url}/{realm}/keys"
-        response = self.api_client.get_request(
-            relative_url=relative_url, 
-            is_iam=True
-        )
+        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
         return KeysMetadataRepresentation.from_dict(response.json())

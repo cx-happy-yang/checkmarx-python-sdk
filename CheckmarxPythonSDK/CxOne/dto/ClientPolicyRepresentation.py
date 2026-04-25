@@ -7,13 +7,15 @@ class ClientPolicyRepresentation:
         self.profiles = profiles
 
     def __str__(self):
-        return f"ClientPolicyRepresentation(" \
-               f"conditions={self.conditions} " \
-               f"description={self.description} " \
-               f"enabled={self.enabled} " \
-               f"name={self.name} " \
-               f"profiles={self.profiles} " \
-               f")"
+        return (
+            f"ClientPolicyRepresentation("
+            f"conditions={self.conditions} "
+            f"description={self.description} "
+            f"enabled={self.enabled} "
+            f"name={self.name} "
+            f"profiles={self.profiles} "
+            f")"
+        )
 
     def to_dict(self):
         return {

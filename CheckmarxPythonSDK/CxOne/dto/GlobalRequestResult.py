@@ -4,10 +4,12 @@ class GlobalRequestResult:
         self.successRequests = success_requests
 
     def __str__(self):
-        return f"GlobalRequestResult(" \
-               f"failedRequests={self.failedRequests} " \
-               f"successRequests={self.successRequests} " \
-               f")"
+        return (
+            f"GlobalRequestResult("
+            f"failedRequests={self.failedRequests} "
+            f"successRequests={self.successRequests} "
+            f")"
+        )
 
     def to_dict(self):
         return {

@@ -1,5 +1,7 @@
 class CxScanParsedFilesMetric(object):
-    def __init__(self, language, parsed_successfully, parsed_unsuccessfully, parsed_partially):
+    def __init__(
+        self, language, parsed_successfully, parsed_unsuccessfully, parsed_partially
+    ):
         """
 
         Args:
@@ -16,5 +18,8 @@ class CxScanParsedFilesMetric(object):
     def __str__(self):
         return """CxScanParsedFilesMetric(language={}, parsed_successfully={}, parsed_unsuccessfully={}, 
                 parsed_partially={}) """.format(
-            self.language, self.parsed_successfully, self.parsed_unsuccessfully, self.parsed_partially
+            self.language,
+            self.parsed_successfully,
+            self.parsed_unsuccessfully,
+            self.parsed_partially,
         )

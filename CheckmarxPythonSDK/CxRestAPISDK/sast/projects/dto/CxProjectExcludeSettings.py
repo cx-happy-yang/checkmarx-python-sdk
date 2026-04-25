@@ -6,7 +6,9 @@ class CxProjectExcludeSettings(object):
     project exclude settings
     """
 
-    def __init__(self, project_id, exclude_folders_pattern, exclude_files_pattern, link):
+    def __init__(
+        self, project_id, exclude_folders_pattern, exclude_files_pattern, link
+    ):
         """
 
         Args:
@@ -23,5 +25,8 @@ class CxProjectExcludeSettings(object):
     def __str__(self):
         return """CxProjectExcludeSettings(project_id={}, exclude_folders_pattern={}, 
         exclude_files_pattern={}, link={})""".format(
-            self.project_id, self.exclude_folders_pattern, self.exclude_files_pattern, self.link
+            self.project_id,
+            self.exclude_folders_pattern,
+            self.exclude_files_pattern,
+            self.link,
         )

@@ -14,6 +14,7 @@ class BflTree:
         additional_properties (dict): the additional properties will be added if include-graph is set to true
 
     """
+
     id: str = None
     bfl: ResultNode = None
     results: List[SastResult] = None
@@ -27,5 +28,5 @@ def construct_bfl_tree(item):
         results=[
             construct_sast_result(result) for result in (item.get("results") or [])
         ],
-        additional_properties=item.get("additionalProperties")
+        additional_properties=item.get("additionalProperties"),
     )

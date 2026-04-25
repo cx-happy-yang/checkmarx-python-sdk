@@ -14,11 +14,12 @@ class PresetSummary:
         is_tenant_default (bool):
         is_migrated (bool):
     """
+
     id: int = None
     name: str = None
     description: str = None
     associated_projects: int = None
-    custom: bool = None,
+    custom: bool = (None,)
     is_tenant_default: bool = None
     is_migrated: bool = None
 
@@ -31,5 +32,5 @@ def construct_preset_summary(item):
         associated_projects=item.get("associatedProjects"),
         custom=item.get("custom"),
         is_tenant_default=item.get("isTenantDefault"),
-        is_migrated=item.get("isMigrated")
+        is_migrated=item.get("isMigrated"),
     )

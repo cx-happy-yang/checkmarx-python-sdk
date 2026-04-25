@@ -5,13 +5,19 @@ from CheckmarxPythonSDK.utilities.compat import OK
 from .utilities import type_check
 from .dto import (
     CloudInsightCreateEnrichAccount,
-    CloudInsightEnrichAccount, construct_cloud_insight_enrich_account,
-    CloudInsightAccount, construct_cloud_insight_account,
+    CloudInsightEnrichAccount,
+    construct_cloud_insight_enrich_account,
+    CloudInsightAccount,
+    construct_cloud_insight_account,
     StartEnrich,
-    PaginatedAccountLogsListResponse, construct_paginated_account_logs_list_response,
-    PaginatedAccountsListResponse, construct_paginated_accounts_list_response,
-    PaginatedContainersListResponse, construct_paginated_containers_list_response,
-    PaginatedResourcesList, construct_paginated_resources_list,
+    PaginatedAccountLogsListResponse,
+    construct_paginated_account_logs_list_response,
+    PaginatedAccountsListResponse,
+    construct_paginated_accounts_list_response,
+    PaginatedContainersListResponse,
+    construct_paginated_containers_list_response,
+    PaginatedResourcesList,
+    construct_paginated_resources_list,
 )
 
 api_url = "/api/cnas"
@@ -25,7 +31,9 @@ class CloudInsightsServiceAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
 
-    def create_enrich_account(self, data: CloudInsightCreateEnrichAccount) -> CloudInsightEnrichAccount:
+    def create_enrich_account(
+        self, data: CloudInsightCreateEnrichAccount
+    ) -> CloudInsightEnrichAccount:
         """
 
         Args:
@@ -36,11 +44,13 @@ class CloudInsightsServiceAPI(object):
         """
         type_check(data, CloudInsightCreateEnrichAccount)
         relative_url = api_url + "/accounts/enrich"
-        response = self.api_client.post_request(relative_url=relative_url, json=data.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=data.to_dict()
+        )
         return construct_cloud_insight_enrich_account(response.json())
 
     def get_enrich_account_by_external_id(
-            self, external_id: str, offset: int = 0, limit: int = 100
+        self, external_id: str, offset: int = 0, limit: int = 100
     ) -> PaginatedAccountsListResponse:
         """
 
@@ -60,7 +70,9 @@ class CloudInsightsServiceAPI(object):
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         return construct_paginated_accounts_list_response(response.json())
 
-    def start_enrichment(self, cloud_insights_account_id: str, start_enrich: StartEnrich) -> str:
+    def start_enrichment(
+        self, cloud_insights_account_id: str, start_enrich: StartEnrich
+    ) -> str:
         """
 
         Args:
@@ -72,13 +84,23 @@ class CloudInsightsServiceAPI(object):
         """
         type_check(cloud_insights_account_id, str)
         type_check(start_enrich, StartEnrich)
-        relative_url = api_url + "/accounts/{id}/enrich".format(id=cloud_insights_account_id)
-        response = self.api_client.post_request(relative_url=relative_url, json=start_enrich.to_dict())
+        relative_url = api_url + "/accounts/{id}/enrich".format(
+            id=cloud_insights_account_id
+        )
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=start_enrich.to_dict()
+        )
         return response.json().get("message")
 
-    def start_async_enrichment(self, cloud_insights_account_id: str, start_enrich: StartEnrich) -> str:
-        relative_url = api_url + "/v2/accounts/{id}/enrich".format(id=cloud_insights_account_id)
-        response = self.api_client.post_request(relative_url=relative_url, json=start_enrich.to_dict())
+    def start_async_enrichment(
+        self, cloud_insights_account_id: str, start_enrich: StartEnrich
+    ) -> str:
+        relative_url = api_url + "/v2/accounts/{id}/enrich".format(
+            id=cloud_insights_account_id
+        )
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=start_enrich.to_dict()
+        )
         return response.json().get("syncId")
 
     def get_cloud_insight_account(self, account_id: str) -> CloudInsightAccount:
@@ -98,19 +120,24 @@ class CloudInsightsServiceAPI(object):
     def delete_cloud_insight_account(self, account_id: str) -> bool:
         """
 
-          Args:
-              account_id (str): Cloud Insights account ID
+        Args:
+            account_id (str): Cloud Insights account ID
 
-          Returns:
-              bool
-          """
+        Returns:
+            bool
+        """
         relative_url = api_url + "/accounts/{id}".format(id=account_id)
         response = self.api_client.delete_request(relative_url=relative_url)
         return response.status_code == OK
 
     def get_account_logs(
-            self, account_id: str, event_type: str, status: str, description: str, created_at_start: str,
-            created_at_end: str,
+        self,
+        account_id: str,
+        event_type: str,
+        status: str,
+        description: str,
+        created_at_start: str,
+        created_at_end: str,
     ) -> PaginatedAccountLogsListResponse:
         """
 
@@ -127,17 +154,30 @@ class CloudInsightsServiceAPI(object):
         """
         relative_url = api_url + "/accounts/{id}/logs".format(id=account_id)
         params = {
-            "eventType": event_type, "status": status, "description": description,
-            "createdAtStart": created_at_start, "createdAtEnd": created_at_end
+            "eventType": event_type,
+            "status": status,
+            "description": description,
+            "createdAtStart": created_at_start,
+            "createdAtEnd": created_at_end,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         return construct_paginated_account_logs_list_response(response.json())
 
     def get_all_containers_for_an_account_id(
-            self, account_id: str, limit: int = 100, offset: int = 0, image_name: str = None,
-            image_short_name: str = None, project_name: str = None, repo_url: str = None, cluster_name: str = None,
-            public_exposed: str = None, search: str = None, cluster_id: str = None, order_column: str = None,
-            order_direction: str = None
+        self,
+        account_id: str,
+        limit: int = 100,
+        offset: int = 0,
+        image_name: str = None,
+        image_short_name: str = None,
+        project_name: str = None,
+        repo_url: str = None,
+        cluster_name: str = None,
+        public_exposed: str = None,
+        search: str = None,
+        cluster_id: str = None,
+        order_column: str = None,
+        order_direction: str = None,
     ) -> PaginatedContainersListResponse:
         """
 
@@ -174,19 +214,36 @@ class CloudInsightsServiceAPI(object):
         type_check(order_direction, str)
         relative_url = api_url + f"/accounts/{account_id}/containers"
         params = {
-            "limit": limit, "offset": offset, "image-name": image_name, "image-short-name": image_short_name,
-            "project-name": project_name, "repo-url": repo_url, "cluster-name": cluster_name,
-            "public-exposed": public_exposed, "search": search, "cluster-id": cluster_id,
-            "order-column": order_column, "order-direction": order_direction,
+            "limit": limit,
+            "offset": offset,
+            "image-name": image_name,
+            "image-short-name": image_short_name,
+            "project-name": project_name,
+            "repo-url": repo_url,
+            "cluster-name": cluster_name,
+            "public-exposed": public_exposed,
+            "search": search,
+            "cluster-id": cluster_id,
+            "order-column": order_column,
+            "order-direction": order_direction,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         return construct_paginated_containers_list_response(response.json())
 
     def get_resources_filtered_by_group(
-            self, account_id: str, image_name: str = None, image_short_name: str = None, public_exposed: str = None,
-            search: str = None, cluster_names: List[str] = None, asset_types: List[str] = None,
-            resource_type: str = None, offset: int = 0, limit: int = 100, order_column: str = None,
-            order_direction: str = None,
+        self,
+        account_id: str,
+        image_name: str = None,
+        image_short_name: str = None,
+        public_exposed: str = None,
+        search: str = None,
+        cluster_names: List[str] = None,
+        asset_types: List[str] = None,
+        resource_type: str = None,
+        offset: int = 0,
+        limit: int = 100,
+        order_column: str = None,
+        order_direction: str = None,
     ) -> PaginatedResourcesList:
         """
 
@@ -209,22 +266,30 @@ class CloudInsightsServiceAPI(object):
         """
         relative_url = api_url + f"/accounts/{account_id}/resources"
         params = {
-            "image-name": image_name, "image-short-name": image_short_name, "public-exposed": public_exposed,
-            "search": search, "cluster-name": ",".join(cluster_names) if cluster_names else None,
+            "image-name": image_name,
+            "image-short-name": image_short_name,
+            "public-exposed": public_exposed,
+            "search": search,
+            "cluster-name": ",".join(cluster_names) if cluster_names else None,
             "asset-type": ",".join(asset_types) if asset_types else None,
             "resource-type": resource_type,
-            "offset": offset, "limit": limit, "order-column": order_column, "order-direction": order_direction,
+            "offset": offset,
+            "limit": limit,
+            "order-column": order_column,
+            "order-direction": order_direction,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         return construct_paginated_resources_list(response.json())
 
 
-def create_enrich_account(data: CloudInsightCreateEnrichAccount) -> CloudInsightEnrichAccount:
+def create_enrich_account(
+    data: CloudInsightCreateEnrichAccount,
+) -> CloudInsightEnrichAccount:
     return CloudInsightsServiceAPI().create_enrich_account(data=data)
 
 
 def get_enrich_account_by_external_id(
-        external_id: str, offset: int = 0, limit: int = 100
+    external_id: str, offset: int = 0, limit: int = 100
 ) -> PaginatedAccountsListResponse:
     return CloudInsightsServiceAPI().get_enrich_account_by_external_id(
         external_id=external_id, offset=offset, limit=limit
@@ -237,7 +302,9 @@ def start_enrichment(cloud_insights_account_id: str, start_enrich: StartEnrich) 
     )
 
 
-def start_async_enrichment(cloud_insights_account_id: str, start_enrich: StartEnrich) -> str:
+def start_async_enrichment(
+    cloud_insights_account_id: str, start_enrich: StartEnrich
+) -> str:
     return CloudInsightsServiceAPI().start_async_enrichment(
         cloud_insights_account_id=cloud_insights_account_id, start_enrich=start_enrich
     )
@@ -252,33 +319,80 @@ def delete_cloud_insight_account(account_id: str) -> bool:
 
 
 def get_account_logs(
-        account_id: str, event_type: str, status: str, description: str, created_at_start: str, created_at_end: str
+    account_id: str,
+    event_type: str,
+    status: str,
+    description: str,
+    created_at_start: str,
+    created_at_end: str,
 ) -> PaginatedAccountLogsListResponse:
     return CloudInsightsServiceAPI().get_account_logs(
-        account_id=account_id, event_type=event_type, status=status, description=description,
-        created_at_start=created_at_start, created_at_end=created_at_end
+        account_id=account_id,
+        event_type=event_type,
+        status=status,
+        description=description,
+        created_at_start=created_at_start,
+        created_at_end=created_at_end,
     )
 
 
 def get_all_containers_for_an_account_id(
-        account_id: str, limit: int = 100, offset: int = 0, image_name: str = None, image_short_name: str = None,
-        project_name: str = None, repo_url: str = None, cluster_name: str = None, public_exposed: str = None,
-        search: str = None, cluster_id: str = None, order_column: str = None, order_direction: str = None
+    account_id: str,
+    limit: int = 100,
+    offset: int = 0,
+    image_name: str = None,
+    image_short_name: str = None,
+    project_name: str = None,
+    repo_url: str = None,
+    cluster_name: str = None,
+    public_exposed: str = None,
+    search: str = None,
+    cluster_id: str = None,
+    order_column: str = None,
+    order_direction: str = None,
 ) -> PaginatedContainersListResponse:
     return CloudInsightsServiceAPI().get_all_containers_for_an_account_id(
-        account_id=account_id, limit=limit, offset=offset, image_name=image_name, image_short_name=image_short_name,
-        project_name=project_name, repo_url=repo_url, cluster_name=cluster_name, public_exposed=public_exposed,
-        search=search, cluster_id=cluster_id, order_column=order_column, order_direction=order_direction,
+        account_id=account_id,
+        limit=limit,
+        offset=offset,
+        image_name=image_name,
+        image_short_name=image_short_name,
+        project_name=project_name,
+        repo_url=repo_url,
+        cluster_name=cluster_name,
+        public_exposed=public_exposed,
+        search=search,
+        cluster_id=cluster_id,
+        order_column=order_column,
+        order_direction=order_direction,
     )
 
 
 def get_resources_filtered_by_group(
-        account_id: str, image_name: str = None, image_short_name: str = None, public_exposed: str = None,
-        search: str = None, cluster_names: List[str] = None, asset_types: List[str] = None, resource_type: str = None,
-        offset: int = 0, limit: int = 100, order_column: str = None, order_direction: str = None,
+    account_id: str,
+    image_name: str = None,
+    image_short_name: str = None,
+    public_exposed: str = None,
+    search: str = None,
+    cluster_names: List[str] = None,
+    asset_types: List[str] = None,
+    resource_type: str = None,
+    offset: int = 0,
+    limit: int = 100,
+    order_column: str = None,
+    order_direction: str = None,
 ) -> PaginatedResourcesList:
     return CloudInsightsServiceAPI().get_resources_filtered_by_group(
-        account_id=account_id, image_name=image_name, image_short_name=image_short_name, public_exposed=public_exposed,
-        search=search, cluster_names=cluster_names, asset_types=asset_types, resource_type=resource_type,
-        offset=offset, limit=limit, order_column=order_column, order_direction=order_direction,
+        account_id=account_id,
+        image_name=image_name,
+        image_short_name=image_short_name,
+        public_exposed=public_exposed,
+        search=search,
+        cluster_names=cluster_names,
+        asset_types=asset_types,
+        resource_type=resource_type,
+        offset=offset,
+        limit=limit,
+        order_column=order_column,
+        order_direction=order_direction,
     )

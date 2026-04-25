@@ -5,6 +5,7 @@ class CxPolicyFindingsStatus(object):
     """
     policy finding status
     """
+
     def __init__(self, project=None, scan=None, status=None, last_sync=None):
         """
 

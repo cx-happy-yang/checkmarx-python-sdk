@@ -14,13 +14,13 @@ class ManagementPermissionReference:
         result: Dict[str, Any] = {}
         if self.enabled is not None:
             value = self.enabled
-            result['enabled'] = value
+            result["enabled"] = value
         if self.resource is not None:
             value = self.resource
-            result['resource'] = value
+            result["resource"] = value
         if self.scope_permissions is not None:
             value = self.scope_permissions
-            result['scopePermissions'] = value
+            result["scopePermissions"] = value
         return result
 
     @classmethod
@@ -30,5 +30,5 @@ class ManagementPermissionReference:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

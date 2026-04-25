@@ -16,6 +16,7 @@ class ResultNode:
         dom_type (str): node DomType
         node_hash (str):
     """
+
     column: int
     file_name: str
     full_name: str
@@ -31,13 +32,13 @@ class ResultNode:
 def construct_result_node(item):
     return ResultNode(
         column=item.get("column"),
-        file_name=item.get('fileName'),
-        full_name=item.get('fullName'),
-        length=item.get('length'),
-        line=item.get('line'),
-        method_line=item.get('methodLine'),
+        file_name=item.get("fileName"),
+        full_name=item.get("fullName"),
+        length=item.get("length"),
+        line=item.get("line"),
+        method_line=item.get("methodLine"),
         method=item.get("method"),
-        name=item.get('name'),
-        dom_type=item.get('domType'),
+        name=item.get("name"),
+        dom_type=item.get("domType"),
         node_hash=item.get("nodeHash"),
     )

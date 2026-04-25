@@ -3,10 +3,28 @@
 
 class User(object):
 
-    def __init__(self, user_id=None, username=None, last_login_date=None, role_ids=None, team_ids=None,
-                 authentication_provider_id=None, creation_date=None, first_name=None, last_name=None, email=None, phone_number=None,
-                 cell_phone_number=None, job_title=None, other=None, country=None, active=None, expiration_date=None,
-                 allowed_ip_list=None, locale_id=None):
+    def __init__(
+        self,
+        user_id=None,
+        username=None,
+        last_login_date=None,
+        role_ids=None,
+        team_ids=None,
+        authentication_provider_id=None,
+        creation_date=None,
+        first_name=None,
+        last_name=None,
+        email=None,
+        phone_number=None,
+        cell_phone_number=None,
+        job_title=None,
+        other=None,
+        country=None,
+        active=None,
+        expiration_date=None,
+        allowed_ip_list=None,
+        locale_id=None,
+    ):
         """
 
         Args:
@@ -55,8 +73,23 @@ class User(object):
         authentication_provider_id={}, creation_date={}, first_name={}, last_name={}, email={}, phone_number={}, 
         cell_phone_number={}, 
         job_title={}, other={}, country={}, active={}, expiration_date={}, allowed_ip_list={}, locale_id={})""".format(
-            self.id, self.username, self.last_login_date, self.role_ids, self.team_ids, self.authentication_provider_id,
+            self.id,
+            self.username,
+            self.last_login_date,
+            self.role_ids,
+            self.team_ids,
+            self.authentication_provider_id,
             self.creation_date,
-            self.first_name, self.last_name, self.email, self.phone_number, self.cell_phone_number, self.job_title,
-            self.other, self.country, self.active, self.expiration_date, self.allowed_ip_list, self.locale_id
+            self.first_name,
+            self.last_name,
+            self.email,
+            self.phone_number,
+            self.cell_phone_number,
+            self.job_title,
+            self.other,
+            self.country,
+            self.active,
+            self.expiration_date,
+            self.allowed_ip_list,
+            self.locale_id,
         )

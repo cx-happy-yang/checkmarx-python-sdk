@@ -15,25 +15,26 @@ class ClientProfileRepresentation:
         result: Dict[str, Any] = {}
         if self.name is not None:
             value = self.name
-            result['name'] = value
+            result["name"] = value
         if self.description is not None:
             value = self.description
-            result['description'] = value
+            result["description"] = value
         if self.executors is not None:
             value = [item.to_dict() for item in self.executors]
-            result['executors'] = value
+            result["executors"] = value
         return result
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> Self:
         snake_data: Dict[str, Any] = {underscore(k): v for k, v in data.items()}
 
-        if 'executors' in snake_data and snake_data['executors'] is not None:
-            snake_data['executors'] = [
-                ClientPolicyExecutorRepresentation.from_dict(item) for item in snake_data['executors']
+        if "executors" in snake_data and snake_data["executors"] is not None:
+            snake_data["executors"] = [
+                ClientPolicyExecutorRepresentation.from_dict(item)
+                for item in snake_data["executors"]
             ]
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

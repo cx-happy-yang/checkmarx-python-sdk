@@ -15,6 +15,7 @@ def construct_clients_with_resources_response(item):
         total_count=item.get("totalCount"),
         filtered_count=item.get("filteredCount"),
         clients=[
-            construct_client_with_resource(client) for client in (item.get("clients") or [])
-        ]
+            construct_client_with_resource(client)
+            for client in (item.get("clients") or [])
+        ],
     )

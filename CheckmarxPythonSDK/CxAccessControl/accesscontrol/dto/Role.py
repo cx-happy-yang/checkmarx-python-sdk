@@ -21,5 +21,9 @@ class Role(object):
 
     def __str__(self):
         return """Role(id={}, is_system_role={}, name={}, description={}, permission_ids={})""".format(
-            self.id, self.is_system_role, self.name, self.description, self.permission_ids
+            self.id,
+            self.is_system_role,
+            self.name,
+            self.description,
+            self.permission_ids,
         )

@@ -13,6 +13,7 @@ class Preset:
         custom (bool):
         query_ids (List[str])
     """
+
     id: str = None
     name: str = None
     description: str = None
@@ -26,5 +27,5 @@ def construct_preset(item):
         name=item.get("name"),
         description=item.get("description"),
         custom=item.get("custom"),
-        query_ids=item.get("queryIds")
+        query_ids=item.get("queryIds"),
     )

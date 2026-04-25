@@ -4,10 +4,12 @@ class ClientPolicyExecutorRepresentation:
         self.executor = executor
 
     def __str__(self):
-        return f"ClientPolicyExecutorRepresentation(" \
-               f"configuration={self.configuration} " \
-               f"executor={self.executor} " \
-               f")"
+        return (
+            f"ClientPolicyExecutorRepresentation("
+            f"configuration={self.configuration} "
+            f"executor={self.executor} "
+            f")"
+        )
 
     def to_dict(self):
         return {

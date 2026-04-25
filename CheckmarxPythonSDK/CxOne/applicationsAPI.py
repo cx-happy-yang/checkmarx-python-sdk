@@ -2,11 +2,15 @@
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT, CREATED
 from .utilities import type_check
 from .dto import (
-    Application, construct_application,
+    Application,
+    construct_application,
     ApplicationInput,
-    ApplicationsCollection, construct_applications_collection,
-    CreatedApplication, construct_created_application,
-    Rule, construct_rule,
+    ApplicationsCollection,
+    construct_applications_collection,
+    CreatedApplication,
+    construct_created_application,
+    Rule,
+    construct_rule,
     RuleInput,
 )
 from CheckmarxPythonSDK.api_client import ApiClient
@@ -23,43 +27,57 @@ class ApplicationsAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
 
-    def create_an_application(self, application_input: ApplicationInput) -> CreatedApplication:
+    def create_an_application(
+        self, application_input: ApplicationInput
+    ) -> CreatedApplication:
         """
 
-       Args:
-           application_input (`ApplicationInput`):
+        Args:
+            application_input (`ApplicationInput`):
 
-       Returns:
-           `CreatedApplication`
-       """
+        Returns:
+            `CreatedApplication`
+        """
         type_check(application_input, ApplicationInput)
         relative_url = api_url
-        response = self.api_client.post_request(relative_url=relative_url, json=application_input.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=application_input.to_dict()
+        )
         item = response.json()
         return construct_created_application(item)
 
     def get_a_list_of_applications(
-            self, offset: int = 0, limit: int = 20, name: str = None, tags_keys: List[str] = None,
-            tags_values: List[str] = None
+        self,
+        offset: int = 0,
+        limit: int = 20,
+        name: str = None,
+        tags_keys: List[str] = None,
+        tags_values: List[str] = None,
     ) -> ApplicationsCollection:
         """
 
-        Args:
-           offset (int): The number of items to skip before starting to collect the result set
-                       Default value : 0
-           limit (int):  The number of items to return
-                       Default value : 20
-           name (str): Application name, can be filtered by partial name.
-           tags_keys (`list` of `str`): Application tags, filter by the keys in the tags map
-                                   (OR operation between the items)
-           tags_values (`list` of `str`): Application tags, filter by the values in the tags map
-                                   (OR operation between the items)
+         Args:
+            offset (int): The number of items to skip before starting to collect the result set
+                        Default value : 0
+            limit (int):  The number of items to return
+                        Default value : 20
+            name (str): Application name, can be filtered by partial name.
+            tags_keys (`list` of `str`): Application tags, filter by the keys in the tags map
+                                    (OR operation between the items)
+            tags_values (`list` of `str`): Application tags, filter by the values in the tags map
+                                    (OR operation between the items)
 
-       Returns:
-           `ApplicationsCollection`
-       """
+        Returns:
+            `ApplicationsCollection`
+        """
         relative_url = api_url
-        params = {"offset": offset, "limit": limit, "name": name, "tags-keys": tags_keys, "tags-values": tags_values}
+        params = {
+            "offset": offset,
+            "limit": limit,
+            "name": name,
+            "tags-keys": tags_keys,
+            "tags-values": tags_values,
+        }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         item = response.json()
         return construct_applications_collection(item)
@@ -113,7 +131,9 @@ class ApplicationsAPI(object):
         app = response.json()
         return construct_application(app)
 
-    def update_an_application(self, application_id: str, application_input: ApplicationInput) -> bool:
+    def update_an_application(
+        self, application_id: str, application_input: ApplicationInput
+    ) -> bool:
         """
 
         Args:
@@ -126,7 +146,9 @@ class ApplicationsAPI(object):
         type_check(application_id, str)
         type_check(application_input, ApplicationInput)
         relative_url = api_url + "/{id}".format(id=application_id)
-        response = self.api_client.put_request(relative_url=relative_url, json=application_input.to_dict())
+        response = self.api_client.put_request(
+            relative_url=relative_url, json=application_input.to_dict()
+        )
         return response.status_code == NO_CONTENT
 
     def delete_an_application(self, application_id: str) -> bool:
@@ -144,7 +166,9 @@ class ApplicationsAPI(object):
         response = self.api_client.delete_request(relative_url=relative_url)
         return response.status_code == NO_CONTENT
 
-    def create_an_application_rule(self, application_id: str, rule_input: RuleInput) -> Rule:
+    def create_an_application_rule(
+        self, application_id: str, rule_input: RuleInput
+    ) -> Rule:
         """
 
         Args:
@@ -158,11 +182,15 @@ class ApplicationsAPI(object):
         type_check(rule_input, RuleInput)
         relative_url = api_url + "/{id}/project-rules".format(id=application_id)
         type_check(rule_input, RuleInput)
-        response = self.api_client.post_request(relative_url=relative_url, json=rule_input.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=rule_input.to_dict()
+        )
         item = response.json()
         return construct_rule(item)
 
-    def get_a_list_of_rules_for_a_specific_application(self, application_id: str) -> List[Rule]:
+    def get_a_list_of_rules_for_a_specific_application(
+        self, application_id: str
+    ) -> List[Rule]:
         """
 
         Args:
@@ -196,7 +224,9 @@ class ApplicationsAPI(object):
         item = response.json()
         return construct_rule(item)
 
-    def update_an_application_rule(self, application_id: str, rule_id: str, rule_input: RuleInput) -> bool:
+    def update_an_application_rule(
+        self, application_id: str, rule_id: str, rule_input: RuleInput
+    ) -> bool:
         """
 
         Args:
@@ -213,7 +243,9 @@ class ApplicationsAPI(object):
         relative_url = api_url + "/{id}/project-rules/{rule_id}".format(
             id=application_id, rule_id=rule_id
         )
-        response = self.api_client.put_request(relative_url=relative_url, json=rule_input.to_dict())
+        response = self.api_client.put_request(
+            relative_url=relative_url, json=rule_input.to_dict()
+        )
         return response.status_code in (NO_CONTENT, CREATED)
 
     def delete_an_application_rule(self, application_id: str, rule_id: str) -> bool:
@@ -240,10 +272,18 @@ def create_an_application(application_input: ApplicationInput) -> CreatedApplica
 
 
 def get_a_list_of_applications(
-        offset: int = 0, limit: int = 20, name: str = None, tags_keys: List[str] = None, tags_values: List[str] = None
+    offset: int = 0,
+    limit: int = 20,
+    name: str = None,
+    tags_keys: List[str] = None,
+    tags_values: List[str] = None,
 ) -> ApplicationsCollection:
     return ApplicationsAPI().get_a_list_of_applications(
-        offset=offset, limit=limit, name=name, tags_keys=tags_keys, tags_values=tags_values
+        offset=offset,
+        limit=limit,
+        name=name,
+        tags_keys=tags_keys,
+        tags_values=tags_values,
     )
 
 
@@ -259,7 +299,9 @@ def get_an_application_by_id(application_id: str) -> Application:
     return ApplicationsAPI().get_an_application_by_id(application_id)
 
 
-def update_an_application(application_id: str, application_input: ApplicationInput) -> bool:
+def update_an_application(
+    application_id: str, application_input: ApplicationInput
+) -> bool:
     return ApplicationsAPI().update_an_application(application_id, application_input)
 
 
@@ -272,15 +314,21 @@ def create_an_application_rule(application_id: str, rule_input: RuleInput) -> Ru
 
 
 def get_a_list_of_rules_for_a_specific_application(application_id: str) -> List[Rule]:
-    return ApplicationsAPI().get_a_list_of_rules_for_a_specific_application(application_id)
+    return ApplicationsAPI().get_a_list_of_rules_for_a_specific_application(
+        application_id
+    )
 
 
 def get_an_application_rule(application_id: str, rule_id: str) -> Rule:
     return ApplicationsAPI().get_an_application_rule(application_id, rule_id)
 
 
-def update_an_application_rule(application_id: str, rule_id: str, rule_input: RuleInput) -> bool:
-    return ApplicationsAPI().update_an_application_rule(application_id, rule_id, rule_input)
+def update_an_application_rule(
+    application_id: str, rule_id: str, rule_input: RuleInput
+) -> bool:
+    return ApplicationsAPI().update_an_application_rule(
+        application_id, rule_id, rule_input
+    )
 
 
 def delete_an_application_rule(application_id: str, rule_id: str) -> bool:

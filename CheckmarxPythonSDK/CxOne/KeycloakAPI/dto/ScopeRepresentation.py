@@ -3,7 +3,6 @@ from typing import Dict, List, Any, Optional
 from typing_extensions import Self
 from inflection import camelize, underscore
 
-
 # from .PolicyRepresentation import PolicyRepresentation
 # from .ResourceRepresentation import ResourceRepresentation
 
@@ -21,13 +20,13 @@ class ScopeRepresentation:
         result: Dict[str, Any] = {}
         if self.id is not None:
             value = self.id
-            result['id'] = value
+            result["id"] = value
         if self.name is not None:
             value = self.name
-            result['name'] = value
+            result["name"] = value
         if self.icon_uri is not None:
             value = self.icon_uri
-            result['iconUri'] = value
+            result["iconUri"] = value
         # if self.policies is not None:
         #     value = [item.to_dict() for item in self.policies]
         #     result['policies'] = value
@@ -36,7 +35,7 @@ class ScopeRepresentation:
         #     result['resources'] = value
         if self.display_name is not None:
             value = self.display_name
-            result['displayName'] = value
+            result["displayName"] = value
         return result
 
     @classmethod
@@ -54,5 +53,5 @@ class ScopeRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

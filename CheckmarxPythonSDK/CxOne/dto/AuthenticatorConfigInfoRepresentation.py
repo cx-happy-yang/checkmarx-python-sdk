@@ -6,12 +6,14 @@ class AuthenticatorConfigInfoRepresentation:
         self.providerId = provider_id
 
     def __str__(self):
-        return f"AuthenticatorConfigInfoRepresentation(" \
-               f"helpText={self.helpText} " \
-               f"name={self.name} " \
-               f"properties={self.properties} " \
-               f"providerId={self.providerId} " \
-               f")"
+        return (
+            f"AuthenticatorConfigInfoRepresentation("
+            f"helpText={self.helpText} "
+            f"name={self.name} "
+            f"properties={self.properties} "
+            f"providerId={self.providerId} "
+            f")"
+        )
 
     def to_dict(self):
         return {

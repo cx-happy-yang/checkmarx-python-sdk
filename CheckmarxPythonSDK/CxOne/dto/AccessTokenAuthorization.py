@@ -3,9 +3,7 @@ class AccessTokenAuthorization:
         self.permissions = permissions
 
     def __str__(self):
-        return f"AccessTokenAuthorization(" \
-               f"permissions={self.permissions} " \
-               f")"
+        return f"AccessTokenAuthorization(" f"permissions={self.permissions} " f")"
 
     def to_dict(self):
         return {

@@ -12,9 +12,10 @@ def construct_health_check(response):
             SubCheck(
                 name=item.get("name"),
                 success=item.get("success"),
-                errors=item.get("errors")
+                errors=item.get("errors"),
             )
-            for item in response.get("subChecks") or []]
+            for item in response.get("subChecks") or []
+        ]
     }
 
 
@@ -75,7 +76,9 @@ def get_health_of_the_message_queue() -> dict:
 
 
 def get_health_of_the_object_store_including_all_buckets() -> dict:
-    return HealthCheckServiceAPI().get_health_of_the_object_store_including_all_buckets()
+    return (
+        HealthCheckServiceAPI().get_health_of_the_object_store_including_all_buckets()
+    )
 
 
 def get_health_of_the_logging() -> dict:

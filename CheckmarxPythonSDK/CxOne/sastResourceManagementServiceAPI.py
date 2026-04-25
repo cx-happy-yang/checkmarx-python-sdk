@@ -20,8 +20,9 @@ def construct_sast_scan(item):
             Property(
                 key=prop.get("key"),
                 value=prop.get("value"),
-            ) for prop in item.get("properties")
-        ]
+            )
+            for prop in item.get("properties")
+        ],
     )
 
 
@@ -64,7 +65,11 @@ class SastResourceManagementServiceAPI(object):
         return is_successful
 
     def get_sast_scans(
-            self, offset: int = 0, limit: int = 20, ids: List[str] = None, with_deleted: bool = None
+        self,
+        offset: int = 0,
+        limit: int = 20,
+        ids: List[str] = None,
+        with_deleted: bool = None,
     ) -> dict:
         """
 
@@ -84,19 +89,24 @@ class SastResourceManagementServiceAPI(object):
         type_check(with_deleted, bool)
 
         relative_url = api_url + "/scans"
-        params = {"offset": offset, "limit": limit, "ids": ids, "with-deleted": with_deleted}
+        params = {
+            "offset": offset,
+            "limit": limit,
+            "ids": ids,
+            "with-deleted": with_deleted,
+        }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         item = response.json()
         return {
             "totalCount": 0,
-            "scans": [
-                construct_sast_scan(scan) for scan in item.get("scans")
-            ]
+            "scans": [construct_sast_scan(scan) for scan in item.get("scans")],
         }
 
 
 def get_sast_scan_allocation_info(scan_id) -> SastScan:
-    return SastResourceManagementServiceAPI().get_sast_scan_allocation_info(scan_id=scan_id)
+    return SastResourceManagementServiceAPI().get_sast_scan_allocation_info(
+        scan_id=scan_id
+    )
 
 
 def delete_sast_scan(scan_id: str) -> bool:
@@ -104,7 +114,7 @@ def delete_sast_scan(scan_id: str) -> bool:
 
 
 def get_sast_scans(
-        offset: int = 0, limit: int = 20, ids: List[str] = None, with_deleted: bool = None
+    offset: int = 0, limit: int = 20, ids: List[str] = None, with_deleted: bool = None
 ) -> dict:
     return SastResourceManagementServiceAPI().get_sast_scans(
         offset=offset, limit=limit, ids=ids, with_deleted=with_deleted

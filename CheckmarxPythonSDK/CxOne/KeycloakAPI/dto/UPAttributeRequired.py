@@ -13,10 +13,10 @@ class UPAttributeRequired:
         result: Dict[str, Any] = {}
         if self.roles is not None:
             value = self.roles
-            result['roles'] = value
+            result["roles"] = value
         if self.scopes is not None:
             value = self.scopes
-            result['scopes'] = value
+            result["scopes"] = value
         return result
 
     @classmethod
@@ -26,5 +26,5 @@ class UPAttributeRequired:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

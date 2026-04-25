@@ -2,7 +2,9 @@ from .ScopePermissions import ScopePermissions, construct_scope_permissions
 
 
 class ManagementPermissionReference:
-    def __init__(self, enabled: bool, resource: str, scope_permissions: ScopePermissions):
+    def __init__(
+        self, enabled: bool, resource: str, scope_permissions: ScopePermissions
+    ):
         """
 
         Args:
@@ -15,11 +17,13 @@ class ManagementPermissionReference:
         self.scopePermissions = scope_permissions
 
     def __str__(self):
-        return f"ManagementPermissionReference(" \
-               f"enabled={self.enabled} " \
-               f"resource={self.resource} " \
-               f"scopePermissions={self.scopePermissions} " \
-               f")"
+        return (
+            f"ManagementPermissionReference("
+            f"enabled={self.enabled} "
+            f"resource={self.resource} "
+            f"scopePermissions={self.scopePermissions} "
+            f")"
+        )
 
     def to_dict(self):
         return {

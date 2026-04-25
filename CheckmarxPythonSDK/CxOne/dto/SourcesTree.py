@@ -18,5 +18,5 @@ def construct_sources_tree(item):
         key=item.get("Key"),
         children=[
             construct_sources_tree(child) for child in (item.get("children") or [])
-        ]
+        ],
     )

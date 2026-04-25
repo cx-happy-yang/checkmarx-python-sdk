@@ -63,7 +63,7 @@ def construct_object_element_tree(root) -> CxXMLResults:
                     node_name=node_name,
                     node_type=node_type,
                     node_name_length=node_name_length,
-                    snippet=snippet
+                    snippet=snippet,
                 )
                 path_nodes.append(path_node)
             path = construct_path(item=path_tag.attrib, path_nodes=path_nodes)
@@ -88,6 +88,7 @@ def get_xml_results(xml_file_path=None, xml_content_as_string=None) -> CxXMLResu
         return None
 
     import xml.etree.ElementTree as ET
+
     root = None
     if xml_file_path and exists(xml_file_path):
         tree = ET.parse(xml_file_path)
@@ -104,8 +105,8 @@ def obj_to_dict(obj) -> dict:
     obj_dict = obj.__dict__
     for key, value in obj_dict.items():
         if value is None or isinstance(value, (int, str)):
-            if key == 'schema':
-                key = '$schema'
+            if key == "schema":
+                key = "$schema"
             result[key] = value
         elif isinstance(value, list):
             result[key] = []
@@ -122,4 +123,3 @@ def get_xml_results_as_dict(xml_file_path=None, xml_content_as_string=None) -> d
         xml_file_path=xml_file_path, xml_content_as_string=xml_content_as_string
     )
     return obj_to_dict(result)
-

@@ -4,8 +4,10 @@ from typing import List
 from httpx import Response
 import json
 from .dto import (
-    ImportItem, construct_import_item,
-    ImportItemWithLogs, construct_import_item_with_logs,
+    ImportItem,
+    construct_import_item,
+    ImportItemWithLogs,
+    construct_import_item_with_logs,
 )
 from CheckmarxPythonSDK.utilities.compat import OK, ACCEPTED
 
@@ -21,7 +23,7 @@ class SastMigrationAPI(object):
         self.api_client = api_client
 
     def launches_import_from_sast_file(
-            self, file_name: str, encryption_key: str, projects_mapping_file_name: str
+        self, file_name: str, encryption_key: str, projects_mapping_file_name: str
     ) -> str:
         """
 
@@ -39,7 +41,7 @@ class SastMigrationAPI(object):
             {
                 "fileName": file_name,
                 "encryptionKey": encryption_key,
-                "projectsMappingFileName": projects_mapping_file_name
+                "projectsMappingFileName": projects_mapping_file_name,
             }
         )
         response = self.api_client.post_request(relative_url=relative_url, data=data)
@@ -59,9 +61,7 @@ class SastMigrationAPI(object):
         response = self.api_client.get_request(relative_url=relative_url)
         if response.status_code == OK:
             response = response.json()
-            result = [
-                construct_import_item(item) for item in response
-            ]
+            result = [construct_import_item(item) for item in response]
         return result
 
     def get_info_about_import_by_id(self, migration_id: str) -> ImportItemWithLogs:
@@ -95,9 +95,13 @@ class SastMigrationAPI(object):
         return response
 
 
-def launches_import_from_sast_file(file_name: str, encryption_key: str, projects_mapping_file_name: str) -> str:
+def launches_import_from_sast_file(
+    file_name: str, encryption_key: str, projects_mapping_file_name: str
+) -> str:
     return SastMigrationAPI().launches_import_from_sast_file(
-        file_name=file_name, encryption_key=encryption_key, projects_mapping_file_name=projects_mapping_file_name
+        file_name=file_name,
+        encryption_key=encryption_key,
+        projects_mapping_file_name=projects_mapping_file_name,
     )
 
 

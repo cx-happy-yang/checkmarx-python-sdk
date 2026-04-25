@@ -3,10 +3,14 @@ from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
 from .utilities import type_check, list_member_type_check
 from .dto import (
-    QueriesResponse, construct_queries_response,
-    Preset, construct_preset,
-    QueryDescription, construct_query_description,
-    CategoryType, construct_category_type,
+    QueriesResponse,
+    construct_queries_response,
+    Preset,
+    construct_preset,
+    QueryDescription,
+    construct_query_description,
+    CategoryType,
+    construct_category_type,
 )
 from CheckmarxPythonSDK.utilities.compat import OK
 
@@ -30,9 +34,7 @@ class SastQueriesAPI(object):
         relative_url = query_url
         response = self.api_client.get_request(relative_url=relative_url)
         queries = response.json()
-        return [
-            construct_queries_response(item) for item in queries or []
-        ]
+        return [construct_queries_response(item) for item in queries or []]
 
     def get_sast_queries_presets(self) -> List[Preset]:
         """
@@ -45,9 +47,7 @@ class SastQueriesAPI(object):
         relative_url = query_url + "/presets"
         response = self.api_client.get_request(relative_url=relative_url)
         presets = response.json()
-        return [
-            construct_preset(item) for item in presets or []
-        ]
+        return [construct_preset(item) for item in presets or []]
 
     def get_sast_query_description(self, ids: List[str]) -> List[QueryDescription]:
         """
@@ -66,9 +66,7 @@ class SastQueriesAPI(object):
         params = {"ids": ids}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         response = response.json()
-        return [
-            construct_query_description(item) for item in response or []
-        ]
+        return [construct_query_description(item) for item in response or []]
 
     def get_mapping_between_ast_and_sast_query_ids(self) -> List[dict]:
         """
@@ -116,9 +114,7 @@ class SastQueriesAPI(object):
         response = self.api_client.get_request(relative_url=relative_url)
         if response.status_code == OK:
             response = response.json()
-            result = [
-                construct_category_type(item) for item in response
-            ]
+            result = [construct_category_type(item) for item in response]
         return result
 
 

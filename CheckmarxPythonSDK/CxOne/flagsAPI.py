@@ -2,7 +2,8 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from .utilities import type_check, list_member_type_check
 from .dto import (
-    Flag, construct_feature_flag,
+    Flag,
+    construct_feature_flag,
 )
 from typing import List
 
@@ -11,9 +12,7 @@ api_url = f"/api/flags/"
 
 def __construct_flag(flag):
     return Flag(
-        name=flag.get("name"),
-        status=flag.get("status"),
-        payload=flag.get("payload")
+        name=flag.get("name"), status=flag.get("status"), payload=flag.get("payload")
     )
 
 

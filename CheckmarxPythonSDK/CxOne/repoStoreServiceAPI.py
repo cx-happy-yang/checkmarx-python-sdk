@@ -17,7 +17,8 @@ def construct_list_of_file_info(response):
             size=item.get("size"),
             is_dir=item.get("isDir"),
         )
-        for item in response or []]
+        for item in response or []
+    ]
 
 
 class RepoStoreServiceAPI(object):
@@ -68,7 +69,9 @@ class RepoStoreServiceAPI(object):
         item = response.json()
         return [construct_file_info(file_info) for file_info in item]
 
-    def view_scanned_source_files_in_specified_folder(self, scan_id: str, folder: str) -> List[FileInfo]:
+    def view_scanned_source_files_in_specified_folder(
+        self, scan_id: str, folder: str
+    ) -> List[FileInfo]:
         """
 
         Args:
@@ -98,7 +101,7 @@ class RepoStoreServiceAPI(object):
         return response.text
 
     def get_the_list_of_branches_inside_a_git_repository(
-            self, project_id: str, repo_url: str, token: str = None, ssh_key: str = None
+        self, project_id: str, repo_url: str, token: str = None, ssh_key: str = None
     ) -> List[str]:
         """
 
@@ -118,7 +121,7 @@ class RepoStoreServiceAPI(object):
                 "repoURL": repo_url,
                 "token": token,
                 "projectID": project_id,
-                "sshKey": ssh_key
+                "sshKey": ssh_key,
             }
         )
         response = self.api_client.post_request(relative_url=relative_url, data=data)
@@ -128,27 +131,37 @@ class RepoStoreServiceAPI(object):
 
 
 def check_if_scan_has_source_code_available(scan_id: str) -> bool:
-    return RepoStoreServiceAPI().check_if_scan_has_source_code_available(scan_id=scan_id)
+    return RepoStoreServiceAPI().check_if_scan_has_source_code_available(
+        scan_id=scan_id
+    )
 
 
 def download_source_code_from_specific_scan(scan_id: str) -> bytes:
-    return RepoStoreServiceAPI().download_source_code_from_specific_scan(scan_id=scan_id)
+    return RepoStoreServiceAPI().download_source_code_from_specific_scan(
+        scan_id=scan_id
+    )
 
 
 def view_scanned_source_files(scan_id: str) -> List[FileInfo]:
     return RepoStoreServiceAPI().view_scanned_source_files(scan_id=scan_id)
 
 
-def view_scanned_source_files_in_specified_folder(scan_id: str, folder: str) -> List[FileInfo]:
-    return RepoStoreServiceAPI().view_scanned_source_files_in_specified_folder(scan_id=scan_id, folder=folder)
+def view_scanned_source_files_in_specified_folder(
+    scan_id: str, folder: str
+) -> List[FileInfo]:
+    return RepoStoreServiceAPI().view_scanned_source_files_in_specified_folder(
+        scan_id=scan_id, folder=folder
+    )
 
 
 def view_source_code_of_specified_file(scan_id: str, file_path: str) -> str:
-    return RepoStoreServiceAPI().view_source_code_of_specified_file(scan_id=scan_id, file_path=file_path)
+    return RepoStoreServiceAPI().view_source_code_of_specified_file(
+        scan_id=scan_id, file_path=file_path
+    )
 
 
 def get_the_list_of_branches_inside_a_git_repository(
-        project_id: str, repo_url: str, token: str = None, ssh_key: str = None
+    project_id: str, repo_url: str, token: str = None, ssh_key: str = None
 ) -> List[str]:
     return RepoStoreServiceAPI().get_the_list_of_branches_inside_a_git_repository(
         project_id=project_id, repo_url=repo_url, token=token, ssh_key=ssh_key

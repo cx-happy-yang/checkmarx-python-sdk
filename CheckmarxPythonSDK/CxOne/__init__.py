@@ -5,7 +5,6 @@ from .accessControlAPI import (
     get_users,
     get_users_by_groups,
     get_users_count,
-
 )
 
 from .accessManagementAPI import (
@@ -383,9 +382,5 @@ from .uploadsAPI import (
     create_a_pre_signed_url_to_upload_files,
     upload_zip_content_for_scanning,
 )
-from .versionsAPI import (
-    VersionsAPI
-)
-from .webhookAPI import (
-    WebHookAPI
-)
+from .versionsAPI import VersionsAPI
+from .webhookAPI import WebHookAPI

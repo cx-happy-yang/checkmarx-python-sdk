@@ -18,25 +18,25 @@ class RequiredActionProviderRepresentation:
         result: Dict[str, Any] = {}
         if self.alias is not None:
             value = self.alias
-            result['alias'] = value
+            result["alias"] = value
         if self.name is not None:
             value = self.name
-            result['name'] = value
+            result["name"] = value
         if self.provider_id is not None:
             value = self.provider_id
-            result['providerId'] = value
+            result["providerId"] = value
         if self.enabled is not None:
             value = self.enabled
-            result['enabled'] = value
+            result["enabled"] = value
         if self.default_action is not None:
             value = self.default_action
-            result['defaultAction'] = value
+            result["defaultAction"] = value
         if self.priority is not None:
             value = self.priority
-            result['priority'] = value
+            result["priority"] = value
         if self.config is not None:
             value = self.config
-            result['config'] = value
+            result["config"] = value
         return result
 
     @classmethod
@@ -46,5 +46,5 @@ class RequiredActionProviderRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

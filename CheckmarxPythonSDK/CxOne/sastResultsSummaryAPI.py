@@ -15,11 +15,24 @@ class SastResultsSummaryAPI(object):
         self.api_client = api_client
 
     def get_sast_aggregate_results(
-            self, scan_id: str, group_by_field: List[str], language: List[str] = None, status: List[str] = None,
-            severity: List[str] = None, source_file: str = None, source_file_operation: str = None,
-            source_node: str = None, source_node_operation: str = None, sink_node: str = None,
-            sink_node_operation: str = None, sink_file: str = None, sink_file_operation: str = None,
-            query_ids: List[int] = None, apply_predicates: bool = True, limit: int = 20, offset: int = 0
+        self,
+        scan_id: str,
+        group_by_field: List[str],
+        language: List[str] = None,
+        status: List[str] = None,
+        severity: List[str] = None,
+        source_file: str = None,
+        source_file_operation: str = None,
+        source_node: str = None,
+        source_node_operation: str = None,
+        sink_node: str = None,
+        sink_node_operation: str = None,
+        sink_file: str = None,
+        sink_file_operation: str = None,
+        query_ids: List[int] = None,
+        apply_predicates: bool = True,
+        limit: int = 20,
+        offset: int = 0,
     ) -> dict:
         """
 
@@ -80,22 +93,38 @@ class SastResultsSummaryAPI(object):
 
         relative_url = api_url + "/aggregate"
         params = {
-            "scan-id": scan_id, "group-by-field": group_by_field, "language": language, "status": status,
+            "scan-id": scan_id,
+            "group-by-field": group_by_field,
+            "language": language,
+            "status": status,
             "severity": severity,
-            "source-file": source_file, "source-file-operation": source_file_operation,
-            "source-node": source_node, "source-node-operation": source_node_operation,
-            "sink-node": sink_node, "sink-node-operation": sink_node_operation,
-            "sink-file": sink_file, "sink-file-operation": sink_file_operation,
-            "query-ids": query_ids, "apply-predicates": apply_predicates,
-            "limit": limit, "offset": offset
+            "source-file": source_file,
+            "source-file-operation": source_file_operation,
+            "source-node": source_node,
+            "source-node-operation": source_node_operation,
+            "sink-node": sink_node,
+            "sink-node-operation": sink_node_operation,
+            "sink-file": sink_file,
+            "sink-file-operation": sink_file_operation,
+            "query-ids": query_ids,
+            "apply-predicates": apply_predicates,
+            "limit": limit,
+            "offset": offset,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         return response.json()
 
     def get_sast_aggregate_results_comparison(
-            self, scan_id: str, base_scan_id: str, group_by_field: List[str], language: List[str] = None,
-            status: List[str] = None, severity: List[str] = None, query_ids: List[int] = None,
-            limit: int = 20, offset: int = 0
+        self,
+        scan_id: str,
+        base_scan_id: str,
+        group_by_field: List[str],
+        language: List[str] = None,
+        status: List[str] = None,
+        severity: List[str] = None,
+        query_ids: List[int] = None,
+        limit: int = 20,
+        offset: int = 0,
     ) -> dict:
         """
 
@@ -115,36 +144,79 @@ class SastResultsSummaryAPI(object):
         """
         relative_url = api_url + "/compare/aggregate"
         params = {
-            "scan-id": scan_id, "base-scan-id": base_scan_id, "group-by-field": group_by_field,
-            "language": language, "status": status, "severity": severity, "query-ids": query_ids,
-            "limit": limit, "offset": offset,
+            "scan-id": scan_id,
+            "base-scan-id": base_scan_id,
+            "group-by-field": group_by_field,
+            "language": language,
+            "status": status,
+            "severity": severity,
+            "query-ids": query_ids,
+            "limit": limit,
+            "offset": offset,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         return response.json()
 
 
 def get_sast_aggregate_results(
-        scan_id: str, group_by_field: List[str], language: List[str] = None, status: List[str] = None,
-        severity: List[str] = None, source_file: str = None, source_file_operation: str = None,
-        source_node: str = None, source_node_operation: str = None, sink_node: str = None,
-        sink_node_operation: str = None, sink_file: str = None, sink_file_operation: str = None,
-        query_ids: List[int] = None, apply_predicates: bool = True, limit: int = 20, offset: int = 0
+    scan_id: str,
+    group_by_field: List[str],
+    language: List[str] = None,
+    status: List[str] = None,
+    severity: List[str] = None,
+    source_file: str = None,
+    source_file_operation: str = None,
+    source_node: str = None,
+    source_node_operation: str = None,
+    sink_node: str = None,
+    sink_node_operation: str = None,
+    sink_file: str = None,
+    sink_file_operation: str = None,
+    query_ids: List[int] = None,
+    apply_predicates: bool = True,
+    limit: int = 20,
+    offset: int = 0,
 ) -> dict:
     return SastResultsSummaryAPI().get_sast_aggregate_results(
-        scan_id=scan_id, group_by_field=group_by_field, language=language, status=status, severity=severity,
-        source_file=source_file, source_file_operation=source_file_operation, source_node=source_node,
-        source_node_operation=source_node_operation, sink_node=sink_node, sink_node_operation=sink_node_operation,
-        sink_file=sink_file, sink_file_operation=sink_file_operation, query_ids=query_ids,
-        apply_predicates=apply_predicates, limit=limit, offset=offset
+        scan_id=scan_id,
+        group_by_field=group_by_field,
+        language=language,
+        status=status,
+        severity=severity,
+        source_file=source_file,
+        source_file_operation=source_file_operation,
+        source_node=source_node,
+        source_node_operation=source_node_operation,
+        sink_node=sink_node,
+        sink_node_operation=sink_node_operation,
+        sink_file=sink_file,
+        sink_file_operation=sink_file_operation,
+        query_ids=query_ids,
+        apply_predicates=apply_predicates,
+        limit=limit,
+        offset=offset,
     )
 
 
 def get_sast_aggregate_results_comparison(
-        scan_id: str, base_scan_id: str, group_by_field: List[str], language: List[str] = None,
-        status: List[str] = None, severity: List[str] = None, query_ids: List[int] = None,
-        limit: int = 20, offset: int = 0
+    scan_id: str,
+    base_scan_id: str,
+    group_by_field: List[str],
+    language: List[str] = None,
+    status: List[str] = None,
+    severity: List[str] = None,
+    query_ids: List[int] = None,
+    limit: int = 20,
+    offset: int = 0,
 ) -> dict:
     return SastResultsSummaryAPI().get_sast_aggregate_results_comparison(
-        scan_id=scan_id, base_scan_id=base_scan_id, group_by_field=group_by_field, language=language,
-        status=status, severity=severity, query_ids=query_ids, limit=limit, offset=offset,
+        scan_id=scan_id,
+        base_scan_id=base_scan_id,
+        group_by_field=group_by_field,
+        language=language,
+        status=status,
+        severity=severity,
+        query_ids=query_ids,
+        limit=limit,
+        offset=offset,
     )

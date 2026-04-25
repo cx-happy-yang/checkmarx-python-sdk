@@ -13,6 +13,7 @@ class WebHookInput:
         enabled_events (List[WebHookEvent]): List of subscribed events. project_created only available for tenant level
         config: (WebHookConfig): Webhook configuration
     """
+
     name: str = None
     active: bool = None
     enabled_events: List[WebHookEvent] = None
@@ -23,5 +24,5 @@ class WebHookInput:
             "name": self.name,
             "active": self.active,
             "enabledEvents": self.enabled_events,
-            "config": self.config.to_dict()
+            "config": self.config.to_dict(),
         }

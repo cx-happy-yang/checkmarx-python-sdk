@@ -17,6 +17,7 @@ class EngineMetrics:
         file_count_of_detected_but_not_scanned_languages (int):
         scanned_files_per_language (int):
     """
+
     scan_id: str
     memory_peak: int
     virtual_memory_peak: int
@@ -39,6 +40,8 @@ def construct_engine_metrics(item):
         dom_objects_per_language=item.get("domObjectsPerLanguage"),
         successful_loc_per_language=item.get("successfulLocPerLanguage"),
         failed_loc_per_language=item.get("failedLocPerLanguage"),
-        file_count_of_detected_but_not_scanned_languages=item.get("fileCountOfDetectedButNotScannedLanguages"),
-        scanned_files_per_language=item.get("scannedFilesPerLanguage")
+        file_count_of_detected_but_not_scanned_languages=item.get(
+            "fileCountOfDetectedButNotScannedLanguages"
+        ),
+        scanned_files_per_language=item.get("scannedFilesPerLanguage"),
     )

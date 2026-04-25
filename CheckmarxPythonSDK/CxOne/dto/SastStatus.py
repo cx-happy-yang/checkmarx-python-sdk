@@ -8,7 +8,4 @@ class SastStatus:
 
 
 def construct_sast_status(item):
-    return SastStatus(
-        ready=item.get("ready"),
-        message=item.get("message")
-    )
+    return SastStatus(ready=item.get("ready"), message=item.get("message"))

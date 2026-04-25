@@ -18,7 +18,8 @@ def construct_results_summary_tree(item):
         title=item.get("title"),
         key=item.get("key"),
         children=[
-            construct_results_summary_tree(child) for child in (item.get("children") or [])
+            construct_results_summary_tree(child)
+            for child in (item.get("children") or [])
         ],
-        data=item.get("data")
+        data=item.get("data"),
     )

@@ -1,6 +1,15 @@
 class AuthenticationExecutionRepresentation:
-    def __init__(self, authenticator, authenticator_config, authenticator_flow, flow_id,
-                 authentication_execution_representation_id, parent_flow, priority, requirement):
+    def __init__(
+        self,
+        authenticator,
+        authenticator_config,
+        authenticator_flow,
+        flow_id,
+        authentication_execution_representation_id,
+        parent_flow,
+        priority,
+        requirement,
+    ):
         self.authenticator = authenticator
         self.authenticatorConfig = authenticator_config
         self.authenticatorFlow = authenticator_flow
@@ -11,16 +20,18 @@ class AuthenticationExecutionRepresentation:
         self.requirement = requirement
 
     def __str__(self):
-        return f"AuthenticationExecutionRepresentation(" \
-               f"authenticator={self.authenticator} " \
-               f"authenticatorConfig={self.authenticatorConfig} " \
-               f"authenticatorFlow={self.authenticatorFlow} " \
-               f"flowId={self.flowId} " \
-               f"id={self.id} " \
-               f"parentFlow={self.parentFlow} " \
-               f"priority={self.priority} " \
-               f"requirement={self.requirement} " \
-               f")"
+        return (
+            f"AuthenticationExecutionRepresentation("
+            f"authenticator={self.authenticator} "
+            f"authenticatorConfig={self.authenticatorConfig} "
+            f"authenticatorFlow={self.authenticatorFlow} "
+            f"flowId={self.flowId} "
+            f"id={self.id} "
+            f"parentFlow={self.parentFlow} "
+            f"priority={self.priority} "
+            f"requirement={self.requirement} "
+            f")"
+        )
 
     def to_dict(self):
         return {

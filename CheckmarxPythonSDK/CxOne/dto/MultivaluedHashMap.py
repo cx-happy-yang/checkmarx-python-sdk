@@ -5,11 +5,13 @@ class MultivaluedHashMap:
         self.threshold = threshold
 
     def __str__(self):
-        return f"MultivaluedHashMap(" \
-               f"empty={self.empty} " \
-               f"loadFactor={self.loadFactor} " \
-               f"threshold={self.threshold} " \
-               f")"
+        return (
+            f"MultivaluedHashMap("
+            f"empty={self.empty} "
+            f"loadFactor={self.loadFactor} "
+            f"threshold={self.threshold} "
+            f")"
+        )
 
     def to_dict(self):
         return {

@@ -2,8 +2,10 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from CheckmarxPythonSDK.CxOne.dto import (
     WebHookInput,
-    WebHook, construct_web_hook,
-    WebHooksCollection, construct_web_hooks_collection
+    WebHook,
+    construct_web_hook,
+    WebHooksCollection,
+    construct_web_hooks_collection,
 )
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
 
@@ -28,11 +30,15 @@ class WebHookAPI(object):
             WebHook
         """
         relative_url = f"{api_url}/tenant"
-        response = self.api_client.post_request(relative_url=relative_url, json=webhook_input.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=webhook_input.to_dict()
+        )
         item = response.json()
         return construct_web_hook(item)
 
-    def get_a_list_of_webhooks_related_to_tenant(self, offset: int = 0, limit: int = 10) -> WebHooksCollection:
+    def get_a_list_of_webhooks_related_to_tenant(
+        self, offset: int = 0, limit: int = 10
+    ) -> WebHooksCollection:
         """
 
         Returns:
@@ -44,7 +50,9 @@ class WebHookAPI(object):
         item = response.json()
         return construct_web_hooks_collection(item)
 
-    def create_a_webhook_on_project(self, project_id: str, webhook_input: WebHookInput) -> WebHook:
+    def create_a_webhook_on_project(
+        self, project_id: str, webhook_input: WebHookInput
+    ) -> WebHook:
         """
 
         Args:
@@ -55,12 +63,14 @@ class WebHookAPI(object):
             WebHook
         """
         relative_url = f"{api_url}/projects/{project_id}"
-        response = self.api_client.post_request(relative_url=relative_url, json=webhook_input.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=webhook_input.to_dict()
+        )
         item = response.json()
         return construct_web_hook(item)
 
     def get_a_list_of_webhooks_related_to_project(
-            self, project_id: str, offset: int = 0, limit: int = 10
+        self, project_id: str, offset: int = 0, limit: int = 10
     ) -> WebHooksCollection:
         """
 
@@ -93,7 +103,9 @@ class WebHookAPI(object):
         item = response.json()
         return construct_web_hook(item)
 
-    def update_webhook_by_id(self, webhook_id: str, webhook_input: WebHookInput) -> bool:
+    def update_webhook_by_id(
+        self, webhook_id: str, webhook_input: WebHookInput
+    ) -> bool:
         """
 
         Args:
@@ -105,7 +117,9 @@ class WebHookAPI(object):
         """
 
         relative_url = f"{api_url}/{webhook_id}"
-        response = self.api_client.patch_request(relative_url=relative_url, json=webhook_input.to_dict())
+        response = self.api_client.patch_request(
+            relative_url=relative_url, json=webhook_input.to_dict()
+        )
         return response.status_code == NO_CONTENT
 
     def delete_webhook_by_id(self, webhook_id: str) -> bool:

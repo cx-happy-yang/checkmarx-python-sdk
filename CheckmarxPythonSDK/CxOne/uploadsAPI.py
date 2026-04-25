@@ -31,7 +31,9 @@ class UploadsAPI(object):
             url = response.json().get("url")
         return url
 
-    def upload_zip_content_for_scanning(self, upload_link: str, zip_file_path: str) -> bool:
+    def upload_zip_content_for_scanning(
+        self, upload_link: str, zip_file_path: str
+    ) -> bool:
         """
 
         Args:
@@ -45,8 +47,15 @@ class UploadsAPI(object):
             print("zip file path: {} does not exist".format(zip_file_path))
         file_name = os.path.basename(zip_file_path)
         response = self.api_client.call_api(
-            method="PUT", url=upload_link,
-            files={"zippedSource": (file_name, open(zip_file_path, 'rb'), "application/zip")},
+            method="PUT",
+            url=upload_link,
+            files={
+                "zippedSource": (
+                    file_name,
+                    open(zip_file_path, "rb"),
+                    "application/zip",
+                )
+            },
         )
         return response.status_code == OK
 
@@ -56,4 +65,6 @@ def create_a_pre_signed_url_to_upload_files() -> str:
 
 
 def upload_zip_content_for_scanning(upload_link: str, zip_file_path: str) -> bool:
-    return UploadsAPI().upload_zip_content_for_scanning(upload_link=upload_link, zip_file_path=zip_file_path)
+    return UploadsAPI().upload_zip_content_for_scanning(
+        upload_link=upload_link, zip_file_path=zip_file_path
+    )

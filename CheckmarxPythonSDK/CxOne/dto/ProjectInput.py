@@ -26,6 +26,7 @@ class ProjectInput:
             example: 3
             Criticality level of the project
     """
+
     name: str = None
     groups: List[str] = None
     repo_url: str = None

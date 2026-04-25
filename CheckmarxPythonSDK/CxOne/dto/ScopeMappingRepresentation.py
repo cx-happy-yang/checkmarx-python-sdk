@@ -6,12 +6,14 @@ class ScopeMappingRepresentation:
         self.self = scope_mapping_representation_self
 
     def __str__(self):
-        return f"ScopeMappingRepresentation(" \
-               f"client={self.client} " \
-               f"clientScope={self.clientScope} " \
-               f"roles={self.roles} " \
-               f"self={self.self} " \
-               f")"
+        return (
+            f"ScopeMappingRepresentation("
+            f"client={self.client} "
+            f"clientScope={self.clientScope} "
+            f"roles={self.roles} "
+            f"self={self.self} "
+            f")"
+        )
 
     def to_dict(self):
         return {

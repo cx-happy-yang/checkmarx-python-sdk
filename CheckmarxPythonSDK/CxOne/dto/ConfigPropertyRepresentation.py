@@ -1,5 +1,14 @@
 class ConfigPropertyRepresentation:
-    def __init__(self, default_value, help_text, label, name, options, secret, config_property_representation_type):
+    def __init__(
+        self,
+        default_value,
+        help_text,
+        label,
+        name,
+        options,
+        secret,
+        config_property_representation_type,
+    ):
         self.defaultValue = default_value
         self.helpText = help_text
         self.label = label
@@ -9,15 +18,17 @@ class ConfigPropertyRepresentation:
         self.type = config_property_representation_type
 
     def __str__(self):
-        return f"ConfigPropertyRepresentation(" \
-               f"defaultValue={self.defaultValue} " \
-               f"helpText={self.helpText} " \
-               f"label={self.label} " \
-               f"name={self.name} " \
-               f"options={self.options} " \
-               f"secret={self.secret} " \
-               f"type={self.type} " \
-               f")"
+        return (
+            f"ConfigPropertyRepresentation("
+            f"defaultValue={self.defaultValue} "
+            f"helpText={self.helpText} "
+            f"label={self.label} "
+            f"name={self.name} "
+            f"options={self.options} "
+            f"secret={self.secret} "
+            f"type={self.type} "
+            f")"
+        )
 
     def to_dict(self):
         return {

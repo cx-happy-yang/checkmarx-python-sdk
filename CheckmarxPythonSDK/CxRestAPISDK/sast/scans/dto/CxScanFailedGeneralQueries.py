@@ -11,6 +11,8 @@ class CxScanFailedGeneralQueries(object):
         self.failed_general_queries = failed_general_queries
 
     def __str__(self):
-        return """CxScanFailedGeneralQueries(id={}, failed_general_queries={})""".format(
-            self.scan_id, self.failed_general_queries
+        return (
+            """CxScanFailedGeneralQueries(id={}, failed_general_queries={})""".format(
+                self.scan_id, self.failed_general_queries
+            )
         )

@@ -15,6 +15,4 @@ class CxResultsStatistics(object):
         self.link = link
 
     def __str__(self):
-        return "CxResultsStatistics(link={})".format(
-            self.link
-        )
+        return "CxResultsStatistics(link={})".format(self.link)

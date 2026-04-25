@@ -17,22 +17,22 @@ class KeyStoreConfig:
         result: Dict[str, Any] = {}
         if self.realm_certificate is not None:
             value = self.realm_certificate
-            result['realmCertificate'] = value
+            result["realmCertificate"] = value
         if self.store_password is not None:
             value = self.store_password
-            result['storePassword'] = value
+            result["storePassword"] = value
         if self.key_password is not None:
             value = self.key_password
-            result['keyPassword'] = value
+            result["keyPassword"] = value
         if self.key_alias is not None:
             value = self.key_alias
-            result['keyAlias'] = value
+            result["keyAlias"] = value
         if self.realm_alias is not None:
             value = self.realm_alias
-            result['realmAlias'] = value
+            result["realmAlias"] = value
         if self.format is not None:
             value = self.format
-            result['format'] = value
+            result["format"] = value
         return result
 
     @classmethod
@@ -42,5 +42,5 @@ class KeyStoreConfig:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

@@ -5,6 +5,7 @@ class CxOsaState(object):
     """
     state
     """
+
     def __init__(self, state_id, name, failure_reason):
         """
 

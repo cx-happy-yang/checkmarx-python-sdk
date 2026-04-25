@@ -6,8 +6,16 @@ class CxScanState(object):
     scan state, used in CxScanDetail
     """
 
-    def __init__(self, path, source_id, files_count, lines_of_code, failed_lines_of_code, cx_version,
-                 language_state_collection):
+    def __init__(
+        self,
+        path,
+        source_id,
+        files_count,
+        lines_of_code,
+        failed_lines_of_code,
+        cx_version,
+        language_state_collection,
+    ):
         """
 
         Args:
@@ -30,6 +38,11 @@ class CxScanState(object):
     def __str__(self):
         return """CxScanState(path={}, source_id={}, files_count={}, lines_of_code={}, failed_lines_of_code={},
                 cx_version={}, language_state_collection={})""".format(
-            self.path, self.source_id, self.files_count, self.lines_of_code, self.failed_lines_of_code,
-            self.cx_version, self.language_state_collection
+            self.path,
+            self.source_id,
+            self.files_count,
+            self.lines_of_code,
+            self.failed_lines_of_code,
+            self.cx_version,
+            self.language_state_collection,
         )

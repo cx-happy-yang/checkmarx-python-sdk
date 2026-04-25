@@ -22,11 +22,9 @@ def construct_application(item):
         name=item.get("name"),
         description=item.get("description"),
         criticality=item.get("criticality"),
-        rules=[
-            construct_rule(rule) for rule in (item.get("rules") or [])
-        ],
+        rules=[construct_rule(rule) for rule in (item.get("rules") or [])],
         project_ids=item.get("projectIds"),
         created_at=item.get("createdAt"),
         updated_at=item.get("updatedAt"),
-        tags=item.get("tags")
+        tags=item.get("tags"),
     )

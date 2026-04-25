@@ -10,9 +10,9 @@ class AddAssignmentRoles:
 
     def to_dict(self):
         return {
-          "entityId": self.entity_id,
-          "resourceId": self.resource_id,
-          "entityRoles": self.entity_roles
+            "entityId": self.entity_id,
+            "resourceId": self.resource_id,
+            "entityRoles": self.entity_roles,
         }
 
 

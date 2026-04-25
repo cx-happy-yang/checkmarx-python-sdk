@@ -4,10 +4,12 @@ class KeysMetadataRepresentation:
         self.keys = keys
 
     def __str__(self):
-        return f"KeysMetadataRepresentation(" \
-               f"active={self.active} " \
-               f"keys={self.keys} " \
-               f")"
+        return (
+            f"KeysMetadataRepresentation("
+            f"active={self.active} "
+            f"keys={self.keys} "
+            f")"
+        )
 
     def to_dict(self):
         return {

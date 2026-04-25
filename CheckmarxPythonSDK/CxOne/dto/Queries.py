@@ -20,5 +20,5 @@ def construct_queries(item):
         level=item.get("level"),
         lang=item.get("lang"),
         modify=item.get("modify"),
-        is_executable=item.get("isExecutable")
+        is_executable=item.get("isExecutable"),
     )

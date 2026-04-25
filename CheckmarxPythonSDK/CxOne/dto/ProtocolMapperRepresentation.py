@@ -1,5 +1,7 @@
 class ProtocolMapperRepresentation:
-    def __init__(self, config, protocol_mapper_representation_id, name, protocol, protocol_mapper):
+    def __init__(
+        self, config, protocol_mapper_representation_id, name, protocol, protocol_mapper
+    ):
         self.config = config
         self.id = protocol_mapper_representation_id
         self.name = name
@@ -7,13 +9,15 @@ class ProtocolMapperRepresentation:
         self.protocolMapper = protocol_mapper
 
     def __str__(self):
-        return f"ProtocolMapperRepresentation(" \
-               f"config={self.config} " \
-               f"id={self.id} " \
-               f"name={self.name} " \
-               f"protocol={self.protocol} " \
-               f"protocolMapper={self.protocolMapper} " \
-               f")"
+        return (
+            f"ProtocolMapperRepresentation("
+            f"config={self.config} "
+            f"id={self.id} "
+            f"name={self.name} "
+            f"protocol={self.protocol} "
+            f"protocolMapper={self.protocolMapper} "
+            f")"
+        )
 
     def to_dict(self):
         return {

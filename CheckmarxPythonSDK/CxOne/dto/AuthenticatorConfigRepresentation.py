@@ -5,11 +5,13 @@ class AuthenticatorConfigRepresentation:
         self.id = authenticator_config_representation_id
 
     def __str__(self):
-        return f"AuthenticatorConfigRepresentation(" \
-               f"alias={self.alias} " \
-               f"config={self.config} " \
-               f"id={self.id} " \
-               f")"
+        return (
+            f"AuthenticatorConfigRepresentation("
+            f"alias={self.alias} "
+            f"config={self.config} "
+            f"id={self.id} "
+            f")"
+        )
 
     def to_dict(self):
         return {

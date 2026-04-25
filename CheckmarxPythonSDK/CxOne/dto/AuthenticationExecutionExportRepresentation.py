@@ -1,6 +1,14 @@
 class AuthenticationExecutionExportRepresentation:
-    def __init__(self, authenticator, authenticator_config, authenticator_flow, flow_alias, priority, requirement,
-                 user_setup_allowed):
+    def __init__(
+        self,
+        authenticator,
+        authenticator_config,
+        authenticator_flow,
+        flow_alias,
+        priority,
+        requirement,
+        user_setup_allowed,
+    ):
         self.authenticator = authenticator
         self.authenticatorConfig = authenticator_config
         self.authenticatorFlow = authenticator_flow
@@ -10,15 +18,17 @@ class AuthenticationExecutionExportRepresentation:
         self.userSetupAllowed = user_setup_allowed
 
     def __str__(self):
-        return f"AuthenticationExecutionExportRepresentation(" \
-               f"authenticator={self.authenticator} " \
-               f"authenticatorConfig={self.authenticatorConfig} " \
-               f"authenticatorFlow={self.authenticatorFlow} " \
-               f"flowAlias={self.flowAlias} " \
-               f"priority={self.priority} " \
-               f"requirement={self.requirement} " \
-               f"userSetupAllowed={self.userSetupAllowed} " \
-               f")"
+        return (
+            f"AuthenticationExecutionExportRepresentation("
+            f"authenticator={self.authenticator} "
+            f"authenticatorConfig={self.authenticatorConfig} "
+            f"authenticatorFlow={self.authenticatorFlow} "
+            f"flowAlias={self.flowAlias} "
+            f"priority={self.priority} "
+            f"requirement={self.requirement} "
+            f"userSetupAllowed={self.userSetupAllowed} "
+            f")"
+        )
 
     def to_dict(self):
         return {

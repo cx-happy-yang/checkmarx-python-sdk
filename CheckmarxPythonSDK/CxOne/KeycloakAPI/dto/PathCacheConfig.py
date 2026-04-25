@@ -13,10 +13,10 @@ class PathCacheConfig:
         result: Dict[str, Any] = {}
         if self.max_entries is not None:
             value = self.max_entries
-            result['maxEntries'] = value
+            result["maxEntries"] = value
         if self.lifespan is not None:
             value = self.lifespan
-            result['lifespan'] = value
+            result["lifespan"] = value
         return result
 
     @classmethod
@@ -26,5 +26,5 @@ class PathCacheConfig:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

@@ -50,7 +50,7 @@ class _SudsFactory:
                 if isinstance(arg, list):
                     # Array wrapper type: assign the list to the first child field
                     obj = f.create(type_name)
-                    fields = getattr(obj, '__keylist__', [])
+                    fields = getattr(obj, "__keylist__", [])
                     if fields:
                         setattr(obj, fields[0], arg)
                     return obj
@@ -75,15 +75,20 @@ def retry(max_retries: int = 1):
                     return response
                 # in 9.2 and previous version message id "12563" means invalid token,
                 # from 9.3, it says Invalid_Token in error message
-                if not response.IsSuccesfull and \
-                        (response.ErrorMessage is None
-                         or '12563' in response.ErrorMessage
-                         or 'Invalid_Token' in response.ErrorMessage):
+                if not response.IsSuccesfull and (
+                    response.ErrorMessage is None
+                    or "12563" in response.ErrorMessage
+                    or "Invalid_Token" in response.ErrorMessage
+                ):
                     self.token_manager.refresh_token()
-                    self.session.headers["Authorization"] = f'Bearer {self.token_manager.get_token()}'
+                    self.session.headers["Authorization"] = (
+                        f"Bearer {self.token_manager.get_token()}"
+                    )
                 retries += 1
             raise Exception("Max retries exceeded")
+
         return wrapper
+
     return decorator
 
 
@@ -93,7 +98,9 @@ class SudsClient(ApiClient):
         if configuration is None:
             configuration = construct_configuration()
         ApiClient.__init__(self, configuration=configuration)
-        self.session.headers["Authorization"] = f'Bearer {self.token_manager.get_token()}'
+        self.session.headers["Authorization"] = (
+            f"Bearer {self.token_manager.get_token()}"
+        )
         wsdl_url = f"{configuration.server_base_url}{relative_web_interface_url}"
         self._client = Client(
             wsdl_url,

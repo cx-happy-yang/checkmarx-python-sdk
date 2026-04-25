@@ -5,6 +5,7 @@ class CxCreateProjectResponse(object):
     """
     the response data, when create a project
     """
+
     def __init__(self, project_id, link):
         """
 

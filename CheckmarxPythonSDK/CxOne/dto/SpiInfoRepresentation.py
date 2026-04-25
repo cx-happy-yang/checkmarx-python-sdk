@@ -4,10 +4,12 @@ class SpiInfoRepresentation:
         self.providers = providers
 
     def __str__(self):
-        return f"SpiInfoRepresentation(" \
-               f"internal={self.internal} " \
-               f"providers={self.providers} " \
-               f")"
+        return (
+            f"SpiInfoRepresentation("
+            f"internal={self.internal} "
+            f"providers={self.providers} "
+            f")"
+        )
 
     def to_dict(self):
         return {

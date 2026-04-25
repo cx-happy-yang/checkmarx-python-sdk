@@ -17,6 +17,7 @@ class WebHook:
         created_at (str):
         updated_at (str):
     """
+
     id: str = None
     name: str = None
     active: bool = None
@@ -31,10 +32,8 @@ def construct_web_hook(item):
         id=item.get("id"),
         name=item.get("name"),
         active=item.get("active"),
-        enabled_events=[
-            WebHookEvent(event) for event in item.get("enabledEvents")
-        ],
+        enabled_events=[WebHookEvent(event) for event in item.get("enabledEvents")],
         config=construct_web_hook_config(item.get("config")),
         created_at=item.get("createdAt"),
-        updated_at=item.get("updatedAt")
+        updated_at=item.get("updatedAt"),
     )

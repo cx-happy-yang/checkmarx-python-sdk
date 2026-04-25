@@ -18,5 +18,5 @@ class ScmOrganization:
     def to_dict(self):
         return {
             "orgIdentity": self.org_identity,
-            "monitorForNewProjects": self.monitor_for_new_projects
+            "monitorForNewProjects": self.monitor_for_new_projects,
         }

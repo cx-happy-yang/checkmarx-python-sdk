@@ -49,5 +49,5 @@ def construct_result_response(item):
         destination_name=item.get("destinationName"),
         destination_type=item.get("destinationType"),
         state=item.get("state"),
-        path_size=item.get("pathSize")
+        path_size=item.get("pathSize"),
     )

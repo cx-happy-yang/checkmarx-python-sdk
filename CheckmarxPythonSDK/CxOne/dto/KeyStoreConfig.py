@@ -1,6 +1,13 @@
 class KeyStoreConfig:
-    def __init__(self, key_store_config_format, key_alias, key_password, realm_alias, realm_certificate,
-                 store_password):
+    def __init__(
+        self,
+        key_store_config_format,
+        key_alias,
+        key_password,
+        realm_alias,
+        realm_certificate,
+        store_password,
+    ):
         self.format = key_store_config_format
         self.keyAlias = key_alias
         self.keyPassword = key_password
@@ -9,14 +16,16 @@ class KeyStoreConfig:
         self.storePassword = store_password
 
     def __str__(self):
-        return f"KeyStoreConfig(" \
-               f"format={self.format} " \
-               f"keyAlias={self.keyAlias} " \
-               f"keyPassword={self.keyPassword} " \
-               f"realmAlias={self.realmAlias} " \
-               f"realmCertificate={self.realmCertificate} " \
-               f"storePassword={self.storePassword} " \
-               f")"
+        return (
+            f"KeyStoreConfig("
+            f"format={self.format} "
+            f"keyAlias={self.keyAlias} "
+            f"keyPassword={self.keyPassword} "
+            f"realmAlias={self.realmAlias} "
+            f"realmCertificate={self.realmCertificate} "
+            f"storePassword={self.storePassword} "
+            f")"
+        )
 
     def to_dict(self):
         return {

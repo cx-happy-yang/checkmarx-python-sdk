@@ -26,7 +26,9 @@ from CheckmarxPythonSDK.CxRestAPISDK import ProjectsAPI
 from CheckmarxPythonSDK.CxRestAPISDK import ScansAPI
 
 
-def scan_from_local(team_full_name, project_name, report_type, zip_file_path, report_folder=None):
+def scan_from_local(
+    team_full_name, project_name, report_type, zip_file_path, report_folder=None
+):
     """
 
     Args:
@@ -64,13 +66,16 @@ def scan_from_local(team_full_name, project_name, report_type, zip_file_path, re
         print("team: {} not exist".format(team_full_name))
         return
 
-    project_id = projects_api.get_project_id_by_project_name_and_team_full_name(project_name=project_name,
-                                                                                team_full_name=team_full_name)
+    project_id = projects_api.get_project_id_by_project_name_and_team_full_name(
+        project_name=project_name, team_full_name=team_full_name
+    )
 
     # 3. create project with default configuration, will get project id
     print("3. create project with default configuration, will get project id")
     if not project_id:
-        project = projects_api.create_project_with_default_configuration(project_name=project_name, team_id=team_id)
+        project = projects_api.create_project_with_default_configuration(
+            project_name=project_name, team_id=team_id
+        )
         project_id = project.id
     print("project_id: {}".format(project_id))
 
@@ -80,7 +85,9 @@ def scan_from_local(team_full_name, project_name, report_type, zip_file_path, re
 
     # 6. set data retention settings by project id
     print("6. set data retention settings by project id")
-    projects_api.set_data_retention_settings_by_project_id(project_id=project_id, scans_to_keep=3)
+    projects_api.set_data_retention_settings_by_project_id(
+        project_id=project_id, scans_to_keep=3
+    )
 
     # 7. define SAST scan settings
     print("7. define SAST scan settings")
@@ -88,8 +95,9 @@ def scan_from_local(team_full_name, project_name, report_type, zip_file_path, re
     print("preset id: {}".format(preset_id))
     scan_api.define_sast_scan_settings(project_id=project_id, preset_id=preset_id)
 
-    projects_api.set_project_exclude_settings_by_project_id(project_id, exclude_folders_pattern="",
-                                                            exclude_files_pattern="")
+    projects_api.set_project_exclude_settings_by_project_id(
+        project_id, exclude_folders_pattern="", exclude_files_pattern=""
+    )
 
     # 8. create new scan, will get a scan id
     print("8. create new scan, will get a scan id")
@@ -130,8 +138,10 @@ def scan_from_local(team_full_name, project_name, report_type, zip_file_path, re
     print("14. get report by id")
     report_content = scan_api.get_report_by_id(report_id)
 
-    time_stamp = datetime.now().strftime('_%Y_%m_%d_%H_%M_%S')
-    file_name = normpath(join(report_folder, project_name + time_stamp + "." + report_type))
+    time_stamp = datetime.now().strftime("_%Y_%m_%d_%H_%M_%S")
+    file_name = normpath(
+        join(report_folder, project_name + time_stamp + "." + report_type)
+    )
     with open(str(file_name), "wb") as f_out:
         f_out.write(report_content)
 
@@ -141,5 +151,7 @@ if __name__ == "__main__":
         team_full_name="/CxServer",
         project_name="jvl_local",
         report_type="XML",
-        zip_file_path=normpath(join(os.path.dirname(__file__), "JavaVulnerableLab.zip")),
+        zip_file_path=normpath(
+            join(os.path.dirname(__file__), "JavaVulnerableLab.zip")
+        ),
     )

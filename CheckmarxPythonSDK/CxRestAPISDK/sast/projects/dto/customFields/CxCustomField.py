@@ -6,7 +6,9 @@ class CxCustomField(object):
     custom fields
     """
 
-    def __init__(self, custom_field_id, name, value=None, is_mandatory=None, project_id=None):
+    def __init__(
+        self, custom_field_id, name, value=None, is_mandatory=None, project_id=None
+    ):
         """
 
         Args:

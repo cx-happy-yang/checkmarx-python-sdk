@@ -31,12 +31,18 @@ class TeamAPI(object):
         """
         result = []
         relative_url = "/cxrestapi/auth/teams"
-        response = self.api_client.get_request(relative_url=relative_url, headers=get_headers())
+        response = self.api_client.get_request(
+            relative_url=relative_url, headers=get_headers()
+        )
         if response.status_code == OK:
             result = [
                 CxTeam(
-                    item.get("id"), item.get("name"), item.get("fullName"), item.get("parentId")
-                ) for item in response.json()
+                    item.get("id"),
+                    item.get("name"),
+                    item.get("fullName"),
+                    item.get("parentId"),
+                )
+                for item in response.json()
             ]
         return result
 
@@ -77,7 +83,9 @@ class TeamAPI(object):
         all_teams = self.get_all_teams()
 
         # construct a dict of team_id: team_full_name
-        team_id_team_full_name_dict = {item.team_id: item.full_name for item in all_teams}
+        team_id_team_full_name_dict = {
+            item.team_id: item.full_name for item in all_teams
+        }
 
         return team_id_team_full_name_dict.get(team_id)
 
@@ -98,17 +106,14 @@ class TeamAPI(object):
         """
         result = None
         relative_url = "/cxrestapi/auth/teams"
-        post_data = json.dumps(
-            {
-                "name": team_name,
-                "parentId": parent_id
-            }
+        post_data = json.dumps({"name": team_name, "parentId": parent_id})
+        response = self.api_client.post_request(
+            relative_url=relative_url, data=post_data, headers=get_headers()
         )
-        response = self.api_client.post_request(relative_url=relative_url, data=post_data, headers=get_headers())
         if response.status_code == CREATED:
             # The create team API returns the location of the new team
             # in the Location header. E.g.: /cxrestapi/auth/Teams/8
-            location = response.headers['Location']
-            parts = location.split('/')
+            location = response.headers["Location"]
+            parts = location.split("/")
             result = int(parts[-1])
         return result

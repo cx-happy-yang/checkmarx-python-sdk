@@ -19,6 +19,8 @@ class CxSourceSettingsLink(object):
         self.uri = uri
 
     def __str__(self):
-        return "CxSourceSettingsLink(source_settings_link_type={}, rel={}, uri={})".format(
-            self.type, self.rel, self.uri
+        return (
+            "CxSourceSettingsLink(source_settings_link_type={}, rel={}, uri={})".format(
+                self.type, self.rel, self.uri
+            )
         )

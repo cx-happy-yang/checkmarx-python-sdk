@@ -5,6 +5,7 @@ class CxTeam(object):
     """
     The team.
     """
+
     def __init__(self, team_id=None, name=None, full_name=None, parent_id=None):
         """
 

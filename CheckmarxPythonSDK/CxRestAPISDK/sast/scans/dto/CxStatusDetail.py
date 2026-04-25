@@ -17,6 +17,4 @@ class CxStatusDetail(object):
         self.step = step
 
     def __str__(self):
-        return "CxStatusDetail(stage={}, step={})".format(
-            self.stage, self.step
-        )
+        return "CxStatusDetail(stage={}, step={})".format(self.stage, self.step)

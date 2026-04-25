@@ -1,8 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
-from CheckmarxPythonSDK.CxOne.dto import (
-    VersionsOut, construct_versions_out
-)
+from CheckmarxPythonSDK.CxOne.dto import VersionsOut, construct_versions_out
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
 
 api_url = "/api/versions"

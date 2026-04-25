@@ -2,9 +2,7 @@ from httpx import Response
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .dto import (
-    CustomState, construct_custom_state
-)
+from .dto import CustomState, construct_custom_state
 
 api_url = "/api/custom-states"
 
@@ -43,12 +41,12 @@ class CustomStateAPI(object):
         params = {"include-deleted": include_deleted}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         item = response.json()
-        return [
-            construct_custom_state(custom_state) for custom_state in item or []
-        ]
+        return [construct_custom_state(custom_state) for custom_state in item or []]
 
     def create_a_custom_state(self, name: str) -> Response:
-        response = self.api_client.post_request(relative_url=api_url, json={"name": name})
+        response = self.api_client.post_request(
+            relative_url=api_url, json={"name": name}
+        )
         return response
 
     def delete_a_custom_state(self, custom_state_id: int) -> Response:

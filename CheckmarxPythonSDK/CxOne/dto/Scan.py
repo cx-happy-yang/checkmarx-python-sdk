@@ -53,7 +53,8 @@ def construct_scan(item):
         id=item.get("id"),
         status=item.get("status"),
         status_details=[
-            construct_status_details(detail) for detail in (item.get("statusDetails") or [])
+            construct_status_details(detail)
+            for detail in (item.get("statusDetails") or [])
         ],
         position_in_queue=item.get("positionInQueue"),
         project_id=item.get("projectId"),
@@ -70,5 +71,5 @@ def construct_scan(item):
         metadata=item.get("metadata"),
         engines=item.get("engines"),
         source_type=item.get("sourceType"),
-        source_origin=item.get("sourceOrigin")
+        source_origin=item.get("sourceOrigin"),
     )

@@ -8,7 +8,7 @@ class PredicateWithCommentsJSON:
     id: str = None
     similarity_id: str = None
     project_id: str = None
-    severity: str = None,
+    severity: str = (None,)
     state: str = None
     comment: str = None
     comments_json: List[CommentJSON] = None
@@ -27,10 +27,11 @@ def construct_predicate_with_comments_json(item):
         state=item.get("state"),
         comment=item.get("comment"),
         comments_json=[
-            construct_comment_json(comment) for comment in (item.get("commentsJSON") or [])
+            construct_comment_json(comment)
+            for comment in (item.get("commentsJSON") or [])
         ],
         created_by=item.get("createdBy"),
         created_at=item.get("createdAt"),
         change_origin_type=item.get("changeOriginType"),
-        change_origin_name=item.get("changeOriginName")
+        change_origin_name=item.get("changeOriginName"),
     )

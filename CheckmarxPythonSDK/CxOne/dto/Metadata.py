@@ -14,5 +14,5 @@ def construct_metadata(item):
         cwe=item.get("Cwe"),
         severity=item.get("Severity"),
         is_executable=item.get("IsExecutable"),
-        cx_description_id=item.get("CxDescriptionID")
+        cx_description_id=item.get("CxDescriptionID"),
     )

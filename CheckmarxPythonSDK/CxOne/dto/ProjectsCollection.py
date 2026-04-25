@@ -12,9 +12,9 @@ class ProjectsCollection:
 
 def construct_projects_collection(item):
     return ProjectsCollection(
-            total_count=item.get("totalCount"),
-            filtered_total_count=item.get("filteredTotalCount"),
-            projects=[
-                construct_project(project) for project in (item.get("projects") or [])
-            ]
-        )
+        total_count=item.get("totalCount"),
+        filtered_total_count=item.get("filteredTotalCount"),
+        projects=[
+            construct_project(project) for project in (item.get("projects") or [])
+        ],
+    )

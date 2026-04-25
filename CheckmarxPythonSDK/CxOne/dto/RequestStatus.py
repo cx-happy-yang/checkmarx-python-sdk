@@ -12,5 +12,5 @@ def construct_request_status(item):
     return RequestStatus(
         completed=item.get("completed"),
         status=item.get("status"),
-        value=item.get("value")
+        value=item.get("value"),
     )

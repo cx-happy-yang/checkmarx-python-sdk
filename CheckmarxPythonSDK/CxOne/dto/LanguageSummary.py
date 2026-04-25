@@ -9,12 +9,10 @@ class LanguageSummary:
         language (str):
         count (int):
     """
+
     language: str
     count: int
 
 
 def construct_language_summary(item):
-    return LanguageSummary(
-        language=item.get("language"),
-        count=item.get("count")
-    )
+    return LanguageSummary(language=item.get("language"), count=item.get("count"))

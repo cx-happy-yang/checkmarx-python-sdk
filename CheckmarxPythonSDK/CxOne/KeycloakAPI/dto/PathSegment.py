@@ -13,10 +13,10 @@ class PathSegment:
         result: Dict[str, Any] = {}
         if self.path is not None:
             value = self.path
-            result['path'] = value
+            result["path"] = value
         if self.matrix_parameters is not None:
             value = self.matrix_parameters
-            result['matrixParameters'] = value
+            result["matrixParameters"] = value
         return result
 
     @classmethod
@@ -26,5 +26,5 @@ class PathSegment:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

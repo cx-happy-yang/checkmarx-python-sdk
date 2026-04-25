@@ -61,7 +61,7 @@ class SastResult:
 
 def construct_sast_result(result):
     return SastResult(
-        id=result.get('resultHash'),
+        id=result.get("resultHash"),
         result_hash=result.get("resultHash"),
         query_id=result.get("queryID"),
         query_id_str=result.get("queryIDStr"),
@@ -75,12 +75,10 @@ def construct_sast_result(result):
         compliances=result.get("compliances"),
         first_scan_id=result.get("firstScanID"),
         first_found_at=result.get("firstFoundAt"),
-        path_system_id_by_simi_and_files_paths=result.get('pathSystemID'),
+        path_system_id_by_simi_and_files_paths=result.get("pathSystemID"),
         status=result.get("status"),
         found_at=result.get("foundAt"),
-        nodes=[
-            construct_result_node(node) for node in (result.get("nodes") or [])
-        ],
+        nodes=[construct_result_node(node) for node in (result.get("nodes") or [])],
         state=result.get("state"),
-        change_details=construct_change_details(result.get("changeDetails"))
+        change_details=construct_change_details(result.get("changeDetails")),
     )

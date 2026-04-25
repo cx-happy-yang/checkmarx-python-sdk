@@ -5,6 +5,7 @@ class CxEmailNotification(object):
     """
     email notification
     """
+
     def __init__(self, failed_scan=None, before_scan=None, after_scan=None):
         """
 
@@ -18,6 +19,8 @@ class CxEmailNotification(object):
         self.after_scan = after_scan
 
     def __str__(self):
-        return "CxEmailNotification(failed_scan={}, before_scan={}, after_scan={})".format(
-            self.failed_scan, self.before_scan, self.after_scan
+        return (
+            "CxEmailNotification(failed_scan={}, before_scan={}, after_scan={})".format(
+                self.failed_scan, self.before_scan, self.after_scan
+            )
         )

@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import List
-from .AssignmentsWithBaseRoles import AssignmentsWithBaseRoles, construct_assignments_with_base_roles
+from .AssignmentsWithBaseRoles import (
+    AssignmentsWithBaseRoles,
+    construct_assignments_with_base_roles,
+)
 
 
 @dataclass
@@ -15,6 +18,7 @@ def construct_entities_for_extended_response(item):
         total_count=item.get("totalCount"),
         filtered_total_count=item.get("filteredTotalCount"),
         assignments=[
-            construct_assignments_with_base_roles(assignment) for assignment in (item.get("assignments") or [])
-        ]
+            construct_assignments_with_base_roles(assignment)
+            for assignment in (item.get("assignments") or [])
+        ],
     )

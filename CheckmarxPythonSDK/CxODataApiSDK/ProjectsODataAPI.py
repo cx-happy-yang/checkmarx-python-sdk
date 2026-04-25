@@ -53,12 +53,18 @@ class ProjectsODataAPI(object):
             ]
         """
         relative_url = "/Cxwebinterface/odata/v1/Projects"
-        relative_url += "?$expand=LastScan&$orderby=LastScan/RiskScore%20desc&$top={n}".format(n=number_of_projects)
+        relative_url += (
+            "?$expand=LastScan&$orderby=LastScan/RiskScore%20desc&$top={n}".format(
+                n=number_of_projects
+            )
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
         return item_list.get("value")
 
-    def get_top_n_projects_by_last_scan_duration(self, number_of_projects: int) -> List[dict]:
+    def get_top_n_projects_by_last_scan_duration(
+        self, number_of_projects: int
+    ) -> List[dict]:
         """
         Requested result: list the 5 Projects whose most recent scan had the longest duration
         Query used for retrieving the data:
@@ -97,7 +103,9 @@ class ProjectsODataAPI(object):
              }]
         """
 
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$expand=LastScan&$orderby=LastScan"
+        relative_url = (
+            "/Cxwebinterface/odata/v1/Projects?$expand=LastScan&$orderby=LastScan"
+        )
         relative_url += "/ScanDuration%20desc&$top={n}".format(n=number_of_projects)
 
         response = self.api_client.get_request(relative_url=relative_url)
@@ -149,14 +157,18 @@ class ProjectsODataAPI(object):
                      'QueryVersionId': 56089346},]
             }]
         """
-        relative_url = ("/Cxwebinterface/odata/v1/Projects?$expand=LastScan($expand=Results($filter="
-                        "Severity%20eq%20CxDataRepository.Severity%27High%27))")
+        relative_url = (
+            "/Cxwebinterface/odata/v1/Projects?$expand=LastScan($expand=Results($filter="
+            "Severity%20eq%20CxDataRepository.Severity%27High%27))"
+        )
 
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
         return item_list.get("value")
 
-    def get_projects_that_have_high_vulnerabilities_in_the_last_scan(self) -> List[dict]:
+    def get_projects_that_have_high_vulnerabilities_in_the_last_scan(
+        self,
+    ) -> List[dict]:
         """
         Requested result:list only projects that had vulnerabilities with a High severity degree found
         in their last scan
@@ -199,16 +211,18 @@ class ProjectsODataAPI(object):
             }]
         """
 
-        relative_url = ("/Cxwebinterface/odata/v1/Projects?$expand=LastScan($expand=Results)&"
-                        "$filter=LastScan/Results/"
-                        "any(r:%20r/Severity%20eq%20CxDataRepository.Severity%27High%27)")
+        relative_url = (
+            "/Cxwebinterface/odata/v1/Projects?$expand=LastScan($expand=Results)&"
+            "$filter=LastScan/Results/"
+            "any(r:%20r/Severity%20eq%20CxDataRepository.Severity%27High%27)"
+        )
 
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
         return item_list.get("value")
 
     def get_the_number_of_issues_vulnerabilities_within_a_predefined_time_range_for_all_projects_in_a_team(
-            self, team_id: int, start_date: str, end_date: str
+        self, team_id: int, start_date: str, end_date: str
     ) -> List[dict]:
         """
         Requested result:list the number of recurrent/resolved/new issues (vulnerabilities) detected by scans made in
@@ -259,12 +273,18 @@ class ProjectsODataAPI(object):
 
         # OwningTeamId is of type string in 8.9 and previous versions, but from 9.0 the type changed to int
         if get_version_number_as_int() < 900:
-            team_id = '%27' + str(team_id) + '%27'
+            team_id = "%27" + str(team_id) + "%27"
 
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$filter=OwningTeamId%20eq%20{team_id}".format(team_id=team_id)
+        relative_url = "/Cxwebinterface/odata/v1/Projects?$filter=OwningTeamId%20eq%20{team_id}".format(
+            team_id=team_id
+        )
         relative_url += "&$expand=Scans($expand=ResultSummary;$select=Id,ScanRequestedOn,ResultSummary;"
-        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(start_date=start_date)
-        relative_url += "%20ScanRequestedOn%20lt%20{end_date})".format(end_date=end_date)
+        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(
+            start_date=start_date
+        )
+        relative_url += "%20ScanRequestedOn%20lt%20{end_date})".format(
+            end_date=end_date
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
         return item_list.get("value")
@@ -284,7 +304,7 @@ class ProjectsODataAPI(object):
         return int(response.content.decode(response.apparent_encoding))
 
     def get_all_projects_with_a_custom_field_that_has_a_specific_value(
-            self, field_name: str, field_value: str
+        self, field_name: str, field_value: str
     ) -> List[dict]:
         """
         Requested result: retrieve all projects that contain a custom filed (for example, ProjManager, indicating the
@@ -317,7 +337,7 @@ class ProjectsODataAPI(object):
         return item_list.get("value")
 
     def get_all_projects_with_a_custom_field_as_well_as_the_custom_field_information(
-            self, field_name: str
+        self, field_name: str
     ) -> List[dict]:
         """
         Requested result: retrieve all projects that contain a custom field (for example, ProjManager, indicating the
@@ -346,7 +366,11 @@ class ProjectsODataAPI(object):
                 ]
         """
         relative_url = "/cxwebinterface/odata/v1/Projects?$expand=CustomFields"
-        relative_url += "&$filter=CustomFields/any(f: f/FieldName eq '{field_name}')".format(field_name=field_name)
+        relative_url += (
+            "&$filter=CustomFields/any(f: f/FieldName eq '{field_name}')".format(
+                field_name=field_name
+            )
+        )
 
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
@@ -406,7 +430,9 @@ class ProjectsODataAPI(object):
                     }
                 ]
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$filter=EngineConfigurationId%20gt%201"
+        relative_url = (
+            "/Cxwebinterface/odata/v1/Projects?$filter=EngineConfigurationId%20gt%201"
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
         return item_list.get("value")
@@ -427,10 +453,8 @@ class ProjectsODataAPI(object):
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json().get("value")
         project_id_name_list = [
-            {
-                "ProjectId": item.get("Id"),
-                "ProjectName": item.get("Name")
-            } for item in item_list
+            {"ProjectId": item.get("Id"), "ProjectName": item.get("Name")}
+            for item in item_list
         ]
 
         return project_id_name_list
@@ -447,15 +471,16 @@ class ProjectsODataAPI(object):
         item_list = response.json().get("value")
         return [
             {
-                "TeamId": item.get('OwningTeamId'),
-                "TeamName": item.get('OwningTeam').get('FullName'),
+                "TeamId": item.get("OwningTeamId"),
+                "TeamName": item.get("OwningTeam").get("FullName"),
                 "ProjectId": item.get("Id"),
-                "ProjectName": item.get("Name")
-            } for item in item_list
+                "ProjectName": item.get("Name"),
+            }
+            for item in item_list
         ]
 
     def get_all_scan_ids_within_a_predefined_time_range_for_all_projects_in_a_team(
-            self, team_id: int, start_date: str, end_date: str
+        self, team_id: int, start_date: str, end_date: str
     ) -> List[dict]:
         """
         Requested result:list the number of recurrent/resolved/new issues (vulnerabilities) detected by scans made in
@@ -482,39 +507,50 @@ class ProjectsODataAPI(object):
         """
         # OwningTeamId is of type string in 8.9 and previous versions, but from 9.0 the type changed to int
         if get_version_number_as_int() < 900:
-            team_id = '%27' + str(team_id) + '%27'
+            team_id = "%27" + str(team_id) + "%27"
 
         relative_url = "/Cxwebinterface/odata/v1/Projects?$select=Id,Name"
         relative_url += "&$filter=OwningTeamId%20eq%20{team_id}".format(team_id=team_id)
         relative_url += "&$expand=Scans($select=Id;"
-        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(start_date=start_date)
-        relative_url += "%20ScanRequestedOn%20lt%20{end_date};$orderby=Id)".format(end_date=end_date)
+        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(
+            start_date=start_date
+        )
+        relative_url += "%20ScanRequestedOn%20lt%20{end_date};$orderby=Id)".format(
+            end_date=end_date
+        )
         response = self.api_client.get_request(relative_url=relative_url)
         item_list = response.json()
         return item_list.get("value")
 
 
 def get_top_n_projects_by_risk_score(number_of_projects: int) -> List[dict]:
-    return ProjectsODataAPI().get_top_n_projects_by_risk_score(number_of_projects=number_of_projects)
+    return ProjectsODataAPI().get_top_n_projects_by_risk_score(
+        number_of_projects=number_of_projects
+    )
 
 
 def get_top_n_projects_by_last_scan_duration(number_of_projects: int) -> List[dict]:
-    return ProjectsODataAPI().get_top_n_projects_by_last_scan_duration(number_of_projects=number_of_projects)
+    return ProjectsODataAPI().get_top_n_projects_by_last_scan_duration(
+        number_of_projects=number_of_projects
+    )
 
 
 def get_all_projects_with_their_last_scan_and_the_high_vulnerabilities():
-    return ProjectsODataAPI().get_all_projects_with_their_last_scan_and_the_high_vulnerabilities()
+    return (
+        ProjectsODataAPI().get_all_projects_with_their_last_scan_and_the_high_vulnerabilities()
+    )
 
 
 def get_projects_that_have_high_vulnerabilities_in_the_last_scan() -> List[dict]:
-    return ProjectsODataAPI().get_projects_that_have_high_vulnerabilities_in_the_last_scan()
+    return (
+        ProjectsODataAPI().get_projects_that_have_high_vulnerabilities_in_the_last_scan()
+    )
 
 
 def get_the_number_of_issues_vulnerabilities_within_a_predefined_time_range_for_all_projects_in_a_team(
-        team_id: int, start_date: str, end_date: str
+    team_id: int, start_date: str, end_date: str
 ) -> List[dict]:
-    return ProjectsODataAPI(
-    ).get_the_number_of_issues_vulnerabilities_within_a_predefined_time_range_for_all_projects_in_a_team(
+    return ProjectsODataAPI().get_the_number_of_issues_vulnerabilities_within_a_predefined_time_range_for_all_projects_in_a_team(
         team_id=team_id, start_date=start_date, end_date=end_date
     )
 
@@ -524,7 +560,7 @@ def get_count_of_the_projects_in_the_system() -> int:
 
 
 def get_all_projects_with_a_custom_field_that_has_a_specific_value(
-        field_name: str, field_value: str
+    field_name: str, field_value: str
 ) -> List[dict]:
     return ProjectsODataAPI().get_all_projects_with_a_custom_field_that_has_a_specific_value(
         field_name=field_name, field_value=field_value
@@ -532,7 +568,7 @@ def get_all_projects_with_a_custom_field_that_has_a_specific_value(
 
 
 def get_all_projects_with_a_custom_field_as_well_as_the_custom_field_information(
-        field_name: str
+    field_name: str,
 ) -> List[dict]:
     return ProjectsODataAPI().get_all_projects_with_a_custom_field_as_well_as_the_custom_field_information(
         field_name=field_name
@@ -544,7 +580,9 @@ def get_presets_associated_with_each_project() -> List[dict]:
 
 
 def get_all_projects_that_are_set_up_with_a_non_standard_configuration():
-    return ProjectsODataAPI().get_all_projects_that_are_set_up_with_a_non_standard_configuration()
+    return (
+        ProjectsODataAPI().get_all_projects_that_are_set_up_with_a_non_standard_configuration()
+    )
 
 
 def get_all_projects_id_name() -> List[dict]:
@@ -556,7 +594,7 @@ def get_all_projects_id_name_and_team_id_name() -> List[dict]:
 
 
 def get_all_scan_ids_within_a_predefined_time_range_for_all_projects_in_a_team(
-        team_id: int, start_date: str, end_date: str
+    team_id: int, start_date: str, end_date: str
 ) -> List[dict]:
     return ProjectsODataAPI().get_all_scan_ids_within_a_predefined_time_range_for_all_projects_in_a_team(
         team_id=team_id, start_date=start_date, end_date=end_date

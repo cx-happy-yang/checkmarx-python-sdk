@@ -8,7 +8,4 @@ class QueryBuilderMessage:
 
 
 def construct_query_builder_message(item):
-    return QueryBuilderMessage(
-        role=item.get("role"),
-        content=item.get("content")
-    )
+    return QueryBuilderMessage(role=item.get("role"), content=item.get("content"))

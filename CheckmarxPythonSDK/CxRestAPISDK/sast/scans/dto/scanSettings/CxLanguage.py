@@ -5,6 +5,7 @@ class CxLanguage(object):
     """
     the languages that Checkmarx supported
     """
+
     def __init__(self, language_id, name):
         """
 
@@ -16,6 +17,4 @@ class CxLanguage(object):
         self.name = name
 
     def __str__(self):
-        return "CxLanguage(id={}, name={})".format(
-            self.id, self.name
-        )
+        return "CxLanguage(id={}, name={})".format(self.id, self.name)

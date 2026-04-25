@@ -32,11 +32,13 @@ class CodeRepositoryProjectImportAPI(object):
         """
         type_check(scm_import_input, SCMImportInput)
         relative_url = api_url + "/scm-projects"
-        response = self.api_client.post_request(relative_url=relative_url, json=scm_import_input.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=scm_import_input.to_dict()
+        )
         item = response.json()
         return {
-          "processId": item.get("processId"),
-          "message": item.get("message"),
+            "processId": item.get("processId"),
+            "message": item.get("message"),
         }
 
     def retrieve_import_status(self, process_id: str) -> dict:
@@ -77,8 +79,8 @@ class CodeRepositoryProjectImportAPI(object):
         item = response.json()
 
         response_data = {
-          "currentPhase": item.get("currentPhase"),
-          "percentage": item.get("percentage"),
+            "currentPhase": item.get("currentPhase"),
+            "percentage": item.get("percentage"),
         }
 
         if "result" in item:
@@ -88,8 +90,12 @@ class CodeRepositoryProjectImportAPI(object):
 
 
 def import_code_repository(scm_import_input: SCMImportInput) -> dict:
-    return CodeRepositoryProjectImportAPI().import_code_repository(scm_import_input=scm_import_input)
+    return CodeRepositoryProjectImportAPI().import_code_repository(
+        scm_import_input=scm_import_input
+    )
 
 
 def retrieve_import_status(process_id: str) -> dict:
-    return CodeRepositoryProjectImportAPI().retrieve_import_status(process_id=process_id)
+    return CodeRepositoryProjectImportAPI().retrieve_import_status(
+        process_id=process_id
+    )

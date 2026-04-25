@@ -5,10 +5,30 @@ class CxScanQueueDetail(object):
     """
     scan queue detail
     """
-    def __init__(self, scan_queue_detail_id=None, stage=None, stage_details=None, step_details=None, project=None,
-                 engine=None, languages=None, team_id=None, date_created=None, queued_on=None, engine_started_on=None,
-                 completed_on=None, loc=None, is_incremental=None, is_public=None, origin=None, queue_position=None,
-                 total_percent=None, stage_percent=None, initiator=None):
+
+    def __init__(
+        self,
+        scan_queue_detail_id=None,
+        stage=None,
+        stage_details=None,
+        step_details=None,
+        project=None,
+        engine=None,
+        languages=None,
+        team_id=None,
+        date_created=None,
+        queued_on=None,
+        engine_started_on=None,
+        completed_on=None,
+        loc=None,
+        is_incremental=None,
+        is_public=None,
+        origin=None,
+        queue_position=None,
+        total_percent=None,
+        stage_percent=None,
+        initiator=None,
+    ):
         """
 
         Args:
@@ -59,8 +79,24 @@ class CxScanQueueDetail(object):
                  languages={}, team_id={}, date_created={}, queued_on={}, engine_started_on={},
                  completed_on={}, loc={}, is_incremental={}, is_public={}, origin={}, queue_position={},
                  total_percent={}, stage_percent={}, initiator={})""".format(
-            self.id, self.stage, self.stage_details, self.step_details, self.project, self.engine,
-            self.languages, self.team_id, self.date_created, self.queued_on, self.engine_started_on,
-            self.completed_on, self.loc, self.is_incremental, self.is_public, self.origin, self.queue_position,
-            self.total_percent, self.stage_percent, self.initiator
+            self.id,
+            self.stage,
+            self.stage_details,
+            self.step_details,
+            self.project,
+            self.engine,
+            self.languages,
+            self.team_id,
+            self.date_created,
+            self.queued_on,
+            self.engine_started_on,
+            self.completed_on,
+            self.loc,
+            self.is_incremental,
+            self.is_public,
+            self.origin,
+            self.queue_position,
+            self.total_percent,
+            self.stage_percent,
+            self.initiator,
         )

@@ -14,6 +14,7 @@ class Git:
         tag (str): The tag of the Git commit version to be scanned. Mutually exclusive to 'commit'.
         credentials (`Credentials`):
     """
+
     repo_url: str
     branch: str
     commit: str = None

@@ -8,6 +8,4 @@ class CompilationResponse:
 
 
 def construct_compilation_response(item):
-    return CompilationResponse(
-        failed_queries=item.get("failedQueries")
-    )
+    return CompilationResponse(failed_queries=item.get("failedQueries"))

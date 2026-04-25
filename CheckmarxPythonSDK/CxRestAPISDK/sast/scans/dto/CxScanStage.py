@@ -17,6 +17,4 @@ class CxScanStage(object):
         self.value = value
 
     def __str__(self):
-        return "CxScanStage(id={}, value={})".format(
-            self.id, self.value
-        )
+        return "CxScanStage(id={}, value={})".format(self.id, self.value)

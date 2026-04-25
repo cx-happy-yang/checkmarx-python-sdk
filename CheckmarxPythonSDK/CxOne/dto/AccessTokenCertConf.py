@@ -3,15 +3,11 @@ class AccessTokenCertConf:
         self.x5t = x5t
 
     def __str__(self):
-        return f"AccessTokenCertConf(" \
-               f"x5t#S256={self.x5t} " \
-               f")"
+        return f"AccessTokenCertConf(" f"x5t#S256={self.x5t} " f")"
 
 
 def to_dict(self):
-    return {
-        "x5t#S256": self.x5t
-    }
+    return {"x5t#S256": self.x5t}
 
 
 def construct_access_token_cert_conf(item):

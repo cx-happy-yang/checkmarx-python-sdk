@@ -2,7 +2,8 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from .utilities import type_check
 from .dto import (
-    AuditEvents, construct_audit_events,
+    AuditEvents,
+    construct_audit_events,
 )
 
 api_url = "/api/audit"
@@ -17,7 +18,11 @@ class AuditTrailAPI(object):
         self.api_client = api_client
 
     def get_audit_events_for_tenant(
-            self, date_from: str = None, date_to: str = None, offset: int = 0, limit: int = 200
+        self,
+        date_from: str = None,
+        date_to: str = None,
+        offset: int = 0,
+        limit: int = 200,
     ) -> AuditEvents:
         """
         returns a list of audit events for the specified date range. - If no date range is specified, events from the
@@ -45,5 +50,9 @@ class AuditTrailAPI(object):
         return construct_audit_events(item)
 
 
-def get_audit_events_for_tenant(date_from=None, date_to=None, offset=0, limit=200) -> AuditEvents:
-    return AuditTrailAPI().get_audit_events_for_tenant(date_from=date_from, date_to=date_to, offset=offset, limit=limit)
+def get_audit_events_for_tenant(
+    date_from=None, date_to=None, offset=0, limit=200
+) -> AuditEvents:
+    return AuditTrailAPI().get_audit_events_for_tenant(
+        date_from=date_from, date_to=date_to, offset=offset, limit=limit
+    )

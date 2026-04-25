@@ -7,7 +7,11 @@ from typing import Callable, Union
 from .configuration import Configuration
 from .rate_limiter import RateLimiter
 from CheckmarxPythonSDK.utilities.compat import (
-    OK, UNAUTHORIZED, NO_CONTENT, CREATED, ACCEPTED
+    OK,
+    UNAUTHORIZED,
+    NO_CONTENT,
+    CREATED,
+    ACCEPTED,
 )
 
 
@@ -96,14 +100,14 @@ def retry(max_retries: int = 1):
 
             while retries <= max_retries:
                 try:
-                    headers = kwargs.get('headers', {}) or {}
+                    headers = kwargs.get("headers", {}) or {}
                     token = self.token_manager.get_token()
-                    headers['Authorization'] = f'Bearer {token}'
-                    kwargs['headers'] = headers
+                    headers["Authorization"] = f"Bearer {token}"
+                    kwargs["headers"] = headers
 
                     response = func(self, *args, **kwargs)
 
-                    if hasattr(response, 'status_code'):
+                    if hasattr(response, "status_code"):
                         if response.status_code == 401:
                             if retries < max_retries:
                                 self.token_manager.refresh_token()
@@ -122,27 +126,40 @@ def retry(max_retries: int = 1):
                                 # Handle rate limiting
                                 backoff_time = None
                                 # 1. Try to get Retry-After header first
-                                if response.headers.get('Retry-After'):
-                                    retry_after = response.headers['Retry-After']
+                                if response.headers.get("Retry-After"):
+                                    retry_after = response.headers["Retry-After"]
                                     try:
                                         # If it's a number of seconds
                                         backoff_time = int(retry_after)
                                     except ValueError:
                                         # If it's a GMT date string, parse it
                                         from email.utils import parsedate_to_datetime
+
                                         retry_date = parsedate_to_datetime(retry_after)
                                         import datetime
-                                        backoff_time = (retry_date - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
-                                        backoff_time = max(1, backoff_time)  # Ensure at least 1 second
-                                
+
+                                        backoff_time = (
+                                            retry_date
+                                            - datetime.datetime.now(
+                                                datetime.timezone.utc
+                                            )
+                                        ).total_seconds()
+                                        backoff_time = max(
+                                            1, backoff_time
+                                        )  # Ensure at least 1 second
+
                                 # 2. If no Retry-After, use exponential backoff
                                 if backoff_time is None:
                                     # Initial wait: 60 seconds (1 minute), max wait: 300 seconds (5 minutes)
                                     base_wait = 60
                                     max_wait = 300
-                                    backoff_time = min(base_wait * (2 ** retries), max_wait)
-                                
-                                print(f"Rate limited (429), waiting {backoff_time:.2f} seconds before retrying...")
+                                    backoff_time = min(
+                                        base_wait * (2**retries), max_wait
+                                    )
+
+                                print(
+                                    f"Rate limited (429), waiting {backoff_time:.2f} seconds before retrying..."
+                                )
                                 time.sleep(backoff_time)
                                 retries += 1
                                 continue
@@ -169,12 +186,16 @@ def check_response(response):
     status_code = response.status_code
     text = response.text
     if True in [
-        method in ['GET', 'HEAD'] and status_code not in [OK, UNAUTHORIZED],
-        method == 'POST' and status_code not in [OK, NO_CONTENT, CREATED, UNAUTHORIZED, ACCEPTED],
-        method in ['PUT', 'PATCH', 'DELETE'] and status_code not in [OK, NO_CONTENT, ACCEPTED, UNAUTHORIZED],
+        method in ["GET", "HEAD"] and status_code not in [OK, UNAUTHORIZED],
+        method == "POST"
+        and status_code not in [OK, NO_CONTENT, CREATED, UNAUTHORIZED, ACCEPTED],
+        method in ["PUT", "PATCH", "DELETE"]
+        and status_code not in [OK, NO_CONTENT, ACCEPTED, UNAUTHORIZED],
     ]:
-        raise ValueError("HttpStatusCode: {code}".format(code=status_code),
-                         "ErrorMessage: {msg}".format(msg=text))
+        raise ValueError(
+            "HttpStatusCode: {code}".format(code=status_code),
+            "ErrorMessage: {msg}".format(msg=text),
+        )
 
 
 class ApiClient:
@@ -184,7 +205,7 @@ class ApiClient:
         self.token_req_data = create_token_request_data(configuration=configuration)
         self.token_manager = TokenManager(token_refresh_func=self.refresh_token)
         self.url_prefix = url_prefix
-        
+
         # Initialize rate limiter with configuration values
         capacity = configuration.rate_limit_capacity
         if configuration.rate_limit_refill_rate:
@@ -210,24 +231,24 @@ class ApiClient:
             http_fqdn_list = self.configuration.token_url.split("/")[0:3]
             http_fqdn_list.pop(1)
             access_control_url = "//".join(http_fqdn_list)
-            url = access_control_url.rstrip('/') + '/' + relative_url.lstrip('/')
+            url = access_control_url.rstrip("/") + "/" + relative_url.lstrip("/")
         return url
 
     @retry(max_retries=2)
     def call_api(
-            self,
-            method: str,
-            url: str,
-            params: dict = None,
-            data=None,
-            files=None,
-            json: dict = None,
-            auth=None,
-            headers: dict = None,
+        self,
+        method: str,
+        url: str,
+        params: dict = None,
+        data=None,
+        files=None,
+        json: dict = None,
+        auth=None,
+        headers: dict = None,
     ):
         # Acquire token for rate limiting
         self.rate_limiter.acquire()
-        
+
         response = self.session.request(
             method=method,
             url=url,
@@ -242,31 +263,112 @@ class ApiClient:
         check_response(response)
         return response
 
-    def head_request(self, relative_url, auth=None, headers=None, json=None, params=None, is_iam=False):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(method="HEAD", url=url, auth=auth, headers=headers, json=json, params=params)
-
-    def get_request(self, relative_url, auth=None, headers=None, params=None, is_iam=False):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(method="GET", url=url, auth=auth, headers=headers, params=params)
-
-    def post_request(self, relative_url, data=None, files=None, auth=None, headers=None, params=None, json=None,
-                     is_iam=False):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(method="POST", url=url, data=data, files=files, auth=auth, headers=headers, params=params,
-                             json=json)
-
-    def put_request(
-            self, relative_url, data=None, files=None, auth=None, headers=None, params=None, json=None, is_iam=False
+    def head_request(
+        self,
+        relative_url,
+        auth=None,
+        headers=None,
+        json=None,
+        params=None,
+        is_iam=False,
     ):
         url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(method="PUT", url=url, data=data, files=files, auth=auth, headers=headers, params=params,
-                             json=json)
+        return self.call_api(
+            method="HEAD", url=url, auth=auth, headers=headers, json=json, params=params
+        )
 
-    def patch_request(self, relative_url, data=None, auth=None, headers=None, params=None, json=None, is_iam=False):
+    def get_request(
+        self, relative_url, auth=None, headers=None, params=None, is_iam=False
+    ):
         url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(method="PATCH", url=url, data=data, auth=auth, headers=headers, params=params, json=json)
+        return self.call_api(
+            method="GET", url=url, auth=auth, headers=headers, params=params
+        )
 
-    def delete_request(self, relative_url, data=None, auth=None, headers=None, params=None, json=None, is_iam=False):
+    def post_request(
+        self,
+        relative_url,
+        data=None,
+        files=None,
+        auth=None,
+        headers=None,
+        params=None,
+        json=None,
+        is_iam=False,
+    ):
         url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(method="DELETE", url=url, data=data, auth=auth, headers=headers, params=params, json=json)
+        return self.call_api(
+            method="POST",
+            url=url,
+            data=data,
+            files=files,
+            auth=auth,
+            headers=headers,
+            params=params,
+            json=json,
+        )
+
+    def put_request(
+        self,
+        relative_url,
+        data=None,
+        files=None,
+        auth=None,
+        headers=None,
+        params=None,
+        json=None,
+        is_iam=False,
+    ):
+        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
+        return self.call_api(
+            method="PUT",
+            url=url,
+            data=data,
+            files=files,
+            auth=auth,
+            headers=headers,
+            params=params,
+            json=json,
+        )
+
+    def patch_request(
+        self,
+        relative_url,
+        data=None,
+        auth=None,
+        headers=None,
+        params=None,
+        json=None,
+        is_iam=False,
+    ):
+        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
+        return self.call_api(
+            method="PATCH",
+            url=url,
+            data=data,
+            auth=auth,
+            headers=headers,
+            params=params,
+            json=json,
+        )
+
+    def delete_request(
+        self,
+        relative_url,
+        data=None,
+        auth=None,
+        headers=None,
+        params=None,
+        json=None,
+        is_iam=False,
+    ):
+        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
+        return self.call_api(
+            method="DELETE",
+            url=url,
+            data=data,
+            auth=auth,
+            headers=headers,
+            params=params,
+            json=json,
+        )

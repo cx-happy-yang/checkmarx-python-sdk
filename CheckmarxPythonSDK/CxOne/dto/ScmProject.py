@@ -37,7 +37,9 @@ class ScmProject:
         if self.ssh_key is not None:
             result.update({"sshKey": self.ssh_key})
         if self.branch_to_scan_upon_creation is not None:
-            result.update({"branchToScanUponCreation": self.branch_to_scan_upon_creation})
+            result.update(
+                {"branchToScanUponCreation": self.branch_to_scan_upon_creation}
+            )
         if self.custom_settings is not None:
             result.update({"customSettings": self.custom_settings.to_dict()})
         return result

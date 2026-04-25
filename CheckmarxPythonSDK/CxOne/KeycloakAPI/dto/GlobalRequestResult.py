@@ -13,10 +13,10 @@ class GlobalRequestResult:
         result: Dict[str, Any] = {}
         if self.success_requests is not None:
             value = self.success_requests
-            result['successRequests'] = value
+            result["successRequests"] = value
         if self.failed_requests is not None:
             value = self.failed_requests
-            result['failedRequests'] = value
+            result["failedRequests"] = value
         return result
 
     @classmethod
@@ -26,5 +26,5 @@ class GlobalRequestResult:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

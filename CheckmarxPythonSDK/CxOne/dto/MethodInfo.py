@@ -16,6 +16,7 @@ class MethodInfo:
         kind (str):
         parameters (list of MethodParameter):
     """
+
     lang: str
     name: str
     member_of: str
@@ -34,6 +35,7 @@ def construct_method_info(item):
         return_type=item.get("returnType"),
         kind=item.get("kind"),
         parameters=[
-            construct_method_parameter(method_param) for method_param in (item.get("parameters") or [])
-        ]
+            construct_method_parameter(method_param)
+            for method_param in (item.get("parameters") or [])
+        ],
     )

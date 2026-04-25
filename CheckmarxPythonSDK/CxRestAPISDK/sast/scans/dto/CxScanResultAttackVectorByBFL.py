@@ -1,5 +1,7 @@
 class CxScanResultAttackVectorByBFL(object):
-    def __init__(self, scan_id, query_version_code, best_fix_location_node, attack_vectors):
+    def __init__(
+        self, scan_id, query_version_code, best_fix_location_node, attack_vectors
+    ):
         """
 
         Args:
@@ -16,5 +18,8 @@ class CxScanResultAttackVectorByBFL(object):
     def __str__(self):
         return """CxScanResultAttackVectorByBFL(scan_id={}, query_version_code={}, best_fix_location_node={}, 
         attack_vectors={})""".format(
-            self.scan_id, self.query_version_code, self.best_fix_location_node, self.attack_vectors
+            self.scan_id,
+            self.query_version_code,
+            self.best_fix_location_node,
+            self.attack_vectors,
         )

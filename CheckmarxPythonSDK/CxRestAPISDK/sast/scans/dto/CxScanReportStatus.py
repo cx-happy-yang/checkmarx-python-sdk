@@ -5,6 +5,7 @@ class CxScanReportStatus(object):
     """
     scan report status
     """
+
     class Status(object):
         def __init__(self, status_id, value):
             """

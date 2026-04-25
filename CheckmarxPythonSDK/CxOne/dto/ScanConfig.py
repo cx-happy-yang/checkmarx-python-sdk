@@ -11,6 +11,7 @@ class ScanConfig:
         value (dict): An object representing the configuration in a key-value format. Relevant only for SAST scans.
                 example:  { "incremental": "true", "presetName": "Default" }
     """
+
     type: str = None
     value: dict = None
 
@@ -20,6 +21,4 @@ class ScanConfig:
                 "type": self.type,
                 "value": self.value,
             }
-        return {
-            "type": self.type
-        }
+        return {"type": self.type}

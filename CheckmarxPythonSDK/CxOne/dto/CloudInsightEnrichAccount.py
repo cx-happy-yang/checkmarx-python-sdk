@@ -9,6 +9,6 @@ class CloudInsightEnrichAccount:
 
 def construct_cloud_insight_enrich_account(item):
     return CloudInsightEnrichAccount(
-            name=item.get("name"),
-            account_id=item.get("accountID"),
-        )
+        name=item.get("name"),
+        account_id=item.get("accountID"),
+    )

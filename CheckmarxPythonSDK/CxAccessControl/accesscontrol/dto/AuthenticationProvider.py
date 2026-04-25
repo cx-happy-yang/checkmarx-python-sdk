@@ -3,7 +3,15 @@
 
 class AuthenticationProvider(object):
 
-    def __init__(self, authentication_provider_id, name, provider_id, provider_type, is_external, active):
+    def __init__(
+        self,
+        authentication_provider_id,
+        name,
+        provider_id,
+        provider_type,
+        is_external,
+        active,
+    ):
         """
 
         Args:
@@ -24,5 +32,10 @@ class AuthenticationProvider(object):
     def __str__(self):
         return """AuthenticationProvider(id={}, name={}, provider_id={}, 
         provider_type={}, is_external={}, active={})""".format(
-            self.id, self.name, self.provider_id, self.provider_type, self.is_external, self.active
+            self.id,
+            self.name,
+            self.provider_id,
+            self.provider_type,
+            self.is_external,
+            self.active,
         )

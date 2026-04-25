@@ -11,9 +11,8 @@ class QueryRequest:
 
     def to_dict(self):
         return {
-          "path": self.path,
-          "name": self.name,
-          "source": self.source,
-          "metadata": construct_metadata(self.metadata)
+            "path": self.path,
+            "name": self.name,
+            "source": self.source,
+            "metadata": construct_metadata(self.metadata),
         }
-

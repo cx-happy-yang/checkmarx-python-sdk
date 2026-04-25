@@ -16,5 +16,5 @@ def construct_comment_json(item):
         date=item.get("date"),
         user=item.get("user"),
         content=item.get("content"),
-        is_deleted=item.get("isDeleted")
+        is_deleted=item.get("isDeleted"),
     )

@@ -13,10 +13,10 @@ class ClientPolicyExecutorRepresentation:
         result: Dict[str, Any] = {}
         if self.executor is not None:
             value = self.executor
-            result['executor'] = value
+            result["executor"] = value
         if self.configuration is not None:
             value = self.configuration
-            result['configuration'] = value
+            result["configuration"] = value
         return result
 
     @classmethod
@@ -26,5 +26,5 @@ class ClientPolicyExecutorRepresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

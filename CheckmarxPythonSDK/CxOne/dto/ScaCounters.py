@@ -39,5 +39,5 @@ def construct_sca_counters(item):
         source_file_counters=item.get("sourceFileCounters"),
         age_counters=item.get("ageCounters"),
         total_counter=item.get("totalCounter"),
-        file_scanned_counter=item.get("filesScannedCounter")
+        file_scanned_counter=item.get("filesScannedCounter"),
     )

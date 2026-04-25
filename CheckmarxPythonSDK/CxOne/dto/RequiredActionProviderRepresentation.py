@@ -1,5 +1,7 @@
 class RequiredActionProviderRepresentation:
-    def __init__(self, alias, config, default_action, enabled, name, priority, provider_id):
+    def __init__(
+        self, alias, config, default_action, enabled, name, priority, provider_id
+    ):
         self.alias = alias
         self.config = config
         self.defaultAction = default_action
@@ -9,15 +11,17 @@ class RequiredActionProviderRepresentation:
         self.providerId = provider_id
 
     def __str__(self):
-        return f"RequiredActionProviderRepresentation(" \
-               f"alias={self.alias} " \
-               f"config={self.config} " \
-               f"defaultAction={self.defaultAction} " \
-               f"enabled={self.enabled} " \
-               f"name={self.name} " \
-               f"priority={self.priority} " \
-               f"providerId={self.providerId} " \
-               f")"
+        return (
+            f"RequiredActionProviderRepresentation("
+            f"alias={self.alias} "
+            f"config={self.config} "
+            f"defaultAction={self.defaultAction} "
+            f"enabled={self.enabled} "
+            f"name={self.name} "
+            f"priority={self.priority} "
+            f"providerId={self.providerId} "
+            f")"
+        )
 
     def to_dict(self):
         return {

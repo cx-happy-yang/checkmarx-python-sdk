@@ -1,5 +1,13 @@
 class ClientScopeRepresentation:
-    def __init__(self, attributes, description, client_scope_representation_id, name, protocol, protocol_mappers):
+    def __init__(
+        self,
+        attributes,
+        description,
+        client_scope_representation_id,
+        name,
+        protocol,
+        protocol_mappers,
+    ):
         self.attributes = attributes
         self.description = description
         self.id = client_scope_representation_id
@@ -8,14 +16,16 @@ class ClientScopeRepresentation:
         self.protocolMappers = protocol_mappers
 
     def __str__(self):
-        return f"ClientScopeRepresentation(" \
-               f"attributes={self.attributes} " \
-               f"description={self.description} " \
-               f"id={self.id} " \
-               f"name={self.name} " \
-               f"protocol={self.protocol} " \
-               f"protocolMappers={self.protocolMappers} " \
-               f")"
+        return (
+            f"ClientScopeRepresentation("
+            f"attributes={self.attributes} "
+            f"description={self.description} "
+            f"id={self.id} "
+            f"name={self.name} "
+            f"protocol={self.protocol} "
+            f"protocolMappers={self.protocolMappers} "
+            f")"
+        )
 
     def to_dict(self):
         return {

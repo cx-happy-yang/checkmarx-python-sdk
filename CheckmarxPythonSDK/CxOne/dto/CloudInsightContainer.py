@@ -20,5 +20,5 @@ def construct_cloud_insight_container(item):
         public_exposed=item.get("publicExposed"),
         image=item.get("image"),
         image_short_name=item.get("imageShortname"),
-        project=item.get("project")
+        project=item.get("project"),
     )

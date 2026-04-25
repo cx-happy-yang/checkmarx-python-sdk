@@ -11,6 +11,7 @@ class Upload:
         branch (str): The representative branch.
         repo_url (str): The representative repository URL.
     """
+
     upload_url: str
     branch: str = None
     repo_url: str = None

@@ -12,6 +12,7 @@ class ScanInfoCollection:
         scans (list of ScanInfo): Scans of that specific group.
         missing (list str): List of scan ids that wasn't found.
     """
+
     total_count: int
     scans: List[ScanInfo]
     missing: List[str]
@@ -23,5 +24,5 @@ def construct_scan_info_collection(item):
         scans=[
             construct_scan_info(scan_info) for scan_info in (item.get("scans") or [])
         ],
-        missing=item.get("missing")
+        missing=item.get("missing"),
     )

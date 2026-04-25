@@ -1,7 +1,19 @@
 class CxScanResultNode(object):
 
-    def __init__(self, node_id, order, short_name, full_name, file_name, folder, line, column, length, method_line,
-                 source_url):
+    def __init__(
+        self,
+        node_id,
+        order,
+        short_name,
+        full_name,
+        file_name,
+        folder,
+        line,
+        column,
+        length,
+        method_line,
+        source_url,
+    ):
         """
 
         Args:
@@ -32,6 +44,15 @@ class CxScanResultNode(object):
     def __str__(self):
         return """CxScanResultNode(id={}, order={}, short_name={}, full_name={}, file_name={}, folder={}, 
         line={}, column={}, length={}, method_line={}, source_url={})""".format(
-            self.id, self.order, self.short_name, self.full_name, self.file_name, self.folder,
-            self.line, self.column, self.length, self.method_line, self.source_url
+            self.id,
+            self.order,
+            self.short_name,
+            self.full_name,
+            self.file_name,
+            self.folder,
+            self.line,
+            self.column,
+            self.length,
+            self.method_line,
+            self.source_url,
         )

@@ -32,11 +32,8 @@ class LogsAPI(object):
             Exception: If the request fails or returns an error
         """
         url = f"{self.base_url}/api/logs/{scan_id}/{scan_type}"
-        
-        response = self.api_client.call_api(
-            method="GET",
-            url=url
-        )
+
+        response = self.api_client.call_api(method="GET", url=url)
         # Success - return the log content as string
         return response.text
 

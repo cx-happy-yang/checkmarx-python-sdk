@@ -4,7 +4,9 @@ from dataclasses import dataclass
 @dataclass
 class KicsResult:
     kics_result_id: str = None  # ID of the result
-    similarity_id: int = None  # ID of the Similarity feature (Indicator to identify a result by its first and last
+    similarity_id: int = (
+        None  # ID of the Similarity feature (Indicator to identify a result by its first and last
+    )
     # nodes
     severity: str = None  # Severity enum of a result.
     first_scan_id: str = None  # ID of the first scan id by resultHash

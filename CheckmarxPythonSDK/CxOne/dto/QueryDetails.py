@@ -15,6 +15,7 @@ class QueryDetails:
         query_description_id (int):
         custom (bool):
     """
+
     id: str
     cwe_id: int
     language: str
@@ -34,5 +35,5 @@ def construct_query_details(item):
         query_name=item.get("queryName"),
         severity=item.get("severity"),
         query_description_id=item.get("queryDescriptionId"),
-        custom=item.get("custom")
+        custom=item.get("custom"),
     )

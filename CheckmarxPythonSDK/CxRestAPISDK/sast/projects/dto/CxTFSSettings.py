@@ -6,6 +6,7 @@ class CxTFSSettings(object):
     """
     TFS settings
     """
+
     def __init__(self, uri, paths, link=None, credentials=None):
         """
 
@@ -22,16 +23,13 @@ class CxTFSSettings(object):
 
     def to_dict(self):
         return {
-                "credentials": {
-                    "userName": self.credentials.username,
-                    "password": self.credentials.password
-                },
-                "uri": {
-                    "absoluteUrl": self.uri.absolute_url,
-                    "port": self.uri.port
-                },
-                "paths": self.paths,
-            }
+            "credentials": {
+                "userName": self.credentials.username,
+                "password": self.credentials.password,
+            },
+            "uri": {"absoluteUrl": self.uri.absolute_url, "port": self.uri.port},
+            "paths": self.paths,
+        }
 
     def __str__(self):
         return "CxTFSSettings(uri={}, paths={}, link={}, credentials={})".format(

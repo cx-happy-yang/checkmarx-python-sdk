@@ -9,8 +9,10 @@ class CxEngineDedication(object):
             item_name (str):
             is_deprecated (bool):
         """
-        if item_type not in ['Scan', 'Project', 'Team']:
-            raise ValueError("parameter item_type should be one of member from list ['Scan', 'Project', 'Team']")
+        if item_type not in ["Scan", "Project", "Team"]:
+            raise ValueError(
+                "parameter item_type should be one of member from list ['Scan', 'Project', 'Team']"
+            )
 
         self.item_type = item_type
         self.item_id = item_id

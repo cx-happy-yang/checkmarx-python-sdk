@@ -19,6 +19,7 @@ class Assignment:
         resource_type (ResourceType): type of resource  Enum:[ application, project, tenant ]
         resource_name (str): Human-readable name of the resource
     """
+
     tenant_id: str = None
     entity_id: str = None
     entity_type: EntityType = None

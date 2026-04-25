@@ -4,10 +4,9 @@ class RolesRepresentation:
         self.realm = realm
 
     def __str__(self):
-        return f"RolesRepresentation(" \
-               f"client={self.client} " \
-               f"realm={self.realm} " \
-               f")"
+        return (
+            f"RolesRepresentation(" f"client={self.client} " f"realm={self.realm} " f")"
+        )
 
     def to_dict(self):
         return {

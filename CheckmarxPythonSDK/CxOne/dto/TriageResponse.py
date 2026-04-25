@@ -13,7 +13,7 @@ class TriageResponse:
             "resultId": self.result_id,
             "projectId": self.project_id,
             "state": self.state,
-            "severity": self.severity
+            "severity": self.severity,
         }
 
 

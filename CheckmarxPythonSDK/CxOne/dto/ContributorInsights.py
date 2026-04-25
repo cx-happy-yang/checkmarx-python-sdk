@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from .ContributorScmInsights import ContributorScmInsights, construct_contributor_scm_insights
+from .ContributorScmInsights import (
+    ContributorScmInsights,
+    construct_contributor_scm_insights,
+)
 
 
 @dataclass

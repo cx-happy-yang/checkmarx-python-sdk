@@ -22,5 +22,8 @@ class CxLanguageState(object):
 
     def __str__(self):
         return "LanguageState(language_id={}, language_name={}, language_hash={}, state_creation_date={})".format(
-            self.language_id, self.language_name, self.language_hash, self.state_creation_date
+            self.language_id,
+            self.language_name,
+            self.language_hash,
+            self.state_creation_date,
         )

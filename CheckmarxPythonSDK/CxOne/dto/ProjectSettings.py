@@ -29,9 +29,7 @@ class ProjectSettings:
         result = {
             "decoratePullRequests": self.decorate_pull_requests,
             "webhookEnabled": self.web_hook_enabled,
-            "scanners": [
-                scanner.to_dict() for scanner in self.scanners
-            ]
+            "scanners": [scanner.to_dict() for scanner in self.scanners],
         }
         if self.tags is not None:
             result.update({"tags": self.tags})

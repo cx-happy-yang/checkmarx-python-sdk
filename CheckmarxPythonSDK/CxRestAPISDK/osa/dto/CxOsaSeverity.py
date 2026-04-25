@@ -5,6 +5,7 @@ class CxOsaSeverity(object):
     """
     severity
     """
+
     def __init__(self, severity_id, name):
         """
 
@@ -17,6 +18,4 @@ class CxOsaSeverity(object):
         self.name = name
 
     def __str__(self):
-        return """CxOsaSeverity(id={}, name={})""".format(
-            self.id, self.name
-        )
+        return """CxOsaSeverity(id={}, name={})""".format(self.id, self.name)

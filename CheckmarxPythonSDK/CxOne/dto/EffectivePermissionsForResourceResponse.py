@@ -17,5 +17,5 @@ def construct_effective_permissions_for_resource_response(item):
         entity_type=item.get("entityType"),
         resource_id=item.get("resourceId"),
         resource_type=item.get("resourceType"),
-        permissions=item.get("permissions")
+        permissions=item.get("permissions"),
     )

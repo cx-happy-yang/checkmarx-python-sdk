@@ -17,22 +17,22 @@ class AddressClaimSet:
         result: Dict[str, Any] = {}
         if self.formatted is not None:
             value = self.formatted
-            result['formatted'] = value
+            result["formatted"] = value
         if self.street_address is not None:
             value = self.street_address
-            result['streetAddress'] = value
+            result["streetAddress"] = value
         if self.locality is not None:
             value = self.locality
-            result['locality'] = value
+            result["locality"] = value
         if self.region is not None:
             value = self.region
-            result['region'] = value
+            result["region"] = value
         if self.postal_code is not None:
             value = self.postal_code
-            result['postalCode'] = value
+            result["postalCode"] = value
         if self.country is not None:
             value = self.country
-            result['country'] = value
+            result["country"] = value
         return result
 
     @classmethod
@@ -42,5 +42,5 @@ class AddressClaimSet:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

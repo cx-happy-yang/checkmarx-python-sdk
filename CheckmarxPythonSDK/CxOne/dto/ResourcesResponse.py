@@ -14,7 +14,8 @@ def construct_resources_response(item):
         resources=[
             {
                 "resourceId": resource.get("resourceId"),
-                "resourceType": resource.get("resourceType")
-            } for resource in (item.get("resources") or [])
-        ]
+                "resourceType": resource.get("resourceType"),
+            }
+            for resource in (item.get("resources") or [])
+        ],
     )

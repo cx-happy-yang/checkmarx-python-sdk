@@ -6,10 +6,20 @@ class CxOsaSummaryReport(object):
     osa report
     """
 
-    def __init__(self, total_libraries, high_vulnerability_libraries, medium_vulnerability_libraries,
-                 low_vulnerability_libraries, non_vulnerable_libraries, vulnerable_and_updated,
-                 vulnerable_and_outdated, vulnerability_score, total_high_vulnerabilities, total_medium_vulnerabilities,
-                 total_low_vulnerabilities):
+    def __init__(
+        self,
+        total_libraries,
+        high_vulnerability_libraries,
+        medium_vulnerability_libraries,
+        low_vulnerability_libraries,
+        non_vulnerable_libraries,
+        vulnerable_and_updated,
+        vulnerable_and_outdated,
+        vulnerability_score,
+        total_high_vulnerabilities,
+        total_medium_vulnerabilities,
+        total_low_vulnerabilities,
+    ):
         """
 
         Args:
@@ -44,8 +54,15 @@ class CxOsaSummaryReport(object):
                  low_vulnerability_libraries={}, non_vulnerable_libraries={}, vulnerable_and_updated={},
                  vulnerable_and_outdated={}, vulnerability_score={}, total_high_vulnerabilities={}, 
                  total_medium_vulnerabilities={}, total_low_vulnerabilities={})""".format(
-            self.total_libraries, self.high_vulnerability_libraries, self.medium_vulnerability_libraries,
-            self.low_vulnerability_libraries, self.non_vulnerable_libraries, self.vulnerable_and_updated,
-            self.vulnerable_and_outdated, self.vulnerability_score, self.total_high_vulnerabilities,
-            self.total_medium_vulnerabilities, self.total_low_vulnerabilities
+            self.total_libraries,
+            self.high_vulnerability_libraries,
+            self.medium_vulnerability_libraries,
+            self.low_vulnerability_libraries,
+            self.non_vulnerable_libraries,
+            self.vulnerable_and_updated,
+            self.vulnerable_and_outdated,
+            self.vulnerability_score,
+            self.total_high_vulnerabilities,
+            self.total_medium_vulnerabilities,
+            self.total_low_vulnerabilities,
         )

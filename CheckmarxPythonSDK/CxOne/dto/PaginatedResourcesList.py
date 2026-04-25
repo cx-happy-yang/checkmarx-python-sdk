@@ -13,9 +13,7 @@ class PaginatedResourcesList:
 
 def construct_paginated_resources_list(item):
     return PaginatedResourcesList(
-        data=[
-            construct_resource(resource) for resource in (item.get("data") or [])
-        ],
+        data=[construct_resource(resource) for resource in (item.get("data") or [])],
         total=item.get("total"),
         current_page=item.get("currentPage"),
         last_page=item.get("lastPage"),

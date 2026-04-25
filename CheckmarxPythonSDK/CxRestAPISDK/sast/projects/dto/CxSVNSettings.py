@@ -8,7 +8,9 @@ class CxSVNSettings(object):
     svn settings
     """
 
-    def __init__(self, uri, paths, use_ssh=None, link=None, credentials=None, private_key=None):
+    def __init__(
+        self, uri, paths, use_ssh=None, link=None, credentials=None, private_key=None
+    ):
         """
 
         Args:
@@ -28,15 +30,12 @@ class CxSVNSettings(object):
 
     def to_dict(self):
         data = {
-            "uri": {
-                "absoluteUrl": self.uri.absolute_url,
-                "port": self.uri.port
-            },
+            "uri": {"absoluteUrl": self.uri.absolute_url, "port": self.uri.port},
             "paths": self.paths,
             "credentials": {
                 "userName": self.credentials.username,
-                "password": self.credentials.password
-            }
+                "password": self.credentials.password,
+            },
         }
         if self.private_key:
             data.update({"privateKey": self.private_key})
@@ -44,5 +43,10 @@ class CxSVNSettings(object):
 
     def __str__(self):
         return "CxSVNSettings(uri={}, paths={}, use_ssh={}, link={}, credentials={}, private_key={})".format(
-            self.uri, self.paths, self.use_ssh, self.link, self.credentials, self.private_key
+            self.uri,
+            self.paths,
+            self.use_ssh,
+            self.link,
+            self.credentials,
+            self.private_key,
         )

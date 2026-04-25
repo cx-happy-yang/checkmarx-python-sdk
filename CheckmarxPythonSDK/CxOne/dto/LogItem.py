@@ -13,6 +13,7 @@ class LogItem:
         worker (str):
         raw_log (str):
     """
+
     level: str
     msg: str
     time: str
@@ -28,5 +29,5 @@ def construct_log_item(item):
         time=item.get("time"),
         error=item.get("error"),
         worker=item.get("worker"),
-        raw_log=item.get("rawLog")
+        raw_log=item.get("rawLog"),
     )

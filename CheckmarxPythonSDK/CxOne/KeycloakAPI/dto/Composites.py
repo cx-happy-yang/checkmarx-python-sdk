@@ -14,13 +14,13 @@ class Composites:
         result: Dict[str, Any] = {}
         if self.realm is not None:
             value = self.realm
-            result['realm'] = value
+            result["realm"] = value
         if self.client is not None:
             value = self.client
-            result['client'] = value
+            result["client"] = value
         if self.application is not None:
             value = self.application
-            result['application'] = value
+            result["application"] = value
         return result
 
     @classmethod
@@ -30,5 +30,5 @@ class Composites:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

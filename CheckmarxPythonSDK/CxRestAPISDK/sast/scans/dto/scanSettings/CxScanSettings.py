@@ -6,9 +6,18 @@ class CxScanSettings(object):
     scan settings
     """
 
-    def __init__(self, project, preset, engine_configuration, post_scan_action, email_notifications,
-                 post_scan_action_data=None, post_scan_action_name=None, post_scan_action_conditions=None,
-                 post_scan_action_arguments=None):
+    def __init__(
+        self,
+        project,
+        preset,
+        engine_configuration,
+        post_scan_action,
+        email_notifications,
+        post_scan_action_data=None,
+        post_scan_action_name=None,
+        post_scan_action_conditions=None,
+        post_scan_action_arguments=None,
+    ):
         """
 
         :param project:
@@ -43,7 +52,13 @@ class CxScanSettings(object):
         return """CxScanSettings(project={}, preset={}, engine_configuration={}, 
             post_scan_action={}, email_notifications={}, post_scan_action_data={}, post_scan_action_name={},
             post_scan_action_conditions={}, post_scan_action_arguments={})""".format(
-            self.project, self.preset, self.engine_configuration, self.post_scan_action, self.email_notification,
-            self.post_scan_action_data, self.post_scan_action_name, self.post_scan_action_conditions,
-            self.post_scan_action_arguments
+            self.project,
+            self.preset,
+            self.engine_configuration,
+            self.post_scan_action,
+            self.email_notification,
+            self.post_scan_action_data,
+            self.post_scan_action_name,
+            self.post_scan_action_conditions,
+            self.post_scan_action_arguments,
         )

@@ -5,6 +5,7 @@ class CxOsaMatchType(object):
     """
     match type
     """
+
     def __init__(self, match_type_id, name, description):
         """
 

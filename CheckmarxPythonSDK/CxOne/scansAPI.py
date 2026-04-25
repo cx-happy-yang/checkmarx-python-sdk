@@ -5,13 +5,16 @@ from httpx import Response
 import json
 from deprecated import deprecated
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
-from .utilities import (type_check, list_member_type_check)
+from .utilities import type_check, list_member_type_check
 
 from .dto import (
     ScanInput,
-    Scan, construct_scan,
-    ScansCollection, construct_scans_collection,
-    TaskInfo, construct_task_info,
+    Scan,
+    construct_scan,
+    ScansCollection,
+    construct_scans_collection,
+    TaskInfo,
+    construct_task_info,
 )
 
 api_url = "/api/scans"
@@ -36,23 +39,39 @@ class ScansAPI(object):
         """
         type_check(scan_input, ScanInput)
         relative_url = api_url
-        response = self.api_client.post_request(relative_url=relative_url, json=scan_input.to_dict())
+        response = self.api_client.post_request(
+            relative_url=relative_url, json=scan_input.to_dict()
+        )
         item = response.json()
         return construct_scan(item)
 
-    @deprecated(version='0.5.3', reason='Use get_a_list_of_scans instead')
+    @deprecated(version="0.5.3", reason="Use get_a_list_of_scans instead")
     def get_a_list_of_scan(self, *args, **kwargs):
-        """
-        """
+        """ """
         return self.get_a_list_of_scans(*args, **kwargs)
 
     def get_a_list_of_scans(
-            self, offset: int = 0, limit: int = 20, scan_ids: List[str] = None, groups: List[str] = None,
-            tags_keys: List[str] = None, tags_values: List[str] = None, statuses: List[str] = None,
-            project_id: str = None, project_ids: List[str] = None, source_type: str = None,
-            source_origin: str = None, from_date: str = None, sort: List[str] = ("+created_at", "+status"),
-            field: List[str] = ("scan-ids",), search: str = None, to_date: str = None, project_names: List[str] = None,
-            initiators: List[str] = None, branch: str = None, branches: List[str] = None
+        self,
+        offset: int = 0,
+        limit: int = 20,
+        scan_ids: List[str] = None,
+        groups: List[str] = None,
+        tags_keys: List[str] = None,
+        tags_values: List[str] = None,
+        statuses: List[str] = None,
+        project_id: str = None,
+        project_ids: List[str] = None,
+        source_type: str = None,
+        source_origin: str = None,
+        from_date: str = None,
+        sort: List[str] = ("+created_at", "+status"),
+        field: List[str] = ("scan-ids",),
+        search: str = None,
+        to_date: str = None,
+        project_names: List[str] = None,
+        initiators: List[str] = None,
+        branch: str = None,
+        branches: List[str] = None,
     ) -> ScansCollection:
         """
         Get a list of scans, with detailed information about each scan. You can limit the results by using pagination
@@ -136,11 +155,26 @@ class ScansAPI(object):
 
         relative_url = api_url
         params = {
-            "offset": offset, "limit": limit, "scan-ids": scan_ids, "groups": groups, "tags-keys": tags_keys,
-            "tags-values": tags_values, "statuses": statuses, "project-id": project_id, "project-ids": project_ids,
-            "source-type": source_type, "source-origin": source_origin, "from-date": from_date,
-            "sort": ",".join(sort) if sort else None, "field": field, "search": search, "to-date": to_date,
-            "project-names": project_names, "initiators": initiators, "branch": branch, "branches": branches,
+            "offset": offset,
+            "limit": limit,
+            "scan-ids": scan_ids,
+            "groups": groups,
+            "tags-keys": tags_keys,
+            "tags-values": tags_values,
+            "statuses": statuses,
+            "project-id": project_id,
+            "project-ids": project_ids,
+            "source-type": source_type,
+            "source-origin": source_origin,
+            "from-date": from_date,
+            "sort": ",".join(sort) if sort else None,
+            "field": field,
+            "search": search,
+            "to-date": to_date,
+            "project-names": project_names,
+            "initiators": initiators,
+            "branch": branch,
+            "branches": branches,
         }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         scans_collection = response.json()
@@ -148,7 +182,7 @@ class ScansAPI(object):
 
     def get_all_scan_tags(self) -> dict:
         """
-            Get all scan tags in your account
+        Get all scan tags in your account
         """
         relative_url = api_url + "/tags"
         response = self.api_client.get_request(relative_url=relative_url)
@@ -178,7 +212,7 @@ class ScansAPI(object):
         response = self.api_client.get_request(relative_url=relative_url)
         return response.text
 
-    @deprecated(version='0.5.3', reason='Use get_a_scan_by_id instead')
+    @deprecated(version="0.5.3", reason="Use get_a_scan_by_id instead")
     def get_scan_by_id(self, scan_id: str):
         return self.get_a_scan_by_id(scan_id)
 
@@ -206,7 +240,9 @@ class ScansAPI(object):
             bool
         """
         relative_url = api_url + "/{id}".format(id=scan_id)
-        response = self.api_client.patch_request(relative_url=relative_url, json={"status": "Canceled"})
+        response = self.api_client.patch_request(
+            relative_url=relative_url, json={"status": "Canceled"}
+        )
         return response.status_code == NO_CONTENT
 
     def delete_scan(self, scan_id: str) -> bool:
@@ -234,9 +270,7 @@ class ScansAPI(object):
         relative_url = api_url + "/{id}/workflow".format(id=scan_id)
         response = self.api_client.get_request(relative_url=relative_url)
         items = response.json()
-        return [
-            construct_task_info(item) for item in items or []
-        ]
+        return [construct_task_info(item) for item in items or []]
 
     def sca_recalculate(self, project_id: str, branch: str) -> Response:
         """
@@ -250,18 +284,22 @@ class ScansAPI(object):
         """
         relative_url = f"/api/scans/recalculate"
 
-        scan_data = json.dumps({
-            "project_id": f"{project_id}",
-            "branch": f"{branch}",
-            "engines": ["sca"],
-            "config": [{"type": "sca", "value": {"enableContainersScan": True}}]
-        })
+        scan_data = json.dumps(
+            {
+                "project_id": f"{project_id}",
+                "branch": f"{branch}",
+                "engines": ["sca"],
+                "config": [{"type": "sca", "value": {"enableContainersScan": True}}],
+            }
+        )
 
-        response = self.api_client.post_request(relative_url=relative_url, data=scan_data)
+        response = self.api_client.post_request(
+            relative_url=relative_url, data=scan_data
+        )
         return response
 
     def scan_by_repo_url(
-            self, project_id: str, repo_url: str, branch: str, engines: List[str], tag: dict
+        self, project_id: str, repo_url: str, branch: str, engines: List[str], tag: dict
     ) -> Response:
         """
 
@@ -284,39 +322,49 @@ class ScansAPI(object):
                 "branch": branch,
                 # "skipSubModules": False
             },
-            "project": {
-                "id": project_id,
-                "tags": {}
-            },
+            "project": {"id": project_id, "tags": {}},
             "config": [],
-            "tags": tag
+            "tags": tag,
         }
 
         engine_configs = {
             "sast": {"incremental": "false"},
             "sca": {},
             "kics": {},
-            "apisec": {}
+            "apisec": {},
         }
 
         for engine in engines:
             if engine in engine_configs:
-                scan_data["config"].append({
-                    "type": engine,
-                    "value": engine_configs[engine]
-                })
+                scan_data["config"].append(
+                    {"type": engine, "value": engine_configs[engine]}
+                )
             else:
-                print(f"Warning: Engine '{engine}' is not supported and will be ignored.")
+                print(
+                    f"Warning: Engine '{engine}' is not supported and will be ignored."
+                )
 
-        response = self.api_client.post_request(relative_url=relative_url, data=json.dumps(scan_data))
+        response = self.api_client.post_request(
+            relative_url=relative_url, data=json.dumps(scan_data)
+        )
         return response
 
     def get_scans_by_filters(
-            self, offset: int = 0, limit: int = 20, scan_ids: List[str] = None, tags_keys: List[str] = None,
-            tags_values: List[str] = None, statuses: List[str] = None, project_ids: List[str] = None,
-            project_names: List[str] = None, branches: List[str] = None, initiators: List[str] = None,
-            source_origins: List[str] = None, source_types: List[str] = None, search_id: str = None,
-            sort_by: List[str] = ("+created_at", "+status")
+        self,
+        offset: int = 0,
+        limit: int = 20,
+        scan_ids: List[str] = None,
+        tags_keys: List[str] = None,
+        tags_values: List[str] = None,
+        statuses: List[str] = None,
+        project_ids: List[str] = None,
+        project_names: List[str] = None,
+        branches: List[str] = None,
+        initiators: List[str] = None,
+        source_origins: List[str] = None,
+        source_types: List[str] = None,
+        search_id: str = None,
+        sort_by: List[str] = ("+created_at", "+status"),
     ) -> ScansCollection:
         """
 
@@ -350,11 +398,7 @@ class ScansAPI(object):
         if isinstance(sort_by, tuple):
             sort_by = list(sort_by)
         sort_by = ",".join(sort_by) if sort_by else None
-        data = {
-            "offset": offset,
-            "limit": limit,
-            "sortBy": sort_by
-        }
+        data = {"offset": offset, "limit": limit, "sortBy": sort_by}
         if scan_ids:
             data.update({"scan-ids": scan_ids})
         if tags_keys:
@@ -377,7 +421,9 @@ class ScansAPI(object):
             data.update({"source-types": source_types})
         if search_id:
             data.update({"searchID": search_id})
-        response = self.api_client.post_request(relative_url=relative_url, data=json.dumps(data))
+        response = self.api_client.post_request(
+            relative_url=relative_url, data=json.dumps(data)
+        )
         scans_collection = response.json()
         return construct_scans_collection(scans_collection)
 
@@ -386,25 +432,54 @@ def create_scan(scan_input: ScanInput) -> Scan:
     return ScansAPI().create_scan(scan_input=scan_input)
 
 
-@deprecated(version='0.5.3', reason='Use get_a_list_of_scans instead')
+@deprecated(version="0.5.3", reason="Use get_a_list_of_scans instead")
 def get_a_list_of_scan(*args, **kwargs):
     return get_a_list_of_scans(*args, **kwargs)
 
 
 def get_a_list_of_scans(
-        offset: int = 0, limit: int = 20, scan_ids: List[str] = None, groups: List[str] = None,
-        tags_keys: List[str] = None, tags_values: List[str] = None, statuses: List[str] = None,
-        project_id: str = None, project_ids: List[str] = None, source_type: str = None,
-        source_origin: str = None, from_date: str = None, sort: List[str] = ("+created_at", "+status"),
-        field: List[str] = ("scan-ids",), search: str = None, to_date: str = None, project_names: List[str] = None,
-        initiators: List[str] = None, branch: str = None, branches: List[str] = None
+    offset: int = 0,
+    limit: int = 20,
+    scan_ids: List[str] = None,
+    groups: List[str] = None,
+    tags_keys: List[str] = None,
+    tags_values: List[str] = None,
+    statuses: List[str] = None,
+    project_id: str = None,
+    project_ids: List[str] = None,
+    source_type: str = None,
+    source_origin: str = None,
+    from_date: str = None,
+    sort: List[str] = ("+created_at", "+status"),
+    field: List[str] = ("scan-ids",),
+    search: str = None,
+    to_date: str = None,
+    project_names: List[str] = None,
+    initiators: List[str] = None,
+    branch: str = None,
+    branches: List[str] = None,
 ) -> ScansCollection:
     return ScansAPI().get_a_list_of_scans(
-        offset=offset, limit=limit, scan_ids=scan_ids, groups=groups, tags_keys=tags_keys, tags_values=tags_values,
-        statuses=statuses, project_id=project_id, project_ids=project_ids, source_type=source_type,
+        offset=offset,
+        limit=limit,
+        scan_ids=scan_ids,
+        groups=groups,
+        tags_keys=tags_keys,
+        tags_values=tags_values,
+        statuses=statuses,
+        project_id=project_id,
+        project_ids=project_ids,
+        source_type=source_type,
         source_origin=source_origin,
-        from_date=from_date, sort=sort, field=field, search=search, to_date=to_date, project_names=project_names,
-        initiators=initiators, branch=branch, branches=branches
+        from_date=from_date,
+        sort=sort,
+        field=field,
+        search=search,
+        to_date=to_date,
+        project_names=project_names,
+        initiators=initiators,
+        branch=branch,
+        branches=branches,
     )
 
 
@@ -424,7 +499,7 @@ def get_the_config_as_code_template_file(file_name: str) -> str:
     return ScansAPI().get_the_config_as_code_template_file(file_name=file_name)
 
 
-@deprecated(version='0.5.3', reason='Use get_a_scan_by_id instead')
+@deprecated(version="0.5.3", reason="Use get_a_scan_by_id instead")
 def get_scan_by_id(scan_id: str):
     return get_a_scan_by_id(scan_id=scan_id)
 
@@ -450,23 +525,46 @@ def sca_recalculate(project_id: str, branch: str) -> Response:
 
 
 def scan_by_repo_url(
-        project_id: str, repo_url: str, branch: str, engines: List[str], tag: dict = None
+    project_id: str, repo_url: str, branch: str, engines: List[str], tag: dict = None
 ) -> Response:
     return ScansAPI().scan_by_repo_url(
-        project_id=project_id, repo_url=repo_url, branch=branch, engines=engines, tag=tag
+        project_id=project_id,
+        repo_url=repo_url,
+        branch=branch,
+        engines=engines,
+        tag=tag,
     )
 
 
 def get_scans_by_filters(
-        offset: int = 0, limit: int = 20, scan_ids: List[str] = None, tags_keys: List[str] = None,
-        tags_values: List[str] = None, statuses: List[str] = None, project_ids: List[str] = None,
-        project_names: List[str] = None, branches: List[str] = None, initiators: List[str] = None,
-        source_origins: List[str] = None, source_types: List[str] = None, search_id: str = None,
-        sort_by: List[str] = ("+created_at", "+status")
+    offset: int = 0,
+    limit: int = 20,
+    scan_ids: List[str] = None,
+    tags_keys: List[str] = None,
+    tags_values: List[str] = None,
+    statuses: List[str] = None,
+    project_ids: List[str] = None,
+    project_names: List[str] = None,
+    branches: List[str] = None,
+    initiators: List[str] = None,
+    source_origins: List[str] = None,
+    source_types: List[str] = None,
+    search_id: str = None,
+    sort_by: List[str] = ("+created_at", "+status"),
 ) -> ScansCollection:
     return ScansAPI().get_scans_by_filters(
-        offset=offset, limit=limit, scan_ids=scan_ids, tags_keys=tags_keys, tags_values=tags_values,
-        statuses=statuses, project_ids=project_ids, project_names=project_names, branches=branches,
-        initiators=initiators, source_origins=source_origins, source_types=source_types, search_id=search_id,
+        offset=offset,
+        limit=limit,
+        scan_ids=scan_ids,
+        tags_keys=tags_keys,
+        tags_values=tags_values,
+        statuses=statuses,
+        project_ids=project_ids,
+        project_names=project_names,
+        branches=branches,
+        initiators=initiators,
+        source_origins=source_origins,
+        source_types=source_types,
+        search_id=search_id,
         sort_by=sort_by,
     )

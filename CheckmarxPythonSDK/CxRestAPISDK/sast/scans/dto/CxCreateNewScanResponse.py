@@ -17,6 +17,4 @@ class CxCreateNewScanResponse(object):
         self.link = link
 
     def __str__(self):
-        return "CxCreateNewScanResponse(id={}, link={})".format(
-            self.id, self.link
-        )
+        return "CxCreateNewScanResponse(id={}, link={})".format(self.id, self.link)

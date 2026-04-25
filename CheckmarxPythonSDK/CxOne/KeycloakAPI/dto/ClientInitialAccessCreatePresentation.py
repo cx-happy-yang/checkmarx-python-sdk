@@ -13,10 +13,10 @@ class ClientInitialAccessCreatePresentation:
         result: Dict[str, Any] = {}
         if self.expiration is not None:
             value = self.expiration
-            result['expiration'] = value
+            result["expiration"] = value
         if self.count is not None:
             value = self.count
-            result['count'] = value
+            result["count"] = value
         return result
 
     @classmethod
@@ -26,5 +26,5 @@ class ClientInitialAccessCreatePresentation:
         required_fields = []
         missing = [f for f in required_fields if f not in snake_data]
         if missing:
-            raise ValueError(f'missing required field: {missing}')
+            raise ValueError(f"missing required field: {missing}")
         return cls(**snake_data)

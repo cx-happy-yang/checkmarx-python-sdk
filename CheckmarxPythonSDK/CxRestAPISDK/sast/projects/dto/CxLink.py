@@ -17,6 +17,4 @@ class CxLink(object):
         self.uri = uri
 
     def __str__(self):
-        return "CxLink(rel={}, uri={})".format(
-            self.rel, self.uri
-        )
+        return "CxLink(rel={}, uri={})".format(self.rel, self.uri)

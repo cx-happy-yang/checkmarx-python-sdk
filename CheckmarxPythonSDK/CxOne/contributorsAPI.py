@@ -1,10 +1,12 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from .dto import (
-    Contributors, construct_contributors,
-    ContributorInsights, construct_contributor_insights,
-    ContributorUnfamiliarProjects, construct_contributor_unfamiliar_projects,
-
+    Contributors,
+    construct_contributors,
+    ContributorInsights,
+    construct_contributor_insights,
+    ContributorUnfamiliarProjects,
+    construct_contributor_unfamiliar_projects,
 )
 
 api_url = "/api/contributors"
@@ -18,7 +20,9 @@ class ContributorsAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
 
-    def get_allowed_and_current_contributors_for_the_current_tenant(self) -> Contributors:
+    def get_allowed_and_current_contributors_for_the_current_tenant(
+        self,
+    ) -> Contributors:
         """
 
         Returns:
@@ -59,11 +63,15 @@ class ContributorsAPI(object):
 
 
 def get_allowed_and_current_contributors_for_the_current_tenant() -> Contributors:
-    return ContributorsAPI().get_allowed_and_current_contributors_for_the_current_tenant()
+    return (
+        ContributorsAPI().get_allowed_and_current_contributors_for_the_current_tenant()
+    )
 
 
 def get_contributors_details_for_current_tenant_exported_in_csv() -> bytes:
-    return ContributorsAPI().get_contributors_details_for_current_tenant_exported_in_csv()
+    return (
+        ContributorsAPI().get_contributors_details_for_current_tenant_exported_in_csv()
+    )
 
 
 def get_contributor_insights_for_current_tenant() -> ContributorInsights:

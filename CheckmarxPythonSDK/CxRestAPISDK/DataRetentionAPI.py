@@ -7,7 +7,7 @@ from .sast.projects.dto import CxLink
 from .sast.dataRetention.dto import (
     CxDefineDataRetentionResponse,
     CxDataRetentionRequestStatus,
-    CxDataRetentionRequestStatusStage
+    CxDataRetentionRequestStatusStage,
 )
 
 
@@ -38,13 +38,19 @@ class DataRetentionAPI(object):
         """
         result = False
         relative_url = "/cxrestapi/sast/dataRetention/stop"
-        response = self.api_client.post_request(relative_url=relative_url, data=None, headers=get_headers(api_version))
+        response = self.api_client.post_request(
+            relative_url=relative_url, data=None, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             result = True
         return result
 
     def define_data_retention_date_range(
-            self, start_date: str, end_date: str, duration_limit_in_hours: int, api_version: str = "1.0"
+        self,
+        start_date: str,
+        end_date: str,
+        duration_limit_in_hours: int,
+        api_version: str = "1.0",
     ) -> CxDefineDataRetentionResponse:
         """
         Define the global setting for data retention by date range
@@ -69,11 +75,12 @@ class DataRetentionAPI(object):
             {
                 "startDate": start_date,
                 "endDate": end_date,
-                "durationLimitInHours": duration_limit_in_hours
+                "durationLimitInHours": duration_limit_in_hours,
             }
         )
         response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version))
+            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             if response.text:
                 a_dict = response.json()
@@ -81,16 +88,16 @@ class DataRetentionAPI(object):
                     data_retention_response_id=a_dict.get("id"),
                     link=CxLink(
                         rel=(a_dict.get("link", {}) or {}).get("rel"),
-                        uri=(a_dict.get("link", {}) or {}).get("uri")
-                    )
+                        uri=(a_dict.get("link", {}) or {}).get("uri"),
+                    ),
                 )
         return result
 
     def define_data_retention_by_number_of_scans(
-            self,
-            number_of_successful_scans_to_preserve: int,
-            duration_limit_in_hours: int,
-            api_version: str = "1.0"
+        self,
+        number_of_successful_scans_to_preserve: int,
+        duration_limit_in_hours: int,
+        api_version: str = "1.0",
     ) -> CxDefineDataRetentionResponse:
         """
         Define the global setting for the data retention by number of scans.
@@ -99,10 +106,10 @@ class DataRetentionAPI(object):
             number_of_successful_scans_to_preserve (int): Number of successful scans to keep
             duration_limit_in_hours (int): Duration limit (in hours)
             api_version (str, optional):
-        
+
         Returns:
             CxDefineDataRetentionResponse：
-            
+
         Raises:
             BadRequestError
             NotFoundError
@@ -113,11 +120,12 @@ class DataRetentionAPI(object):
         post_data = json.dumps(
             {
                 "numOfSuccessfulScansToPreserve": number_of_successful_scans_to_preserve,
-                "durationLimitInHours": duration_limit_in_hours
+                "durationLimitInHours": duration_limit_in_hours,
             }
         )
         response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version))
+            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             if response.text:
                 a_dict = response.json()
@@ -125,13 +133,13 @@ class DataRetentionAPI(object):
                     data_retention_response_id=a_dict.get("id"),
                     link=CxLink(
                         rel=(a_dict.get("link", {}) or {}).get("rel"),
-                        uri=(a_dict.get("link", {}) or {}).get("uri")
-                    )
+                        uri=(a_dict.get("link", {}) or {}).get("uri"),
+                    ),
                 )
         return result
 
     def get_data_retention_request_status(
-            self, request_id: int, api_version: str = "1.0"
+        self, request_id: int, api_version: str = "1.0"
     ) -> CxDataRetentionRequestStatus:
         """
         This one does not work!!!
@@ -150,25 +158,29 @@ class DataRetentionAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/dataRetention/{requestId}/status".format(requestId=request_id)
-        response = self.api_client.get_request(relative_url=relative_url, headers=get_headers(api_version))
+        relative_url = "/cxrestapi/sast/dataRetention/{requestId}/status".format(
+            requestId=request_id
+        )
+        response = self.api_client.get_request(
+            relative_url=relative_url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_dict = response.json()
             result = CxDataRetentionRequestStatus(
                 status_id=a_dict.get("id"),
                 stage=CxDataRetentionRequestStatusStage(
                     stage_id=(a_dict.get("stage", {}) or {}).get("id"),
-                    value=(a_dict.get("stage", {}) or {}).get("value")
+                    value=(a_dict.get("stage", {}) or {}).get("value"),
                 ),
                 link=CxLink(
                     rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri")
-                )
+                    uri=(a_dict.get("link", {}) or {}).get("uri"),
+                ),
             )
         return result
 
     def define_data_retention_by_rolling_date(
-            self, num_days: int, duration_limit_in_hours: int, api_version: str = "1.0"
+        self, num_days: int, duration_limit_in_hours: int, api_version: str = "1.0"
     ) -> CxDefineDataRetentionResponse:
         """
 
@@ -184,10 +196,12 @@ class DataRetentionAPI(object):
         time_delta = timedelta(days=num_days)
         end_date = (date.today() - time_delta).strftime("%Y-%m-%d")
 
-        return self.define_data_retention_date_range(start_date, end_date, duration_limit_in_hours, api_version)
+        return self.define_data_retention_date_range(
+            start_date, end_date, duration_limit_in_hours, api_version
+        )
 
     def define_data_retention_by_rolling_months(
-            self, num_months: int, duration_limit_in_hours: int, api_version: str = "1.0"
+        self, num_months: int, duration_limit_in_hours: int, api_version: str = "1.0"
     ) -> CxDefineDataRetentionResponse:
         """
 
@@ -217,4 +231,6 @@ class DataRetentionAPI(object):
         end_date = datetime(next_year, next_month, 1) - timedelta(days=1)
         end_date = end_date.strftime("%Y-%m-%d")
 
-        return self.define_data_retention_date_range(start_date, end_date, duration_limit_in_hours, api_version)
+        return self.define_data_retention_date_range(
+            start_date, end_date, duration_limit_in_hours, api_version
+        )

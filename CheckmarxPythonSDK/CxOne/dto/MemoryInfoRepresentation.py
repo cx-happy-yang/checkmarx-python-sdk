@@ -1,5 +1,14 @@
 class MemoryInfoRepresentation:
-    def __init__(self, free, free_formated, free_percentage, total, total_formated, used, used_formated):
+    def __init__(
+        self,
+        free,
+        free_formated,
+        free_percentage,
+        total,
+        total_formated,
+        used,
+        used_formated,
+    ):
         self.free = free
         self.freeFormated = free_formated
         self.freePercentage = free_percentage
@@ -9,15 +18,17 @@ class MemoryInfoRepresentation:
         self.usedFormated = used_formated
 
     def __str__(self):
-        return f"MemoryInfoRepresentation(" \
-               f"free={self.free} " \
-               f"freeFormated={self.freeFormated} " \
-               f"freePercentage={self.freePercentage} " \
-               f"total={self.total} " \
-               f"totalFormated={self.totalFormated} " \
-               f"used={self.used} " \
-               f"usedFormated={self.usedFormated} " \
-               f")"
+        return (
+            f"MemoryInfoRepresentation("
+            f"free={self.free} "
+            f"freeFormated={self.freeFormated} "
+            f"freePercentage={self.freePercentage} "
+            f"total={self.total} "
+            f"totalFormated={self.totalFormated} "
+            f"used={self.used} "
+            f"usedFormated={self.usedFormated} "
+            f")"
+        )
 
     def to_dict(self):
         return {

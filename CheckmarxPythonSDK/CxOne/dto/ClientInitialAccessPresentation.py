@@ -1,5 +1,13 @@
 class ClientInitialAccessPresentation:
-    def __init__(self, count, expiration, client_initial_access_presentation_id, remaining_count, timestamp, token):
+    def __init__(
+        self,
+        count,
+        expiration,
+        client_initial_access_presentation_id,
+        remaining_count,
+        timestamp,
+        token,
+    ):
         self.count = count
         self.expiration = expiration
         self.id = client_initial_access_presentation_id
@@ -8,14 +16,16 @@ class ClientInitialAccessPresentation:
         self.token = token
 
     def __str__(self):
-        return f"ClientInitialAccessPresentation(" \
-               f"count={self.count} " \
-               f"expiration={self.expiration} " \
-               f"id={self.id} " \
-               f"remainingCount={self.remainingCount} " \
-               f"timestamp={self.timestamp} " \
-               f"token={self.token} " \
-               f")"
+        return (
+            f"ClientInitialAccessPresentation("
+            f"count={self.count} "
+            f"expiration={self.expiration} "
+            f"id={self.id} "
+            f"remainingCount={self.remainingCount} "
+            f"timestamp={self.timestamp} "
+            f"token={self.token} "
+            f")"
+        )
 
     def to_dict(self):
         return {

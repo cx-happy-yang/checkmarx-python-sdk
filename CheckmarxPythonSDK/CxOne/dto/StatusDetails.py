@@ -8,7 +8,7 @@ class StatusDetails:
     details: str
     start_date: str
     end_date: str
-    loc: int | None = None # Only for SAST
+    loc: int | None = None  # Only for SAST
 
     def to_dict(self):
         data = {
@@ -24,14 +24,17 @@ class StatusDetails:
 
     def __repr__(self):
         loc = f", loc={self.loc}" if self.loc else ""
-        return f"StatusDetails(" \
-            f"name='{self.name}', " \
-            f"status='{self.status}', " \
-            f"details='{self.details}', " \
-            f"start_date='{self.start_date}', " \
-            f"end_date='{self.end_date}'" \
-            f"{loc}" \
+        return (
+            f"StatusDetails("
+            f"name='{self.name}', "
+            f"status='{self.status}', "
+            f"details='{self.details}', "
+            f"start_date='{self.start_date}', "
+            f"end_date='{self.end_date}'"
+            f"{loc}"
             f")"
+        )
+
 
 def construct_status_details(item):
     return StatusDetails(
@@ -40,5 +43,5 @@ def construct_status_details(item):
         details=item.get("details"),
         loc=item.get("loc"),
         start_date=item.get("startDate"),
-        end_date=item.get("endDate")
+        end_date=item.get("endDate"),
     )

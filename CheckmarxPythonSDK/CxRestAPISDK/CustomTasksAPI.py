@@ -35,7 +35,9 @@ class CustomTasksAPI(object):
         """
         result = []
         relative_url = "/cxrestapi/customTasks"
-        response = self.api_client.get_request(relative_url=relative_url, headers=get_headers(api_version))
+        response = self.api_client.get_request(
+            relative_url=relative_url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_list = response.json()
             result = [
@@ -46,9 +48,10 @@ class CustomTasksAPI(object):
                     data=item.get("data"),
                     link=CxLink(
                         (item.get("link", {}) or {}).get("rel"),
-                        (item.get("link", {}) or {}).get("uri")
-                    )
-                ) for item in a_list
+                        (item.get("link", {}) or {}).get("uri"),
+                    ),
+                )
+                for item in a_list
             ]
         return result
 
@@ -62,12 +65,12 @@ class CustomTasksAPI(object):
             int: custom task id
         """
         custom_tasks = self.get_all_custom_tasks()
-        a_dict = {
-            item.name: item.id for item in custom_tasks
-        }
+        a_dict = {item.name: item.id for item in custom_tasks}
         return a_dict.get(task_name)
 
-    def get_custom_task_by_id(self, task_id: int, api_version: str = "1.0") -> CxCustomTask:
+    def get_custom_task_by_id(
+        self, task_id: int, api_version: str = "1.0"
+    ) -> CxCustomTask:
         """
 
         Args:
@@ -84,7 +87,9 @@ class CustomTasksAPI(object):
         """
         result = None
         relative_url = "/cxrestapi/customTasks/{id}".format(id=task_id)
-        response = self.api_client.get_request(relative_url=relative_url, headers=get_headers(api_version))
+        response = self.api_client.get_request(
+            relative_url=relative_url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_dict = response.json()
             result = CxCustomTask(
@@ -94,12 +99,14 @@ class CustomTasksAPI(object):
                 data=a_dict.get("data"),
                 link=CxLink(
                     (a_dict.get("link", {}) or {}).get("rel"),
-                    (a_dict.get("link", {}) or {}).get("uri")
-                )
+                    (a_dict.get("link", {}) or {}).get("uri"),
+                ),
             )
         return result
 
-    def get_custom_task_by_name(self, task_name: str, api_version: str = "1.0") -> CxCustomTask:
+    def get_custom_task_by_name(
+        self, task_name: str, api_version: str = "1.0"
+    ) -> CxCustomTask:
         """
 
         Args:
@@ -116,7 +123,9 @@ class CustomTasksAPI(object):
         """
         result = None
         relative_url = "/cxrestapi/customTasks/name/{name}".format(name=task_name)
-        response = self.api_client.get_request(relative_url=relative_url, headers=get_headers(api_version))
+        response = self.api_client.get_request(
+            relative_url=relative_url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_list = response.json()
             if a_list:
@@ -128,7 +137,7 @@ class CustomTasksAPI(object):
                     data=a_dict.get("data"),
                     link=CxLink(
                         (a_dict.get("link", {}) or {}).get("rel"),
-                        (a_dict.get("link", {}) or {}).get("uri")
-                    )
+                        (a_dict.get("link", {}) or {}).get("uri"),
+                    ),
                 )
         return result

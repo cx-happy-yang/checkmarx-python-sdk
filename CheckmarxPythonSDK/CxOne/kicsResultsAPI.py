@@ -2,9 +2,7 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
 from .utilities import type_check, list_member_type_check
-from .dto import (
-    KicsResultCollection, construct_kics_result_collection
-)
+from .dto import KicsResultCollection, construct_kics_result_collection
 
 api_url = "/api/kics-results"
 
@@ -18,8 +16,15 @@ class KicsResultsAPI(object):
         self.api_client = api_client
 
     def get_kics_results_by_scan_id(
-            self, scan_id: str, severity: List[str] = None, status: List[str] = None, source_file: str = None,
-            apply_predicates: bool = True, offset: int = 0, limit: int = 20, sort: List[str] = ("+status", "+severity")
+        self,
+        scan_id: str,
+        severity: List[str] = None,
+        status: List[str] = None,
+        source_file: str = None,
+        apply_predicates: bool = True,
+        offset: int = 0,
+        limit: int = 20,
+        sort: List[str] = ("+status", "+severity"),
     ) -> KicsResultCollection:
         """
 
@@ -53,16 +58,28 @@ class KicsResultsAPI(object):
         list_member_type_check(status, str)
         list_member_type_check(sort, str)
         relative_url = api_url
-        params = {"scan-id": scan_id, "severity": severity, "status": "status", "offset": offset, "limit": limit,
-                  "sort": ",".join(sort) if sort else None}
+        params = {
+            "scan-id": scan_id,
+            "severity": severity,
+            "status": "status",
+            "offset": offset,
+            "limit": limit,
+            "sort": ",".join(sort) if sort else None,
+        }
         response = self.api_client.get_request(relative_url=relative_url, params=params)
         item = response.json()
         return construct_kics_result_collection(item)
 
 
 def get_kics_results_by_scan_id(
-        scan_id: str, severity: List[str] = None, status: List[str] = None, source_file: str = None,
-        apply_predicates: bool = True, offset: int = 0, limit: int = 20, sort: List[str] = ("+status", "+severity")
+    scan_id: str,
+    severity: List[str] = None,
+    status: List[str] = None,
+    source_file: str = None,
+    apply_predicates: bool = True,
+    offset: int = 0,
+    limit: int = 20,
+    sort: List[str] = ("+status", "+severity"),
 ) -> KicsResultCollection:
     """
 
@@ -82,6 +99,12 @@ def get_kics_results_by_scan_id(
         KicsResultCollection
     """
     return KicsResultsAPI().get_kics_results_by_scan_id(
-        scan_id=scan_id, severity=severity, status=status, source_file=source_file, apply_predicates=apply_predicates,
-        offset=offset, limit=limit, sort=sort
+        scan_id=scan_id,
+        severity=severity,
+        status=status,
+        source_file=source_file,
+        apply_predicates=apply_predicates,
+        offset=offset,
+        limit=limit,
+        sort=sort,
     )

@@ -10,6 +10,7 @@ class WebHookConfig:
        url (str): Payload URL
        secret (str): Post request attached secret
     """
+
     content_type: str = None
     insecure_ssl: bool = None
     url: str = None
@@ -20,7 +21,7 @@ class WebHookConfig:
             "contentType": self.content_type,
             "insecureSsl": self.insecure_ssl,
             "url": self.url,
-            "secret": self.secret
+            "secret": self.secret,
         }
 
 
@@ -29,5 +30,5 @@ def construct_web_hook_config(item):
         content_type=item.get("contentType"),
         insecure_ssl=item.get("insecureSsl"),
         url=item.get("url"),
-        secret=item.get("secret")
+        secret=item.get("secret"),
     )
