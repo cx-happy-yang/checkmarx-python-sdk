@@ -1,9 +1,7 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .dto import BflTree, construct_sast_result, construct_result_node
-
-api_url = "/api/bfl"
+from .dto import BflTree
 
 
 class SastBestFixLocationAPI(object):
@@ -13,6 +11,9 @@ class SastBestFixLocationAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = (
+            f"{self.api_client.configuration.server_base_url}/api/bfl"
+        )
 
     def get_bfl_graph_by_scan_id(
         self,
@@ -25,25 +26,21 @@ class SastBestFixLocationAPI(object):
         apply_predicates: bool = True,
     ) -> dict:
         """
-
         Args:
-            scan_id (str): find BFL for scan id
-            query_id (str): get BFL from scan id for specific query id
-            result_ids (list of str): filter by results id. will include only the selected results ids
-                        (OR operator between the items).
-            include_graph (bool): If this value is set to true then the trees will contain 2 extra fields -
-                        nodes and nodesAdjacencyPairs.
-            offset (int): The number of items to skip before starting to collect the result set. Default value : 0
-            limit (int): The number of items to return. Default value : 20
-            apply_predicates (bool): if true will apply changes from predicates, otherwise will return the raw results
-                        summary. Default value : true
+            scan_id (str): find BFL for scan id.
+            query_id (str): get BFL from scan id for specific query id.
+            result_ids (List[str]): filter by results id. OR operator
+                between items.
+            include_graph (bool): If true, trees will contain extra
+                fields - nodes and nodesAdjacencyPairs.
+            offset (int): The number of items to skip. Default: 0
+            limit (int): The number of items to return. Default: 20
+            apply_predicates (bool): If true, apply predicate changes.
+                Default: true
 
         Returns:
-         dict
+            dict
         """
-
-
-        relative_url = api_url
         params = {
             "scan-id": scan_id,
             "query-id": query_id,
@@ -53,22 +50,16 @@ class SastBestFixLocationAPI(object):
             "limit": limit,
             "apply-predicates": apply_predicates,
         }
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        response = response.json()
+        response = self.api_client.call_api(
+            method="GET", url=self.base_url, params=params
+        )
+        data = response.json()
         return {
-            "id": response.get("id"),
-            "totalCount": response.get("totalCount"),
+            "id": data.get("id"),
+            "totalCount": data.get("totalCount"),
             "trees": [
-                BflTree(
-                    id=tree.get("id"),
-                    bfl=construct_result_node(tree.get("bfl")),
-                    results=[
-                        construct_sast_result(result)
-                        for result in tree.get("results") or []
-                    ],
-                    additional_properties=tree.get("additionalProperties"),
-                )
-                for tree in response.get("trees") or []
+                BflTree.from_dict(tree)
+                for tree in (data.get("trees") or [])
             ],
         }
 

@@ -21,12 +21,12 @@ from .AuditEvents import AuditEvents
 from .AuditQuery import AuditQuery
 from .BaseRolesRequest import BaseRolesRequest
 from .BaseRolesResponse import BaseRolesResponse
-from .BflTree import BflTree, construct_bfl_tree
+from .BflTree import BflTree
 from .ByorJob import ByorJob
 from .ByorJobPatchRequest import ByorJobPatchRequest
 from .Category import Category, construct_category
 from .CategoryType import CategoryType, construct_category_type
-from .ChangeDetails import ChangeDetails, construct_change_details
+from .ChangeDetails import ChangeDetails
 from .Client import Client
 from .ClientsWithResourcesResponse import (
     ClientsWithResourcesResponse,
@@ -161,7 +161,7 @@ from .Resource import Resource
 from .ResourcesResponse import ResourcesResponse
 from .ResourceType import ResourceType
 from .Result import Result, construct_result
-from .ResultNode import ResultNode, construct_result_node
+from .ResultNode import ResultNode
 from .ResultResponse import ResultResponse
 from .ResultsResponse import ResultsResponse
 from .ResultsSummary import ResultsSummary
