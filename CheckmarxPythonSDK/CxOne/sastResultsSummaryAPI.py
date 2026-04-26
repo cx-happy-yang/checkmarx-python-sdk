@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 
 api_url = "/api/sast-scan-summary"
 
@@ -67,29 +66,7 @@ class SastResultsSummaryAPI(object):
         Returns:
             dict
         """
-        type_check(scan_id, str)
-        type_check(group_by_field, (list, tuple))
-        type_check(language, (list, tuple))
-        type_check(status, (list, tuple))
-        type_check(severity, (list, tuple))
-        type_check(source_file, str)
-        type_check(source_file_operation, str)
-        type_check(source_node, str)
-        type_check(source_node_operation, str)
-        type_check(sink_node, str)
-        type_check(sink_node_operation, str)
-        type_check(sink_file, str)
-        type_check(sink_file_operation, str)
-        type_check(query_ids, (list, tuple))
-        type_check(apply_predicates, bool)
-        type_check(limit, int)
-        type_check(offset, int)
 
-        list_member_type_check(group_by_field, str)
-        list_member_type_check(language, str)
-        list_member_type_check(status, str)
-        list_member_type_check(severity, str)
-        list_member_type_check(query_ids, int)
 
         relative_url = api_url + "/aggregate"
         params = {
