@@ -17,9 +17,9 @@ from .AssignmentsWithBaseRoles import (
 from .AstIdWithName import AstIdWithName
 from .AstUser import AstUser
 from .AsyncRequestResponse import AsyncRequestResponse, construct_async_request_response
-from .AuditEvent import AuditEvent, construct_audit_event
-from .AuditEventLink import AuditEventLink, construct_audit_event_link
-from .AuditEvents import AuditEvents, construct_audit_events
+from .AuditEvent import AuditEvent
+from .AuditEventLink import AuditEventLink
+from .AuditEvents import AuditEvents
 from .AuditQuery import AuditQuery
 from .BaseRolesRequest import BaseRolesRequest
 from .BaseRolesResponse import BaseRolesResponse, construct_base_roles_response

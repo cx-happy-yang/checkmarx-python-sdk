@@ -1,11 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
-from .dto import (
-    AuditEvents,
-    construct_audit_events,
-)
-
-api_url = "/api/audit"
+from .dto import AuditEvents
 
 
 class AuditTrailAPI(object):
@@ -15,6 +10,7 @@ class AuditTrailAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{self.api_client.configuration.server_base_url}/api/audit"
 
     def get_audit_events_for_tenant(
         self,
@@ -40,11 +36,9 @@ class AuditTrailAPI(object):
         Returns:
             `AuditEvents`
         """
-        relative_url = api_url
         params = {"offset": offset, "limit": limit, "from": date_from, "to": date_to}
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        item = response.json()
-        return construct_audit_events(item)
+        response = self.api_client.call_api(method="GET", url=self.base_url, params=params)
+        return AuditEvents.from_dict(response.json())
 
 
 def get_audit_events_for_tenant(

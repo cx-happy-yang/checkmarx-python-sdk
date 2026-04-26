@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from .Credentials import Credentials
-from ..utilities import type_check
 
 
 @dataclass
