@@ -1,12 +1,9 @@
 # encoding: utf-8
 from .AddAssignmentRoles import AddAssignmentRoles, construct_add_assignment_role
 from .ApiSecCounters import ApiSecCounters, construct_api_sec_counters
-from .Application import Application, construct_application
+from .Application import Application
 from .ApplicationInput import ApplicationInput
-from .ApplicationsCollection import (
-    ApplicationsCollection,
-    construct_applications_collection,
-)
+from .ApplicationsCollection import ApplicationsCollection
 from .Assignment import Assignment, construct_assignment
 from .AssignmentInput import AssignmentInput
 from .AssignmentsForResource import (
@@ -65,7 +62,7 @@ from .ContributorUnfamiliarProjects import (
     ContributorUnfamiliarProjects,
     construct_contributor_unfamiliar_projects,
 )
-from .CreatedApplication import CreatedApplication, construct_created_application
+from .CreatedApplication import CreatedApplication
 from .CreateRoleRequest import CreateRoleRequest
 from .CredentialRepresentation import (
     CredentialRepresentation,
@@ -210,7 +207,7 @@ from .ResultsSummaryTree import ResultsSummaryTree, construct_results_summary_tr
 from .RichProject import RichProject, construct_rich_project
 from .Role import Role, construct_role
 from .RoleWithDetails import RoleWithDetails, construct_role_with_details
-from .Rule import Rule, construct_rule
+from .Rule import Rule
 from .RuleInput import RuleInput
 from .SastResult import SastResult, construct_sast_result
 from .SastScan import SastScan, construct_sast_scan

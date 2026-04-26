@@ -249,6 +249,9 @@ class ApiClient:
         # Acquire token for rate limiting
         self.rate_limiter.acquire()
 
+        if params:
+            params = {k: v for k, v in params.items() if v is not None}
+
         response = self.session.request(
             method=method,
             url=url,

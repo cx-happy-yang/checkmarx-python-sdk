@@ -27,8 +27,9 @@ def construct_configuration() -> Configuration:
     }
     config = get_config(config_default=config_default, section="CxOne", prefix="cxone_")
     access_control_url = config.get("access_control_url", "").rstrip("/")
+    server_base_url = config.get("server", "").rstrip("/")
     configuration = Configuration(
-        server_base_url=config.get("server"),
+        server_base_url=server_base_url,
         iam_base_url=access_control_url,
         token_url=(
             f"{access_control_url}/auth/realms"

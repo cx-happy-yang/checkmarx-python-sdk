@@ -44,7 +44,6 @@ from .dto import (
     EntitiesForExtendedResponse,
     construct_entities_for_extended_response,
     ApplicationsCollection,
-    construct_applications_collection,
     ProjectsCollection,
     construct_projects_collection,
     EntityType,
@@ -650,7 +649,7 @@ class AccessManagementAPI(object):
             "tags-values": tags_values,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_applications_collection(response.json())
+        return ApplicationsCollection.from_dict(response.json())
 
     def get_a_list_of_projects_with_action_for_user_or_client(
         self,
