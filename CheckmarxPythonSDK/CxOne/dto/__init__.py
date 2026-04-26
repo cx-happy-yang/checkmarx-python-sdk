@@ -24,8 +24,8 @@ from .BaseRolesResponse import BaseRolesResponse
 from .BflTree import BflTree
 from .ByorJob import ByorJob
 from .ByorJobPatchRequest import ByorJobPatchRequest
-from .Category import Category, construct_category
-from .CategoryType import CategoryType, construct_category_type
+from .Category import Category
+from .CategoryType import CategoryType
 from .ChangeDetails import ChangeDetails
 from .Client import Client
 from .ClientsWithResourcesResponse import (
@@ -132,16 +132,13 @@ from .ProtocolMappersRepresentation import (
     ProtocolMappersRepresentation,
 )
 from .Queries import Queries, construct_queries
-from .QueriesResponse import QueriesResponse, construct_queries_response
+from .QueriesResponse import QueriesResponse
 from .QueriesTree import QueriesTree
 from .Query import Query, construct_query
 from .QueryBuilderMessage import QueryBuilderMessage
 from .QueryBuilderPrompt import QueryBuilderPrompt
-from .QueryDescription import QueryDescription, construct_query_description
-from .QueryDescriptionSampleCode import (
-    QueryDescriptionSampleCode,
-    construct_query_description_sample_code,
-)
+from .QueryDescription import QueryDescription
+from .QueryDescriptionSampleCode import QueryDescriptionSampleCode
 from .QueryDetails import QueryDetails, construct_query_details
 from .QueryRequest import QueryRequest
 from .QueryResponse import QueryResponse

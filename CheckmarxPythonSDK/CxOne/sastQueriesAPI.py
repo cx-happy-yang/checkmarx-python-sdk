@@ -3,17 +3,11 @@ from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
 from .dto import (
     QueriesResponse,
-    construct_queries_response,
     Preset,
-    construct_preset,
     QueryDescription,
-    construct_query_description,
     CategoryType,
-    construct_category_type,
 )
 from CheckmarxPythonSDK.utilities.compat import OK
-
-query_url = "/api/queries"
 
 
 class SastQueriesAPI(object):
@@ -23,96 +17,98 @@ class SastQueriesAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = (
+            f"{self.api_client.configuration.server_base_url}/api/queries"
+        )
 
-    def get_list_of_the_existing_query_repos(self) -> List[QueriesResponse]:
+    def get_list_of_the_existing_query_repos(
+        self,
+    ) -> List[QueriesResponse]:
         """
-
         Returns:
             List[QueriesResponse]
         """
-        relative_url = query_url
-        response = self.api_client.get_request(relative_url=relative_url)
-        queries = response.json()
-        return [construct_queries_response(item) for item in queries or []]
+        response = self.api_client.call_api(
+            method="GET", url=self.base_url
+        )
+        return [
+            QueriesResponse.from_dict(item)
+            for item in (response.json() or [])
+        ]
 
     def get_sast_queries_presets(self) -> List[Preset]:
         """
-
-        Args:
-
         Returns:
             List[Preset]
         """
-        relative_url = query_url + "/presets"
-        response = self.api_client.get_request(relative_url=relative_url)
-        presets = response.json()
-        return [construct_preset(item) for item in presets or []]
+        url = f"{self.base_url}/presets"
+        response = self.api_client.call_api(method="GET", url=url)
+        return [
+            Preset.from_dict(item) for item in (response.json() or [])
+        ]
 
-    def get_sast_query_description(self, ids: List[str]) -> List[QueryDescription]:
+    def get_sast_query_description(
+        self, ids: List[str]
+    ) -> List[QueryDescription]:
         """
-
         Args:
-            ids (List[str]): list of query ids
+            ids (List[str]): list of query ids.
 
         Returns:
             List[QueryDescription]
-             associated to each of the given query ids
         """
-
-        relative_url = query_url + "/descriptions?"
+        url = f"{self.base_url}/descriptions"
         params = {"ids": ids}
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        response = response.json()
-        return [construct_query_description(item) for item in response or []]
+        response = self.api_client.call_api(
+            method="GET", url=url, params=params
+        )
+        return [
+            QueryDescription.from_dict(item)
+            for item in (response.json() or [])
+        ]
 
-    def get_mapping_between_ast_and_sast_query_ids(self) -> List[dict]:
+    def get_mapping_between_ast_and_sast_query_ids(
+        self,
+    ) -> List[dict]:
         """
-
         Returns:
             List[dict]
-            [
-            {
-              "astId": "string",
-              "sastId": "string"
-            }
-          ]
         """
-        result = None
-        relative_url = query_url + "/mappings"
-        response = self.api_client.get_request(relative_url=relative_url)
+        url = f"{self.base_url}/mappings"
+        response = self.api_client.call_api(method="GET", url=url)
         if response.status_code == OK:
-            result = response.json().get("mappings")
-        return result
+            return response.json().get("mappings")
+        return None
 
-    def get_sast_queries_preset_for_a_specific_scan(self, scan_id: str) -> int:
+    def get_sast_queries_preset_for_a_specific_scan(
+        self, scan_id: str
+    ) -> int:
         """
-
         Args:
             scan_id (str):
 
         Returns:
-            prest_id (int)
+            preset_id (int)
         """
-        result = None
-        relative_url = query_url + f"/preset/{scan_id}"
-        response = self.api_client.get_request(relative_url=relative_url)
+        url = f"{self.base_url}/preset/{scan_id}"
+        response = self.api_client.call_api(method="GET", url=url)
         if response.status_code == OK:
-            result = response.json().get("id")
-        return result
+            return response.json().get("id")
+        return None
 
     def get_sast_queries_categories(self) -> List[CategoryType]:
         """
-
         Returns:
             List[CategoryType]
         """
-        result = None
-        relative_url = query_url + "/categories-types"
-        response = self.api_client.get_request(relative_url=relative_url)
+        url = f"{self.base_url}/categories-types"
+        response = self.api_client.call_api(method="GET", url=url)
         if response.status_code == OK:
-            response = response.json()
-            result = [construct_category_type(item) for item in response]
-        return result
+            return [
+                CategoryType.from_dict(item)
+                for item in response.json()
+            ]
+        return None
 
 
 def get_list_of_the_existing_query_repos() -> List[QueriesResponse]:
@@ -123,7 +119,9 @@ def get_sast_queries_presets() -> List[Preset]:
     return SastQueriesAPI().get_sast_queries_presets()
 
 
-def get_sast_query_description(ids: List[str]) -> List[QueryDescription]:
+def get_sast_query_description(
+    ids: List[str],
+) -> List[QueryDescription]:
     return SastQueriesAPI().get_sast_query_description(ids=ids)
 
 
@@ -132,7 +130,9 @@ def get_mapping_between_ast_and_sast_query_ids() -> List[dict]:
 
 
 def get_sast_queries_preset_for_a_specific_scan(scan_id: str) -> int:
-    return SastQueriesAPI().get_sast_queries_preset_for_a_specific_scan(scan_id=scan_id)
+    return SastQueriesAPI().get_sast_queries_preset_for_a_specific_scan(
+        scan_id=scan_id
+    )
 
 
 def get_sast_queries_categories() -> List[CategoryType]:
