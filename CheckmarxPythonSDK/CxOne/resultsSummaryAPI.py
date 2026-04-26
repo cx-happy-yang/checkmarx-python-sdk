@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import (
     ResultsSummary,
 )
@@ -45,14 +44,7 @@ class ResultsSummaryAPI(object):
         Returns:
             dict
         """
-        type_check(scan_ids, (list, tuple))
-        type_check(include_severity_status, bool)
-        type_check(include_queries, bool)
-        type_check(include_files, bool)
-        type_check(apply_predicates, bool)
-        type_check(language, str)
 
-        list_member_type_check(scan_ids, str)
 
         relative_url = api_url
         params = {
