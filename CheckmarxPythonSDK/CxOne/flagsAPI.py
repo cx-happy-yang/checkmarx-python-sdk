@@ -1,6 +1,5 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
-from .utilities import type_check, list_member_type_check
 from .dto import (
     Flag,
     construct_feature_flag,
@@ -32,8 +31,6 @@ class FeatureFlagAPI(object):
         Returns:
             `list` of `Flag`
         """
-        type_check(ids, (list, tuple))
-        list_member_type_check(ids, str)
         relative_url = api_url
         params = {"ids": ",".join(ids)} if ids else None
         response = self.api_client.get_request(relative_url=relative_url, params=params)
@@ -49,7 +46,6 @@ class FeatureFlagAPI(object):
         Returns:
             `Flag`
         """
-        type_check(name, str)
         relative_url = f"{api_url}{name}"
         response = self.api_client.get_request(relative_url=relative_url)
         item = response.json()
