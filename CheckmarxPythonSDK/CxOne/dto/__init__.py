@@ -55,7 +55,7 @@ from .CustomState import CustomState
 from .DebugMessage import DebugMessage, construct_debug_message
 from .DebugMessageResponse import DebugMessageResponse
 from .DefaultConfig import DefaultConfig, construct_default_config
-from .DefaultConfigOut import DefaultConfigOut, construct_default_config_out
+from .DefaultConfigOut import DefaultConfigOut
 from .EffectivePermissionsForResourceResponse import (
     EffectivePermissionsForResourceResponse,
 )
@@ -180,7 +180,7 @@ from .ScanInfo import ScanInfo
 from .ScanInfoCollection import ScanInfoCollection
 from .ScanInput import ScanInput
 from .Scanner import Scanner
-from .ScanParameter import ScanParameter, construct_scan_parameter
+from .ScanParameter import ScanParameter
 from .ScansCollection import ScansCollection, construct_scans_collection
 from .ScaPackageCounters import ScaPackageCounters
 from .Scm import Scm, construct_scm
