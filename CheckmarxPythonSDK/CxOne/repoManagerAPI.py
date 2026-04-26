@@ -302,15 +302,15 @@ class RepoManagerAPI(object):
         """
         origin = self.check_origin(origin)
         origin_index = self.origin_dict.get(origin)
-        relative_url = (
-            f"/api/repos-manager/scms" f"/{origin_index}/orgs/{organization}/repos"
-        )
+        url = f"{self.base_url}/{origin_index}/orgs/{organization}/repos"
         params = {
             "authCode": auth_code,
             "isUser": str(is_user).lower(),
             "page": page,
         }
-        return self.api_client.get_request(relative_url=relative_url, params=params)
+        return self.api_client.call_api(
+            method="GET", url=url, params=params
+        )
 
     def get_all_repos(
         self,
@@ -373,15 +373,13 @@ class RepoManagerAPI(object):
         """
         origin = self.check_origin(origin)
         origin_index = self.origin_dict.get(origin)
-        relative_url = (
-            f"/api/repos-manager/scms"
-            f"/{origin_index}/orgs/{organization}/repos"
-            f"/{repo_name}/branches"
+        url = (
+            f"{self.base_url}/{origin_index}/orgs/{organization}"
+            f"/repos/{repo_name}/branches"
         )
         params = {"authCode": auth_code, "page": page}
-        return self.api_client.get_request(
-            relative_url=relative_url,
-            params=params,
+        return self.api_client.call_api(
+            method="GET", url=url, params=params
         )
 
     def get_all_repo_branches(
@@ -598,24 +596,35 @@ class RepoManagerAPI(object):
 
     def get_job_status(self) -> int:
         """0 - 100"""
-        relative_url = "/api/ssegateway/job-status"
+        url = (
+            f"{self.api_client.configuration.server_base_url}"
+            "/api/ssegateway/job-status"
+        )
         headers = {
             "accept": "*/*",
             "accept-language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
             "cache-control": "no-cache",
             "pragma": "no-cache",
             "priority": "u=1, i",
-            "sec-ch-ua": '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+            "sec-ch-ua": (
+                '"Chromium";v="134", "Not:A-Brand";v="24",'
+                ' "Google Chrome";v="134"'
+            ),
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": '"Windows"',
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/134.0.0.0 Safari/537.36",
+            "user-agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/134.0.0.0 Safari/537.36"
+            ),
             "Accept-Encoding": "identity",
         }
-        response = self.api_client.get_request(relative_url, headers=headers)
+        response = self.api_client.call_api(
+            method="GET", url=url, headers=headers
+        )
         data_list = [
             json.loads(item.replace("data:", ""))
             for item in response.text.split("\n")
@@ -810,8 +819,11 @@ class RepoManagerAPI(object):
 
         """
 
-        relative_url = f"/api/repos-manager/repo/{repo_id}"
-        response = self.api_client.get_request(relative_url)
+        url = (
+            f"{self.api_client.configuration.server_base_url}"
+            f"/api/repos-manager/repo/{repo_id}"
+        )
+        response = self.api_client.call_api(method="GET", url=url)
         return response.json()
 
     def update_repo_by_id(self, repo_id: int, project_id: str, pay_load: dict) -> dict:
@@ -868,10 +880,13 @@ class RepoManagerAPI(object):
         }
 
         """
-        relative_url = f"/api/repos-manager/repo/{repo_id}"
+        url = (
+            f"{self.api_client.configuration.server_base_url}"
+            f"/api/repos-manager/repo/{repo_id}"
+        )
         params = {"projectId": project_id}
-        response = self.api_client.put_request(
-            relative_url=relative_url, params=params, json=pay_load
+        response = self.api_client.call_api(
+            method="PUT", url=url, params=params, json=pay_load
         )
         return response.json()
 
@@ -965,7 +980,7 @@ def construct_repo_request(
         secrets_detection_scanner_enabled=secrets_detection_scanner_enabled,
         project_id=project_id,
         default_branch=default_branch,
-        group=groups,
+        groups=groups,
         private_repository_scan=private_repository_scan,
         tags=tags,
     )
