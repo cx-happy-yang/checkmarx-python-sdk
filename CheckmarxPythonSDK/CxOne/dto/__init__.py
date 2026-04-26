@@ -60,7 +60,7 @@ from .EffectivePermissionsForResourceResponse import (
     EffectivePermissionsForResourceResponse,
 )
 from .EngineData import EngineData
-from .EngineMetrics import EngineMetrics, construct_engine_metrics
+from .EngineMetrics import EngineMetrics
 from .EntitiesForExtendedResponse import (
     EntitiesForExtendedResponse,
 )
@@ -175,9 +175,9 @@ from .ScaContainersCounters import ScaContainersCounters
 from .ScaCounters import ScaCounters
 from .Scan import Scan, construct_scan
 from .ScanConfig import ScanConfig
-from .ScanEngineVersion import ScanEngineVersion, construct_scan_engine_version
-from .ScanInfo import ScanInfo, construct_scan_info
-from .ScanInfoCollection import ScanInfoCollection, construct_scan_info_collection
+from .ScanEngineVersion import ScanEngineVersion
+from .ScanInfo import ScanInfo
+from .ScanInfoCollection import ScanInfoCollection
 from .ScanInput import ScanInput
 from .Scanner import Scanner
 from .ScanParameter import ScanParameter, construct_scan_parameter
