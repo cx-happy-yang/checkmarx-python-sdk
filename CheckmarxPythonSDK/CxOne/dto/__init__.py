@@ -32,20 +32,11 @@ from .ClientsWithResourcesResponse import (
     ClientsWithResourcesResponse,
 )
 from .ClientWithResource import ClientWithResource
-from .CloudInsightAccount import CloudInsightAccount, construct_cloud_insight_account
-from .CloudInsightAccountLog import (
-    CloudInsightAccountLog,
-    construct_cloud_insight_account_log,
-)
-from .CloudInsightContainer import (
-    CloudInsightContainer,
-    construct_cloud_insight_container,
-)
+from .CloudInsightAccount import CloudInsightAccount
+from .CloudInsightAccountLog import CloudInsightAccountLog
+from .CloudInsightContainer import CloudInsightContainer
 from .CloudInsightCreateEnrichAccount import CloudInsightCreateEnrichAccount
-from .CloudInsightEnrichAccount import (
-    CloudInsightEnrichAccount,
-    construct_cloud_insight_enrich_account,
-)
+from .CloudInsightEnrichAccount import CloudInsightEnrichAccount
 from .CommentJSON import CommentJSON, construct_comment_json
 from .CompilationResponse import CompilationResponse, construct_compilation_response
 from .ComplianceSummary import ComplianceSummary, construct_compliance_summary
@@ -116,22 +107,10 @@ from .Metadata import Metadata, construct_metadata
 from .MethodInfo import MethodInfo, construct_method_info
 from .MethodParameter import MethodParameter, construct_method_parameter
 from .MultipleAssignmentInput import MultipleAssignmentInput
-from .PaginatedAccountLogsListResponse import (
-    PaginatedAccountLogsListResponse,
-    construct_paginated_account_logs_list_response,
-)
-from .PaginatedAccountsListResponse import (
-    PaginatedAccountsListResponse,
-    construct_paginated_accounts_list_response,
-)
-from .PaginatedContainersListResponse import (
-    PaginatedContainersListResponse,
-    construct_paginated_containers_list_response,
-)
-from .PaginatedResourcesList import (
-    PaginatedResourcesList,
-    construct_paginated_resources_list,
-)
+from .PaginatedAccountLogsListResponse import PaginatedAccountLogsListResponse
+from .PaginatedAccountsListResponse import PaginatedAccountsListResponse
+from .PaginatedContainersListResponse import PaginatedContainersListResponse
+from .PaginatedResourcesList import PaginatedResourcesList
 from .Permission import Permission
 from .PlatformSummary import PlatformSummary, construct_platform_summary
 from .Predicate import Predicate, construct_predicate
@@ -187,7 +166,7 @@ from .RequestStatusNotReady import (
     RequestStatusNotReady,
     construct_request_status_not_ready,
 )
-from .Resource import Resource, construct_resource
+from .Resource import Resource
 from .ResourcesResponse import ResourcesResponse
 from .ResourceType import ResourceType
 from .Result import Result, construct_result

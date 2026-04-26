@@ -5,21 +5,13 @@ from CheckmarxPythonSDK.utilities.compat import OK
 from .dto import (
     CloudInsightCreateEnrichAccount,
     CloudInsightEnrichAccount,
-    construct_cloud_insight_enrich_account,
     CloudInsightAccount,
-    construct_cloud_insight_account,
     StartEnrich,
     PaginatedAccountLogsListResponse,
-    construct_paginated_account_logs_list_response,
     PaginatedAccountsListResponse,
-    construct_paginated_accounts_list_response,
     PaginatedContainersListResponse,
-    construct_paginated_containers_list_response,
     PaginatedResourcesList,
-    construct_paginated_resources_list,
 )
-
-api_url = "/api/cnas"
 
 
 class CloudInsightsServiceAPI(object):
@@ -29,97 +21,97 @@ class CloudInsightsServiceAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{self.api_client.configuration.server_base_url}/api/cnas"
 
     def create_enrich_account(
         self, data: CloudInsightCreateEnrichAccount
     ) -> CloudInsightEnrichAccount:
         """
-
         Args:
             data (CloudInsightCreateEnrichAccount):
 
         Returns:
             CloudInsightEnrichAccount
         """
-        relative_url = api_url + "/accounts/enrich"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=data.to_dict()
+        url = f"{self.base_url}/accounts/enrich"
+        response = self.api_client.call_api(
+            method="POST", url=url, json=data.to_dict()
         )
-        return construct_cloud_insight_enrich_account(response.json())
+        return CloudInsightEnrichAccount.from_dict(response.json())
 
     def get_enrich_account_by_external_id(
         self, external_id: str, offset: int = 0, limit: int = 100
     ) -> PaginatedAccountsListResponse:
         """
-
         Args:
             external_id (str): A unique identifier provided by Checkmarx
-            offset (int): Offset the results Default value : 0
+            offset (int): Offset the results. Default value: 0
             limit (int): Limit the number of results
 
         Returns:
             PaginatedAccountsListResponse
         """
+        url = f"{self.base_url}/accounts/enrich"
         params = {"external-id": external_id, "offset": offset, "limit": limit}
-        relative_url = api_url + "/accounts/enrich"
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        return construct_paginated_accounts_list_response(response.json())
+        response = self.api_client.call_api(method="GET", url=url, params=params)
+        return PaginatedAccountsListResponse.from_dict(response.json())
 
     def start_enrichment(
         self, cloud_insights_account_id: str, start_enrich: StartEnrich
     ) -> str:
         """
-
         Args:
-            cloud_insights_account_id (str):   uuid4
-            start_enrich (StartEnrich)
+            cloud_insights_account_id (str): uuid4
+            start_enrich (StartEnrich):
 
         Returns:
             message (str)
         """
-        relative_url = api_url + "/accounts/{id}/enrich".format(
-            id=cloud_insights_account_id
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=start_enrich.to_dict()
+        url = f"{self.base_url}/accounts/{cloud_insights_account_id}/enrich"
+        response = self.api_client.call_api(
+            method="POST", url=url, json=start_enrich.to_dict()
         )
         return response.json().get("message")
 
     def start_async_enrichment(
         self, cloud_insights_account_id: str, start_enrich: StartEnrich
     ) -> str:
-        relative_url = api_url + "/v2/accounts/{id}/enrich".format(
-            id=cloud_insights_account_id
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=start_enrich.to_dict()
+        """
+        Args:
+            cloud_insights_account_id (str): uuid4
+            start_enrich (StartEnrich):
+
+        Returns:
+            syncId (str)
+        """
+        url = f"{self.base_url}/v2/accounts/{cloud_insights_account_id}/enrich"
+        response = self.api_client.call_api(
+            method="POST", url=url, json=start_enrich.to_dict()
         )
         return response.json().get("syncId")
 
     def get_cloud_insight_account(self, account_id: str) -> CloudInsightAccount:
         """
-
         Args:
             account_id (str): Cloud Insights account ID
 
         Returns:
             CloudInsightAccount
         """
-        relative_url = api_url + "/accounts/{id}".format(id=account_id)
-        response = self.api_client.get_request(relative_url=relative_url)
-        return construct_cloud_insight_account(response.json())
+        url = f"{self.base_url}/accounts/{account_id}"
+        response = self.api_client.call_api(method="GET", url=url)
+        return CloudInsightAccount.from_dict(response.json())
 
     def delete_cloud_insight_account(self, account_id: str) -> bool:
         """
-
         Args:
             account_id (str): Cloud Insights account ID
 
         Returns:
             bool
         """
-        relative_url = api_url + "/accounts/{id}".format(id=account_id)
-        response = self.api_client.delete_request(relative_url=relative_url)
+        url = f"{self.base_url}/accounts/{account_id}"
+        response = self.api_client.call_api(method="DELETE", url=url)
         return response.status_code == OK
 
     def get_account_logs(
@@ -132,19 +124,20 @@ class CloudInsightsServiceAPI(object):
         created_at_end: str,
     ) -> PaginatedAccountLogsListResponse:
         """
-
         Args:
             account_id (str): Cloud Insights account ID
-            event_type (str): Available values : Incoming, Outgoing
-            status (str):  Available values : Success, Failed
-            description (str):  Available values : Sync, Scheduled
-            created_at_start (str): Start of the creation date range in ISO 8601 format (e.g., 2025-08-10T00:00:00Z).
-            created_at_end (str): End of the creation date range in ISO 8601 format (e.g., 2025-08-12T23:59:59Z).
+            event_type (str): Available values: Incoming, Outgoing
+            status (str): Available values: Success, Failed
+            description (str): Available values: Sync, Scheduled
+            created_at_start (str): Start of the creation date range in ISO
+                8601 format (e.g., 2025-08-10T00:00:00Z).
+            created_at_end (str): End of the creation date range in ISO 8601
+                format (e.g., 2025-08-12T23:59:59Z).
 
         Returns:
             PaginatedAccountLogsListResponse
         """
-        relative_url = api_url + "/accounts/{id}/logs".format(id=account_id)
+        url = f"{self.base_url}/accounts/{account_id}/logs"
         params = {
             "eventType": event_type,
             "status": status,
@@ -152,8 +145,8 @@ class CloudInsightsServiceAPI(object):
             "createdAtStart": created_at_start,
             "createdAtEnd": created_at_end,
         }
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        return construct_paginated_account_logs_list_response(response.json())
+        response = self.api_client.call_api(method="GET", url=url, params=params)
+        return PaginatedAccountLogsListResponse.from_dict(response.json())
 
     def get_all_containers_for_an_account_id(
         self,
@@ -172,11 +165,10 @@ class CloudInsightsServiceAPI(object):
         order_direction: str = None,
     ) -> PaginatedContainersListResponse:
         """
-
         Args:
             account_id (str): Cloud Insights account ID
             limit (int): Limit the number of results
-            offset (int): Offset the results Default value : 0
+            offset (int): Offset the results. Default value: 0
             image_name (str):
             image_short_name (str):
             project_name (str):
@@ -191,7 +183,7 @@ class CloudInsightsServiceAPI(object):
         Returns:
             PaginatedContainersListResponse
         """
-        relative_url = api_url + f"/accounts/{account_id}/containers"
+        url = f"{self.base_url}/accounts/{account_id}/containers"
         params = {
             "limit": limit,
             "offset": offset,
@@ -206,8 +198,8 @@ class CloudInsightsServiceAPI(object):
             "order-column": order_column,
             "order-direction": order_direction,
         }
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        return construct_paginated_containers_list_response(response.json())
+        response = self.api_client.call_api(method="GET", url=url, params=params)
+        return PaginatedContainersListResponse.from_dict(response.json())
 
     def get_resources_filtered_by_group(
         self,
@@ -225,25 +217,26 @@ class CloudInsightsServiceAPI(object):
         order_direction: str = None,
     ) -> PaginatedResourcesList:
         """
-
         Args:
             account_id (str):
             image_name (str):
             image_short_name (str):
             public_exposed (str):
             search (str):
-            cluster_names (List[str]):  Filter by cluster names (comma-separated)
-            asset_types (List[str]): Filter by asset types (comma-separated) Available values : ECS, Kubernetes
-            resource_type (str): Available values : CONTAINER
+            cluster_names (List[str]): Filter by cluster names
+                (comma-separated)
+            asset_types (List[str]): Filter by asset types (comma-separated).
+                Available values: ECS, Kubernetes
+            resource_type (str): Available values: CONTAINER
             offset (int):
             limit (int):
             order_column (str):
             order_direction (str):
 
         Returns:
-
+            PaginatedResourcesList
         """
-        relative_url = api_url + f"/accounts/{account_id}/resources"
+        url = f"{self.base_url}/accounts/{account_id}/resources"
         params = {
             "image-name": image_name,
             "image-short-name": image_short_name,
@@ -257,8 +250,8 @@ class CloudInsightsServiceAPI(object):
             "order-column": order_column,
             "order-direction": order_direction,
         }
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        return construct_paginated_resources_list(response.json())
+        response = self.api_client.call_api(method="GET", url=url, params=params)
+        return PaginatedResourcesList.from_dict(response.json())
 
 
 def create_enrich_account(
@@ -275,9 +268,12 @@ def get_enrich_account_by_external_id(
     )
 
 
-def start_enrichment(cloud_insights_account_id: str, start_enrich: StartEnrich) -> str:
+def start_enrichment(
+    cloud_insights_account_id: str, start_enrich: StartEnrich
+) -> str:
     return CloudInsightsServiceAPI().start_enrichment(
-        cloud_insights_account_id=cloud_insights_account_id, start_enrich=start_enrich
+        cloud_insights_account_id=cloud_insights_account_id,
+        start_enrich=start_enrich,
     )
 
 
@@ -285,7 +281,8 @@ def start_async_enrichment(
     cloud_insights_account_id: str, start_enrich: StartEnrich
 ) -> str:
     return CloudInsightsServiceAPI().start_async_enrichment(
-        cloud_insights_account_id=cloud_insights_account_id, start_enrich=start_enrich
+        cloud_insights_account_id=cloud_insights_account_id,
+        start_enrich=start_enrich,
     )
 
 
@@ -294,7 +291,9 @@ def get_cloud_insight_account(account_id: str) -> CloudInsightAccount:
 
 
 def delete_cloud_insight_account(account_id: str) -> bool:
-    return CloudInsightsServiceAPI().delete_cloud_insight_account(account_id=account_id)
+    return CloudInsightsServiceAPI().delete_cloud_insight_account(
+        account_id=account_id
+    )
 
 
 def get_account_logs(
