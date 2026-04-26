@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
 from .dto import (
     DefaultConfig,
@@ -46,8 +45,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(scan_parameters, (list, tuple))
-        list_member_type_check(scan_parameters, ScanParameter)
         relative_url = api_url + "/tenant"
         response = self.api_client.patch_request(
             relative_url=relative_url,
@@ -82,7 +79,6 @@ class ScanConfigurationAPI(object):
         Returns:
              List[ScanParameter]
         """
-        type_check(project_id, str)
         relative_url = api_url + "/project"
         params = {"project-id": project_id}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
@@ -101,7 +97,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(project_id, str)
         relative_url = api_url + "/project"
         params = {"project-id": project_id}
         response = self.api_client.patch_request(
@@ -123,8 +118,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(project_id, str)
-        type_check(config_keys, str)
         relative_url = api_url + "/project"
         params = {"project-id": project_id, "config-keys": config_keys}
         response = self.api_client.delete_request(
@@ -145,8 +138,6 @@ class ScanConfigurationAPI(object):
             List[ScanParameter]
         """
 
-        type_check(project_id, str)
-        type_check(scan_id, str)
         relative_url = api_url + "/scan"
         params = {"project-id": project_id, "scan-id": scan_id}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
@@ -171,10 +162,6 @@ class ScanConfigurationAPI(object):
         Returns:
              List[DefaultConfigOut]
         """
-        type_check(name, str)
-        type_check(exact_match, bool)
-        type_check(limit, int)
-        type_check(offset, int)
         relative_url = api_url + "/sast/default-config"
         response = self.api_client.get_request(relative_url=relative_url)
         response = response.json()
@@ -191,7 +178,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(default_config, DefaultConfig)
         relative_url = api_url + "/sast/default-config"
         response = self.api_client.post_request(
             relative_url=relative_url, json=default_config.to_dict()
@@ -207,7 +193,6 @@ class ScanConfigurationAPI(object):
         Returns:
            DefaultConfigOut
         """
-        type_check(config_id, str)
         relative_url = api_url + "/sast/default-config/{id}".format(id=config_id)
         response = self.api_client.get_request(relative_url=relative_url)
         item = response.json()
@@ -225,8 +210,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(config_id, str)
-        type_check(default_config, DefaultConfig)
         relative_url = api_url + "/sast/default-config/{id}".format(id=config_id)
         response = self.api_client.put_request(
             relative_url=relative_url, json=default_config.to_dict()
@@ -242,7 +225,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(config_id, str)
         relative_url = api_url + "/sast/default-config/{id}".format(id=config_id)
         response = self.api_client.delete_request(relative_url=relative_url)
         return response.status_code == NO_CONTENT
@@ -257,8 +239,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(project_id, str)
-        type_check(repo_url, str)
         relative_url = api_url + "/project"
         params = {"project-id": project_id}
         data = [
@@ -287,8 +267,6 @@ class ScanConfigurationAPI(object):
         Returns:
             bool
         """
-        type_check(project_id, str)
-        type_check(token, str)
         relative_url = api_url + "/project"
         params = {"project-id": project_id}
         data = [
