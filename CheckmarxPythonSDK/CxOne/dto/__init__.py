@@ -86,8 +86,8 @@ from .GroupsWithResourcesResponse import (
     GroupsWithResourcesResponse,
 )
 from .GroupWithResource import GroupWithResource
-from .ImportItem import ImportItem, construct_import_item
-from .ImportItemWithLogs import ImportItemWithLogs, construct_import_item_with_logs
+from .ImportItem import ImportItem
+from .ImportItemWithLogs import ImportItemWithLogs
 from .ImportRequest import ImportRequest, construct_import_request
 from .ImportResults import ImportResults
 from .InternalClient import InternalClient
@@ -96,7 +96,7 @@ from .InternalUser import InternalUser
 from .KicsResult import KicsResult
 from .KicsResultCollection import KicsResultCollection
 from .LanguageSummary import LanguageSummary, construct_language_summary
-from .LogItem import LogItem, construct_log_item
+from .LogItem import LogItem
 from .Metadata import Metadata
 from .MethodInfo import MethodInfo, construct_method_info
 from .MethodParameter import MethodParameter, construct_method_parameter
