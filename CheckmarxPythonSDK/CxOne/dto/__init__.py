@@ -235,7 +235,7 @@ from .UsersWithResourcesResponse import (
     UsersWithResourcesResponse,
 )
 from .UserWithResource import UserWithResource
-from .VersionsOut import VersionsOut, construct_versions_out
+from .VersionsOut import VersionsOut
 from .WebError import WebError, construct_web_error
 from .WebHook import WebHook, construct_web_hook
 from .WebHookConfig import WebHookConfig, construct_web_hook_config
