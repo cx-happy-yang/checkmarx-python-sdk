@@ -17,7 +17,7 @@ class AccessControlAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
-        self.base_url = f"{self.api_client.configuration.iam_base_url}" f"/auth/realms"
+        self.base_url = f"{self.api_client.configuration.iam_base_url}/auth/realms"
         self.realm = self.api_client.configuration.tenant_name
 
     def get_groups(

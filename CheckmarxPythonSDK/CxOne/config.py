@@ -26,11 +26,12 @@ def construct_configuration() -> Configuration:
         "rate_limit_refill_rate": None,
     }
     config = get_config(config_default=config_default, section="CxOne", prefix="cxone_")
+    access_control_url = config.get("access_control_url", "").rstrip("/")
     configuration = Configuration(
         server_base_url=config.get("server"),
-        iam_base_url=config.get("access_control_url"),
+        iam_base_url=access_control_url,
         token_url=(
-            f"{config.get('access_control_url')}/auth/realms"
+            f"{access_control_url}/auth/realms"
             f"/{config.get('tenant_name')}/protocol/openid-connect/token"
         ),
         tenant_name=config.get("tenant_name"),
