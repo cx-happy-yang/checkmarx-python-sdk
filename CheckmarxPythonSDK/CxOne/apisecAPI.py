@@ -211,12 +211,16 @@ class ApiSecAPI(object):
         url = f"{self.base_url}/scan/{scan_id}/risks-origin"
         response = self.api_client.call_api(method="GET", url=url)
         data = response.json()
-        if isinstance(data, dict):
-            return ScanRisksOriginsResult(**data)
-        elif isinstance(data, list):
-            return ScanRisksOriginsResult(entries=data)
+        if isinstance(data, list):
+            entries = [ScanRisksOriginsItemResult(**item) for item in data]
+        elif isinstance(data, dict):
+            entries = [
+                ScanRisksOriginsItemResult(**item)
+                for item in (data.get("entries") or [])
+            ]
         else:
-            return ScanRisksOriginsResult(entries=[])
+            entries = []
+        return ScanRisksOriginsResult(entries=entries)
 
     def get_scan_apisec_risk_overview(self, scan_id: str) -> ApiSecRisksOverview:
         """
@@ -243,7 +247,15 @@ class ApiSecAPI(object):
         """
         url = f"{self.base_url}/scan/{scan_id}/risks-types"
         response = self.api_client.call_api(method="GET", url=url)
-        return RisksTypesResponse(**response.json())
+        data = response.json()
+        risks = [
+            RisksTypes(
+                origin=r.get("origin"),
+                entries=[RiskType(**e) for e in (r.get("entries") or [])],
+            )
+            for r in (data.get("risks") or [])
+        ]
+        return RisksTypesResponse(risks=risks)
 
     def get_number_of_sensitive_data_apis(
         self,
@@ -292,8 +304,17 @@ class ApiSecAPI(object):
         """
         url = f"{self.base_url}/scan/metadata"
         response = self.api_client.call_api(method="GET", url=url)
-        print(response.json())
-        return [ScanMetadataResponse(**item) for item in response.json()]
+        result = []
+        for item in response.json():
+            options = [ScanMetadata(**o) for o in (item.get("options") or [])]
+            result.append(
+                ScanMetadataResponse(
+                    column=item.get("column"),
+                    options=options,
+                    grouping=item.get("grouping"),
+                )
+            )
+        return result
 
     def get_risk_detail_by_risk_id(self, risk_id: str) -> RiskDetailResponse:
         """
@@ -381,7 +402,6 @@ class ApiSecAPI(object):
             url=url,
             params=params,
         )
-        print(response.json())
         return GroupResponse(**response.json())
 
     def get_api_parameters(self, api_id: str) -> Parameter:
