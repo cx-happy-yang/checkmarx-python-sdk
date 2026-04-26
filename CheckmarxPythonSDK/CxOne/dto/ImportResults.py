@@ -16,7 +16,3 @@ class ImportResults:
     @classmethod
     def from_dict(cls, item: dict) -> "ImportResults":
         return cls(import_id=item.get("importId"))
-
-
-def construct_import_results(item):
-    return ImportResults.from_dict(item)

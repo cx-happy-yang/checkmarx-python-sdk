@@ -22,8 +22,8 @@ from .AuditQuery import AuditQuery
 from .BaseRolesRequest import BaseRolesRequest
 from .BaseRolesResponse import BaseRolesResponse
 from .BflTree import BflTree, construct_bfl_tree
-from .ByorJob import ByorJob, construct_byor_job
-from .ByorJobPatchRequest import ByorJobPatchRequest, construct_byor_job_patch_request
+from .ByorJob import ByorJob
+from .ByorJobPatchRequest import ByorJobPatchRequest
 from .Category import Category, construct_category
 from .CategoryType import CategoryType, construct_category_type
 from .ChangeDetails import ChangeDetails, construct_change_details
@@ -104,7 +104,7 @@ from .GroupWithResource import GroupWithResource
 from .ImportItem import ImportItem, construct_import_item
 from .ImportItemWithLogs import ImportItemWithLogs, construct_import_item_with_logs
 from .ImportRequest import ImportRequest, construct_import_request
-from .ImportResults import ImportResults, construct_import_results
+from .ImportResults import ImportResults
 from .InternalClient import InternalClient
 from .InternalGroup import InternalGroup
 from .InternalUser import InternalUser
@@ -247,7 +247,7 @@ from .TimeStamp import TimeStamp
 from .TotalCounters import TotalCounters, construct_total_counters
 from .Tree import Tree, construct_tree
 from .TriageRequest import TriageRequest, construct_triage_request
-from .TriageResponse import TriageResponse, construct_triage_response
+from .TriageResponse import TriageResponse
 from .Upload import Upload
 from .User import User
 from .UserConsentRepresentation import (

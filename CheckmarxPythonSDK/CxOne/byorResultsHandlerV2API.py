@@ -5,13 +5,9 @@ from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
 from .dto import (
     ImportRequest,
     ImportResults,
-    construct_import_results,
     ByorJob,
-    construct_byor_job,
     ByorJobPatchRequest,
 )
-
-api_url = "/api/v2/byor"
 
 
 class ByorResultsHandlerV2API(object):
@@ -21,54 +17,52 @@ class ByorResultsHandlerV2API(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = (
+            f"{self.api_client.configuration.server_base_url}/api/v2/byor"
+        )
 
     def create_byor_import(self, import_request: ImportRequest) -> ImportResults:
         """
-
         Args:
             import_request (ImportRequest):
 
         Returns:
             ImportResults
         """
-        relative_url = api_url + "/imports"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=import_request.to_dict()
+        url = f"{self.base_url}/imports"
+        response = self.api_client.call_api(
+            method="POST", url=url, json=import_request.to_dict()
         )
-        item = response.json()
-        return construct_import_results(item)
+        return ImportResults.from_dict(response.json())
 
     def get_job_by_id(self, job_id: str) -> ByorJob:
         """
-
         Args:
             job_id (str):
 
         Returns:
             ByorJob
         """
-        relative_url = api_url + f"/jobs/{job_id}"
-        response = self.api_client.get_request(relative_url=relative_url)
-        item = response.json()
-        return construct_byor_job(item)
+        url = f"{self.base_url}/jobs/{job_id}"
+        response = self.api_client.call_api(method="GET", url=url)
+        return ByorJob.from_dict(response.json())
 
     def patch_job_by_id(
         self,
         job_id: str,
-        patch_request: ByorJobPatchRequest = ByorJobPatchRequest(status="Canceled "),
+        patch_request: ByorJobPatchRequest = ByorJobPatchRequest(status="Canceled"),
     ) -> bool:
         """
-
         Args:
             job_id (str):
-            patch_request (ByorJobPatchRequest ):
+            patch_request (ByorJobPatchRequest):
 
         Returns:
             bool
         """
-        relative_url = api_url + f"/jobs/{job_id}"
-        response = self.api_client.patch_request(
-            relative_url=relative_url, json=patch_request.to_dict()
+        url = f"{self.base_url}/jobs/{job_id}"
+        response = self.api_client.call_api(
+            method="PATCH", url=url, json=patch_request.to_dict()
         )
         return response.status_code == NO_CONTENT
 
