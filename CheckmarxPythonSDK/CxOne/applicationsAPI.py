@@ -1,6 +1,5 @@
 # encoding: utf-8
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT, CREATED
-from .utilities import type_check
 from .dto import (
     Application,
     ApplicationInput,
@@ -34,7 +33,6 @@ class ApplicationsAPI(object):
         Returns:
             `CreatedApplication`
         """
-        type_check(application_input, ApplicationInput)
         response = self.api_client.call_api(
             method="POST",
             url=self.base_url,
@@ -83,7 +81,6 @@ class ApplicationsAPI(object):
         Returns:
             str
         """
-        type_check(name, str)
         app_collection = self.get_a_list_of_applications(name=name)
         applications = app_collection.applications
         if applications:
@@ -109,7 +106,6 @@ class ApplicationsAPI(object):
         Returns:
             `Application`
         """
-        type_check(application_id, str)
         response = self.api_client.call_api(
             method="GET",
             url=f"{self.base_url}/{application_id}",
@@ -127,8 +123,6 @@ class ApplicationsAPI(object):
         Returns:
             bool
         """
-        type_check(application_id, str)
-        type_check(application_input, ApplicationInput)
         response = self.api_client.call_api(
             method="PUT",
             url=f"{self.base_url}/{application_id}",
@@ -144,7 +138,6 @@ class ApplicationsAPI(object):
         Returns:
             bool
         """
-        type_check(application_id, str)
         response = self.api_client.call_api(
             method="DELETE",
             url=f"{self.base_url}/{application_id}",
@@ -162,8 +155,6 @@ class ApplicationsAPI(object):
         Returns:
             `Rule`
         """
-        type_check(application_id, str)
-        type_check(rule_input, RuleInput)
         response = self.api_client.call_api(
             method="POST",
             url=f"{self.base_url}/{application_id}/project-rules",
@@ -181,7 +172,6 @@ class ApplicationsAPI(object):
         Returns:
             `list` of `Rule`
         """
-        type_check(application_id, str)
         response = self.api_client.call_api(
             method="GET",
             url=f"{self.base_url}/{application_id}/project-rules",
@@ -197,8 +187,6 @@ class ApplicationsAPI(object):
         Returns:
             `Rule`
         """
-        type_check(application_id, str)
-        type_check(rule_id, str)
         response = self.api_client.call_api(
             method="GET",
             url=f"{self.base_url}/{application_id}/project-rules/{rule_id}",
@@ -217,9 +205,6 @@ class ApplicationsAPI(object):
         Returns:
             bool
         """
-        type_check(application_id, str)
-        type_check(rule_id, str)
-        type_check(rule_input, RuleInput)
         response = self.api_client.call_api(
             method="PUT",
             url=f"{self.base_url}/{application_id}/project-rules/{rule_id}",
@@ -236,8 +221,6 @@ class ApplicationsAPI(object):
         Returns:
             bool
         """
-        type_check(application_id, str)
-        type_check(rule_id, str)
         response = self.api_client.call_api(
             method="DELETE",
             url=f"{self.base_url}/{application_id}/project-rules/{rule_id}",
