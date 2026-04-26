@@ -1,6 +1,5 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
-from .utilities import type_check, list_member_type_check
 from typing import List
 from .dto import (
     ProjectCounter,
@@ -65,27 +64,6 @@ class ProjectsOverviewAPI(object):
             ProjectResponseCollection
         """
         relative_url = api_url
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(name, str)
-        type_check(scan_origin, list)
-        list_member_type_check(scan_origin, str)
-        type_check(source_type, list)
-        list_member_type_check(source_type, str)
-        type_check(group_ids, list)
-        list_member_type_check(group_ids, str)
-        type_check(tag_keys, list)
-        list_member_type_check(tag_keys, str)
-        type_check(tag_values, list)
-        list_member_type_check(tag_values, str)
-        type_check(risk_level, list)
-        list_member_type_check(risk_level, str)
-        type_check(from_date, str)
-        type_check(to_date, str)
-        type_check(is_deployed, bool)
-        type_check(is_public, bool)
-        type_check(sort, list)
-        list_member_type_check(sort, str)
         params = {
             "offset": offset,
             "limit": limit,
@@ -143,24 +121,6 @@ class ProjectsOverviewAPI(object):
             List[ProjectCounter]
         """
         relative_url = api_url + "/aggregate"
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(group_by_field, str)
-        type_check(name, str)
-        type_check(scan_origin, list)
-        list_member_type_check(scan_origin, str)
-        type_check(source_type, list)
-        list_member_type_check(source_type, str)
-        type_check(group_ids, list)
-        list_member_type_check(group_ids, str)
-        type_check(tag_keys, list)
-        list_member_type_check(tag_keys, str)
-        type_check(tag_values, list)
-        list_member_type_check(tag_values, str)
-        type_check(risk_level, list)
-        list_member_type_check(risk_level, str)
-        type_check(from_date, str)
-        type_check(to_date, str)
         params = {
             "offset": offset,
             "limit": limit,
