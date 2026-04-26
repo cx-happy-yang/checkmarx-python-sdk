@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import BflTree, construct_sast_result, construct_result_node
 
 api_url = "/api/bfl"
@@ -42,15 +41,7 @@ class SastBestFixLocationAPI(object):
         Returns:
          dict
         """
-        type_check(scan_id, str)
-        type_check(query_id, str)
-        type_check(result_ids, (list, tuple))
-        type_check(include_graph, bool)
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(apply_predicates, bool)
 
-        list_member_type_check(result_ids, str)
 
         relative_url = api_url
         params = {
