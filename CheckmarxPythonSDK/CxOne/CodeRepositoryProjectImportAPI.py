@@ -1,6 +1,5 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
-from .utilities import type_check
 from .dto import SCMImportInput
 
 api_url = "/api/repos-manager"
@@ -30,7 +29,6 @@ class CodeRepositoryProjectImportAPI(object):
                 string
                 A message that includes the url for checking the conversion status.
         """
-        type_check(scm_import_input, SCMImportInput)
         relative_url = api_url + "/scm-projects"
         response = self.api_client.post_request(
             relative_url=relative_url, json=scm_import_input.to_dict()
@@ -72,7 +70,6 @@ class CodeRepositoryProjectImportAPI(object):
                     error (str): The error that caused the failure
 
         """
-        type_check(process_id, str)
         relative_url = api_url + f"/scm-projects/import-status"
         params = {"process-id": process_id}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
