@@ -127,7 +127,7 @@ from .ProjectResponseCollection import ProjectResponseCollection
 from .ProjectResponseModel import ProjectResponseModel
 from .ProjectsCollection import ProjectsCollection
 from .ProjectSettings import ProjectSettings
-from .Property import Property, construct_property
+from .Property import Property
 from .ProtocolMappersRepresentation import (
     ProtocolMappersRepresentation,
 )
@@ -169,7 +169,7 @@ from .RoleWithDetails import RoleWithDetails
 from .Rule import Rule
 from .RuleInput import RuleInput
 from .SastResult import SastResult, construct_sast_result
-from .SastScan import SastScan, construct_sast_scan
+from .SastScan import SastScan
 from .SastStatus import SastStatus
 from .ScaContainersCounters import ScaContainersCounters
 from .ScaCounters import ScaCounters
