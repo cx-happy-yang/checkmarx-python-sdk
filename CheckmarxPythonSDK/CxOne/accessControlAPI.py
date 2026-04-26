@@ -3,11 +3,8 @@ from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List, Optional
 from CheckmarxPythonSDK.CxOne.dto import (
     AstIdWithName,
-    construct_ast_id_with_name,
     AstUser,
-    construct_ast_user,
     Role,
-    construct_role,
 )
 
 
@@ -63,7 +60,7 @@ class AccessControlAPI(object):
             params=params,
         )
         item_list = response.json()
-        return [construct_ast_id_with_name(item) for item in item_list]
+        return [AstIdWithName.from_dict(item) for item in item_list]
 
     def get_group_by_name(
         self,
@@ -129,7 +126,7 @@ class AccessControlAPI(object):
             params=params,
         )
         item_list = response.json()
-        return [construct_ast_user(item) for item in item_list]
+        return [AstUser.from_dict(item) for item in item_list]
 
     def get_users_by_groups(
         self,
@@ -153,7 +150,7 @@ class AccessControlAPI(object):
             url=url,
         )
         item_list = response.json()
-        return [construct_ast_user(item) for item in item_list]
+        return [AstUser.from_dict(item) for item in item_list]
 
     def get_users_count(
         self,
@@ -196,7 +193,7 @@ class AccessControlAPI(object):
             url=url,
         )
         item_list = response.json()
-        return [construct_role(item) for item in item_list]
+        return [Role.from_dict(item) for item in item_list]
 
 
 def get_groups(

@@ -14,8 +14,8 @@ from .AssignmentsWithBaseRoles import (
     AssignmentsWithBaseRoles,
     construct_assignments_with_base_roles,
 )
-from .AstIdWithName import AstIdWithName, construct_ast_id_with_name
-from .AstUser import AstUser, construct_ast_user
+from .AstIdWithName import AstIdWithName
+from .AstUser import AstUser
 from .AsyncRequestResponse import AsyncRequestResponse, construct_async_request_response
 from .AuditEvent import AuditEvent, construct_audit_event
 from .AuditEventLink import AuditEventLink, construct_audit_event_link
@@ -205,7 +205,7 @@ from .ResultsResponse import ResultsResponse, construct_results_response
 from .ResultsSummary import ResultsSummary, construct_results_summary
 from .ResultsSummaryTree import ResultsSummaryTree, construct_results_summary_tree
 from .RichProject import RichProject, construct_rich_project
-from .Role import Role, construct_role
+from .Role import Role
 from .RoleWithDetails import RoleWithDetails, construct_role_with_details
 from .Rule import Rule
 from .RuleInput import RuleInput
