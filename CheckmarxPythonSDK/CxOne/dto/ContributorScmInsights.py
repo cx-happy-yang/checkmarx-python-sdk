@@ -6,9 +6,11 @@ class ContributorScmInsights:
     project_count: int = None
     contributor_count: int = None
 
-
-def construct_contributor_scm_insights(item):
-    return ContributorScmInsights(
-        project_count=item.get("projectCount"),
-        contributor_count=item.get("contributorCount"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "ContributorScmInsights":
+        if item is None:
+            return None
+        return cls(
+            project_count=item.get("projectCount"),
+            contributor_count=item.get("contributorCount"),
+        )

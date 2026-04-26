@@ -40,16 +40,10 @@ from .CloudInsightEnrichAccount import CloudInsightEnrichAccount
 from .CommentJSON import CommentJSON, construct_comment_json
 from .CompilationResponse import CompilationResponse, construct_compilation_response
 from .ComplianceSummary import ComplianceSummary, construct_compliance_summary
-from .ContributorInsights import ContributorInsights, construct_contributor_insights
-from .Contributors import Contributors, construct_contributors
-from .ContributorScmInsights import (
-    ContributorScmInsights,
-    construct_contributor_scm_insights,
-)
-from .ContributorUnfamiliarProjects import (
-    ContributorUnfamiliarProjects,
-    construct_contributor_unfamiliar_projects,
-)
+from .ContributorInsights import ContributorInsights
+from .Contributors import Contributors
+from .ContributorScmInsights import ContributorScmInsights
+from .ContributorUnfamiliarProjects import ContributorUnfamiliarProjects
 from .CreatedApplication import CreatedApplication
 from .CreateRoleRequest import CreateRoleRequest
 from .CredentialRepresentation import (
@@ -57,7 +51,7 @@ from .CredentialRepresentation import (
     construct_credential_representation,
 )
 from .Credentials import Credentials
-from .CustomState import CustomState, construct_custom_state
+from .CustomState import CustomState
 from .DebugMessage import DebugMessage, construct_debug_message
 from .DebugMessageResponse import DebugMessageResponse, construct_debug_message_response
 from .DefaultConfig import DefaultConfig, construct_default_config
@@ -79,7 +73,7 @@ from .FederatedIdentityRepresentation import (
     construct_federated_identity_representation,
 )
 from .FileInfo import FileInfo, construct_file_info
-from .Flag import Flag, construct_feature_flag
+from .Flag import Flag
 from .UsersWithResourcesResponse import (
     UsersWithResourcesResponse,
 )
@@ -219,7 +213,7 @@ from .SourceNodeSummary import SourceNodeSummary, construct_source_node_summary
 from .SourcesTree import SourcesTree, construct_sources_tree
 from .StartEnrich import StartEnrich
 from .StatusDetails import StatusDetails, construct_status_details
-from .SubCheck import SubCheck, construct_sub_check
+from .SubCheck import SubCheck
 from .SubsetScan import SubsetScan, construct_subset_scan
 from .TaskInfo import TaskInfo, construct_task_info
 from .TimeStamp import TimeStamp
