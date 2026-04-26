@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import construct_sast_result
 
 api_url = "/api/sast-results"
@@ -124,49 +123,6 @@ class SastResultsAPI(object):
             dict
         """
 
-        type_check(scan_id, str)
-        type_check(severity, (list, tuple))
-        type_check(state, (list, tuple))
-        type_check(status, (list, tuple))
-        type_check(query_group, str)
-        type_check(compliance, str)
-        type_check(query, str)
-        type_check(language, (list, tuple))
-        type_check(query_ids, (list, tuple))
-        type_check(node_ids, (list, tuple))
-        type_check(source_file, str)
-        type_check(source_file_operation, str)
-        type_check(source_node, str)
-        type_check(source_node_operation, str)
-        type_check(source_line, int)
-        type_check(source_line_operation, str)
-        type_check(sink_node, str)
-        type_check(sink_node_operation, str)
-        type_check(sink_file, str)
-        type_check(sink_file_operation, str)
-        type_check(sink_line, int)
-        type_check(sink_line_operation, str)
-        type_check(number_of_nodes, int)
-        type_check(number_of_nodes_operation, str)
-        type_check(notes, str)
-        type_check(notes_operation, str)
-        type_check(first_found_at, str)
-        type_check(first_found_at_operation, str)
-        type_check(preset_id, str)
-        type_check(result_id, (list, tuple))
-        type_check(category, str)
-        type_check(search, str)
-        type_check(include_nodes, bool)
-        type_check(apply_predicates, bool)
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(sort, (list, tuple))
-        list_member_type_check(severity, str)
-        list_member_type_check(status, str)
-        list_member_type_check(language, str)
-        list_member_type_check(query_ids, str)
-        list_member_type_check(node_ids, str)
-        list_member_type_check(sort, str)
         relative_url = api_url
         params = {
             "scan-id": scan_id,
