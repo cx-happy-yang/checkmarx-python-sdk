@@ -3,12 +3,8 @@ from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
 from .dto import (
     ProjectCounter,
-    construct_project_counter,
     ProjectResponseCollection,
-    construct_project_response_collection,
 )
-
-api_url = "/api/projects-overview"
 
 
 class ProjectsOverviewAPI(object):
@@ -18,6 +14,9 @@ class ProjectsOverviewAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = (
+            f"{self.api_client.configuration.server_base_url}/api/projects-overview"
+        )
 
     def get_tenant_projects_overview(
         self,
@@ -37,33 +36,28 @@ class ProjectsOverviewAPI(object):
         sort: List[str] = ("+last_scanned_at",),
     ) -> ProjectResponseCollection:
         """
-
         Args:
             offset (int): the request offset
             limit (int): the number of items per page
             name (str): the name of the project
-            scan_origin (list of str): a list of scan origins to filter projects
-            source_type (list of str): a list of source type to filter projects
-            group_ids (list of str): a list of group ids to filter projects
-            tag_keys (list of str): a list of tag keys to filter projects
-            tag_values (list of str): a list of tag values to filter projects
-            risk_level (list of str): a list of risk levels to filter projects
-                                Available values : No Risk, Low, Medium, High, Critical
-            from_date (str):  the start date to filter projects: 2006-01-02T15:04:05Z07:00
-            to_date (str): the end date to filter projects: 2006-01-02T15:04:05Z07:00
-            is_deployed (bool): whether the project is deployed in runtime or not
-            is_public (bool): whether the project is publicly exposed in runtime or not
-            sort (list of str): A comma-separated list of sort criteria. Each criterion is formatted as '+field,-field2'
-                    or '-field,+field2' where 'field' and 'filed2 are the names of the fields to sort by and '+' or '-'
-                    specifies descending or ascending order.
-                    Available values : name, scan-origin, last-scan-date, source-type, risk-level, is-public
-                    Default value : +last_scanned_at
-                    Example : +name,-scan-origin
+            scan_origin (List[str]): scan origins to filter projects
+            source_type (List[str]): source types to filter projects
+            group_ids (List[str]): group ids to filter projects
+            tag_keys (List[str]): tag keys to filter projects
+            tag_values (List[str]): tag values to filter projects
+            risk_level (List[str]): risk levels to filter. Available values:
+                No Risk, Low, Medium, High, Critical
+            from_date (str): start date (2006-01-02T15:04:05Z07:00)
+            to_date (str): end date (2006-01-02T15:04:05Z07:00)
+            is_deployed (bool): whether the project is deployed in runtime
+            is_public (bool): whether the project is publicly exposed
+            sort (List[str]): sort criteria. Available values: name,
+                scan-origin, last-scan-date, source-type, risk-level,
+                is-public. Default: +last_scanned_at
 
         Returns:
             ProjectResponseCollection
         """
-        relative_url = api_url
         params = {
             "offset": offset,
             "limit": limit,
@@ -80,8 +74,10 @@ class ProjectsOverviewAPI(object):
             "is-public": is_public,
             "sort": ",".join(sort) if sort else None,
         }
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
-        return construct_project_response_collection(response.json())
+        response = self.api_client.call_api(
+            method="GET", url=self.base_url, params=params
+        )
+        return ProjectResponseCollection.from_dict(response.json())
 
     def get_project_counters(
         self,
@@ -100,27 +96,27 @@ class ProjectsOverviewAPI(object):
         to_date: str = None,
     ) -> List[ProjectCounter]:
         """
-
         Args:
             offset (int): the request offset
             limit (int): the number of items per page
-            group_by_field (str): the field to group by. Available values : risk-level
+            group_by_field (str): the field to group by.
+                Available values: risk-level
             name (str): the name of the project
-            scan_origin (list of str): a list of scan origins to filter projects
-            source_type (list of str): a list of source type to filter projects
-            group_ids (list of str): a list of group ids to filter projects
-            tag_keys (list of str): a list of tag keys to filter projects
-            tag_values (list of str): a list of tag values to filter projects
+            scan_origin (List[str]): scan origins to filter projects
+            source_type (List[str]): source types to filter projects
+            group_ids (List[str]): group ids to filter projects
+            tag_keys (List[str]): tag keys to filter projects
+            tag_values (List[str]): tag values to filter projects
             empty_tags (bool):
-            risk_level (list of str): a list of risk levels to filter projects
-                                Available values : No Risk, Low, Medium, High, Critical
-            from_date (str):  the start date to filter projects: 2006-01-02T15:04:05Z07:00
-            to_date (str): the end date to filter projects: 2006-01-02T15:04:05Z07:00
+            risk_level (List[str]): risk levels to filter. Available values:
+                No Risk, Low, Medium, High, Critical
+            from_date (str): start date (2006-01-02T15:04:05Z07:00)
+            to_date (str): end date (2006-01-02T15:04:05Z07:00)
 
         Returns:
             List[ProjectCounter]
         """
-        relative_url = api_url + "/aggregate"
+        url = f"{self.base_url}/aggregate"
         params = {
             "offset": offset,
             "limit": limit,
@@ -136,12 +132,11 @@ class ProjectsOverviewAPI(object):
             "from-date": from_date,
             "to-date": to_date,
         }
-
-        response = self.api_client.get_request(relative_url=relative_url, params=params)
+        response = self.api_client.call_api(method="GET", url=url, params=params)
         item = response.json()
         return [
-            construct_project_counter(project_counter)
-            for project_counter in item.get("projectsCounters")
+            ProjectCounter.from_dict(pc)
+            for pc in (item.get("projectsCounters") or [])
         ]
 
 

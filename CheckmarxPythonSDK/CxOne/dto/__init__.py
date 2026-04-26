@@ -59,7 +59,7 @@ from .DefaultConfigOut import DefaultConfigOut, construct_default_config_out
 from .EffectivePermissionsForResourceResponse import (
     EffectivePermissionsForResourceResponse,
 )
-from .EngineData import EngineData, construct_engine_data
+from .EngineData import EngineData
 from .EngineMetrics import EngineMetrics, construct_engine_metrics
 from .EntitiesForExtendedResponse import (
     EntitiesForExtendedResponse,
@@ -93,8 +93,8 @@ from .ImportResults import ImportResults
 from .InternalClient import InternalClient
 from .InternalGroup import InternalGroup
 from .InternalUser import InternalUser
-from .KicsResult import KicsResult, construct_kics_result
-from .KicsResultCollection import KicsResultCollection, construct_kics_result_collection
+from .KicsResult import KicsResult
+from .KicsResultCollection import KicsResultCollection
 from .LanguageSummary import LanguageSummary, construct_language_summary
 from .LogItem import LogItem, construct_log_item
 from .Metadata import Metadata, construct_metadata
@@ -121,13 +121,10 @@ from .Preset import Preset, construct_preset
 from .PresetPaged import PresetPaged, construct_preset_paged
 from .PresetSummary import PresetSummary, construct_preset_summary
 from .Project import Project, construct_project
-from .ProjectCounter import ProjectCounter, construct_project_counter
+from .ProjectCounter import ProjectCounter
 from .ProjectInput import ProjectInput
-from .ProjectResponseCollection import (
-    ProjectResponseCollection,
-    construct_project_response_collection,
-)
-from .ProjectResponseModel import ProjectResponseModel, construct_project_response
+from .ProjectResponseCollection import ProjectResponseCollection
+from .ProjectResponseModel import ProjectResponseModel
 from .ProjectsCollection import ProjectsCollection, construct_projects_collection
 from .ProjectSettings import ProjectSettings
 from .Property import Property, construct_property
@@ -200,7 +197,7 @@ from .Session import Session, construct_session
 from .SessionRequest import SessionRequest
 from .SessionResponse import SessionResponse, construct_session_response
 from .Sessions import Sessions, construct_sessions
-from .SeverityCounter import SeverityCounter, construct_severity_counter
+from .SeverityCounter import SeverityCounter
 from .SeveritySummary import SeveritySummary, construct_severity_summary
 from .SinkFileSummary import SinkFileSummary, construct_sink_file_summary
 from .SinkNodeSummary import SinkNodeSummary, construct_sink_node_summary
@@ -217,7 +214,7 @@ from .SubCheck import SubCheck
 from .SubsetScan import SubsetScan, construct_subset_scan
 from .TaskInfo import TaskInfo, construct_task_info
 from .TimeStamp import TimeStamp
-from .TotalCounters import TotalCounters, construct_total_counters
+from .TotalCounters import TotalCounters
 from .Tree import Tree, construct_tree
 from .TriageRequest import TriageRequest, construct_triage_request
 from .TriageResponse import TriageResponse

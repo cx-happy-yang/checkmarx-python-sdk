@@ -1,21 +1,18 @@
-import logging
-from typing import Optional
-from dataclasses import dataclass
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 
-logger = logging.getLogger(__name__)
-
 
 class LogsAPI(object):
-    """Logs API client for retrieving scan logs"""
+    """Logs API client for retrieving scan logs."""
 
     def __init__(self, api_client: ApiClient = None):
         if api_client is None:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
-        self.base_url = api_client.configuration.server_base_url
+        self.base_url = (
+            f"{self.api_client.configuration.server_base_url}/api/logs"
+        )
 
     def get_log(self, scan_id: str, scan_type: str) -> str:
         """
@@ -27,14 +24,9 @@ class LogsAPI(object):
 
         Returns:
             str: The log file content
-
-        Raises:
-            Exception: If the request fails or returns an error
         """
-        url = f"{self.base_url}/api/logs/{scan_id}/{scan_type}"
-
+        url = f"{self.base_url}/{scan_id}/{scan_type}"
         response = self.api_client.call_api(method="GET", url=url)
-        # Success - return the log content as string
         return response.text
 
 
