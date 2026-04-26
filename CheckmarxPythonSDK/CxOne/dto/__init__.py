@@ -1,6 +1,6 @@
 # encoding: utf-8
 from .AddAssignmentRoles import AddAssignmentRoles, construct_add_assignment_role
-from .ApiSecCounters import ApiSecCounters, construct_api_sec_counters
+from .ApiSecCounters import ApiSecCounters
 from .Application import Application
 from .ApplicationInput import ApplicationInput
 from .ApplicationsCollection import ApplicationsCollection
@@ -164,7 +164,7 @@ from .Result import Result, construct_result
 from .ResultNode import ResultNode, construct_result_node
 from .ResultResponse import ResultResponse
 from .ResultsResponse import ResultsResponse
-from .ResultsSummary import ResultsSummary, construct_results_summary
+from .ResultsSummary import ResultsSummary
 from .ResultsSummaryTree import ResultsSummaryTree
 from .RichProject import RichProject
 from .Role import Role
@@ -174,11 +174,8 @@ from .RuleInput import RuleInput
 from .SastResult import SastResult, construct_sast_result
 from .SastScan import SastScan, construct_sast_scan
 from .SastStatus import SastStatus, construct_sast_status
-from .ScaContainersCounters import (
-    ScaContainersCounters,
-    construct_sca_containers_counters,
-)
-from .ScaCounters import ScaCounters, construct_sca_counters
+from .ScaContainersCounters import ScaContainersCounters
+from .ScaCounters import ScaCounters
 from .Scan import Scan, construct_scan
 from .ScanConfig import ScanConfig
 from .ScanEngineVersion import ScanEngineVersion, construct_scan_engine_version
@@ -188,7 +185,7 @@ from .ScanInput import ScanInput
 from .Scanner import Scanner
 from .ScanParameter import ScanParameter, construct_scan_parameter
 from .ScansCollection import ScansCollection, construct_scans_collection
-from .ScaPackageCounters import ScaPackageCounters, construct_sca_package_counters
+from .ScaPackageCounters import ScaPackageCounters
 from .Scm import Scm, construct_scm
 from .SCMImportInput import SCMImportInput
 from .ScmOrganization import ScmOrganization
@@ -215,7 +212,7 @@ from .SubsetScan import SubsetScan
 from .TaskInfo import TaskInfo, construct_task_info
 from .TimeStamp import TimeStamp
 from .TotalCounters import TotalCounters
-from .Tree import Tree, construct_tree
+from .Tree import Tree
 from .TriageRequest import TriageRequest, construct_triage_request
 from .TriageResponse import TriageResponse
 from .Upload import Upload
