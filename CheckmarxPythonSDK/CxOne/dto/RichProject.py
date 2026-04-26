@@ -58,19 +58,20 @@ class RichProject:
     scm_repo_id: str = None
 
 
-def construct_rich_project(item):
-    return RichProject(
-        id=item.get("id"),
-        name=item.get("name"),
-        application_ids=item.get("applicationIds"),
-        groups=item.get("groups"),
-        repo_url=item.get("repoUrl"),
-        main_branch=item.get("mainBranch"),
-        origin=item.get("origin"),
-        created_at=item.get("createdAt"),
-        updated_at=item.get("updatedAt"),
-        tags=item.get("tags"),
-        criticality=item.get("criticality"),
-        repo_id=item.get("repoId"),
-        scm_repo_id=item.get("scmRepoId"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "RichProject":
+        return cls(
+            id=item.get("id"),
+            name=item.get("name"),
+            application_ids=item.get("applicationIds"),
+            groups=item.get("groups"),
+            repo_url=item.get("repoUrl"),
+            main_branch=item.get("mainBranch"),
+            origin=item.get("origin"),
+            created_at=item.get("createdAt"),
+            updated_at=item.get("updatedAt"),
+            tags=item.get("tags"),
+            criticality=item.get("criticality"),
+            repo_id=item.get("repoId"),
+            scm_repo_id=item.get("scmRepoId"),
+        )

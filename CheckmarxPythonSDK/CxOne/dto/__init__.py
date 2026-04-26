@@ -120,12 +120,12 @@ from .PredicateWithCommentsJSON import (
 from .Preset import Preset, construct_preset
 from .PresetPaged import PresetPaged, construct_preset_paged
 from .PresetSummary import PresetSummary, construct_preset_summary
-from .Project import Project, construct_project
+from .Project import Project
 from .ProjectCounter import ProjectCounter
 from .ProjectInput import ProjectInput
 from .ProjectResponseCollection import ProjectResponseCollection
 from .ProjectResponseModel import ProjectResponseModel
-from .ProjectsCollection import ProjectsCollection, construct_projects_collection
+from .ProjectsCollection import ProjectsCollection
 from .ProjectSettings import ProjectSettings
 from .Property import Property, construct_property
 from .ProtocolMappersRepresentation import (
@@ -166,7 +166,7 @@ from .ResultResponse import ResultResponse, construct_result_response
 from .ResultsResponse import ResultsResponse, construct_results_response
 from .ResultsSummary import ResultsSummary, construct_results_summary
 from .ResultsSummaryTree import ResultsSummaryTree, construct_results_summary_tree
-from .RichProject import RichProject, construct_rich_project
+from .RichProject import RichProject
 from .Role import Role
 from .RoleWithDetails import RoleWithDetails
 from .Rule import Rule
@@ -211,7 +211,7 @@ from .SourcesTree import SourcesTree, construct_sources_tree
 from .StartEnrich import StartEnrich
 from .StatusDetails import StatusDetails, construct_status_details
 from .SubCheck import SubCheck
-from .SubsetScan import SubsetScan, construct_subset_scan
+from .SubsetScan import SubsetScan
 from .TaskInfo import TaskInfo, construct_task_info
 from .TimeStamp import TimeStamp
 from .TotalCounters import TotalCounters

@@ -30,17 +30,17 @@ class SubsetScan:
     source_type: str
     source_origin: str
 
-
-def construct_subset_scan(item):
-    return SubsetScan(
-        id=item.get("id"),
-        created_at=item.get("createdAt"),
-        updated_at=item.get("updatedAt"),
-        status=item.get("status"),
-        user_agent=item.get("userAgent"),
-        initiator=item.get("initiator"),
-        branch=item.get("branch"),
-        engines=item.get("engines"),
-        source_type=item.get("sourceType"),
-        source_origin=item.get("sourceOrigin"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "SubsetScan":
+        return cls(
+            id=item.get("id"),
+            created_at=item.get("createdAt"),
+            updated_at=item.get("updatedAt"),
+            status=item.get("status"),
+            user_agent=item.get("userAgent"),
+            initiator=item.get("initiator"),
+            branch=item.get("branch"),
+            engines=item.get("engines"),
+            source_type=item.get("sourceType"),
+            source_origin=item.get("sourceOrigin"),
+        )
