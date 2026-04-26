@@ -168,7 +168,7 @@ from .Role import Role
 from .RoleWithDetails import RoleWithDetails
 from .Rule import Rule
 from .RuleInput import RuleInput
-from .SastResult import SastResult, construct_sast_result
+from .SastResult import SastResult
 from .SastScan import SastScan
 from .SastStatus import SastStatus
 from .ScaContainersCounters import ScaContainersCounters

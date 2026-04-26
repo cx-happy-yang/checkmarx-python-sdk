@@ -58,7 +58,3 @@ class SastResult:
                 item.get("changeDetails")
             ),
         )
-
-
-def construct_sast_result(item):
-    return SastResult.from_dict(item)
