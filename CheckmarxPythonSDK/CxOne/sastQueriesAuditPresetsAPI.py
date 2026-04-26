@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import (
     PresetPaged,
     construct_preset_paged,
@@ -46,11 +45,6 @@ class SastQueriesAuditPresetsAPI(object):
             PresetPaged
         """
         result = None
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(exact_match, bool)
-        type_check(include_details, bool)
-        type_check(name, str)
 
         relative_url = api_url
         params = {
@@ -80,10 +74,6 @@ class SastQueriesAuditPresetsAPI(object):
             dict
         """
         result = None
-        type_check(name, str)
-        type_check(description, str)
-        type_check(query_ids, list)
-        list_member_type_check(query_ids, str)
 
         relative_url = api_url + "/"
         data = {"name": name, "description": description, "queryIds": query_ids}
@@ -118,7 +108,6 @@ class SastQueriesAuditPresetsAPI(object):
             Preset
         """
         result = None
-        type_check(preset_id, int)
         relative_url = api_url + f"/{preset_id}"
         response = self.api_client.get_request(relative_url=relative_url)
         if response.status_code == OK:
@@ -149,11 +138,6 @@ class SastQueriesAuditPresetsAPI(object):
             }
         """
         result = None
-        type_check(preset_id, int)
-        type_check(name, str)
-        type_check(description, str)
-        type_check(query_ids, list)
-        list_member_type_check(query_ids, str)
 
         relative_url = api_url + f"/{preset_id}"
 
@@ -190,7 +174,6 @@ class SastQueriesAuditPresetsAPI(object):
         Returns:
              bool
         """
-        type_check(preset_id, int)
         relative_url = api_url + f"/{preset_id}"
         response = self.api_client.delete_request(relative_url=relative_url)
         return response.status_code == OK
@@ -205,7 +188,6 @@ class SastQueriesAuditPresetsAPI(object):
             PresetSummary
         """
         result = None
-        type_check(preset_id, int)
         relative_url = api_url + f"/{preset_id}/summary"
         response = self.api_client.get_request(relative_url=relative_url)
         if response.status_code == OK:
@@ -225,9 +207,6 @@ class SastQueriesAuditPresetsAPI(object):
             dict
         """
         result = None
-        type_check(preset_id, int)
-        type_check(name, str)
-        type_check(description, str)
         relative_url = api_url + f"/{preset_id}/clone"
 
         data = {
@@ -255,8 +234,6 @@ class SastQueriesAuditPresetsAPI(object):
             dict
         """
         result = None
-        type_check(preset_id, int)
-        type_check(query_path, str)
 
         relative_url = api_url + f"/{preset_id}/add-query"
         data = {
