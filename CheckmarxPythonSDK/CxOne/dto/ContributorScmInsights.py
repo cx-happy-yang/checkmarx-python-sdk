@@ -8,8 +8,6 @@ class ContributorScmInsights:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ContributorScmInsights":
-        if item is None:
-            return None
         return cls(
             project_count=item.get("projectCount"),
             contributor_count=item.get("contributorCount"),

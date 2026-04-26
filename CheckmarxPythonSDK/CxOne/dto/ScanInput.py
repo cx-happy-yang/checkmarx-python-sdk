@@ -23,12 +23,3 @@ class ScanInput:
     project: Project = None
     configs: List[ScanConfig] = None
     tags: dict = None
-
-    def to_dict(self):
-        return {
-            "type": self.type,
-            "handler": self.handler.to_dict(),
-            "project": self.project.to_dict() if self.project else self.project,
-            "config": [config.to_dict() for config in (self.configs or [])],
-            "tags": self.tags,
-        }

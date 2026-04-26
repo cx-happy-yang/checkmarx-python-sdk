@@ -12,8 +12,6 @@ class ChangeDetails:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ChangeDetails":
-        if item is None:
-            return None
         return cls(
             engine_version_changed=item.get("engineVersionChanged"),
             engine_version_changed_details=item.get(

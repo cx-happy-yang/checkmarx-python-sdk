@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import List
 from .Project import Project
 
-
 @dataclass
 class ProjectsCollection:
     total_count: int = None
@@ -19,6 +18,3 @@ class ProjectsCollection:
             ],
         )
 
-
-def construct_projects_collection(item):
-    return ProjectsCollection.from_dict(item)

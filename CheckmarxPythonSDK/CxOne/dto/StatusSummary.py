@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class StatusSummary:
     """
@@ -13,6 +12,3 @@ class StatusSummary:
     status: str
     count: int
 
-
-def construct_status_summary(item):
-    return StatusSummary(status=item.get("status"), count=item.get("count"))

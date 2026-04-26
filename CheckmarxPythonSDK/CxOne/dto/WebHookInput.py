@@ -18,11 +18,3 @@ class WebHookInput:
     active: bool = None
     enabled_events: List[WebHookEvent] = None
     config: WebHookConfig = None
-
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "active": self.active,
-            "enabledEvents": self.enabled_events,
-            "config": self.config.to_dict(),
-        }

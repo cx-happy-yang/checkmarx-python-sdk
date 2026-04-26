@@ -28,7 +28,7 @@ class ByorResultsHandlerAPI(object):
         """
         url = f"{self.base_url}/imports"
         response = self.api_client.call_api(
-            method="POST", url=url, json=import_request.to_dict()
+            method="POST", url=url, json={"projectId": import_request.project_id, "uploadUrl": import_request.upload_url}
         )
         return ImportResults.from_dict(response.json())
 
@@ -42,7 +42,7 @@ class ByorResultsHandlerAPI(object):
         """
         url = f"{self.base_url}/triage"
         response = self.api_client.call_api(
-            method="POST", url=url, json=triage_request.to_dict()
+            method="POST", url=url, json={"resultId": triage_request.result_id, "projectId": triage_request.project_id, "state": triage_request.state, "severity": triage_request.severity}
         )
         return response.status_code == NO_CONTENT
 

@@ -16,18 +16,8 @@ class WebHookConfig:
     url: str = None
     secret: str = None
 
-    def to_dict(self):
-        return {
-            "contentType": self.content_type,
-            "insecureSsl": self.insecure_ssl,
-            "url": self.url,
-            "secret": self.secret,
-        }
-
     @classmethod
     def from_dict(cls, item: dict) -> "WebHookConfig":
-        if item is None:
-            return None
         return cls(
             content_type=item.get("contentType"),
             insecure_ssl=item.get("insecureSsl"),

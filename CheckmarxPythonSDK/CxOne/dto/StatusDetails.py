@@ -10,18 +10,6 @@ class StatusDetails:
     end_date: str = None
     loc: int = None
 
-    def to_dict(self):
-        data = {
-            "name": self.name,
-            "status": self.status,
-            "details": self.details,
-            "start_date": self.start_date,
-            "end_date": self.end_date,
-        }
-        if self.loc:
-            data["loc"] = self.loc
-        return data
-
     def __repr__(self):
         loc = f", loc={self.loc}" if self.loc else ""
         return (
@@ -37,8 +25,6 @@ class StatusDetails:
 
     @classmethod
     def from_dict(cls, item: dict) -> "StatusDetails":
-        if item is None:
-            return None
         return cls(
             name=item.get("name"),
             status=item.get("status"),

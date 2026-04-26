@@ -10,20 +10,8 @@ class DefaultConfigOut:
     is_tenant_default: bool = None
     associated_projects: int = None
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "description": self.description,
-            "url": self.url,
-            "isTenantDefault": self.is_tenant_default,
-            "associatedProjects": self.associated_projects,
-        }
-
     @classmethod
     def from_dict(cls, item: dict) -> "DefaultConfigOut":
-        if item is None:
-            return None
         return cls(
             id=item.get("id"),
             name=item.get("name"),

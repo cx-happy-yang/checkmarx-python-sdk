@@ -18,8 +18,6 @@ class MethodParameter:
 
     @classmethod
     def from_dict(cls, item: dict) -> "MethodParameter":
-        if item is None:
-            return None
         return cls(
             name=item.get("name"),
             label=item.get("label"),

@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class QuerySummary:
     """
@@ -17,11 +16,3 @@ class QuerySummary:
     severity: str = None
     count: int = None
 
-
-def construct_query_summary(item):
-    return QuerySummary(
-        query_id=item.get("queryID"),
-        query_name=item.get("queryName"),
-        severity=item.get("severity"),
-        count=item.get("count"),
-    )

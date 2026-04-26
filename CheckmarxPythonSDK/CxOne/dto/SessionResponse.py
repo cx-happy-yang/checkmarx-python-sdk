@@ -9,8 +9,6 @@ class SessionResponse:
 
     @classmethod
     def from_dict(cls, item: dict) -> "SessionResponse":
-        if item is None:
-            return None
         return cls(
             id=item.get("id"),
             status=item.get("status"),

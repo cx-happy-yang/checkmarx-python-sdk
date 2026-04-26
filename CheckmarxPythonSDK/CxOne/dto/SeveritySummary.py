@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class SeveritySummary:
     """
@@ -13,6 +12,3 @@ class SeveritySummary:
     severity: str
     count: int
 
-
-def construct_severity_summary(item):
-    return SeveritySummary(severity=item.get("severity"), count=item.get("count"))

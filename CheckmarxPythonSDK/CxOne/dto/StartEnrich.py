@@ -10,8 +10,3 @@ class StartEnrich:
     """
 
     upload_url: str
-
-    def to_dict(self):
-        return {
-            "uploadURL": self.upload_url,
-        }

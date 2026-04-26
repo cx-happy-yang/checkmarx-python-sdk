@@ -15,8 +15,6 @@ class MethodInfo:
 
     @classmethod
     def from_dict(cls, item: dict) -> "MethodInfo":
-        if item is None:
-            return None
         return cls(
             lang=item.get("lang"),
             name=item.get("name"),

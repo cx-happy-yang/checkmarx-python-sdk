@@ -14,8 +14,6 @@ class ScaContainersCounters:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ScaContainersCounters":
-        if item is None:
-            return None
         return cls(
             total_packages_counter=item.get("totalPackagesCounter"),
             total_vulnerabilities_counter=item.get(

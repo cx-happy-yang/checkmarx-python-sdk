@@ -32,8 +32,6 @@ class Query:
 
     @classmethod
     def from_dict(cls, item: dict) -> "Query":
-        if item is None:
-            return None
         return cls(
             id=item.get("id"),
             source=item.get("source"),

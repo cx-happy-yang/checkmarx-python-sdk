@@ -16,8 +16,6 @@ class VersionsOut:
 
     @classmethod
     def from_dict(cls, item: dict) -> "VersionsOut":
-        if item is None:
-            return None
         return cls(
             sast=item.get("SAST"),
             kics=item.get("KICS"),

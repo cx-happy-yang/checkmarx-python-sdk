@@ -9,6 +9,4 @@ class GPTMessage:
 
     @classmethod
     def from_dict(cls, item: dict) -> "GPTMessage":
-        if item is None:
-            return None
         return cls(role=item.get("role"), content=item.get("content"))

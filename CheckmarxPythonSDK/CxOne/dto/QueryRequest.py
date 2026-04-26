@@ -8,11 +8,3 @@ class QueryRequest:
     name: str = None
     source: str = None
     metadata: Metadata = None
-
-    def to_dict(self):
-        return {
-            "path": self.path,
-            "name": self.name,
-            "source": self.source,
-            "metadata": self.metadata.to_dict() if self.metadata else None,
-        }

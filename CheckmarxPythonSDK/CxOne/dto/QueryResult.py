@@ -9,8 +9,6 @@ class QueryResult:
 
     @classmethod
     def from_dict(cls, item: dict) -> "QueryResult":
-        if item is None:
-            return None
         return cls(
             content=item.get("content"),
             line_number=item.get("lineNumber"),

@@ -35,7 +35,7 @@ class CloudInsightsServiceAPI(object):
         """
         url = f"{self.base_url}/accounts/enrich"
         response = self.api_client.call_api(
-            method="POST", url=url, json=data.to_dict()
+            method="POST", url=url, json={"name": data.name, "externalID": data.external_id}
         )
         return CloudInsightEnrichAccount.from_dict(response.json())
 
@@ -69,7 +69,7 @@ class CloudInsightsServiceAPI(object):
         """
         url = f"{self.base_url}/accounts/{cloud_insights_account_id}/enrich"
         response = self.api_client.call_api(
-            method="POST", url=url, json=start_enrich.to_dict()
+            method="POST", url=url, json={"uploadURL": start_enrich.upload_url}
         )
         return response.json().get("message")
 
@@ -86,7 +86,7 @@ class CloudInsightsServiceAPI(object):
         """
         url = f"{self.base_url}/v2/accounts/{cloud_insights_account_id}/enrich"
         response = self.api_client.call_api(
-            method="POST", url=url, json=start_enrich.to_dict()
+            method="POST", url=url, json={"uploadURL": start_enrich.upload_url}
         )
         return response.json().get("syncId")
 

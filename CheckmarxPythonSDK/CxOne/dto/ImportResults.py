@@ -10,9 +10,6 @@ class ImportResults:
 
     import_id: str
 
-    def to_dict(self):
-        return {"importId": self.import_id}
-
     @classmethod
     def from_dict(cls, item: dict) -> "ImportResults":
         return cls(import_id=item.get("importId"))

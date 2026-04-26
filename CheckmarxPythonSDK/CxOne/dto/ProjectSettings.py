@@ -24,15 +24,3 @@ class ProjectSettings:
     scanners: List[Scanner] = None
     tags: dict = None
     groups: List[str] = None
-
-    def to_dict(self):
-        result = {
-            "decoratePullRequests": self.decorate_pull_requests,
-            "webhookEnabled": self.web_hook_enabled,
-            "scanners": [scanner.to_dict() for scanner in self.scanners],
-        }
-        if self.tags is not None:
-            result.update({"tags": self.tags})
-        if self.groups is not None:
-            result.update({"groups": self.groups})
-        return result

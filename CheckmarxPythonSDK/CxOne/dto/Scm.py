@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class Scm:
     """
@@ -19,14 +18,3 @@ class Scm:
     token: str
     type: str = "github"
     self_hosted_scm_url: str = None
-
-    def to_dict(self):
-        return {"type": self.type, "token": self.token}
-
-
-def construct_scm(item):
-    return Scm(
-        type=item.get("type"),
-        token=item.get("token"),
-        self_hosted_scm_url=item.get("selfHostedScmUrl"),
-    )

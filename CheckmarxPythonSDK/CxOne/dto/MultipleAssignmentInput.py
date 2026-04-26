@@ -24,12 +24,3 @@ class MultipleAssignmentInput:
     entity_roles: List[str] = None
     entities: List[str] = None
     resources: List[str] = None
-
-    def to_dict(self):
-        return {
-            "entityType": EntityType(self.entity_type),
-            "resourceType": ResourceType(self.resource_type),
-            "entityRoles": self.entity_roles,
-            "entities": self.entities,
-            "resources": self.resources,
-        }

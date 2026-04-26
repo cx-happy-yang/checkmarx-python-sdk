@@ -12,24 +12,8 @@ class ScanParameter:
     value_type_params: str = None
     allow_override: bool = None
 
-    def to_dict(self):
-        data = {
-            "key": self.key,
-            "name": self.name,
-            "category": self.category,
-            "originLevel": self.origin_level,
-            "value": self.value,
-            "valueType": self.value_type,
-            "allowOverride": self.allow_override,
-        }
-        if self.value_type == "List":
-            data["valueTypeParams"] = self.value_type_params
-        return data
-
     @classmethod
     def from_dict(cls, item: dict) -> "ScanParameter":
-        if item is None:
-            return None
         return cls(
             key=item.get("key"),
             name=item.get("name"),

@@ -22,12 +22,3 @@ class AssignmentInput:
     resource_id: str = None
     resource_type: ResourceType = None
     entity_roles: List[str] = None
-
-    def to_dict(self):
-        return {
-            "entityID": self.entity_id,
-            "entityType": self.entity_type,
-            "resourceID": self.resource_id,
-            "resourceType": self.resource_type,
-            "entityRoles": self.entity_roles,
-        }

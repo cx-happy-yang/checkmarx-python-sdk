@@ -1,5 +1,5 @@
 # encoding: utf-8
-from .AddAssignmentRoles import AddAssignmentRoles, construct_add_assignment_role
+from .AddAssignmentRoles import AddAssignmentRoles
 from .ApiSecCounters import ApiSecCounters
 from .Application import Application
 from .ApplicationInput import ApplicationInput
@@ -37,24 +37,21 @@ from .CloudInsightAccountLog import CloudInsightAccountLog
 from .CloudInsightContainer import CloudInsightContainer
 from .CloudInsightCreateEnrichAccount import CloudInsightCreateEnrichAccount
 from .CloudInsightEnrichAccount import CloudInsightEnrichAccount
-from .CommentJSON import CommentJSON, construct_comment_json
-from .CompilationResponse import CompilationResponse, construct_compilation_response
-from .ComplianceSummary import ComplianceSummary, construct_compliance_summary
+from .CommentJSON import CommentJSON
+from .CompilationResponse import CompilationResponse
+from .ComplianceSummary import ComplianceSummary
 from .ContributorInsights import ContributorInsights
 from .Contributors import Contributors
 from .ContributorScmInsights import ContributorScmInsights
 from .ContributorUnfamiliarProjects import ContributorUnfamiliarProjects
 from .CreatedApplication import CreatedApplication
 from .CreateRoleRequest import CreateRoleRequest
-from .CredentialRepresentation import (
-    CredentialRepresentation,
-    construct_credential_representation,
-)
+from .CredentialRepresentation import CredentialRepresentation
 from .Credentials import Credentials
 from .CustomState import CustomState
-from .DebugMessage import DebugMessage, construct_debug_message
+from .DebugMessage import DebugMessage
 from .DebugMessageResponse import DebugMessageResponse
-from .DefaultConfig import DefaultConfig, construct_default_config
+from .DefaultConfig import DefaultConfig
 from .DefaultConfigOut import DefaultConfigOut
 from .EffectivePermissionsForResourceResponse import (
     EffectivePermissionsForResourceResponse,
@@ -66,12 +63,9 @@ from .EntitiesForExtendedResponse import (
 )
 from .EntityRolesRequest import EntityRolesRequest
 from .EntityType import EntityType
-from .Error import Error, construct_error
-from .ExecutionResponse import ExecutionResponse, construct_execution_response
-from .FederatedIdentityRepresentation import (
-    FederatedIdentityRepresentation,
-    construct_federated_identity_representation,
-)
+from .Error import Error
+from .ExecutionResponse import ExecutionResponse
+from .FederatedIdentityRepresentation import FederatedIdentityRepresentation
 from .FileInfo import FileInfo
 from .Flag import Flag
 from .UsersWithResourcesResponse import (
@@ -88,14 +82,14 @@ from .GroupsWithResourcesResponse import (
 from .GroupWithResource import GroupWithResource
 from .ImportItem import ImportItem
 from .ImportItemWithLogs import ImportItemWithLogs
-from .ImportRequest import ImportRequest, construct_import_request
+from .ImportRequest import ImportRequest
 from .ImportResults import ImportResults
 from .InternalClient import InternalClient
 from .InternalGroup import InternalGroup
 from .InternalUser import InternalUser
 from .KicsResult import KicsResult
 from .KicsResultCollection import KicsResultCollection
-from .LanguageSummary import LanguageSummary, construct_language_summary
+from .LanguageSummary import LanguageSummary
 from .LogItem import LogItem
 from .Metadata import Metadata
 from .MethodInfo import MethodInfo
@@ -106,17 +100,11 @@ from .PaginatedAccountsListResponse import PaginatedAccountsListResponse
 from .PaginatedContainersListResponse import PaginatedContainersListResponse
 from .PaginatedResourcesList import PaginatedResourcesList
 from .Permission import Permission
-from .PlatformSummary import PlatformSummary, construct_platform_summary
-from .Predicate import Predicate, construct_predicate
-from .PredicateHistory import PredicateHistory, construct_predicate_history
-from .PredicateWithCommentJSON import (
-    PredicateWithCommentJSON,
-    construct_predicate_with_comment_json,
-)
-from .PredicateWithCommentsJSON import (
-    PredicateWithCommentsJSON,
-    construct_predicate_with_comments_json,
-)
+from .PlatformSummary import PlatformSummary
+from .Predicate import Predicate
+from .PredicateHistory import PredicateHistory
+from .PredicateWithCommentJSON import PredicateWithCommentJSON
+from .PredicateWithCommentsJSON import PredicateWithCommentsJSON
 from .Preset import Preset
 from .PresetPaged import PresetPaged
 from .PresetSummary import PresetSummary
@@ -144,16 +132,10 @@ from .QueryRequest import QueryRequest
 from .QueryResponse import QueryResponse
 from .QueryResult import QueryResult
 from .QuerySearch import QuerySearch
-from .QuerySummary import QuerySummary, construct_query_summary
+from .QuerySummary import QuerySummary
 from .RequestStatus import RequestStatus
-from .RequestStatusDetectLanguages import (
-    RequestStatusDetectLanguages,
-    construct_request_status_detect_languages,
-)
-from .RequestStatusNotReady import (
-    RequestStatusNotReady,
-    construct_request_status_not_ready,
-)
+from .RequestStatusDetectLanguages import RequestStatusDetectLanguages
+from .RequestStatusNotReady import RequestStatusNotReady
 from .Resource import Resource
 from .ResourcesResponse import ResourcesResponse
 from .ResourceType import ResourceType
@@ -183,7 +165,7 @@ from .Scanner import Scanner
 from .ScanParameter import ScanParameter
 from .ScansCollection import ScansCollection
 from .ScaPackageCounters import ScaPackageCounters
-from .Scm import Scm, construct_scm
+from .Scm import Scm
 from .SCMImportInput import SCMImportInput
 from .ScmOrganization import ScmOrganization
 from .ScmProject import ScmProject
@@ -192,16 +174,13 @@ from .SessionRequest import SessionRequest
 from .SessionResponse import SessionResponse
 from .Sessions import Sessions
 from .SeverityCounter import SeverityCounter
-from .SeveritySummary import SeveritySummary, construct_severity_summary
-from .SinkFileSummary import SinkFileSummary, construct_sink_file_summary
-from .SinkNodeSummary import SinkNodeSummary, construct_sink_node_summary
-from .SocialLinkRepresentation import (
-    SocialLinkRepresentation,
-    construct_social_link_representation,
-)
-from .SourceFileSummary import SourceFileSummary, construct_source_file_summary
-from .SourceNodeSummary import SourceNodeSummary, construct_source_node_summary
-from .SourcesTree import SourcesTree, construct_sources_tree
+from .SeveritySummary import SeveritySummary
+from .SinkFileSummary import SinkFileSummary
+from .SinkNodeSummary import SinkNodeSummary
+from .SocialLinkRepresentation import SocialLinkRepresentation
+from .SourceFileSummary import SourceFileSummary
+from .SourceNodeSummary import SourceNodeSummary
+from .SourcesTree import SourcesTree
 from .StartEnrich import StartEnrich
 from .StatusDetails import StatusDetails
 from .SubCheck import SubCheck
@@ -210,25 +189,15 @@ from .TaskInfo import TaskInfo
 from .TimeStamp import TimeStamp
 from .TotalCounters import TotalCounters
 from .Tree import Tree
-from .TriageRequest import TriageRequest, construct_triage_request
+from .TriageRequest import TriageRequest
 from .TriageResponse import TriageResponse
 from .Upload import Upload
 from .User import User
-from .UserConsentRepresentation import (
-    UserConsentRepresentation,
-)
-from .UserFederationMapperRepresentation import (
-    UserFederationMapperRepresentation,
-)
-from .UserFederationProviderRepresentation import (
-    UserFederationProviderRepresentation,
-)
-from .UserProfileAttributeGroupMetadata import (
-    UserProfileAttributeGroupMetadata,
-)
-from .UserProfileAttributeMetadata import (
-    UserProfileAttributeMetadata,
-)
+from .UserConsentRepresentation import UserConsentRepresentation
+from .UserFederationMapperRepresentation import UserFederationMapperRepresentation
+from .UserFederationProviderRepresentation import UserFederationProviderRepresentation
+from .UserProfileAttributeGroupMetadata import UserProfileAttributeGroupMetadata
+from .UserProfileAttributeMetadata import UserProfileAttributeMetadata
 from .UserProfileMetadata import UserProfileMetadata
 from .UserRepresentation import UserRepresentation
 from .UsersWithResourcesResponse import (
@@ -236,7 +205,7 @@ from .UsersWithResourcesResponse import (
 )
 from .UserWithResource import UserWithResource
 from .VersionsOut import VersionsOut
-from .WebError import WebError, construct_web_error
+from .WebError import WebError
 from .WebHook import WebHook
 from .WebHookConfig import WebHookConfig
 from .WebHookEvent import WebHookEvent

@@ -15,10 +15,3 @@ class Credentials:
     username: str
     type: str
     value: str
-
-    def to_dict(self):
-        return {
-            "username": self.username,
-            "type": self.type,
-            "value": self.value,
-        }

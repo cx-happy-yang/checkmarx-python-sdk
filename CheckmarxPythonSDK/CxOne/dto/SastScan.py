@@ -15,8 +15,6 @@ class SastScan:
 
     @classmethod
     def from_dict(cls, item: dict) -> "SastScan":
-        if item is None:
-            return None
         return cls(
             scan_id=item.get("id"),
             state=item.get("state"),

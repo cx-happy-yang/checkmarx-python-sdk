@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class LanguageSummary:
     """
@@ -13,6 +12,3 @@ class LanguageSummary:
     language: str
     count: int
 
-
-def construct_language_summary(item):
-    return LanguageSummary(language=item.get("language"), count=item.get("count"))

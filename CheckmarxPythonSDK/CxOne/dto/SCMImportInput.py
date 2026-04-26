@@ -28,12 +28,3 @@ class SCMImportInput:
     default_project_settings: ProjectSettings
     scan_projects_after_import: bool
     projects: List[ScmProject]
-
-    def to_dict(self):
-        return {
-            "scm": self.scm.to_dict(),
-            "organization": self.organization.to_dict(),
-            "defaultProjectSettings": self.default_project_settings.to_dict(),
-            "scanProjectsAfterImport": self.scan_projects_after_import,
-            "projects": [project.to_dict() for project in (self.projects or [])],
-        }

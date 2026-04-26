@@ -22,8 +22,6 @@ class Result:
 
     @classmethod
     def from_dict(cls, item: dict) -> "Result":
-        if item is None:
-            return None
         return cls(
             type=item.get("type"),
             id=item.get("id"),

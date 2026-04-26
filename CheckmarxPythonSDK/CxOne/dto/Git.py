@@ -19,16 +19,3 @@ class Git:
     commit: str = None
     tag: str = None
     credentials: Credentials = None
-
-    def to_dict(self):
-        data = {
-            "repoUrl": self.repo_url,
-            "branch": self.branch,
-            "commit": self.commit,
-            "tag": self.tag,
-        }
-        if self.credentials:
-            data.update({"credentials": self.credentials.to_dict()})
-        else:
-            data.update({"credentials": self.credentials})
-        return data

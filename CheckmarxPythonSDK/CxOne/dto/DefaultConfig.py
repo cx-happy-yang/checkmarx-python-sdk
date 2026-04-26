@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class DefaultConfig:
     """
@@ -14,18 +13,3 @@ class DefaultConfig:
     name: str
     description: str
     url: str
-
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "description": self.description,
-            "url": self.url,
-        }
-
-
-def construct_default_config(item):
-    return DefaultConfig(
-        name=item.get("name"),
-        description=item.get("description"),
-        url=item.get("url"),
-    )

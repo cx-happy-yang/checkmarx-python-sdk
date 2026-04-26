@@ -15,9 +15,3 @@ class RuleInput:
 
     type: str
     value: str
-
-    def to_dict(self):
-        return {
-            "type": self.type,
-            "value": self.value,
-        }

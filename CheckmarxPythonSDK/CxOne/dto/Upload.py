@@ -15,11 +15,3 @@ class Upload:
     upload_url: str
     branch: str = None
     repo_url: str = None
-
-    def to_dict(self):
-        data = {"uploadUrl": self.upload_url}
-        if self.branch:
-            data.update({"branch": self.branch})
-        if self.repo_url:
-            data.update({"repoUrl": self.repo_url})
-        return data

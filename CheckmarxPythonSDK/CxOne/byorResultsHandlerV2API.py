@@ -31,7 +31,7 @@ class ByorResultsHandlerV2API(object):
         """
         url = f"{self.base_url}/imports"
         response = self.api_client.call_api(
-            method="POST", url=url, json=import_request.to_dict()
+            method="POST", url=url, json={"projectId": import_request.project_id, "uploadUrl": import_request.upload_url}
         )
         return ImportResults.from_dict(response.json())
 
@@ -62,7 +62,7 @@ class ByorResultsHandlerV2API(object):
         """
         url = f"{self.base_url}/jobs/{job_id}"
         response = self.api_client.call_api(
-            method="PATCH", url=url, json=patch_request.to_dict()
+            method="PATCH", url=url, json={"status": patch_request.status}
         )
         return response.status_code == NO_CONTENT
 

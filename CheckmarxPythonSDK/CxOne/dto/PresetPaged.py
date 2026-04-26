@@ -10,8 +10,6 @@ class PresetPaged:
 
     @classmethod
     def from_dict(cls, item: dict) -> "PresetPaged":
-        if item is None:
-            return None
         return cls(
             total_count=item.get("totalCount"),
             presets=[

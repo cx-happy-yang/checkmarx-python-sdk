@@ -13,8 +13,6 @@ class Queries:
 
     @classmethod
     def from_dict(cls, item: dict) -> "Queries":
-        if item is None:
-            return None
         return cls(
             id=item.get("id"),
             name=item.get("name"),

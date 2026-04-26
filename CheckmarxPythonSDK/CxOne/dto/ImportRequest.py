@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class ImportRequest:
     """
@@ -12,15 +11,3 @@ class ImportRequest:
 
     project_id: str
     upload_url: str
-
-    def to_dict(self):
-        return {
-            "projectId": self.project_id,
-            "uploadUrl": self.upload_url,
-        }
-
-
-def construct_import_request(item):
-    return ImportRequest(
-        project_id=item.get("projectId"), upload_url=item.get("uploadUrl")
-    )

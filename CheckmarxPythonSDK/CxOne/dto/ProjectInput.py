@@ -34,21 +34,3 @@ class ProjectInput:
     origin: str = None
     tags: dict = None
     criticality: int = None
-
-    def to_dict(self):
-        data = {}
-        if self.name:
-            data.update({"name": self.name})
-        if self.groups:
-            data.update({"groups": self.groups})
-        if self.repo_url:
-            data.update({"repoUrl": self.repo_url})
-        if self.main_branch:
-            data.update({"mainBranch": self.main_branch})
-        if self.origin:
-            data.update({"origin": self.origin})
-        if self.tags:
-            data.update({"tags": self.tags})
-        if self.criticality:
-            data.update({"criticality": self.criticality})
-        return data

@@ -35,7 +35,40 @@ class ScansAPI(object):
             Scan
         """
         response = self.api_client.call_api(
-            method="POST", url=self.base_url, json=scan_input.to_dict()
+            method="POST", url=self.base_url, json={
+                "type": scan_input.type,
+                "handler": (
+                    {
+                        "repoUrl": scan_input.handler.repo_url,
+                        "branch": scan_input.handler.branch,
+                        "commit": scan_input.handler.commit,
+                        "tag": scan_input.handler.tag,
+                        **({"credentials": {
+                            "username": scan_input.handler.credentials.username,
+                            "type": scan_input.handler.credentials.type,
+                            "value": scan_input.handler.credentials.value,
+                        }} if scan_input.handler.credentials else {"credentials": None}),
+                    }
+                    if hasattr(scan_input.handler, "repo_url") and hasattr(scan_input.handler, "branch") and hasattr(scan_input.handler, "commit")
+                    else {
+                        "uploadUrl": scan_input.handler.upload_url,
+                        **({"branch": scan_input.handler.branch} if scan_input.handler.branch else {}),
+                        **({"repoUrl": scan_input.handler.repo_url} if scan_input.handler.repo_url else {}),
+                    }
+                ),
+                "project": (
+                    {
+                        **({"id": scan_input.project.id} if scan_input.project.id else {}),
+                        **({"tags": scan_input.project.tags} if scan_input.project.tags else {}),
+                    }
+                    if scan_input.project else scan_input.project
+                ),
+                "config": [
+                    ({"type": c.type, "value": c.value} if c.value else {"type": c.type})
+                    for c in (scan_input.configs or [])
+                ],
+                "tags": scan_input.tags,
+            }
         )
         return Scan.from_dict(response.json())
 

@@ -14,9 +14,3 @@ class ScmOrganization:
 
     org_identity: str
     monitor_for_new_projects: bool
-
-    def to_dict(self):
-        return {
-            "orgIdentity": self.org_identity,
-            "monitorForNewProjects": self.monitor_for_new_projects,
-        }

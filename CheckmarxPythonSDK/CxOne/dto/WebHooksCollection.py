@@ -10,8 +10,6 @@ class WebHooksCollection:
 
     @classmethod
     def from_dict(cls, item: dict) -> "WebHooksCollection":
-        if item is None:
-            return None
         return cls(
             total_count=item.get("totalCount"),
             webhooks=[

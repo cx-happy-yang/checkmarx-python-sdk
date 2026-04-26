@@ -17,8 +17,6 @@ class KicsCounters:
 
     @classmethod
     def from_dict(cls, item: dict) -> "KicsCounters":
-        if item is None:
-            return None
         return cls(
             age_counters=item.get("ageCounters"),
             category_summary=item.get("categorySummary"),

@@ -19,8 +19,6 @@ class SastCounters:
 
     @classmethod
     def from_dict(cls, item: dict) -> "SastCounters":
-        if item is None:
-            return None
         return cls(
             queries_counters=item.get("queriesCounters"),
             sink_file_counters=item.get("sinkFileCounters"),

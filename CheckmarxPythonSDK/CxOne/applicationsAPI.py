@@ -36,7 +36,13 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=self.base_url,
-            json=application_input.to_dict(),
+            json={
+                "name": application_input.name,
+                **( {"description": application_input.description} if application_input.description else {}),
+                **( {"criticality": application_input.criticality} if application_input.criticality else {}),
+                **( {"rules": [{"type": rule.type, "value": rule.value} for rule in application_input.rules]} if application_input.rules else {}),
+                **( {"tags": application_input.tags} if application_input.tags else {}),
+            },
         )
         return CreatedApplication.from_dict(response.json())
 
@@ -126,7 +132,13 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="PUT",
             url=f"{self.base_url}/{application_id}",
-            json=application_input.to_dict(),
+            json={
+                "name": application_input.name,
+                **( {"description": application_input.description} if application_input.description else {}),
+                **( {"criticality": application_input.criticality} if application_input.criticality else {}),
+                **( {"rules": [{"type": rule.type, "value": rule.value} for rule in application_input.rules]} if application_input.rules else {}),
+                **( {"tags": application_input.tags} if application_input.tags else {}),
+            },
         )
         return response.status_code == NO_CONTENT
 
@@ -158,7 +170,10 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=f"{self.base_url}/{application_id}/project-rules",
-            json=rule_input.to_dict(),
+            json={
+                "type": rule_input.type,
+                "value": rule_input.value,
+            },
         )
         return Rule.from_dict(response.json())
 
@@ -208,7 +223,10 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="PUT",
             url=f"{self.base_url}/{application_id}/project-rules/{rule_id}",
-            json=rule_input.to_dict(),
+            json={
+                "type": rule_input.type,
+                "value": rule_input.value,
+            },
         )
         return response.status_code in (NO_CONTENT, CREATED)
 

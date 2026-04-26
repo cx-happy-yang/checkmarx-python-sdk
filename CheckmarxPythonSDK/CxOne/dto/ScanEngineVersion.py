@@ -10,8 +10,6 @@ class ScanEngineVersion:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ScanEngineVersion":
-        if item is None:
-            return None
         return cls(
             scan_id=item.get("scanId"),
             project_id=item.get("projectId"),

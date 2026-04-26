@@ -17,23 +17,6 @@ class ResultResponse:
     state: str
     path_size: int
 
-    def to_dict(self):
-        return {
-            "vulnerabilityId": self.vulnerability_id,
-            "sourceFile": self.source_file,
-            "sourceLine": self.source_line,
-            "sourceId": self.source_id,
-            "sourceName": self.source_name,
-            "sourceType": self.source_type,
-            "destinationFile": self.destination_file,
-            "destinationLine": self.destination_line,
-            "destinationId": self.destination_id,
-            "destinationName": self.destination_name,
-            "destinationType": self.destination_type,
-            "state": self.state,
-            "pathSize": self.path_size,
-        }
-
     @classmethod
     def from_dict(cls, item: dict) -> "ResultResponse":
         return cls(

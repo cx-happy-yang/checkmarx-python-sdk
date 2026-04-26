@@ -9,6 +9,4 @@ class SastStatus:
 
     @classmethod
     def from_dict(cls, item: dict) -> "SastStatus":
-        if item is None:
-            return None
         return cls(ready=item.get("ready"), message=item.get("message"))

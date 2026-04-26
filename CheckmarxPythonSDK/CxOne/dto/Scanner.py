@@ -17,11 +17,3 @@ class Scanner:
     type: str = None
     enable_auto_pull_requests: bool = None
     incremental_scan: bool = None
-
-    def to_dict(self):
-        result = {"type": self.type}
-        if self.enable_auto_pull_requests is not None:
-            result.update({"enableAutoPullRequests": self.enable_auto_pull_requests})
-        if self.incremental_scan is not None:
-            result.update({"incrementalScan": self.incremental_scan})
-        return result

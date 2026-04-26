@@ -9,8 +9,6 @@ class TaskInfo:
 
     @classmethod
     def from_dict(cls, item: dict) -> "TaskInfo":
-        if item is None:
-            return None
         return cls(
             source=item.get("source"),
             timestamp=item.get("timestamp"),

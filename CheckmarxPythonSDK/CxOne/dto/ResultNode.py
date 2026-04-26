@@ -16,8 +16,6 @@ class ResultNode:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ResultNode":
-        if item is None:
-            return None
         return cls(
             column=item.get("column"),
             file_name=item.get("fileName"),

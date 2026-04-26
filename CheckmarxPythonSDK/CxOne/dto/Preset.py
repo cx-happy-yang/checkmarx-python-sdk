@@ -12,8 +12,6 @@ class Preset:
 
     @classmethod
     def from_dict(cls, item: dict) -> "Preset":
-        if item is None:
-            return None
         return cls(
             id=item.get("id"),
             name=item.get("name"),

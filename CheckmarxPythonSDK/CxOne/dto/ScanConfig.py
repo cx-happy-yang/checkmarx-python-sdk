@@ -14,11 +14,3 @@ class ScanConfig:
 
     type: str = None
     value: dict = None
-
-    def to_dict(self):
-        if self.value:
-            return {
-                "type": self.type,
-                "value": self.value,
-            }
-        return {"type": self.type}

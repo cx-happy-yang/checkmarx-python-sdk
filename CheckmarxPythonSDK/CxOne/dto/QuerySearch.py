@@ -11,8 +11,6 @@ class QuerySearch:
 
     @classmethod
     def from_dict(cls, item: dict) -> "QuerySearch":
-        if item is None:
-            return None
         return cls(
             query=Queries.from_dict(item.get("query")),
             results=[

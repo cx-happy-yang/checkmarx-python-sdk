@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import List
 
-
 @dataclass
 class Project:
     id: str = None
@@ -15,14 +14,6 @@ class Project:
     updated_at: str = None
     tags: dict = None
     criticality: int = 3
-
-    def to_dict(self):
-        data = {}
-        if self.id:
-            data.update({"id": self.id})
-        if self.tags:
-            data.update({"tags": self.tags})
-        return data
 
     @classmethod
     def from_dict(cls, item: dict) -> "Project":
@@ -40,6 +31,3 @@ class Project:
             criticality=item.get("criticality"),
         )
 
-
-def construct_project(item):
-    return Project.from_dict(item)

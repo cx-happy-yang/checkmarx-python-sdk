@@ -16,8 +16,6 @@ class EngineMetrics:
 
     @classmethod
     def from_dict(cls, item: dict) -> "EngineMetrics":
-        if item is None:
-            return None
         return cls(
             scan_id=item.get("scanId"),
             memory_peak=item.get("memoryPeak"),

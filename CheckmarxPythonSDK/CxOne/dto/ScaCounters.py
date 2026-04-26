@@ -15,8 +15,6 @@ class ScaCounters:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ScaCounters":
-        if item is None:
-            return None
         return cls(
             severity_counters=item.get("severityCounters"),
             status_counters=item.get("statusCounters"),

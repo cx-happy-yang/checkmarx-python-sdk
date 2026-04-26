@@ -62,7 +62,15 @@ class ProjectsAPI(object):
             Project
         """
         response = self.api_client.call_api(
-            method="POST", url=self.base_url, json=project_input.to_dict()
+            method="POST", url=self.base_url, json={
+                **({"name": project_input.name} if project_input.name else {}),
+                **({"groups": project_input.groups} if project_input.groups else {}),
+                **({"repoUrl": project_input.repo_url} if project_input.repo_url else {}),
+                **({"mainBranch": project_input.main_branch} if project_input.main_branch else {}),
+                **({"origin": project_input.origin} if project_input.origin else {}),
+                **({"tags": project_input.tags} if project_input.tags else {}),
+                **({"criticality": project_input.criticality} if project_input.criticality else {}),
+            }
         )
         return Project.from_dict(response.json())
 
@@ -284,7 +292,15 @@ class ProjectsAPI(object):
             return False
         url = f"{self.base_url}/{project_id}"
         response = self.api_client.call_api(
-            method="PUT", url=url, json=project_input.to_dict()
+            method="PUT", url=url, json={
+                **({"name": project_input.name} if project_input.name else {}),
+                **({"groups": project_input.groups} if project_input.groups else {}),
+                **({"repoUrl": project_input.repo_url} if project_input.repo_url else {}),
+                **({"mainBranch": project_input.main_branch} if project_input.main_branch else {}),
+                **({"origin": project_input.origin} if project_input.origin else {}),
+                **({"tags": project_input.tags} if project_input.tags else {}),
+                **({"criticality": project_input.criticality} if project_input.criticality else {}),
+            }
         )
         return response.status_code == NO_CONTENT
 
@@ -305,7 +321,15 @@ class ProjectsAPI(object):
             return False
         url = f"{self.base_url}/{project_id}"
         response = self.api_client.call_api(
-            method="PATCH", url=url, json=project_input.to_dict()
+            method="PATCH", url=url, json={
+                **({"name": project_input.name} if project_input.name else {}),
+                **({"groups": project_input.groups} if project_input.groups else {}),
+                **({"repoUrl": project_input.repo_url} if project_input.repo_url else {}),
+                **({"mainBranch": project_input.main_branch} if project_input.main_branch else {}),
+                **({"origin": project_input.origin} if project_input.origin else {}),
+                **({"tags": project_input.tags} if project_input.tags else {}),
+                **({"criticality": project_input.criticality} if project_input.criticality else {}),
+            }
         )
         return response.status_code == NO_CONTENT
 

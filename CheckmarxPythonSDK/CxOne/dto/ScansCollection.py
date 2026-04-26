@@ -11,8 +11,6 @@ class ScansCollection:
 
     @classmethod
     def from_dict(cls, item: dict) -> "ScansCollection":
-        if item is None:
-            return None
         return cls(
             total_count=item.get("totalCount"),
             filtered_total_count=item.get("filteredTotalCount"),

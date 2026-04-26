@@ -14,8 +14,6 @@ class QueryDetails:
 
     @classmethod
     def from_dict(cls, item: dict) -> "QueryDetails":
-        if item is None:
-            return None
         return cls(
             id=item.get("queryID"),
             cwe_id=item.get("cweID"),

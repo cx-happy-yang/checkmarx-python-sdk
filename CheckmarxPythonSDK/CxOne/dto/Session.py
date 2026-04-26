@@ -18,8 +18,6 @@ class Session:
 
     @classmethod
     def from_dict(cls, item: dict) -> "Session":
-        if item is None:
-            return None
         worker_info_data = item.get("workerInfo")
         worker_info = None
         if worker_info_data:

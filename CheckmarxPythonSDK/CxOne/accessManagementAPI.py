@@ -58,7 +58,13 @@ class AccessManagementAPI(object):
         """
         url = self.base_url
         response = self.api_client.call_api(
-            method="POST", url=url, json=assignment_input.to_dict()
+            method="POST", url=url, json={
+                "entityID": assignment_input.entity_id,
+                "entityType": assignment_input.entity_type,
+                "resourceID": assignment_input.resource_id,
+                "resourceType": assignment_input.resource_type,
+                "entityRoles": assignment_input.entity_roles,
+            }
         )
         return response.status_code == CREATED
 
@@ -118,7 +124,7 @@ class AccessManagementAPI(object):
         url = self.base_url
         params = {"entity-id": entity_id, "resource-id": resource_id}
         response = self.api_client.call_api(
-            method="PUT", url=url, params=params, json=entity_roles.to_dict()
+            method="PUT", url=url, params=params, json={"newEntityRoles": entity_roles.new_entity_roles}
         )
         return response.status_code == OK
 
@@ -160,7 +166,13 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/assignments"
         response = self.api_client.call_api(
-            method="POST", url=url, json=multiple_assignment.to_dict()
+            method="POST", url=url, json={
+                "entityType": EntityType(multiple_assignment.entity_type),
+                "resourceType": ResourceType(multiple_assignment.resource_type),
+                "entityRoles": multiple_assignment.entity_roles,
+                "entities": multiple_assignment.entities,
+                "resources": multiple_assignment.resources,
+            }
         )
         return response.status_code == CREATED
 
@@ -175,7 +187,11 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/assignments/roles"
         response = self.api_client.call_api(
-            method="POST", url=url, json=assignment_roles.to_dict()
+            method="POST", url=url, json={
+                "entityId": assignment_roles.entity_id,
+                "resourceId": assignment_roles.resource_id,
+                "entityRoles": assignment_roles.entity_roles,
+            }
         )
         return response.status_code == OK
 
@@ -799,7 +815,7 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/base-roles/{entity_id}"
         response = self.api_client.call_api(
-            method="PUT", url=url, json=base_roles.to_dict()
+            method="PUT", url=url, json={"baseRoles": base_roles.base_roles}
         )
         return response.status_code == OK
 
@@ -818,7 +834,7 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/base-roles/{entity_id}"
         response = self.api_client.call_api(
-            method="POST", url=url, json=base_roles.to_dict()
+            method="POST", url=url, json={"baseRoles": base_roles.base_roles}
         )
         return response.status_code == CREATED
 
@@ -850,7 +866,7 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/base-roles/{entity_id}/by-name"
         response = self.api_client.call_api(
-            method="POST", url=url, json=base_roles.to_dict()
+            method="POST", url=url, json={"baseRoles": base_roles.base_roles}
         )
         return response.status_code == CREATED
 
@@ -868,7 +884,7 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/base-roles/{entity_id}/by-name/unassign"
         response = self.api_client.call_api(
-            method="POST", url=url, json=base_roles.to_dict()
+            method="POST", url=url, json={"baseRoles": base_roles.base_roles}
         )
         return response.status_code == CREATED
 
@@ -894,7 +910,11 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/roles"
         response = self.api_client.call_api(
-            method="POST", url=url, json=role_request.to_dict()
+            method="POST", url=url, json={
+                "name": role_request.name,
+                "description": role_request.description,
+                "permissions": role_request.permissions,
+            }
         )
         return response.status_code == CREATED
 
@@ -925,7 +945,11 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/roles/{role_id}"
         response = self.api_client.call_api(
-            method="PUT", url=url, json=role_request.to_dict()
+            method="PUT", url=url, json={
+                "name": role_request.name,
+                "description": role_request.description,
+                "permissions": role_request.permissions,
+            }
         )
         return response.status_code == CREATED
 

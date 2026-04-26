@@ -13,6 +13,3 @@ class EntityRolesRequest:
     """
 
     new_entity_roles: List[str] = None
-
-    def to_dict(self):
-        return {"newEntityRoles": self.new_entity_roles}
