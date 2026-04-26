@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import KicsResultCollection, construct_kics_result_collection
 
 api_url = "/api/kics-results"
@@ -48,15 +47,6 @@ class KicsResultsAPI(object):
         Returns:
             KicsResultCollection
         """
-        type_check(scan_id, str)
-        type_check(severity, (list, tuple))
-        type_check(status, (list, tuple))
-        type_check(source_file, str)
-        type_check(apply_predicates, bool)
-        type_check(sort, (list, tuple))
-        list_member_type_check(severity, str)
-        list_member_type_check(status, str)
-        list_member_type_check(sort, str)
         relative_url = api_url
         params = {
             "scan-id": scan_id,
