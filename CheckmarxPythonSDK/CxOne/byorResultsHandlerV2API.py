@@ -2,7 +2,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
-from .utilities import type_check
 from .dto import (
     ImportRequest,
     ImportResults,
@@ -32,7 +31,6 @@ class ByorResultsHandlerV2API(object):
         Returns:
             ImportResults
         """
-        type_check(import_request, ImportRequest)
         relative_url = api_url + "/imports"
         response = self.api_client.post_request(
             relative_url=relative_url, json=import_request.to_dict()
