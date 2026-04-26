@@ -2,7 +2,6 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from typing import List
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from CheckmarxPythonSDK.utilities.compat import OK
-from .utilities import type_check
 from .dto import (
     CloudInsightCreateEnrichAccount,
     CloudInsightEnrichAccount,
@@ -42,7 +41,6 @@ class CloudInsightsServiceAPI(object):
         Returns:
             CloudInsightEnrichAccount
         """
-        type_check(data, CloudInsightCreateEnrichAccount)
         relative_url = api_url + "/accounts/enrich"
         response = self.api_client.post_request(
             relative_url=relative_url, json=data.to_dict()
@@ -62,9 +60,6 @@ class CloudInsightsServiceAPI(object):
         Returns:
             PaginatedAccountsListResponse
         """
-        type_check(external_id, str)
-        type_check(offset, int)
-        type_check(limit, int)
         params = {"external-id": external_id, "offset": offset, "limit": limit}
         relative_url = api_url + "/accounts/enrich"
         response = self.api_client.get_request(relative_url=relative_url, params=params)
@@ -82,8 +77,6 @@ class CloudInsightsServiceAPI(object):
         Returns:
             message (str)
         """
-        type_check(cloud_insights_account_id, str)
-        type_check(start_enrich, StartEnrich)
         relative_url = api_url + "/accounts/{id}/enrich".format(
             id=cloud_insights_account_id
         )
@@ -112,7 +105,6 @@ class CloudInsightsServiceAPI(object):
         Returns:
             CloudInsightAccount
         """
-        type_check(account_id, str)
         relative_url = api_url + "/accounts/{id}".format(id=account_id)
         response = self.api_client.get_request(relative_url=relative_url)
         return construct_cloud_insight_account(response.json())
@@ -199,19 +191,6 @@ class CloudInsightsServiceAPI(object):
         Returns:
             PaginatedContainersListResponse
         """
-        type_check(account_id, str)
-        type_check(limit, int)
-        type_check(offset, int)
-        type_check(image_name, str)
-        type_check(image_short_name, str)
-        type_check(project_name, str)
-        type_check(repo_url, str)
-        type_check(cluster_name, str)
-        type_check(public_exposed, str)
-        type_check(search, str)
-        type_check(cluster_id, str)
-        type_check(order_column, str)
-        type_check(order_direction, str)
         relative_url = api_url + f"/accounts/{account_id}/containers"
         params = {
             "limit": limit,
