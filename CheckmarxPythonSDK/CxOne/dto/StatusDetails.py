@@ -3,12 +3,12 @@ from dataclasses import dataclass
 
 @dataclass
 class StatusDetails:
-    name: str
-    status: str
-    details: str
-    start_date: str
-    end_date: str
-    loc: int | None = None  # Only for SAST
+    name: str = None
+    status: str = None
+    details: str = None
+    start_date: str = None
+    end_date: str = None
+    loc: int = None
 
     def to_dict(self):
         data = {
@@ -35,13 +35,15 @@ class StatusDetails:
             f")"
         )
 
-
-def construct_status_details(item):
-    return StatusDetails(
-        name=item.get("name"),
-        status=item.get("status"),
-        details=item.get("details"),
-        loc=item.get("loc"),
-        start_date=item.get("startDate"),
-        end_date=item.get("endDate"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "StatusDetails":
+        if item is None:
+            return None
+        return cls(
+            name=item.get("name"),
+            status=item.get("status"),
+            details=item.get("details"),
+            loc=item.get("loc"),
+            start_date=item.get("startDate"),
+            end_date=item.get("endDate"),
+        )

@@ -3,22 +3,16 @@ from dataclasses import dataclass
 
 @dataclass
 class TaskInfo:
-    """
+    source: str = None
+    timestamp: str = None
+    info: str = None
 
-    Args:
-        source (str): The service that generated the task event.
-        timestamp (str): The time of the task event.
-        info: An informative message describing the task event.
-    """
-
-    source: str
-    timestamp: str
-    info: str
-
-
-def construct_task_info(item):
-    return TaskInfo(
-        source=item.get("source"),
-        timestamp=item.get("timestamp"),
-        info=item.get("info"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "TaskInfo":
+        if item is None:
+            return None
+        return cls(
+            source=item.get("source"),
+            timestamp=item.get("timestamp"),
+            info=item.get("info"),
+        )

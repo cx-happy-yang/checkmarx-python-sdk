@@ -173,7 +173,7 @@ from .SastScan import SastScan
 from .SastStatus import SastStatus
 from .ScaContainersCounters import ScaContainersCounters
 from .ScaCounters import ScaCounters
-from .Scan import Scan, construct_scan
+from .Scan import Scan
 from .ScanConfig import ScanConfig
 from .ScanEngineVersion import ScanEngineVersion
 from .ScanInfo import ScanInfo
@@ -181,7 +181,7 @@ from .ScanInfoCollection import ScanInfoCollection
 from .ScanInput import ScanInput
 from .Scanner import Scanner
 from .ScanParameter import ScanParameter
-from .ScansCollection import ScansCollection, construct_scans_collection
+from .ScansCollection import ScansCollection
 from .ScaPackageCounters import ScaPackageCounters
 from .Scm import Scm, construct_scm
 from .SCMImportInput import SCMImportInput
@@ -203,10 +203,10 @@ from .SourceFileSummary import SourceFileSummary, construct_source_file_summary
 from .SourceNodeSummary import SourceNodeSummary, construct_source_node_summary
 from .SourcesTree import SourcesTree, construct_sources_tree
 from .StartEnrich import StartEnrich
-from .StatusDetails import StatusDetails, construct_status_details
+from .StatusDetails import StatusDetails
 from .SubCheck import SubCheck
 from .SubsetScan import SubsetScan
-from .TaskInfo import TaskInfo, construct_task_info
+from .TaskInfo import TaskInfo
 from .TimeStamp import TimeStamp
 from .TotalCounters import TotalCounters
 from .Tree import Tree
