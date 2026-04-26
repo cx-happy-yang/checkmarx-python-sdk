@@ -7,14 +7,14 @@ class Git:
     """
     Git handler for scan
     Attributes:
-        repo_url (str): The URL of the Git repository to be scanned.
+        repoUrl (str): The URL of the Git repository to be scanned.
         branch (str): The Git branch of the project to be scanned.
         commit (str): he ID of the Git commit version to be scanned. Mutually exclusive to 'tag'.
         tag (str): The tag of the Git commit version to be scanned. Mutually exclusive to 'commit'.
         credentials (`Credentials`):
     """
 
-    repo_url: str
+    repoUrl: str
     branch: str
     commit: str = None
     tag: str = None

@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from .dto import SCMImportInput
@@ -27,51 +28,7 @@ class CodeRepositoryProjectImportAPI(object):
         """
         url = f"{self.base_url}/scm-projects"
         response = self.api_client.call_api(
-            method="POST", url=url, json={
-                "scm": {"type": scm_import_input.scm.type, "token": scm_import_input.scm.token},
-                "organization": {
-                    "orgIdentity": scm_import_input.organization.org_identity,
-                    "monitorForNewProjects": scm_import_input.organization.monitor_for_new_projects,
-                },
-                "defaultProjectSettings": {
-                    "decoratePullRequests": scm_import_input.default_project_settings.decorate_pull_requests,
-                    "webhookEnabled": scm_import_input.default_project_settings.web_hook_enabled,
-                    "scanners": [
-                        {
-                            "type": s.type,
-                            **({"enableAutoPullRequests": s.enable_auto_pull_requests} if s.enable_auto_pull_requests is not None else {}),
-                            **({"incrementalScan": s.incremental_scan} if s.incremental_scan is not None else {}),
-                        }
-                        for s in (scm_import_input.default_project_settings.scanners or [])
-                    ],
-                    **({"tags": scm_import_input.default_project_settings.tags} if scm_import_input.default_project_settings.tags is not None else {}),
-                    **({"groups": scm_import_input.default_project_settings.groups} if scm_import_input.default_project_settings.groups is not None else {}),
-                },
-                "scanProjectsAfterImport": scm_import_input.scan_projects_after_import,
-                "projects": [
-                    {
-                        "scmRepositoryUrl": p.scm_repository_url,
-                        **({"protectedBranches": p.protected_branches} if p.protected_branches is not None else {}),
-                        **({"sshKey": p.ssh_key} if p.ssh_key is not None else {}),
-                        **({"branchToScanUponCreation": p.branch_to_scan_upon_creation} if p.branch_to_scan_upon_creation is not None else {}),
-                        **({"customSettings": {
-                            "decoratePullRequests": p.custom_settings.decorate_pull_requests,
-                            "webhookEnabled": p.custom_settings.web_hook_enabled,
-                            "scanners": [
-                                {
-                                    "type": s.type,
-                                    **({"enableAutoPullRequests": s.enable_auto_pull_requests} if s.enable_auto_pull_requests is not None else {}),
-                                    **({"incrementalScan": s.incremental_scan} if s.incremental_scan is not None else {}),
-                                }
-                                for s in (p.custom_settings.scanners or [])
-                            ],
-                            **({"tags": p.custom_settings.tags} if p.custom_settings.tags is not None else {}),
-                            **({"groups": p.custom_settings.groups} if p.custom_settings.groups is not None else {}),
-                        }} if p.custom_settings is not None else {}),
-                    }
-                    for p in (scm_import_input.projects or [])
-                ],
-            }
+            method="POST", url=url, json=asdict(scm_import_input)
         )
         item = response.json()
         return {

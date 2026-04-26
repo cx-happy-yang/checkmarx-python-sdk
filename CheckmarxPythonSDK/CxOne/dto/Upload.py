@@ -6,12 +6,12 @@ class Upload:
     """
 
     Args:
-        upload_url (str): The URL pointing to the location of the uploaded file to scan.
+        uploadUrl (str): The URL pointing to the location of the uploaded file to scan.
                         Note: the URL was generated using POST /api/uploads.
         branch (str): The representative branch.
-        repo_url (str): The representative repository URL.
+        repoUrl (str): The representative repository URL.
     """
 
-    upload_url: str
+    uploadUrl: str
     branch: str = None
-    repo_url: str = None
+    repoUrl: str = None

@@ -3,6 +3,6 @@ from typing import List
 
 @dataclass
 class AddAssignmentRoles:
-    entity_id: str = None
-    resource_id: str = None
-    entity_roles: List[str] = None
+    entityId: str = None
+    resourceId: str = None
+    entityRoles: List[str] = None

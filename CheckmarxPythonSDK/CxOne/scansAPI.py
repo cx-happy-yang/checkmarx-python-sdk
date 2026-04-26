@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
@@ -37,25 +38,10 @@ class ScansAPI(object):
         response = self.api_client.call_api(
             method="POST", url=self.base_url, json={
                 "type": scan_input.type,
-                "handler": (
-                    {
-                        "repoUrl": scan_input.handler.repo_url,
-                        "branch": scan_input.handler.branch,
-                        "commit": scan_input.handler.commit,
-                        "tag": scan_input.handler.tag,
-                        **({"credentials": {
-                            "username": scan_input.handler.credentials.username,
-                            "type": scan_input.handler.credentials.type,
-                            "value": scan_input.handler.credentials.value,
-                        }} if scan_input.handler.credentials else {"credentials": None}),
-                    }
-                    if hasattr(scan_input.handler, "repo_url") and hasattr(scan_input.handler, "branch") and hasattr(scan_input.handler, "commit")
-                    else {
-                        "uploadUrl": scan_input.handler.upload_url,
-                        **({"branch": scan_input.handler.branch} if scan_input.handler.branch else {}),
-                        **({"repoUrl": scan_input.handler.repo_url} if scan_input.handler.repo_url else {}),
-                    }
-                ),
+                "handler": {
+                    k: v for k, v in asdict(scan_input.handler).items()
+                    if v is not None
+                },
                 "project": (
                     {
                         **({"id": scan_input.project.id} if scan_input.project.id else {}),
@@ -64,7 +50,7 @@ class ScansAPI(object):
                     if scan_input.project else scan_input.project
                 ),
                 "config": [
-                    ({"type": c.type, "value": c.value} if c.value else {"type": c.type})
+                    {k: v for k, v in asdict(c).items() if v is not None}
                     for c in (scan_input.configs or [])
                 ],
                 "tags": scan_input.tags,

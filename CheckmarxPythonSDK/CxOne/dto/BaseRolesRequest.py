@@ -4,4 +4,4 @@ from typing import List
 
 @dataclass
 class BaseRolesRequest:
-    base_roles: List[str] = None
+    baseRoles: List[str] = None

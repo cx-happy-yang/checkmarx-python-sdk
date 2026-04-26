@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
@@ -48,16 +49,7 @@ class ScanConfigurationAPI(object):
         response = self.api_client.call_api(
             method="PATCH",
             url=url,
-            json=[{
-                    "key": p.key,
-                    "name": p.name,
-                    "category": p.category,
-                    "originLevel": p.origin_level,
-                    "value": p.value,
-                    "valueType": p.value_type,
-                    "allowOverride": p.allow_override,
-                    **({"valueTypeParams": p.value_type_params} if p.value_type == "List" else {}),
-                } for p in scan_parameters],
+            json=[{k: v for k, v in asdict(p).items() if v is not None} for p in scan_parameters],
         )
         return response.status_code == NO_CONTENT
 
@@ -113,16 +105,7 @@ class ScanConfigurationAPI(object):
             method="PATCH",
             url=url,
             params=params,
-            json=[{
-                    "key": p.key,
-                    "name": p.name,
-                    "category": p.category,
-                    "originLevel": p.origin_level,
-                    "value": p.value,
-                    "valueType": p.value_type,
-                    "allowOverride": p.allow_override,
-                    **({"valueTypeParams": p.value_type_params} if p.value_type == "List" else {}),
-                } for p in scan_parameters],
+            json=[{k: v for k, v in asdict(p).items() if v is not None} for p in scan_parameters],
         )
         return response.status_code == NO_CONTENT
 
@@ -201,7 +184,7 @@ class ScanConfigurationAPI(object):
         """
         url = f"{self.base_url}/sast/default-config"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"name": default_config.name, "description": default_config.description, "url": default_config.url}
+            method="POST", url=url, json=asdict(default_config)
         )
         return response.status_code == NO_CONTENT
 
@@ -232,7 +215,7 @@ class ScanConfigurationAPI(object):
         """
         url = f"{self.base_url}/sast/default-config/{config_id}"
         response = self.api_client.call_api(
-            method="PUT", url=url, json={"name": default_config.name, "description": default_config.description, "url": default_config.url}
+            method="PUT", url=url, json=asdict(default_config)
         )
         return response.status_code == NO_CONTENT
 

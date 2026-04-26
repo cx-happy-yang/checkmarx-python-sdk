@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 @dataclass
 class TriageRequest:
-    result_id: str = None
-    project_id: str = None
+    resultId: str = None
+    projectId: str = None
     state: str = None
     severity: str = None

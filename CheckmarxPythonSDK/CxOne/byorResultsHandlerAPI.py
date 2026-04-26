@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
@@ -28,7 +29,7 @@ class ByorResultsHandlerAPI(object):
         """
         url = f"{self.base_url}/imports"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"projectId": import_request.project_id, "uploadUrl": import_request.upload_url}
+            method="POST", url=url, json=asdict(import_request)
         )
         return ImportResults.from_dict(response.json())
 
@@ -42,7 +43,7 @@ class ByorResultsHandlerAPI(object):
         """
         url = f"{self.base_url}/triage"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"resultId": triage_request.result_id, "projectId": triage_request.project_id, "state": triage_request.state, "severity": triage_request.severity}
+            method="POST", url=url, json={k: v for k, v in asdict(triage_request).items() if v is not None}
         )
         return response.status_code == NO_CONTENT
 

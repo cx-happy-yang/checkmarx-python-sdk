@@ -8,7 +8,7 @@ class Scm:
         token (str): The token for authentication with your SCM, Allowed values:github, githubApp
         type (str): The token for authentication with your SCM. Note: For integrations via
                     GitHub Apps, this field is not relevant.
-        self_hosted_scm_url (str): If you are using our Self-Hosted flow, submit the URL of your self-hosted environment.
+        selfHostedScmUrl (str): If you are using our Self-Hosted flow, submit the URL of your self-hosted environment.
                                    Note: The initial step of creating a code repository instance (by submitting an
                                    Instance Name, URL, and authentication credentials) must be done via the UI.
                                    Then you must submit here the exact URL that you configured in the UI.
@@ -17,4 +17,4 @@ class Scm:
 
     token: str
     type: str = "github"
-    self_hosted_scm_url: str = None
+    selfHostedScmUrl: str = None

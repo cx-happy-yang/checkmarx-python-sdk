@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from typing import List
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
@@ -35,7 +36,7 @@ class CloudInsightsServiceAPI(object):
         """
         url = f"{self.base_url}/accounts/enrich"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"name": data.name, "externalID": data.external_id}
+            method="POST", url=url, json=asdict(data)
         )
         return CloudInsightEnrichAccount.from_dict(response.json())
 
@@ -69,7 +70,7 @@ class CloudInsightsServiceAPI(object):
         """
         url = f"{self.base_url}/accounts/{cloud_insights_account_id}/enrich"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"uploadURL": start_enrich.upload_url}
+            method="POST", url=url, json=asdict(start_enrich)
         )
         return response.json().get("message")
 
@@ -86,7 +87,7 @@ class CloudInsightsServiceAPI(object):
         """
         url = f"{self.base_url}/v2/accounts/{cloud_insights_account_id}/enrich"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"uploadURL": start_enrich.upload_url}
+            method="POST", url=url, json=asdict(start_enrich)
         )
         return response.json().get("syncId")
 

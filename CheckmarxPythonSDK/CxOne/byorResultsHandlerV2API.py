@@ -1,4 +1,5 @@
 # encoding: utf-8
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
@@ -31,7 +32,7 @@ class ByorResultsHandlerV2API(object):
         """
         url = f"{self.base_url}/imports"
         response = self.api_client.call_api(
-            method="POST", url=url, json={"projectId": import_request.project_id, "uploadUrl": import_request.upload_url}
+            method="POST", url=url, json=asdict(import_request)
         )
         return ImportResults.from_dict(response.json())
 
@@ -62,7 +63,7 @@ class ByorResultsHandlerV2API(object):
         """
         url = f"{self.base_url}/jobs/{job_id}"
         response = self.api_client.call_api(
-            method="PATCH", url=url, json={"status": patch_request.status}
+            method="PATCH", url=url, json=asdict(patch_request)
         )
         return response.status_code == NO_CONTENT
 

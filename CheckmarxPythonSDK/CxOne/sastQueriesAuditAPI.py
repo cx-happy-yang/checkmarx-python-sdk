@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
@@ -59,17 +60,8 @@ class SastQueriesAuditAPI(object):
         """
         url = f"{self.base_url}/query-editor/sessions/{session_id}/queries"
         response = self.api_client.call_api(
-            method="POST", url=url, json={
-                "path": data.path,
-                "name": data.name,
-                "source": data.source,
-                "metadata": {
-                    "Cwe": data.metadata.cwe,
-                    "Severity": data.metadata.severity,
-                    "IsExecutable": data.metadata.is_executable,
-                    "CxDescriptionID": data.metadata.cx_description_id,
-                } if data.metadata else None,
-            }
+            method="POST", url=url,
+            json={k: v for k, v in asdict(data).items() if v is not None}
         )
         return response.status_code == OK
 
@@ -140,7 +132,7 @@ class SastQueriesAuditAPI(object):
         response = self.api_client.call_api(
             method="PUT",
             url=url,
-            json=[{"path": query.path, "name": query.name, "source": query.source} for query in data],
+            json=[asdict(query) for query in data],
         )
         return response.status_code == OK
 
@@ -153,17 +145,9 @@ class SastQueriesAuditAPI(object):
             SessionResponse
         """
         url = f"{self.base_url}/sessions"
-        _session_data = {
-            "projectId": data.project_id,
-            "scanId": data.scan_id,
-            "scanner": data.scanner,
-        }
-        if data.timeout:
-            _session_data["timeout"] = data.timeout
-        if data.upload_url:
-            _session_data["uploadUrl"] = data.upload_url
         response = self.api_client.call_api(
-            method="POST", url=url, json=_session_data
+            method="POST", url=url,
+            json={k: v for k, v in asdict(data).items() if v is not None}
         )
         return SessionResponse.from_dict(response.json())
 
@@ -296,7 +280,7 @@ class SastQueriesAuditAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=url,
-            json=[{"id": query.id, "source": query.source} for query in data],
+            json=[asdict(query) for query in data],
         )
         return response.json()
 
@@ -315,7 +299,7 @@ class SastQueriesAuditAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=url,
-            json=[{"id": query.id, "source": query.source} for query in data],
+            json=[asdict(query) for query in data],
         )
         return response.json()
 

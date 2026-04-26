@@ -1,4 +1,5 @@
 # encoding: utf-8
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT, CREATED
 from .dto import (
     Application,
@@ -36,13 +37,7 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=self.base_url,
-            json={
-                "name": application_input.name,
-                **( {"description": application_input.description} if application_input.description else {}),
-                **( {"criticality": application_input.criticality} if application_input.criticality else {}),
-                **( {"rules": [{"type": rule.type, "value": rule.value} for rule in application_input.rules]} if application_input.rules else {}),
-                **( {"tags": application_input.tags} if application_input.tags else {}),
-            },
+            json={k: v for k, v in asdict(application_input).items() if v is not None},
         )
         return CreatedApplication.from_dict(response.json())
 
@@ -132,13 +127,7 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="PUT",
             url=f"{self.base_url}/{application_id}",
-            json={
-                "name": application_input.name,
-                **( {"description": application_input.description} if application_input.description else {}),
-                **( {"criticality": application_input.criticality} if application_input.criticality else {}),
-                **( {"rules": [{"type": rule.type, "value": rule.value} for rule in application_input.rules]} if application_input.rules else {}),
-                **( {"tags": application_input.tags} if application_input.tags else {}),
-            },
+            json={k: v for k, v in asdict(application_input).items() if v is not None},
         )
         return response.status_code == NO_CONTENT
 
@@ -170,10 +159,7 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=f"{self.base_url}/{application_id}/project-rules",
-            json={
-                "type": rule_input.type,
-                "value": rule_input.value,
-            },
+            json=asdict(rule_input),
         )
         return Rule.from_dict(response.json())
 
@@ -223,10 +209,7 @@ class ApplicationsAPI(object):
         response = self.api_client.call_api(
             method="PUT",
             url=f"{self.base_url}/{application_id}/project-rules/{rule_id}",
-            json={
-                "type": rule_input.type,
-                "value": rule_input.value,
-            },
+            json=asdict(rule_input),
         )
         return response.status_code in (NO_CONTENT, CREATED)
 

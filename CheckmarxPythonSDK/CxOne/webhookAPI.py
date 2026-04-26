@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from CheckmarxPythonSDK.CxOne.dto import (
@@ -34,17 +35,7 @@ class WebHookAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=f"{self.base_url}/tenant",
-            json={
-                "name": webhook_input.name,
-                "active": webhook_input.active,
-                "enabledEvents": webhook_input.enabled_events,
-                "config": {
-                    "contentType": webhook_input.config.content_type,
-                    "insecureSsl": webhook_input.config.insecure_ssl,
-                    "url": webhook_input.config.url,
-                    "secret": webhook_input.config.secret,
-                },
-            },
+            json=asdict(webhook_input),
         )
         return WebHook.from_dict(response.json())
 
@@ -84,17 +75,7 @@ class WebHookAPI(object):
         response = self.api_client.call_api(
             method="POST",
             url=f"{self.base_url}/projects/{project_id}",
-            json={
-                "name": webhook_input.name,
-                "active": webhook_input.active,
-                "enabledEvents": webhook_input.enabled_events,
-                "config": {
-                    "contentType": webhook_input.config.content_type,
-                    "insecureSsl": webhook_input.config.insecure_ssl,
-                    "url": webhook_input.config.url,
-                    "secret": webhook_input.config.secret,
-                },
-            },
+            json=asdict(webhook_input),
         )
         return WebHook.from_dict(response.json())
 
@@ -151,17 +132,7 @@ class WebHookAPI(object):
         response = self.api_client.call_api(
             method="PATCH",
             url=f"{self.base_url}/{webhook_id}",
-            json={
-                "name": webhook_input.name,
-                "active": webhook_input.active,
-                "enabledEvents": webhook_input.enabled_events,
-                "config": {
-                    "contentType": webhook_input.config.content_type,
-                    "insecureSsl": webhook_input.config.insecure_ssl,
-                    "url": webhook_input.config.url,
-                    "secret": webhook_input.config.secret,
-                },
-            },
+            json=asdict(webhook_input),
         )
         return response.status_code == NO_CONTENT
 
