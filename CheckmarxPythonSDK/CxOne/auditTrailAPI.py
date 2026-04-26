@@ -20,18 +20,20 @@ class AuditTrailAPI(object):
         limit: int = 200,
     ) -> AuditEvents:
         """
-        returns a list of audit events for the specified date range. - If no date range is specified, events from the
-        last 365 days are returned. - The from_date cannot be more than 365 days in the past. - Events for the current
-        day are returned inline. - Events for earlier dates are returned as downloadable links to daily JSON files.
+        Returns a list of audit events for the specified date range.
+        If no date range is specified, events from the last 365 days are returned.
+        The from_date cannot be more than 365 days in the past.
+        Events for the current day are returned inline.
+        Events for earlier dates are returned as downloadable links to daily JSON files.
+
         Args:
-            date_from (str): Start date for the event filter in YYYY-MM-DD format. Cannot be more than 365 days in the
-                             past.
-            date_to (str): End date for the event filter in YYYY-MM-DD format. Must be the same or later than the
-                            from_date.
-            offset (int): The number of items to skip before starting to collect the result set
-                        Default value : 0
-            limit (int):  The number of items to return
-                        Default value : 20
+            date_from (str): Start date for the event filter in YYYY-MM-DD format.
+                Cannot be more than 365 days in the past.
+            date_to (str): End date for the event filter in YYYY-MM-DD format.
+                Must be the same or later than the from_date.
+            offset (int): The number of items to skip before starting to collect
+                the result set. Default value: 0
+            limit (int): The number of items to return. Default value: 20
 
         Returns:
             `AuditEvents`
