@@ -5,8 +5,6 @@ import os
 from CheckmarxPythonSDK.utilities.compat import OK
 from os.path import exists
 
-api_url = "/api/uploads"
-
 
 class UploadsAPI(object):
 
@@ -15,18 +13,21 @@ class UploadsAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = (
+            f"{self.api_client.configuration.server_base_url}/api/uploads"
+        )
 
     def create_a_pre_signed_url_to_upload_files(self) -> str:
         """
-        Create a pre-signed URL to be used with PUT requests to upload files
-         Args:
+        Create a pre-signed URL to be used with PUT requests to upload files.
 
         Returns:
             url (str)
         """
         url = None
-        relative_url = api_url
-        response = self.api_client.post_request(relative_url=relative_url, data=None)
+        response = self.api_client.call_api(
+            method="POST", url=self.base_url
+        )
         if response.status_code == OK:
             url = response.json().get("url")
         return url
