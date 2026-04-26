@@ -34,20 +34,20 @@ class ResultResponse:
             "pathSize": self.path_size,
         }
 
-
-def construct_result_response(item):
-    return ResultResponse(
-        vulnerability_id=item.get("vulnerabilityId"),
-        source_file=item.get("sourceFile"),
-        source_line=item.get("sourceLine"),
-        source_id=item.get("sourceId"),
-        source_name=item.get("sourceName"),
-        source_type=item.get("sourceType"),
-        destination_file=item.get("destinationFile"),
-        destination_line=item.get("destinationLine"),
-        destination_id=item.get("destinationId"),
-        destination_name=item.get("destinationName"),
-        destination_type=item.get("destinationType"),
-        state=item.get("state"),
-        path_size=item.get("pathSize"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "ResultResponse":
+        return cls(
+            vulnerability_id=item.get("vulnerabilityId"),
+            source_file=item.get("sourceFile"),
+            source_line=item.get("sourceLine"),
+            source_id=item.get("sourceId"),
+            source_name=item.get("sourceName"),
+            source_type=item.get("sourceType"),
+            destination_file=item.get("destinationFile"),
+            destination_line=item.get("destinationLine"),
+            destination_id=item.get("destinationId"),
+            destination_name=item.get("destinationName"),
+            destination_type=item.get("destinationType"),
+            state=item.get("state"),
+            path_size=item.get("pathSize"),
+        )

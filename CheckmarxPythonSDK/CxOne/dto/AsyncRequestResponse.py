@@ -8,6 +8,6 @@ class AsyncRequestResponse:
     def to_dict(self):
         return {"id": self.id}
 
-
-def construct_async_request_response(item):
-    return AsyncRequestResponse(id=item.get("id"))
+    @classmethod
+    def from_dict(cls, item: dict) -> "AsyncRequestResponse":
+        return cls(id=item.get("id"))

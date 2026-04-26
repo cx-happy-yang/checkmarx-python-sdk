@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .Metadata import Metadata, construct_metadata
+from .Metadata import Metadata
 
 
 @dataclass
@@ -14,5 +14,5 @@ class QueryRequest:
             "path": self.path,
             "name": self.name,
             "source": self.source,
-            "metadata": construct_metadata(self.metadata),
+            "metadata": self.metadata.to_dict() if self.metadata else None,
         }
