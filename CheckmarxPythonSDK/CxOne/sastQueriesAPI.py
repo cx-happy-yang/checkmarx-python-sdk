@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import (
     QueriesResponse,
     construct_queries_response,
@@ -59,8 +58,6 @@ class SastQueriesAPI(object):
             List[QueryDescription]
              associated to each of the given query ids
         """
-        type_check(ids, list)
-        list_member_type_check(ids, str)
 
         relative_url = query_url + "/descriptions?"
         params = {"ids": ids}
