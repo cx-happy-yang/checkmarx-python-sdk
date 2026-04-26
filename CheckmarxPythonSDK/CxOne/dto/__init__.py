@@ -157,7 +157,7 @@ from .RequestStatusNotReady import (
 from .Resource import Resource
 from .ResourcesResponse import ResourcesResponse
 from .ResourceType import ResourceType
-from .Result import Result, construct_result
+from .Result import Result
 from .ResultNode import ResultNode
 from .ResultResponse import ResultResponse
 from .ResultsResponse import ResultsResponse
