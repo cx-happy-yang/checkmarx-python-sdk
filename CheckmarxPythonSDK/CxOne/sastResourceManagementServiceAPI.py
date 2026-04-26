@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import SastScan, Property
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
 
@@ -82,11 +81,6 @@ class SastResourceManagementServiceAPI(object):
         Returns:
             dict
         """
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(ids, list)
-        list_member_type_check(ids, str)
-        type_check(with_deleted, bool)
 
         relative_url = api_url + "/scans"
         params = {
