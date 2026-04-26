@@ -1,6 +1,5 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
-from .utilities import type_check
 from .dto import (
     AuditEvents,
     construct_audit_events,
@@ -41,8 +40,6 @@ class AuditTrailAPI(object):
         Returns:
             `AuditEvents`
         """
-        type_check(offset, int)
-        type_check(limit, int)
         relative_url = api_url
         params = {"offset": offset, "limit": limit, "from": date_from, "to": date_to}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
