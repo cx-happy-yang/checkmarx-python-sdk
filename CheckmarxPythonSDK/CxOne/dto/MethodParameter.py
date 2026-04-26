@@ -16,9 +16,12 @@ class MethodParameter:
     documentation: str
 
 
-def construct_method_parameter(item):
-    return MethodParameter(
-        name=item.get("name"),
-        label=item.get("label"),
-        documentation=item.get("documentation"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "MethodParameter":
+        if item is None:
+            return None
+        return cls(
+            name=item.get("name"),
+            label=item.get("label"),
+            documentation=item.get("documentation"),
+        )

@@ -7,5 +7,8 @@ class SastStatus:
     message: str = None
 
 
-def construct_sast_status(item):
-    return SastStatus(ready=item.get("ready"), message=item.get("message"))
+    @classmethod
+    def from_dict(cls, item: dict) -> "SastStatus":
+        if item is None:
+            return None
+        return cls(ready=item.get("ready"), message=item.get("message"))

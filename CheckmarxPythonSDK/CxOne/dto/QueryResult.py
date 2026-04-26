@@ -7,5 +7,11 @@ class QueryResult:
     line_number: int = None
 
 
-def construct_query_result(item):
-    return QueryResult(content=item.get("content"), line_number=item.get("lineNumber"))
+    @classmethod
+    def from_dict(cls, item: dict) -> "QueryResult":
+        if item is None:
+            return None
+        return cls(
+            content=item.get("content"),
+            line_number=item.get("lineNumber"),
+        )

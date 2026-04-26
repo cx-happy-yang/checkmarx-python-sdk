@@ -78,7 +78,7 @@ from .UsersWithResourcesResponse import (
     UsersWithResourcesResponse,
 )
 from .Git import Git
-from .GPTMessage import GPTMessage, construct_gpt_message
+from .GPTMessage import GPTMessage
 from .Group import Group
 from .GroupRepresentation import GroupRepresentation
 from .GroupsResponse import GroupsResponse
@@ -98,8 +98,8 @@ from .KicsResultCollection import KicsResultCollection
 from .LanguageSummary import LanguageSummary, construct_language_summary
 from .LogItem import LogItem
 from .Metadata import Metadata
-from .MethodInfo import MethodInfo, construct_method_info
-from .MethodParameter import MethodParameter, construct_method_parameter
+from .MethodInfo import MethodInfo
+from .MethodParameter import MethodParameter
 from .MultipleAssignmentInput import MultipleAssignmentInput
 from .PaginatedAccountLogsListResponse import PaginatedAccountLogsListResponse
 from .PaginatedAccountsListResponse import PaginatedAccountsListResponse
@@ -131,10 +131,10 @@ from .Property import Property, construct_property
 from .ProtocolMappersRepresentation import (
     ProtocolMappersRepresentation,
 )
-from .Queries import Queries, construct_queries
+from .Queries import Queries
 from .QueriesResponse import QueriesResponse
 from .QueriesTree import QueriesTree
-from .Query import Query, construct_query
+from .Query import Query
 from .QueryBuilderMessage import QueryBuilderMessage
 from .QueryBuilderPrompt import QueryBuilderPrompt
 from .QueryDescription import QueryDescription
@@ -142,8 +142,8 @@ from .QueryDescriptionSampleCode import QueryDescriptionSampleCode
 from .QueryDetails import QueryDetails, construct_query_details
 from .QueryRequest import QueryRequest
 from .QueryResponse import QueryResponse
-from .QueryResult import QueryResult, construct_query_result
-from .QuerySearch import QuerySearch, construct_query_search
+from .QueryResult import QueryResult
+from .QuerySearch import QuerySearch
 from .QuerySummary import QuerySummary, construct_query_summary
 from .RequestStatus import RequestStatus
 from .RequestStatusDetectLanguages import (
@@ -170,7 +170,7 @@ from .Rule import Rule
 from .RuleInput import RuleInput
 from .SastResult import SastResult, construct_sast_result
 from .SastScan import SastScan, construct_sast_scan
-from .SastStatus import SastStatus, construct_sast_status
+from .SastStatus import SastStatus
 from .ScaContainersCounters import ScaContainersCounters
 from .ScaCounters import ScaCounters
 from .Scan import Scan, construct_scan
@@ -187,10 +187,10 @@ from .Scm import Scm, construct_scm
 from .SCMImportInput import SCMImportInput
 from .ScmOrganization import ScmOrganization
 from .ScmProject import ScmProject
-from .Session import Session, construct_session
+from .Session import Session
 from .SessionRequest import SessionRequest
-from .SessionResponse import SessionResponse, construct_session_response
-from .Sessions import Sessions, construct_sessions
+from .SessionResponse import SessionResponse
+from .Sessions import Sessions
 from .SeverityCounter import SeverityCounter
 from .SeveritySummary import SeveritySummary, construct_severity_summary
 from .SinkFileSummary import SinkFileSummary, construct_sink_file_summary

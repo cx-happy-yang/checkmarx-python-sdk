@@ -30,16 +30,19 @@ class Query:
     query_description_id: str = None
 
 
-def construct_query(item):
-    return Query(
-        id=item.get("id"),
-        source=item.get("source"),
-        level=item.get("level"),
-        path=item.get("path"),
-        modified=item.get("modified"),
-        cwe=item.get("cwe"),
-        severity=item.get("severity"),
-        is_executable=item.get("isExecutable"),
-        cx_description_id=item.get("cxDescriptionID"),
-        query_description_id=item.get("queryDescriptionID"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "Query":
+        if item is None:
+            return None
+        return cls(
+            id=item.get("id"),
+            source=item.get("source"),
+            level=item.get("level"),
+            path=item.get("path"),
+            modified=item.get("modified"),
+            cwe=item.get("cwe"),
+            severity=item.get("severity"),
+            is_executable=item.get("isExecutable"),
+            cx_description_id=item.get("cxDescriptionID"),
+            query_description_id=item.get("queryDescriptionID"),
+        )

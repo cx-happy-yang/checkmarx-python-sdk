@@ -11,14 +11,16 @@ class Queries:
     modify: str = None
     is_executable: bool = None
 
-
-def construct_queries(item):
-    return Queries(
-        id=item.get("id"),
-        name=item.get("name"),
-        group=item.get("group"),
-        level=item.get("level"),
-        lang=item.get("lang"),
-        modify=item.get("modify"),
-        is_executable=item.get("isExecutable"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "Queries":
+        if item is None:
+            return None
+        return cls(
+            id=item.get("id"),
+            name=item.get("name"),
+            group=item.get("group"),
+            level=item.get("level"),
+            lang=item.get("lang"),
+            modify=item.get("modify"),
+            is_executable=item.get("isExecutable"),
+        )
