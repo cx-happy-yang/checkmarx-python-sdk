@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import construct_result
 
 api_url = "/api/results"
@@ -47,18 +46,7 @@ class ScannersResultsAPI(object):
         Returns:
             dict
         """
-        type_check(scan_id, str)
-        type_check(severity, (list, tuple))
-        type_check(state, (list, tuple))
-        type_check(status, (list, tuple))
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(sort, (list, tuple))
 
-        list_member_type_check(severity, str)
-        list_member_type_check(state, str)
-        list_member_type_check(status, str)
-        list_member_type_check(sort, str)
 
         relative_url = api_url
         params = {
