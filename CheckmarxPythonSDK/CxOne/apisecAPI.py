@@ -199,7 +199,7 @@ class ApiSecAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
         self.base_url = (
-            f"{self.api_client.configuration.server_base_url}" f"/api/apisec/static/api"
+            f"{self.api_client.configuration.server_base_url}/api/apisec/static/api"
         )
 
     def get_risk_summary_by_origin(self, scan_id: str) -> ScanRisksOriginsResult:
@@ -211,14 +211,11 @@ class ApiSecAPI(object):
         url = f"{self.base_url}/scan/{scan_id}/risks-origin"
         response = self.api_client.call_api(method="GET", url=url)
         data = response.json()
-        # 检查返回数据的格式
         if isinstance(data, dict):
             return ScanRisksOriginsResult(**data)
         elif isinstance(data, list):
-            # 如果返回的是列表，创建一个包含该列表的ScanRisksOriginsResult
             return ScanRisksOriginsResult(entries=data)
         else:
-            # 其他情况，返回空结果
             return ScanRisksOriginsResult(entries=[])
 
     def get_scan_apisec_risk_overview(self, scan_id: str) -> ApiSecRisksOverview:

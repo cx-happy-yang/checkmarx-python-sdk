@@ -60,7 +60,7 @@ class AccessManagementAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
         self.base_url = (
-            f"{self.api_client.configuration.server_base_url}" f"/api/access-management"
+            f"{self.api_client.configuration.server_base_url}/api/access-management"
         )
 
     def create_an_assignment(self, assignment_input: AssignmentInput) -> bool:
