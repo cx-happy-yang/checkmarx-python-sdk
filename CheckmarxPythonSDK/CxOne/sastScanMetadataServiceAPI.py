@@ -1,7 +1,6 @@
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxOne.config import construct_configuration
 from typing import List
-from .utilities import type_check, list_member_type_check
 from .dto import (
     ScanInfoCollection,
     construct_scan_info_collection,
@@ -33,8 +32,6 @@ class SastScanMetadataServiceAPI(object):
         Returns:
             ScanInfoCollection
         """
-        type_check(scan_ids, list)
-        list_member_type_check(scan_ids, str)
         relative_url = api_url
         params = {"scan-ids": scan_ids}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
@@ -50,7 +47,6 @@ class SastScanMetadataServiceAPI(object):
         Returns:
              ScanInfo
         """
-        type_check(scan_id, str)
         relative_url = api_url + f"/{scan_id}"
         response = self.api_client.get_request(relative_url=relative_url)
         response = response.json()
@@ -65,7 +61,6 @@ class SastScanMetadataServiceAPI(object):
         Returns:
             EngineMetrics
         """
-        type_check(scan_id, str)
         relative_url = api_url + f"/{scan_id}/metrics"
         response = self.api_client.get_request(relative_url=relative_url)
         response = response.json()
@@ -82,8 +77,6 @@ class SastScanMetadataServiceAPI(object):
         Returns:
             list of ScanEngineVersion
         """
-        type_check(scan_ids, list)
-        list_member_type_check(scan_ids, str)
         relative_url = api_url + "/engine-version"
         params = {"scan-ids": scan_ids}
         response = self.api_client.get_request(relative_url=relative_url, params=params)
