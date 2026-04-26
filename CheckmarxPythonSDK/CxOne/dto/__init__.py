@@ -72,7 +72,7 @@ from .FederatedIdentityRepresentation import (
     FederatedIdentityRepresentation,
     construct_federated_identity_representation,
 )
-from .FileInfo import FileInfo, construct_file_info
+from .FileInfo import FileInfo
 from .Flag import Flag
 from .UsersWithResourcesResponse import (
     UsersWithResourcesResponse,
