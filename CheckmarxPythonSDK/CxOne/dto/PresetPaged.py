@@ -1,25 +1,21 @@
-from dataclasses import dataclass
-from .PresetSummary import PresetSummary, construct_preset_summary
+from dataclasses import dataclass, field
 from typing import List
+from .PresetSummary import PresetSummary
 
 
 @dataclass
 class PresetPaged:
-    """
+    total_count: int = None
+    presets: List[PresetSummary] = field(default_factory=list)
 
-    Args:
-        total_count (int):
-        presets (list of PresetSummary):
-    """
-
-    total_count: int
-    presets: List[PresetSummary]
-
-
-def construct_preset_paged(item):
-    return PresetPaged(
-        total_count=item.get("totalCount"),
-        presets=[
-            construct_preset_summary(preset) for preset in (item.get("presets") or [])
-        ],
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "PresetPaged":
+        if item is None:
+            return None
+        return cls(
+            total_count=item.get("totalCount"),
+            presets=[
+                PresetSummary.from_dict(p)
+                for p in (item.get("presets") or [])
+            ],
+        )

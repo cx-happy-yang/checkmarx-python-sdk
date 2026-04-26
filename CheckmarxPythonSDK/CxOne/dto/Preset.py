@@ -12,6 +12,8 @@ class Preset:
 
     @classmethod
     def from_dict(cls, item: dict) -> "Preset":
+        if item is None:
+            return None
         return cls(
             id=item.get("id"),
             name=item.get("name"),
@@ -19,7 +21,3 @@ class Preset:
             custom=item.get("custom"),
             query_ids=item.get("queryIds"),
         )
-
-
-def construct_preset(item):
-    return Preset.from_dict(item)

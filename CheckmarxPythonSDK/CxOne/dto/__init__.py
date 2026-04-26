@@ -117,9 +117,9 @@ from .PredicateWithCommentsJSON import (
     PredicateWithCommentsJSON,
     construct_predicate_with_comments_json,
 )
-from .Preset import Preset, construct_preset
-from .PresetPaged import PresetPaged, construct_preset_paged
-from .PresetSummary import PresetSummary, construct_preset_summary
+from .Preset import Preset
+from .PresetPaged import PresetPaged
+from .PresetSummary import PresetSummary
 from .Project import Project
 from .ProjectCounter import ProjectCounter
 from .ProjectInput import ProjectInput
@@ -139,7 +139,7 @@ from .QueryBuilderMessage import QueryBuilderMessage
 from .QueryBuilderPrompt import QueryBuilderPrompt
 from .QueryDescription import QueryDescription
 from .QueryDescriptionSampleCode import QueryDescriptionSampleCode
-from .QueryDetails import QueryDetails, construct_query_details
+from .QueryDetails import QueryDetails
 from .QueryRequest import QueryRequest
 from .QueryResponse import QueryResponse
 from .QueryResult import QueryResult
