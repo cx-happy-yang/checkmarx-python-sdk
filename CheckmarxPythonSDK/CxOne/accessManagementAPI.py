@@ -5,47 +5,30 @@ from typing import List
 from .dto import (
     AssignmentInput,
     AssignmentsForResource,
-    construct_assignments_for_resource,
     Assignment,
-    construct_assignment,
     MultipleAssignmentInput,
     AddAssignmentRoles,
     ResourcesResponse,
-    construct_resources_response,
     UsersWithResourcesResponse,
-    construct_users_with_resources_response,
     ClientsWithResourcesResponse,
-    construct_clients_with_resources_response,
     GroupsWithResourcesResponse,
-    construct_groups_with_resources_response,
     BaseRolesResponse,
-    construct_base_roles_response,
     BaseRolesRequest,
     RoleWithDetails,
-    construct_role_with_details,
     Permission,
-    construct_permission,
     EntityRolesRequest,
     CreateRoleRequest,
     GroupsResponse,
-    construct_groups_response,
     Group,
-    construct_group,
     User,
-    construct_user,
     Client,
-    construct_client,
-    construct_internal_user,
-    construct_internal_group,
+    InternalUser,
+    InternalGroup,
     InternalClient,
-    construct_internal_client,
     EffectivePermissionsForResourceResponse,
-    construct_effective_permissions_for_resource_response,
     EntitiesForExtendedResponse,
-    construct_entities_for_extended_response,
     ApplicationsCollection,
     ProjectsCollection,
-    construct_projects_collection,
     EntityType,
     ResourceType,
 )
@@ -70,7 +53,8 @@ class AccessManagementAPI(object):
         or project). You can also specify "roles" that designate the
         permissions for this assignment. If not specified, the tenant
         wide permission for each user is applied. The request body is a
-        JSON object that defines all of relevant parameters for the assignment.
+        JSON object that defines all of relevant parameters for the
+        assignment.
         """
         url = self.base_url
         response = self.api_client.call_api(
@@ -85,8 +69,9 @@ class AccessManagementAPI(object):
         Args:
             entity_id (str): The unique identifier of the entity (user,
                 group or client) for which the assignment will be deleted.
-            resource_id (str): The unique identifier of the resource (tenant,
-                 application or project) for which the assignment will be deleted.
+            resource_id (str): The unique identifier of the resource
+                (tenant, application or project) for which the assignment
+                will be deleted.
 
         Returns:
             bool
@@ -111,7 +96,7 @@ class AccessManagementAPI(object):
         url = self.base_url
         params = {"entity-id": entity_id, "resource-id": resource_id}
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_assignment(response.json())
+        return Assignment.from_dict(response.json())
 
     def update_assignment_roles(
         self, entity_roles: EntityRolesRequest, entity_id: str, resource_id: str
@@ -124,8 +109,8 @@ class AccessManagementAPI(object):
                 that will be assigned to the entity for this assignment
             entity_id (str): The unique identifier of the entity (user,
                 group or client) that is being updated
-            resource_id (str): The unique identifier of the resource (tenant,
-                application or project)
+            resource_id (str): The unique identifier of the resource
+                (tenant, application or project)
 
         Returns:
             bool
@@ -141,10 +126,11 @@ class AccessManagementAPI(object):
         self, resource_ids: List[str]
     ) -> AssignmentsForResource:
         """
-        Retrieves detailed information about each assignment that exists for
-        specific resources.
+        Retrieves detailed information about each assignment that exists
+        for specific resources.
         Args:
             resource_ids (List[str]): The unique identifiers of one or more
+                resources.
 
         Returns:
             AssignmentsForResource
@@ -152,19 +138,19 @@ class AccessManagementAPI(object):
         url = f"{self.base_url}/resource-assignments"
         params = {"resource-ids": ",".join(resource_ids) if resource_ids else None}
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_assignments_for_resource(response.json())
+        return AssignmentsForResource.from_dict(response.json())
 
     def create_multiple_assignments(
         self, multiple_assignment: MultipleAssignmentInput
     ) -> bool:
         """
-        Use this API to create multiple assignments with one action. Specify one
-        or more "entities" (user, usergroup, or OAuth Client) and one or more
-        "resources" (tenant, application or project) to which they are given access.
-        Also, specify the "roles" that designate the permissions for all assignments
-        created with this action. If not specified, then the default "base" role is
-        applied for each entity. The request body is a JSON object that
-        defines all relevant parameters for the assignments.
+        Use this API to create multiple assignments with one action.
+        Specify one or more "entities" (user, usergroup, or OAuth Client)
+        and one or more "resources" (tenant, application or project) to
+        which they are given access. Also, specify the "roles" that
+        designate the permissions for all assignments created with this
+        action. If not specified, then the default "base" role is applied
+        for each entity.
 
         Args:
             multiple_assignment (MultipleAssignmentInput):
@@ -180,7 +166,7 @@ class AccessManagementAPI(object):
 
     def add_roles_to_assignment(self, assignment_roles: AddAssignmentRoles) -> bool:
         """
-        Add roles to an existing assignment
+        Add roles to an existing assignment.
         Args:
             assignment_roles (AddAssignmentRoles):
 
@@ -200,14 +186,14 @@ class AccessManagementAPI(object):
         entity_types: List[EntityType] = None,
     ) -> List[Assignment]:
         """
-        Get a list of entities that are assigned to a specific resource
+        Get a list of entities that are assigned to a specific resource.
         Args:
             resource_id (str): The unique identifier of the resource
             resource_type (ResourceType): The type of resource (tenant,
                 application or project)
             entity_types (List[EntityType]): Comma separate list of entity
                 types (user, group or client) to return. Default: Returns
-                all entities. present.
+                all entities.
 
         Returns:
             List[Assignment]
@@ -219,7 +205,7 @@ class AccessManagementAPI(object):
             "entity-types": ",".join(entity_types) if entity_types else None,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return [construct_assignment(item) for item in response.json()]
+        return [Assignment.from_dict(item) for item in response.json()]
 
     def retrieve_extended_entities_for_resource(
         self,
@@ -233,21 +219,20 @@ class AccessManagementAPI(object):
         search: str = None,
     ) -> EntitiesForExtendedResponse:
         """
-        Get a list of more detailed information about the entities assigned to
-        the resource.
+        Get a list of more detailed information about the entities
+        assigned to the resource.
         Args:
             resource_id (str): The unique identifier of the resource
             resource_type (ResourceType): The type of resource (tenant,
-                application or project) Example : project
+                application or project)
             entity_types (List[EntityType]): Comma separate list of entity
-                types (user, group or client) to return. Default: Returns
-                all entities. present. Example : user,group
-            sort_by (str): Field for sorting the data
-                Available values : entity_name
-            order (str): Order records by username
-                Available values : asc, desc Default value : asc
-            limit (int): Max number of records Default value : 10
-            offset (int): Start from Default value : 0
+                types (user, group or client) to return.
+            sort_by (str): Field for sorting the data.
+                Available values: entity_name
+            order (str): Order records by username.
+                Available values: asc, desc. Default value: asc
+            limit (int): Max number of records. Default value: 10
+            offset (int): Start from. Default value: 0
             search (str): Search by entity name
 
         Returns:
@@ -265,20 +250,19 @@ class AccessManagementAPI(object):
             "search": search,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_entities_for_extended_response(response.json())
+        return EntitiesForExtendedResponse.from_dict(response.json())
 
     def retrieve_resources(
         self, entity_id: str, resource_types: List[ResourceType] = None
     ) -> List[Assignment]:
         """
-        Get a list of resources to which a specific entity is assigned
+        Get a list of resources to which a specific entity is assigned.
         Args:
             entity_id (str): The unique identifier of the entity (user,
                 group or client)
             resource_types (List[ResourceType]): Comma separated list of
                 resource types for which results will be returned.
                 Default: Results are returned for all types of resources.
-                Example : project,tenant
 
         Returns:
             List[Assignment]
@@ -289,26 +273,21 @@ class AccessManagementAPI(object):
             "resource-types": ",".join(resource_types) if resource_types else None,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return [construct_assignment(assignment) for assignment in response.json()]
+        return [Assignment.from_dict(a) for a in response.json()]
 
     def check_access(
         self, resource_id: str, resource_type: ResourceType, action: str
     ) -> bool:
         """
-        Check if the current user (as identified by JWT token) has permission to
-        do a particular action on a particular
-        resource.
+        Check if the current user (as identified by JWT token) has
+        permission to do a particular action on a particular resource.
         Args:
             resource_id (str): The unique identifier of the resource
             resource_type (ResourceType): The type of resource.
-                The 'tenantgroup' - to check tenant level assignment;
-                'application' - to check assignment to application;
-                'project' - to check assignment to project;
-                'tenant' or 'global' - to  check access though base role.
-                Available values : application, project, tenantgroup, tenant, global
-                Example : project
-            action (str): The action for which you are checking if permission is granted.
-                You can submit any of the Action Roles listed here.
+                Available values: application, project, tenantgroup,
+                tenant, global
+            action (str): The action for which you are checking if
+                permission is granted.
 
         Returns:
             bool
@@ -326,12 +305,11 @@ class AccessManagementAPI(object):
         self, group_ids: List[str], project_id: str = None
     ) -> bool:
         """
-
         Args:
             group_ids (List[str]): The list of unique identifiers of groups
-                (with coma separator)
+                (with comma separator)
             project_id (str): The unique identifier of project. If provided
-                it checks at Project level otherwise on Tenant Level
+                it checks at Project level otherwise on Tenant Level.
 
         Returns:
             bool
@@ -352,16 +330,11 @@ class AccessManagementAPI(object):
         (as identified by JWT token).
         Args:
             resource_types (List[ResourceType]): The type of resource for
-                which you are retrieving a list of accessible resources
+                which you are retrieving a list of accessible resources.
                 Multiple types can be submitted (comma separated).
-                The 'tenantgroup' - to check tenant level assignment;
-                'application' - to check assignment to application;
-                'project' - to check assignment to project;
-                'tenant' or 'global' - to check access though base role.
-                Available values : application, project, tenantgroup, tenant, global
-                Example : project,application
-            action (str): The action for which you are checking for accessible
-                resources. You can submit any of the Action Roles listed here.
+            action (str): The action for which you are checking for
+                accessible resources.
+
         Returns:
             ResourcesResponse
         """
@@ -371,7 +344,7 @@ class AccessManagementAPI(object):
             "action": action,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_resources_response(response.json())
+        return ResourcesResponse.from_dict(response.json())
 
     def retrieve_users_with_resources(
         self,
@@ -388,41 +361,26 @@ class AccessManagementAPI(object):
         offset: int = None,
     ) -> UsersWithResourcesResponse:
         """
-
+        Get a list of users with the resources assigned to each user.
         Args:
             search (str): Search by username, firstName, lastName.
-                Returns results that start with the search
-            base_roles (List[str]): Filter by base roles, separated
-                with a comma (filter by one role or another).
-                Example : ast-admin,manage-roles
-            usernames (List[str]): Filter by usernames, separated with
-                a comma (filter by one username or another).
-                Example : username1,username2
+            base_roles (List[str]): Filter by base roles (comma separated).
+            usernames (List[str]): Filter by usernames (comma separated).
             empty_assignments (bool): Filter by assignments.
-                Example : true
             no_groups (bool): Filter users by group membership.
-                Set to "true" to show only users without groups,
-                "false" to show only users with groups.
-                If not set, all users will be returned.
-            created_from (str): Filter users by creation date.
-                Use to specify the start date. Date format
-                YYYY-MM-DDTHH:mm:ss Example : 2025-01-31T12:00:00
-            created_to (str): Filter users by creation date.
-                Use to specify the end date. Date format
-                YYYY-MM-DDTHH:mm:ss Example : 2025-01-31T12:00:00
-            sort_by (str): Field for sorting the data
-                Available values : created-at, username
-                Default value : created-at
-            order (str): Order records by username
-                Available values : asc, desc
-                Default value : asc
+            created_from (str): Filter by creation start date
+                (YYYY-MM-DDTHH:mm:ss).
+            created_to (str): Filter by creation end date
+                (YYYY-MM-DDTHH:mm:ss).
+            sort_by (str): Field for sorting. Available: created-at, username.
+                Default: created-at
+            order (str): Sort order. Available: asc, desc. Default: asc
             limit (int): Max number of records
             offset (int): Start from
 
         Returns:
-            MessageQueuePassword
+            UsersWithResourcesResponse
         """
-        """Get a list of users with the resources assigned to each user."""
         url = f"{self.base_url}/users-resources"
         params = {
             "search": search,
@@ -438,7 +396,7 @@ class AccessManagementAPI(object):
             "offset": offset,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_users_with_resources_response(response.json())
+        return UsersWithResourcesResponse.from_dict(response.json())
 
     def retrieve_clients_with_resources(
         self,
@@ -457,36 +415,20 @@ class AccessManagementAPI(object):
         """
         Get a list of clients and the resources assigned to each client.
         Args:
-            search (str): Search the clients which client-id starts with
-                the search value
-            base_roles (List[str]): Filter by base roles, separated with
-                a comma (filter by one role or another).
-                Example : ast-admin,manage-roles
-            client_ids (List[str]): Filter by values of client-id,
-                separated with a comma (filter by one client-id or
-                another). Example : client1,client2
+            search (str): Search clients by client-id prefix.
+            base_roles (List[str]): Filter by base roles (comma separated).
+            client_ids (List[str]): Filter by client-id (comma separated).
             empty_assignments (bool): Filter by assignments.
-                Example : true
-            sort_by (str): Field for sorting the data
-                Available values : created-at, client-id
-                Default value: created-at
-            order (str): Order records by client-id
-                Available values : asc, desc
-                Default value : asc
-            limit (int): The maximum number of results to return
-            offset (int): The number of pages to skip before starting to
-                return results. The number of results per page is defined
-                by the value of limit.
+            sort_by (str): Field for sorting. Available: created-at, client-id.
+                Default: created-at
+            order (str): Sort order. Available: asc, desc. Default: asc
+            limit (int): Max number of results to return
+            offset (int): Number of pages to skip.
             no_groups (bool): Filter clients by group membership.
-                Set to "true" to show only clients without groups,
-                "false" to show only clients with groups.
-                If not set, all clients will be returned.
-            created_from (str): Filter clients by creation date.
-                Use to specify the start date. Date format
-                YYYY-MM-DDTHH:mm:ss Example : 2025-01-31T12:00:00
-            created_to (str): Filter clients by creation date.
-                Use to specify the start date. Date format
-                YYYY-MM-DDTHH:mm:ss Example : 2025-01-31T12:00:00
+            created_from (str): Filter by creation start date
+                (YYYY-MM-DDTHH:mm:ss).
+            created_to (str): Filter by creation end date
+                (YYYY-MM-DDTHH:mm:ss).
 
         Returns:
             ClientsWithResourcesResponse
@@ -506,7 +448,7 @@ class AccessManagementAPI(object):
             "created-to": created_to,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_clients_with_resources_response(response.json())
+        return ClientsWithResourcesResponse.from_dict(response.json())
 
     def retrieve_groups_with_resources(
         self,
@@ -525,32 +467,18 @@ class AccessManagementAPI(object):
         """
         Get a list of groups with resources assigned to each group.
         Args:
-            search (str):  Search the groups which names starts with
-                the search value
-            base_roles (List[str]):  Filter by base roles, separated with
-                 a comma (filter by one role or another).
-                                     Example : ast-admin,manage-roles
-            names (List[str]):  Filter by values of name, separated with
-                a comma (filter by one name or another).
-                Example : name1,name2
-            empty_assignments (bool):  Filter by assignments.
-                Example : true
+            search (str): Search groups by name prefix.
+            base_roles (List[str]): Filter by base roles (comma separated).
+            names (List[str]): Filter by name (comma separated).
+            empty_assignments (bool): Filter by assignments.
             no_members (bool): Filter groups by user/client membership.
-                Set to "true" to show only groups without members,
-                "false" to show only groups with members.
-                If not set, all groups will be returned.
-                Example : true
-            sort_by (str): Field for sorting the data
-                Available values : created-at, name
-                Default value : created-at
-            created_from (str): Filter clients by creation date.
-                Use to specify the start date. Date format
-                YYYY-MM-DDTHH:mm:ss Example : 2025-01-31T12:00:00
-            created_to (str): Filter clients by creation date.
-                Use to specify the end date. Date format
-                YYYY-MM-DDTHH:mm:ss Example : 2025-01-31T12:00:00
-            order (str):  Order records by group name
-                Available values : asc, desc Default value : asc
+            sort_by (str): Field for sorting. Available: created-at, name.
+                Default: created-at
+            created_from (str): Filter by creation start date
+                (YYYY-MM-DDTHH:mm:ss).
+            created_to (str): Filter by creation end date
+                (YYYY-MM-DDTHH:mm:ss).
+            order (str): Sort order. Available: asc, desc. Default: asc
             limit (int): Max number of records
             offset (int): Start from
 
@@ -572,7 +500,7 @@ class AccessManagementAPI(object):
             "offset": offset,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_groups_with_resources_response(response.json())
+        return GroupsWithResourcesResponse.from_dict(response.json())
 
     def get_a_list_of_permissions_of_entity_for_resource(
         self,
@@ -583,19 +511,14 @@ class AccessManagementAPI(object):
     ) -> EffectivePermissionsForResourceResponse:
         """
         Get a list of permissions of an entity (user, client, group) for
-        a specific resource (project, program,tenant group, global/tenant)
-        without specifying where they were assigned from
+        a specific resource without specifying where they were assigned.
         Args:
             entity_id (str):
-            entity_type (EntityType): The type of entity
-                Available values : user, client, group
-                Example : user
-            resource_id (str): The unique identifier of the resource.
-                Not required if resource-type is tenant/global.
-            resource_type (ResourceType): The type of resource
-                Available values : project, application, tenantgroup,
-                tenant, global
-                Example : project
+            entity_type (EntityType): Available values: user, client, group
+            resource_id (str): Not required if resource-type is
+                tenant/global.
+            resource_type (ResourceType): Available values: project,
+                application, tenantgroup, tenant, global
 
         Returns:
             EffectivePermissionsForResourceResponse
@@ -607,7 +530,7 @@ class AccessManagementAPI(object):
             "resource-type": resource_type,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_effective_permissions_for_resource_response(response.json())
+        return EffectivePermissionsForResourceResponse.from_dict(response.json())
 
     def get_a_list_of_applications_with_action_for_user_or_client(
         self,
@@ -623,18 +546,12 @@ class AccessManagementAPI(object):
         a specific action (permission).
         Args:
             action (str):
-            offset (int):  The number of items to skip before starting
-                to collect the result set
-                Default value : 0
-            limit (int):  The number of items to return
-                Default value : 20
-            name (str):  Application name, can be filtered by partial name.
-            tags_keys (List[str]): Application tags,
-                filter by the keys in the tags map
-                (OR operation between the items)
-            tags_values (List[str]): Application tags,
-                filter by the values in the tags map
-                (OR operation between the items)
+            offset (int): Items to skip before collecting the result set.
+                Default value: 0
+            limit (int): Number of items to return. Default value: 20
+            name (str): Application name, can be filtered by partial name.
+            tags_keys (List[str]): Filter by tag keys (OR operation).
+            tags_values (List[str]): Filter by tag values (OR operation).
 
         Returns:
             ApplicationsCollection
@@ -665,19 +582,12 @@ class AccessManagementAPI(object):
         specific action (permission).
         Args:
             action (str):
-            offset (int):  The number of items to skip before starting
-                 to collect the result set
-                 Default value : 0
-            limit (int):  The number of items to return
-                Default value : 20
+            offset (int): Items to skip before collecting the result set.
+                Default value: 0
+            limit (int): Number of items to return. Default value: 20
             name (str): Project name, can be filtered by partial name.
-                Mutually exclusive to names and name-regex
-            tags_keys (List[str]): Project tags,
-                filter by the keys in the tags map
-                (OR operation between the items)
-            tags_values (List[str]): Project tags,
-                filter by the values in the tags map
-                (OR operation between the items)
+            tags_keys (List[str]): Filter by tag keys (OR operation).
+            tags_values (List[str]): Filter by tag values (OR operation).
 
         Returns:
             ProjectsCollection
@@ -692,7 +602,7 @@ class AccessManagementAPI(object):
             "tags-values": tags_values,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_projects_collection(response.json())
+        return ProjectsCollection.from_dict(response.json())
 
     def retrieve_user_or_client_groups(
         self,
@@ -703,17 +613,13 @@ class AccessManagementAPI(object):
     ) -> GroupsResponse:
         """
         Get a list of user/client groups to which the current user
-        (as identified by JWT token) is assigned. Search
-        for clients groups only available for phase 2.
+        (as identified by JWT token) is assigned.
         Args:
-            include_subgroups (bool): Set param to 'true' to include
-                subgroups in the response
-                Default value : false
-            search (str):  Search by group name
-            limit (int):  The maximum number of results to return
-            offset (int): The number of pages to skip before starting
-                to return results. The number of results per page
-                is defined by the value of limit.
+            include_subgroups (bool): Set to true to include subgroups.
+                Default value: false
+            search (str): Search by group name
+            limit (int): Max number of results to return
+            offset (int): Number of pages to skip.
 
         Returns:
             GroupsResponse
@@ -726,7 +632,7 @@ class AccessManagementAPI(object):
             "offset": offset,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_groups_response(response.json())
+        return GroupsResponse.from_dict(response.json())
 
     def retrieve_user_or_client_available_groups(
         self,
@@ -740,13 +646,11 @@ class AccessManagementAPI(object):
         project/global level.
         Args:
             project_id (str): The unique identifier of the project.
-                If not provided, check access on tenant level.
-                Default value : false
+                If not provided, checks access on tenant level.
             search (str): Search by group name
-            limit (int): The maximum number of results to return
-            offset (int): The number of pages to skip before starting
-                to return results. The number of results
-                per page is defined by the value of limit.
+            limit (int): Max number of results to return
+            offset (int): Number of pages to skip.
+
         Returns:
             GroupsResponse
         """
@@ -758,7 +662,7 @@ class AccessManagementAPI(object):
             "offset": offset,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return construct_groups_response(response.json())
+        return GroupsResponse.from_dict(response.json())
 
     def retrieve_groups(
         self,
@@ -768,14 +672,12 @@ class AccessManagementAPI(object):
         ids: List[str] = (),
     ) -> List[Group]:
         """
-        Get info about user groups in the tenant account
+        Get info about user groups in the tenant account.
         Args:
-            limit (int): The maximum number of results to return
-            offset (int): The number of pages to skip before starting
-                to return results. The number of results
-                per page is defined by the value of limit.
+            limit (int): Max number of results to return
+            offset (int): Number of pages to skip.
             search (str): Search by group name
-            ids (List[str]):  Filter by group IDs (comma separated)
+            ids (List[str]): Filter by group IDs (comma separated)
 
         Returns:
             List[Group]
@@ -788,7 +690,7 @@ class AccessManagementAPI(object):
             "ids": ",".join(ids) if ids else None,
         }
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return [construct_group(group) for group in response.json()]
+        return [Group.from_dict(g) for g in response.json()]
 
     def retrieve_users(
         self, limit: int = None, offset: int = None, search: str = None
@@ -796,10 +698,8 @@ class AccessManagementAPI(object):
         """
         Get info about users in the tenant account.
         Args:
-            limit (int): The maximum number of results to return
-            offset (int): The number of pages to skip before starting
-                to return results. The number of results
-                per page is defined by the value of limit.
+            limit (int): Max number of results to return
+            offset (int): Number of pages to skip.
             search (str): Search by username, firstname, lastname or email
 
         Returns:
@@ -808,25 +708,24 @@ class AccessManagementAPI(object):
         url = f"{self.base_url}/users"
         params = {"limit": limit, "offset": offset, "search": search}
         response = self.api_client.call_api(method="GET", url=url, params=params)
-        return [construct_user(user) for user in response.json()]
+        return [User.from_dict(u) for u in response.json()]
 
     def retrieve_clients(self) -> List[Client]:
         """
-        Get info about OAuth clients in the tenant account
+        Get info about OAuth clients in the tenant account.
+
         Returns:
-            List[Client]:
+            List[Client]
         """
         url = f"{self.base_url}/clients"
         response = self.api_client.call_api(method="GET", url=url)
-        return [construct_client(client) for client in response.json()]
+        return [Client.from_dict(c) for c in response.json()]
 
     def retrieve_users_from_internal_am_storage(self) -> dict:
         """
-
         Get info about users in the tenant account.
-        This returns the same info as /users, but it gets results more
-        quickly because it draws the info from our
-        internal Access Management database.
+        This returns the same info as /users, but draws from the internal
+        Access Management database for faster results.
 
         Returns:
             dict
@@ -836,15 +735,14 @@ class AccessManagementAPI(object):
         item = response.json()
         return {
             "total": item.get("total"),
-            "users": [construct_internal_user(user) for user in item.get("users")],
+            "users": [InternalUser.from_dict(u) for u in (item.get("users") or [])],
         }
 
     def retrieve_groups_from_internal_am_storage(self) -> dict:
         """
-        Get info about OAuth clients in the tenant account.
-        This returns the same info as /clients, but it gets
-        results more quickly because it draws the info from our
-        internal Access Management database.
+        Get info about groups in the tenant account.
+        This returns the same info as /groups, but draws from the internal
+        Access Management database for faster results.
 
         Returns:
             dict
@@ -854,44 +752,44 @@ class AccessManagementAPI(object):
         item = response.json()
         return {
             "total": item.get("total"),
-            "groups": [construct_internal_group(group) for group in item.get("groups")],
+            "groups": [
+                InternalGroup.from_dict(g) for g in (item.get("groups") or [])
+            ],
         }
 
     def retrieve_clients_from_internal_am_storage(self) -> List[InternalClient]:
         """
-        Get AM clients
+        Get AM clients.
 
         Returns:
-             List[InternalClient]
+            List[InternalClient]
         """
         url = f"{self.base_url}/internal/clients"
         response = self.api_client.call_api(method="GET", url=url)
-        return [construct_internal_client(client) for client in response.json()]
+        return [InternalClient.from_dict(c) for c in response.json()]
 
     def retrieve_entity_base_roles(self, entity_id: str) -> BaseRolesResponse:
         """
         Get the base roles for a specific entity (user, group or client).
-        'Base roles' are the set of permissions
-        granted to the entity by default for assignments in which no roles
-        were designated.
+        'Base roles' are the set of permissions granted to the entity by
+        default for assignments in which no roles were designated.
+
+        Args:
+            entity_id (str):
 
         Returns:
-           BaseRolesResponse
+            BaseRolesResponse
         """
         url = f"{self.base_url}/base-roles/{entity_id}"
         response = self.api_client.call_api(method="GET", url=url)
-        return construct_base_roles_response(response.json())
+        return BaseRolesResponse.from_dict(response.json())
 
     def update_base_roles_for_an_entity(
         self, base_roles: BaseRolesRequest, entity_id: str
     ) -> bool:
         """
-
         Update the base roles for the specified entity.
         This will overwrite the existing base roles.
-        'Base roles' are the set of permissions granted to the
-        entity by default for assignments in which no roles were
-        designated.
         Args:
             base_roles (BaseRolesRequest):
             entity_id (str):
@@ -909,15 +807,8 @@ class AccessManagementAPI(object):
         self, base_roles: BaseRolesRequest, entity_id: str
     ) -> bool:
         """
-        Add base roles to the specified entity.
-        If the entity already has base roles,
-        this will add additional roles
-        without overwriting the existing roles.
-        The body is an array of role IDs.
-        'Base roles' are the set of permissions granted
-        to the entity by default for assignments in which
-        no roles were designated.
-
+        Add base roles to the specified entity without overwriting existing
+        roles. The body is an array of role IDs.
         Args:
             base_roles (BaseRolesRequest):
             entity_id (str):
@@ -933,7 +824,7 @@ class AccessManagementAPI(object):
 
     def delete_base_roles_for_an_entity(self, entity_id: str) -> bool:
         """
-        Delete the base roles for a specific entity
+        Delete the base roles for a specific entity.
         Args:
             entity_id (str):
 
@@ -948,15 +839,8 @@ class AccessManagementAPI(object):
         self, base_roles: BaseRolesRequest, entity_id: str
     ) -> bool:
         """
-        Add base roles to the specified entity.
-        If the entity already has base roles,
-        this will add additional roles
-        without overwriting the existing roles.
-        The body is an array of role names.
-        'Base roles' are the set of permissions
-        granted to the entity by default for
-        assignments in which no roles were
-        designated.
+        Add base roles to the specified entity without overwriting existing
+        roles. The body is an array of role names.
         Args:
             base_roles (BaseRolesRequest):
             entity_id (str):
@@ -993,22 +877,17 @@ class AccessManagementAPI(object):
         Get info about roles in the tenant account.
 
         Returns:
-            List[RoleWithDetails]:
+            List[RoleWithDetails]
         """
         url = f"{self.base_url}/roles"
         response = self.api_client.call_api(method="GET", url=url)
-        return [construct_role_with_details(role) for role in response.json()]
+        return [RoleWithDetails.from_dict(r) for r in response.json()]
 
     def create_a_role(self, role_request: CreateRoleRequest) -> bool:
         """
-         Creates a new role, specifying the series of permissions that
-         are assigned to the new role. Roles can then
-         be assigned to entities (user, group or client) in the context
-         of assignment creation.
-         The request body is a JSON object that defines all relevant
-         parameters for the role.
-         Note: You can obtain a complete list of available permissions
-         using GET /permissions
+        Creates a new role, specifying the series of permissions assigned
+        to the new role. Roles can then be assigned to entities in the
+        context of assignment creation.
 
         Returns:
             bool
@@ -1030,18 +909,13 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/roles/{role_id}"
         response = self.api_client.call_api(method="GET", url=url)
-        return construct_role_with_details(response.json())
+        return RoleWithDetails.from_dict(response.json())
 
     def update_a_role(self, role_request: CreateRoleRequest, role_id: str) -> bool:
         """
-        Edit the configuration of an existing role.
-        The body content is the same as for the POST method.
-        Note: All parameters are overwritten by the new configuration.
-        If you would like to add permissions to a role,
-        you need to submit all current permissions as well as the
-        new permissions that are being added.
-        Note: System roles (out-of-the-box) cannot be updated.
-
+        Edit the configuration of an existing role. All parameters are
+        overwritten by the new configuration. System roles cannot be
+        updated.
         Args:
             role_request (CreateRoleRequest):
             role_id (str):
@@ -1057,8 +931,7 @@ class AccessManagementAPI(object):
 
     def delete_a_role(self, role_id: str) -> bool:
         """
-        Deletes a role.
-            Note: System roles (out-of-the-box cannot be deleted).
+        Deletes a role. System roles cannot be deleted.
         Args:
             role_id (str):
 
@@ -1078,11 +951,13 @@ class AccessManagementAPI(object):
         """
         url = f"{self.base_url}/permissions"
         response = self.api_client.call_api(method="GET", url=url)
-        return [construct_permission(permission) for permission in response.json()]
+        return [Permission.from_dict(p) for p in response.json()]
 
 
 def create_an_assignment(assignment_input: AssignmentInput) -> bool:
-    return AccessManagementAPI().create_an_assignment(assignment_input=assignment_input)
+    return AccessManagementAPI().create_an_assignment(
+        assignment_input=assignment_input
+    )
 
 
 def delete_an_assignment(entity_id: str, resource_id: str) -> bool:
@@ -1105,13 +980,17 @@ def update_assignment_roles(
     )
 
 
-def retrieve_resource_assignments(resource_ids: List[str]) -> AssignmentsForResource:
+def retrieve_resource_assignments(
+    resource_ids: List[str],
+) -> AssignmentsForResource:
     return AccessManagementAPI().retrieve_resource_assignments(
         resource_ids=resource_ids
     )
 
 
-def create_multiple_assignments(multiple_assignment: MultipleAssignmentInput) -> bool:
+def create_multiple_assignments(
+    multiple_assignment: MultipleAssignmentInput,
+) -> bool:
     return AccessManagementAPI().create_multiple_assignments(
         multiple_assignment=multiple_assignment
     )
@@ -1124,10 +1003,14 @@ def add_roles_to_assignment(assignment_roles: AddAssignmentRoles) -> bool:
 
 
 def retrieve_entities(
-    resource_id: str, resource_type: ResourceType, entity_types: List[EntityType] = None
+    resource_id: str,
+    resource_type: ResourceType,
+    entity_types: List[EntityType] = None,
 ) -> List[Assignment]:
     return AccessManagementAPI().retrieve_entities(
-        resource_id=resource_id, resource_type=resource_type, entity_types=entity_types
+        resource_id=resource_id,
+        resource_type=resource_type,
+        entity_types=entity_types,
     )
 
 
@@ -1161,7 +1044,9 @@ def retrieve_resources(
     )
 
 
-def check_access(resource_id: str, resource_type: ResourceType, action: str) -> bool:
+def check_access(
+    resource_id: str, resource_type: ResourceType, action: str
+) -> bool:
     return AccessManagementAPI().check_access(
         resource_id=resource_id, resource_type=resource_type, action=action
     )
@@ -1289,15 +1174,13 @@ def get_a_list_of_applications_with_action_for_user_or_client(
     tags_keys: List[str] = None,
     tags_values: List[str] = None,
 ) -> ApplicationsCollection:
-    return (
-        AccessManagementAPI().get_a_list_of_applications_with_action_for_user_or_client(
-            action=action,
-            offset=offset,
-            limit=limit,
-            name=name,
-            tags_keys=tags_keys,
-            tags_values=tags_values,
-        )
+    return AccessManagementAPI().get_a_list_of_applications_with_action_for_user_or_client(
+        action=action,
+        offset=offset,
+        limit=limit,
+        name=name,
+        tags_keys=tags_keys,
+        tags_values=tags_values,
     )
 
 
@@ -1334,7 +1217,10 @@ def retrieve_user_or_client_groups(
 
 
 def retrieve_user_or_client_available_groups(
-    project_id: str = None, search: str = None, limit: int = None, offset: int = None
+    project_id: str = None,
+    search: str = None,
+    limit: int = None,
+    offset: int = None,
 ) -> GroupsResponse:
     return AccessManagementAPI().retrieve_user_or_client_available_groups(
         project_id=project_id,

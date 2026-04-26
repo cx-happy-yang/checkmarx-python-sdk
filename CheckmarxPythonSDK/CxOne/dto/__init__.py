@@ -4,15 +4,13 @@ from .ApiSecCounters import ApiSecCounters, construct_api_sec_counters
 from .Application import Application
 from .ApplicationInput import ApplicationInput
 from .ApplicationsCollection import ApplicationsCollection
-from .Assignment import Assignment, construct_assignment
+from .Assignment import Assignment
 from .AssignmentInput import AssignmentInput
 from .AssignmentsForResource import (
     AssignmentsForResource,
-    construct_assignments_for_resource,
 )
 from .AssignmentsWithBaseRoles import (
     AssignmentsWithBaseRoles,
-    construct_assignments_with_base_roles,
 )
 from .AstIdWithName import AstIdWithName
 from .AstUser import AstUser
@@ -22,19 +20,18 @@ from .AuditEventLink import AuditEventLink
 from .AuditEvents import AuditEvents
 from .AuditQuery import AuditQuery
 from .BaseRolesRequest import BaseRolesRequest
-from .BaseRolesResponse import BaseRolesResponse, construct_base_roles_response
+from .BaseRolesResponse import BaseRolesResponse
 from .BflTree import BflTree, construct_bfl_tree
 from .ByorJob import ByorJob, construct_byor_job
 from .ByorJobPatchRequest import ByorJobPatchRequest, construct_byor_job_patch_request
 from .Category import Category, construct_category
 from .CategoryType import CategoryType, construct_category_type
 from .ChangeDetails import ChangeDetails, construct_change_details
-from .Client import Client, construct_client
+from .Client import Client
 from .ClientsWithResourcesResponse import (
     ClientsWithResourcesResponse,
-    construct_clients_with_resources_response,
 )
-from .ClientWithResource import ClientWithResource, construct_client_with_resource
+from .ClientWithResource import ClientWithResource
 from .CloudInsightAccount import CloudInsightAccount, construct_cloud_insight_account
 from .CloudInsightAccountLog import (
     CloudInsightAccountLog,
@@ -76,13 +73,11 @@ from .DefaultConfig import DefaultConfig, construct_default_config
 from .DefaultConfigOut import DefaultConfigOut, construct_default_config_out
 from .EffectivePermissionsForResourceResponse import (
     EffectivePermissionsForResourceResponse,
-    construct_effective_permissions_for_resource_response,
 )
 from .EngineData import EngineData, construct_engine_data
 from .EngineMetrics import EngineMetrics, construct_engine_metrics
 from .EntitiesForExtendedResponse import (
     EntitiesForExtendedResponse,
-    construct_entities_for_extended_response,
 )
 from .EntityRolesRequest import EntityRolesRequest
 from .EntityType import EntityType
@@ -96,25 +91,23 @@ from .FileInfo import FileInfo, construct_file_info
 from .Flag import Flag, construct_feature_flag
 from .UsersWithResourcesResponse import (
     UsersWithResourcesResponse,
-    construct_users_with_resources_response,
 )
 from .Git import Git
 from .GPTMessage import GPTMessage, construct_gpt_message
-from .Group import Group, construct_group
-from .GroupRepresentation import GroupRepresentation, construct_group_representation
-from .GroupsResponse import GroupsResponse, construct_groups_response
+from .Group import Group
+from .GroupRepresentation import GroupRepresentation
+from .GroupsResponse import GroupsResponse
 from .GroupsWithResourcesResponse import (
     GroupsWithResourcesResponse,
-    construct_groups_with_resources_response,
 )
-from .GroupWithResource import GroupWithResource, construct_group_with_resource
+from .GroupWithResource import GroupWithResource
 from .ImportItem import ImportItem, construct_import_item
 from .ImportItemWithLogs import ImportItemWithLogs, construct_import_item_with_logs
 from .ImportRequest import ImportRequest, construct_import_request
 from .ImportResults import ImportResults, construct_import_results
-from .InternalClient import InternalClient, construct_internal_client
-from .InternalGroup import InternalGroup, construct_internal_group
-from .InternalUser import InternalUser, construct_internal_user
+from .InternalClient import InternalClient
+from .InternalGroup import InternalGroup
+from .InternalUser import InternalUser
 from .KicsResult import KicsResult, construct_kics_result
 from .KicsResultCollection import KicsResultCollection, construct_kics_result_collection
 from .LanguageSummary import LanguageSummary, construct_language_summary
@@ -139,7 +132,7 @@ from .PaginatedResourcesList import (
     PaginatedResourcesList,
     construct_paginated_resources_list,
 )
-from .Permission import Permission, construct_permission
+from .Permission import Permission
 from .PlatformSummary import PlatformSummary, construct_platform_summary
 from .Predicate import Predicate, construct_predicate
 from .PredicateHistory import PredicateHistory, construct_predicate_history
@@ -167,7 +160,6 @@ from .ProjectSettings import ProjectSettings
 from .Property import Property, construct_property
 from .ProtocolMappersRepresentation import (
     ProtocolMappersRepresentation,
-    construct_protocol_mappers_representation,
 )
 from .Queries import Queries, construct_queries
 from .QueriesResponse import QueriesResponse, construct_queries_response
@@ -196,7 +188,7 @@ from .RequestStatusNotReady import (
     construct_request_status_not_ready,
 )
 from .Resource import Resource, construct_resource
-from .ResourcesResponse import ResourcesResponse, construct_resources_response
+from .ResourcesResponse import ResourcesResponse
 from .ResourceType import ResourceType
 from .Result import Result, construct_result
 from .ResultNode import ResultNode, construct_result_node
@@ -206,7 +198,7 @@ from .ResultsSummary import ResultsSummary, construct_results_summary
 from .ResultsSummaryTree import ResultsSummaryTree, construct_results_summary_tree
 from .RichProject import RichProject, construct_rich_project
 from .Role import Role
-from .RoleWithDetails import RoleWithDetails, construct_role_with_details
+from .RoleWithDetails import RoleWithDetails
 from .Rule import Rule
 from .RuleInput import RuleInput
 from .SastResult import SastResult, construct_sast_result
@@ -257,34 +249,28 @@ from .Tree import Tree, construct_tree
 from .TriageRequest import TriageRequest, construct_triage_request
 from .TriageResponse import TriageResponse, construct_triage_response
 from .Upload import Upload
-from .User import User, construct_user
+from .User import User
 from .UserConsentRepresentation import (
     UserConsentRepresentation,
-    construct_user_consent_representation,
 )
 from .UserFederationMapperRepresentation import (
     UserFederationMapperRepresentation,
-    construct_user_federation_mapper_representation,
 )
 from .UserFederationProviderRepresentation import (
     UserFederationProviderRepresentation,
-    construct_user_federation_provider_representation,
 )
 from .UserProfileAttributeGroupMetadata import (
     UserProfileAttributeGroupMetadata,
-    construct_user_profile_attribute_group_metadata,
 )
 from .UserProfileAttributeMetadata import (
     UserProfileAttributeMetadata,
-    construct_user_profile_attribute_metadata,
 )
-from .UserProfileMetadata import UserProfileMetadata, construct_user_profile_metadata
-from .UserRepresentation import UserRepresentation, construct_user_representation
+from .UserProfileMetadata import UserProfileMetadata
+from .UserRepresentation import UserRepresentation
 from .UsersWithResourcesResponse import (
     UsersWithResourcesResponse,
-    construct_users_with_resources_response,
 )
-from .UserWithResource import UserWithResource, construct_user_with_resource
+from .UserWithResource import UserWithResource
 from .VersionsOut import VersionsOut, construct_versions_out
 from .WebError import WebError, construct_web_error
 from .WebHook import WebHook, construct_web_hook

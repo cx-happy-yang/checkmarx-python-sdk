@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List
-from .Project import Project, construct_project
+from .Project import Project
 
 
 @dataclass
@@ -9,12 +9,16 @@ class ProjectsCollection:
     filtered_total_count: int = None
     projects: List[Project] = None
 
+    @classmethod
+    def from_dict(cls, item: dict) -> "ProjectsCollection":
+        return cls(
+            total_count=item.get("totalCount"),
+            filtered_total_count=item.get("filteredTotalCount"),
+            projects=[
+                Project.from_dict(p) for p in (item.get("projects") or [])
+            ],
+        )
+
 
 def construct_projects_collection(item):
-    return ProjectsCollection(
-        total_count=item.get("totalCount"),
-        filtered_total_count=item.get("filteredTotalCount"),
-        projects=[
-            construct_project(project) for project in (item.get("projects") or [])
-        ],
-    )
+    return ProjectsCollection.from_dict(item)
