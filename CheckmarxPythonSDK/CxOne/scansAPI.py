@@ -5,7 +5,6 @@ from httpx import Response
 import json
 from deprecated import deprecated
 from CheckmarxPythonSDK.utilities.compat import NO_CONTENT
-from .utilities import type_check, list_member_type_check
 
 from .dto import (
     ScanInput,
@@ -37,7 +36,6 @@ class ScansAPI(object):
         Returns:
             Scan
         """
-        type_check(scan_input, ScanInput)
         relative_url = api_url
         response = self.api_client.post_request(
             relative_url=relative_url, json=scan_input.to_dict()
@@ -121,37 +119,7 @@ class ScansAPI(object):
         Returns:
             ScansCollection
         """
-        type_check(offset, int)
-        type_check(limit, int)
-        type_check(scan_ids, (list, tuple))
-        type_check(groups, (list, tuple))
-        type_check(tags_keys, (list, tuple))
-        type_check(tags_values, (list, tuple))
-        type_check(statuses, (list, tuple))
-        type_check(project_id, str)
-        type_check(project_ids, (list, tuple))
-        type_check(source_type, str)
-        type_check(source_origin, str)
-        type_check(from_date, str)
-        type_check(sort, (list, tuple))
-        type_check(field, (list, tuple))
-        type_check(search, str)
-        type_check(to_date, str)
-        type_check(project_names, (list, tuple))
-        type_check(initiators, (list, tuple))
-        type_check(branch, str)
-        type_check(branches, (list, tuple))
 
-        list_member_type_check(scan_ids, str)
-        list_member_type_check(groups, str)
-        list_member_type_check(tags_keys, str)
-        list_member_type_check(tags_values, str)
-        list_member_type_check(project_ids, str)
-        list_member_type_check(sort, str)
-        list_member_type_check(field, str)
-        list_member_type_check(project_names, str)
-        list_member_type_check(initiators, str)
-        list_member_type_check(branches, str)
 
         relative_url = api_url
         params = {
