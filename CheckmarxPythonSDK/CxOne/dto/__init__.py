@@ -237,9 +237,9 @@ from .UsersWithResourcesResponse import (
 from .UserWithResource import UserWithResource
 from .VersionsOut import VersionsOut
 from .WebError import WebError, construct_web_error
-from .WebHook import WebHook, construct_web_hook
-from .WebHookConfig import WebHookConfig, construct_web_hook_config
+from .WebHook import WebHook
+from .WebHookConfig import WebHookConfig
 from .WebHookEvent import WebHookEvent
 from .WebHookInput import WebHookInput
-from .WebHooksCollection import WebHooksCollection, construct_web_hooks_collection
+from .WebHooksCollection import WebHooksCollection
 from .WorkspaceQuery import WorkspaceQuery

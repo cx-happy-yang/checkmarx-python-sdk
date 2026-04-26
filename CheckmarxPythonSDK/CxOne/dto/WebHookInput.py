@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 from .WebHookEvent import WebHookEvent
-from .WebHookConfig import WebHookConfig, construct_web_hook_config
+from .WebHookConfig import WebHookConfig
 
 
 @dataclass

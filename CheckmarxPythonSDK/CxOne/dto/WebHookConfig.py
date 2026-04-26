@@ -24,11 +24,13 @@ class WebHookConfig:
             "secret": self.secret,
         }
 
-
-def construct_web_hook_config(item):
-    return WebHookConfig(
-        content_type=item.get("contentType"),
-        insecure_ssl=item.get("insecureSsl"),
-        url=item.get("url"),
-        secret=item.get("secret"),
-    )
+    @classmethod
+    def from_dict(cls, item: dict) -> "WebHookConfig":
+        if item is None:
+            return None
+        return cls(
+            content_type=item.get("contentType"),
+            insecure_ssl=item.get("insecureSsl"),
+            url=item.get("url"),
+            secret=item.get("secret"),
+        )
