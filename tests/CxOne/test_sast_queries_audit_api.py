@@ -58,7 +58,7 @@ def test_create_new_query():
         source="CxList redirect = Find_Redirects()",
         metadata=Metadata(Cwe=94, Severity=1, IsExecutable=True, CxDescriptionID=0)
     )
-    result = create_new_query(request_body=query_request.to_dict())
+    result = create_new_query(session_id="", data=query_request)
     assert result is not None
 
 

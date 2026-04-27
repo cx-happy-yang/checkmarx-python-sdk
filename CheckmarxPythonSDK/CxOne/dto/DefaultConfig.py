@@ -10,6 +10,6 @@ class DefaultConfig:
         url (str): Url for the default config file
     """
 
-    name: str
-    description: str
-    url: str
+    name: str = None
+    description: str = None
+    url: str = None

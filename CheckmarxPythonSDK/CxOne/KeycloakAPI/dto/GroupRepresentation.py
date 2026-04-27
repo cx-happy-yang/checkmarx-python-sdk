@@ -10,7 +10,7 @@ class GroupRepresentation:
     path: Optional[str] = None
     parent_id: Optional[str] = None
     sub_group_count: Optional[int] = None
-    sub_groups: Optional[List[Self]] = None
+    sub_groups: Optional[List["GroupRepresentation"]] = None
     attributes: Optional[Dict[str, Any]] = None
     realm_roles: Optional[List[str]] = None
     client_roles: Optional[Dict[str, Any]] = None

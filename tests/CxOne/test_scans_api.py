@@ -112,7 +112,7 @@ def test_ast_create_scan_by_git():
     scan_input = ScanInput(
         type="git",
         handler=Git(
-            repo_url="https://github.com/CSPF-Founder/JavaVulnerableLab.git",
+            repoUrl="https://github.com/CSPF-Founder/JavaVulnerableLab.git",
             branch="master",
         ),
         project=Project(id=project_id),

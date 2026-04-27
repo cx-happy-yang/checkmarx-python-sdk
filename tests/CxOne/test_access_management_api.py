@@ -84,11 +84,11 @@ from CheckmarxPythonSDK.CxOne.dto import (
 def test_create_an_assignment():
     result = create_an_assignment(
         assignment_input=AssignmentInput(
-            entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
-            entity_type=EntityType.GROUP,
-            resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
-            resource_type=ResourceType.TENANT,
-            entity_roles=[],
+            entityID="3a7cf5fc-6554-4136-918b-6f494656b2b0",
+            entityType=EntityType.GROUP,
+            resourceID="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
+            resourceType=ResourceType.TENANT,
+            entityRoles=[],
         )
     )
     assert result is not None

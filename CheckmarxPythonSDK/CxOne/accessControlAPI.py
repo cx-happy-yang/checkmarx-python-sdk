@@ -197,7 +197,7 @@ class AccessControlAPI(object):
 
 
 def get_groups(
-    realm: str, group_name: str = None, limit: int = None, ids: str = None
+    realm: str = None, group_name: str = None, limit: int = None, ids: str = None
 ) -> List[AstIdWithName]:
     return AccessControlAPI().get_groups(
         realm=realm, group_name=group_name, limit=limit, ids=ids

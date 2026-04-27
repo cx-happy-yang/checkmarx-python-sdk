@@ -39,41 +39,41 @@ def test_define_parameters_in_the_input_list_for_a_specific_project():
             key="scan.handler.git.repository",
             name="repository",
             category="git",
-            origin_level="Project",
+            originLevel="Project",
             value="https://github.com/CSPF-Founder/JavaVulnerableLab.git",
-            value_type="String",
-            value_type_params=None,
-            allow_override=True
+            valueType="String",
+            valueTypeParams=None,
+            allowOverride=True
         ),
         ScanParameter(
             key="scan.config.sca.ExploitablePath",
             name="exploitablePath",
             category="sca",
-            origin_level="Project",
+            originLevel="Project",
             value="false",
-            value_type="Bool",
-            value_type_params=None,
-            allow_override=True
+            valueType="Bool",
+            valueTypeParams=None,
+            allowOverride=True
         ),
         ScanParameter(
             key="scan.config.sast.languageMode",
             name="languageMode",
             category="sast",
-            origin_level="Project",
+            originLevel="Project",
             value="primary",
-            value_type="List",
-            value_type_params=None,
-            allow_override=True
+            valueType="List",
+            valueTypeParams=None,
+            allowOverride=True
         ),
         ScanParameter(
             key="scan.config.sca.LastSastScanTime",
             name="lastSastScanTime",
             category="sca",
-            origin_level="Project",
+            originLevel="Project",
             value="2",
-            value_type="Number",
-            value_type_params=None,
-            allow_override=True
+            valueType="Number",
+            valueTypeParams=None,
+            allowOverride=True
         ),
     ]
     is_successful = define_parameters_in_the_input_list_for_a_specific_project(
