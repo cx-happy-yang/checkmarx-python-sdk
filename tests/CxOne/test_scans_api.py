@@ -44,9 +44,9 @@ def test_ast_create_scan_by_upload_file():
     )
     assert is_successful is True
     scan_input = ScanInput(
-        scan_type="upload",
-        handler=Upload(upload_url=url, branch="master"),
-        project=Project(project_id=project_id, tags={"test": "", "priority": "high"}),
+        type="upload",
+        handler=Upload(uploadUrl=url, branch="master"),
+        project=Project(id=project_id, tags={"test": "", "priority": "high"}),
         configs=[
             ScanConfig("sast", {"incremental": "false", "presetName": "ASA Premium"}),
             ScanConfig("sca"),

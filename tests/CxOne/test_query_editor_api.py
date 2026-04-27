@@ -35,7 +35,7 @@ def test_create_new_audit_session():
         scanId=scan_id,
         scanner="sast"
     )
-    result = create_new_audit_session(request_body=session_request)
+    result = create_new_audit_session(data=session_request)
     assert result is not None
 
 
