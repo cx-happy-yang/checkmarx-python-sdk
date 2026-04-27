@@ -22,9 +22,8 @@ class TokenBucket:
         """Refill tokens based on elapsed time"""
         now = time.time()
         elapsed = now - self.last_refill_time
-        new_tokens = elapsed * self.refill_rate
-        if new_tokens > 0:
-            self.tokens = min(self.capacity, self.tokens + new_tokens)
+        if elapsed > 0:
+            self.tokens = min(self.capacity, self.tokens + elapsed * self.refill_rate)
             self.last_refill_time = now
 
     def consume(self, tokens: int = 1, block: bool = True) -> bool:
@@ -38,30 +37,26 @@ class TokenBucket:
         Returns:
             True if tokens were consumed, False otherwise (if block=False and not enough tokens)
         """
-        with self.lock:
-            self._refill()
+        while True:
+            with self.lock:
+                self._refill()
 
-            if self.tokens >= tokens:
-                self.tokens -= tokens
-                return True
+                if self.tokens >= tokens:
+                    self.tokens -= tokens
+                    return True
 
-            if not block:
-                return False
+                if not block:
+                    return False
 
-            # Calculate time needed to get enough tokens
-            tokens_needed = tokens - self.tokens
-            wait_time = tokens_needed / self.refill_rate
-            print(
-                f"Rate limiting: waiting {wait_time:.2f} seconds for {tokens_needed} tokens..."
-            )
+                # Calculate wait time inside the lock, then sleep outside it
+                tokens_needed = tokens - self.tokens
+                wait_time = tokens_needed / self.refill_rate
+                print(
+                    f"Rate limiting: waiting {wait_time:.2f} seconds for {tokens_needed} tokens..."
+                )
+
+            # Sleep outside the lock so other threads are not blocked
             time.sleep(wait_time)
-
-            # Refill again after waiting
-            self._refill()
-            if self.tokens >= tokens:
-                self.tokens -= tokens
-                return True
-            return False
 
 
 class RateLimiter:
@@ -92,6 +87,3 @@ class RateLimiter:
         """
         return self.token_bucket.consume(requests)
 
-
-# Global rate limiter instance with default values
-rate_limiter = RateLimiter()

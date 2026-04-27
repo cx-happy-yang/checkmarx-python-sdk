@@ -3,6 +3,7 @@ import functools
 import httpx
 import ssl
 import time
+import typing
 from typing import Callable, Union
 from .configuration import Configuration
 from .rate_limiter import RateLimiter
@@ -87,14 +88,16 @@ class TokenManager:
         self.current_token = self.token_refresh_func(*self.args, **self.kwargs)
 
 
-def retry(max_retries: int = 1):
+def retry():
     """
     Decorator that retries the HTTP request when receiving a 401 Unauthorized or 429 Too Many Requests response.
+    Uses self.configuration.max_retries to determine the retry count.
     """
 
     def decorator(func: Callable):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
+            max_retries = self.configuration.max_retries
             retries = 0
             last_exception = None
 
@@ -234,7 +237,7 @@ class ApiClient:
             url = access_control_url.rstrip("/") + "/" + relative_url.lstrip("/")
         return url
 
-    @retry(max_retries=2)
+    @retry()
     def call_api(
         self,
         method: str,
@@ -242,12 +245,13 @@ class ApiClient:
         params: dict = None,
         data=None,
         files=None,
-        json: dict = None,
+        json: Union[typing.Any, None] = None,
         auth=None,
         headers: dict = None,
     ):
         # Acquire token for rate limiting
-        self.rate_limiter.acquire()
+        if not self.rate_limiter.acquire():
+            raise RuntimeError("Rate limiter failed to acquire token")
 
         if params:
             params = {k: v for k, v in params.items() if v is not None}
