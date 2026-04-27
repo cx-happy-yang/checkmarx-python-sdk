@@ -80,34 +80,39 @@ from CheckmarxPythonSDK.CxOne.dto import (
 )
 
 
-def test_create_an_assignment():
-    result = create_an_assignment(
-        assignment_input=AssignmentInput(
-            entityID="3a7cf5fc-6554-4136-918b-6f494656b2b0",
-            entityType=EntityType.GROUP,
-            resourceID="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
-            resourceType=ResourceType.TENANT,
-            entityRoles=[],
-        )
+def test_retrieve_entities():
+    resource_id = "71fe66b9-b3ea-4fc7-8594-541d0a07a697"
+    resource_type = ResourceType.TENANT
+    result = retrieve_entities(
+        resource_id=resource_id, resource_type=resource_type, entity_types=None
     )
-    assert result is not None
+    print(f"result: {result}")
+    assert len(result) >= 1
 
 
-def test_delete_an_assignment():
+def test_assignment_get_create_delete():
+    result = retrieve_an_assignment(
+        entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
+        resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
+    )
+    if result is None:
+        print("assignment does not no exist, creating")
+        result = create_an_assignment(
+            assignment_input=AssignmentInput(
+                entityID="3a7cf5fc-6554-4136-918b-6f494656b2b0",
+                entityType=EntityType.GROUP,
+                resourceID="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
+                resourceType=ResourceType.TENANT,
+                entityRoles=[],
+            )
+        )
+        assert result is not None
+    print("assignment exist, deleting")
     result = delete_an_assignment(
         entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
         resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
     )
     assert result is True
-
-
-def test_retrieve_an_assignment():
-    result = retrieve_an_assignment(
-        entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
-        resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
-    )
-    assert result is not None
-
 
 # def test_update_assignment_roles():
 #     result = update_assignment_roles(request_body: EntityRolesRequest, entity_id: str, resource_id: str)
@@ -129,14 +134,7 @@ def test_retrieve_an_assignment():
 #     assert result is not None
 
 
-def test_retrieve_entities():
-    resource_id = "71fe66b9-b3ea-4fc7-8594-541d0a07a697"
-    resource_type = ResourceType.TENANT
-    result = retrieve_entities(
-        resource_id=resource_id, resource_type=resource_type, entity_types=None
-    )
-    print(f"result: {result}")
-    assert len(result) >= 1
+
 
 
 # def test_retrieve_extended_entities_for_resource():
