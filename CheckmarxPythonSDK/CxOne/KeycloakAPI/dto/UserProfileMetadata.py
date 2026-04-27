@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
-from typing_extensions import Self
 from inflection import camelize, underscore
 from .UserProfileAttributeGroupMetadata import UserProfileAttributeGroupMetadata
 from .UserProfileAttributeMetadata import UserProfileAttributeMetadata
@@ -22,7 +21,7 @@ class UserProfileMetadata:
         return result
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> Self:
+    def from_dict(cls, data: Dict[str, Any]) -> "UserProfileMetadata":
         snake_data: Dict[str, Any] = {underscore(k): v for k, v in data.items()}
 
         if "attributes" in snake_data and snake_data["attributes"] is not None:

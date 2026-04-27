@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
-from typing_extensions import Self
 from inflection import camelize, underscore
 from .EnforcementMode import EnforcementMode
 from .PathCacheConfig import PathCacheConfig
@@ -63,7 +62,7 @@ class PolicyEnforcerConfig:
         return result
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> Self:
+    def from_dict(cls, data: Dict[str, Any]) -> "PolicyEnforcerConfig":
         snake_data: Dict[str, Any] = {underscore(k): v for k, v in data.items()}
 
         if (

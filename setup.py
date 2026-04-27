@@ -39,8 +39,7 @@ setup(
         "httpx>=0.27.0",
         "suds-community>=1.1.0",
         "Deprecated>=1.2.13",
-        "inflection>=0.5.1",
-        "typing-extensions>=4.0.0"
+        "inflection>=0.5.1"
     ],
     extras_require={
         "dotenv": ["python-dotenv"],

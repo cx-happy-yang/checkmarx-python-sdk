@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
-from typing_extensions import Self
 from inflection import camelize, underscore
 from .ClientProfileRepresentation import ClientProfileRepresentation
 
@@ -21,7 +20,7 @@ class ClientProfilesRepresentation:
         return result
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> Self:
+    def from_dict(cls, data: Dict[str, Any]) -> "ClientProfilesRepresentation":
         snake_data: Dict[str, Any] = {underscore(k): v for k, v in data.items()}
 
         if "profiles" in snake_data and snake_data["profiles"] is not None:

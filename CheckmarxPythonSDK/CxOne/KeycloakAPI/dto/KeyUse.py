@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Dict, List, Any, Optional, Union
-from typing_extensions import Self
 from inflection import camelize, underscore
 
 
@@ -12,7 +11,7 @@ class KeyUse:
         return self.value
 
     @classmethod
-    def from_dict(cls, data: Union[str, Dict[str, Any]]) -> Self:
+    def from_dict(cls, data: Union[str, Dict[str, Any]]) -> "KeyUse":
         if isinstance(data, str):
             return cls(value=data)
         elif isinstance(data, dict):

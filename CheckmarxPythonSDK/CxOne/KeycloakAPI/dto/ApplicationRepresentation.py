@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
-from typing_extensions import Self
 from inflection import camelize, underscore
 from .ApplicationRepresentationClaims import ApplicationRepresentationClaims
 from .ProtocolMapperRepresentation import ProtocolMapperRepresentation
@@ -195,7 +194,7 @@ class ApplicationRepresentation:
         return result
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> Self:
+    def from_dict(cls, data: Dict[str, Any]) -> "ApplicationRepresentation":
         snake_data: Dict[str, Any] = {underscore(k): v for k, v in data.items()}
 
         if (
