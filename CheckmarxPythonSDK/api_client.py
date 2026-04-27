@@ -103,7 +103,7 @@ def retry():
 
             while retries <= max_retries:
                 try:
-                    headers = kwargs.get("headers", {}) or {}
+                    headers = dict(kwargs.get("headers", {}) or {})
                     token = self.token_manager.get_token()
                     headers["Authorization"] = f"Bearer {token}"
                     kwargs["headers"] = headers
