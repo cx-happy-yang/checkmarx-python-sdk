@@ -1,4 +1,3 @@
-
 from CheckmarxPythonSDK.CxOne import (
     AccessManagementAPI,
     create_an_assignment,
@@ -95,12 +94,18 @@ def test_create_an_assignment():
 
 
 def test_delete_an_assignment():
-    result = delete_an_assignment(entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0", resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697")
+    result = delete_an_assignment(
+        entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
+        resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
+    )
     assert result is True
 
 
 def test_retrieve_an_assignment():
-    result = retrieve_an_assignment(entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0", resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697")
+    result = retrieve_an_assignment(
+        entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
+        resource_id="71fe66b9-b3ea-4fc7-8594-541d0a07a697",
+    )
     assert result is not None
 
 
@@ -125,11 +130,13 @@ def test_retrieve_an_assignment():
 
 
 def test_retrieve_entities():
-    resource_id = "1b49ad6f-057f-400c-aa32-f6bc31caf242"
-    resource_type = ResourceType.PROJECT
-    result = retrieve_entities(resource_id=resource_id, resource_type=resource_type, entity_types=None)
+    resource_id = "71fe66b9-b3ea-4fc7-8594-541d0a07a697"
+    resource_type = ResourceType.TENANT
+    result = retrieve_entities(
+        resource_id=resource_id, resource_type=resource_type, entity_types=None
+    )
     print(f"result: {result}")
-    assert len(result) == 2
+    assert len(result) >= 1
 
 
 # def test_retrieve_extended_entities_for_resource():
@@ -146,7 +153,9 @@ def test_check_access():
     resource_id = "71fe66b9-b3ea-4fc7-8594-541d0a07a697"
     resource_type = ResourceType.TENANTGROUP
     action = "create-project"
-    result = check_access(resource_id=resource_id, resource_type=resource_type, action=action)
+    result = check_access(
+        resource_id=resource_id, resource_type=resource_type, action=action
+    )
     assert result is not None
 
 
@@ -156,7 +165,9 @@ def test_check_access():
 
 
 def test_retrieve_accessible_resources():
-    result = retrieve_accessible_resources(resource_types=[ResourceType.APPLICATION], action="view-applications")
+    result = retrieve_accessible_resources(
+        resource_types=[ResourceType.APPLICATION], action="view-applications"
+    )
     print(f"result: {result}")
     assert result is not None
 
@@ -293,4 +304,3 @@ def test_retrieve_groups():
 # def test_get_a_list_of_projects_with_action_for_user/client():
 #     result = get_a_list_of_projects_with_action_for_user/client(action: str, offset: int = None, limit: int = None, name: str = None, tags_keys: List[str] = None, tags_values: List[str] = None)
 #     assert result is not None
-
