@@ -145,7 +145,6 @@ from .ResultResponse import ResultResponse
 from .ResultsResponse import ResultsResponse
 from .ResultsSummary import ResultsSummary
 from .ResultsSummaryTree import ResultsSummaryTree
-from .RichProject import RichProject
 from .Role import Role
 from .RoleWithDetails import RoleWithDetails
 from .Rule import Rule

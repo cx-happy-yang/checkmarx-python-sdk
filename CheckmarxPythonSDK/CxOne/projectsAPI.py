@@ -7,7 +7,6 @@ from .dto import (
     ProjectInput,
     Project,
     ProjectsCollection,
-    RichProject,
     SubsetScan,
 )
 from typing import List, Union, Optional
@@ -257,17 +256,17 @@ class ProjectsAPI(object):
         )
         return response.json()
 
-    def get_a_project_by_id(self, project_id: str) -> RichProject:
+    def get_a_project_by_id(self, project_id: str) -> Project:
         """
         Args:
             project_id (str):
 
         Returns:
-            RichProject
+            Project
         """
         url = f"{self.base_url}/{project_id}"
         response = self.api_client.call_api(method="GET", url=url)
-        return RichProject.from_dict(response.json())
+        return Project.from_dict(response.json())
 
     def update_a_project(
         self, project_id: str, project_input: ProjectInput
@@ -530,7 +529,7 @@ def get_branches(
     )
 
 
-def get_a_project_by_id(project_id: str) -> RichProject:
+def get_a_project_by_id(project_id: str) -> Project:
     return ProjectsAPI().get_a_project_by_id(project_id=project_id)
 
 
