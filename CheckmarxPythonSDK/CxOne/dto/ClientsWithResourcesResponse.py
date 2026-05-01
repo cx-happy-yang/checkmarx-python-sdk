@@ -15,7 +15,6 @@ class ClientsWithResourcesResponse:
             total_count=item.get("totalCount"),
             filtered_count=item.get("filteredCount"),
             clients=[
-                ClientWithResource.from_dict(c)
-                for c in (item.get("clients") or [])
+                ClientWithResource.from_dict(c) for c in (item.get("clients") or [])
             ],
         )

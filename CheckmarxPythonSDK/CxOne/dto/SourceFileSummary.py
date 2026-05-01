@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class SourceFileSummary:
     """
@@ -11,4 +12,3 @@ class SourceFileSummary:
 
     source_file: str
     count: int
-

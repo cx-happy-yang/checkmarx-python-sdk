@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class LanguageSummary:
     """
@@ -11,4 +12,3 @@ class LanguageSummary:
 
     language: str
     count: int
-

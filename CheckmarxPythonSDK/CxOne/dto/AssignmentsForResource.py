@@ -19,7 +19,6 @@ class AssignmentsForResource:
         return cls(
             resource_id=item.get("resourceID"),
             assignments=[
-                Assignment.from_dict(a)
-                for a in (item.get("assignments") or [])
+                Assignment.from_dict(a) for a in (item.get("assignments") or [])
             ],
         )

@@ -13,10 +13,7 @@ class PaginatedAccountsListResponse:
     @classmethod
     def from_dict(cls, item: dict) -> "PaginatedAccountsListResponse":
         return cls(
-            data=[
-                CloudInsightAccount.from_dict(a)
-                for a in (item.get("data") or [])
-            ],
+            data=[CloudInsightAccount.from_dict(a) for a in (item.get("data") or [])],
             total=item.get("total"),
             current_page=item.get("currentPage"),
             last_page=item.get("lastPage"),

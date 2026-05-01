@@ -29,7 +29,6 @@ class Query:
     cx_description_id: int = None
     query_description_id: str = None
 
-
     @classmethod
     def from_dict(cls, item: dict) -> "Query":
         return cls(

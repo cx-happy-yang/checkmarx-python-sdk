@@ -6,7 +6,6 @@ class QueryResult:
     content: str = None
     line_number: int = None
 
-
     @classmethod
     def from_dict(cls, item: dict) -> "QueryResult":
         return cls(

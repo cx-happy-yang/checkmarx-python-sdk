@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class SourceNodeSummary:
     """
@@ -11,4 +12,3 @@ class SourceNodeSummary:
 
     source_node: str
     count: int
-

@@ -49,7 +49,9 @@ class ClientRepresentation:
             admin_url=item.get("adminUrl"),
             always_display_in_console=item.get("alwaysDisplayInConsole"),
             attributes=item.get("attributes"),
-            authentication_flow_binding_overrides=item.get("authenticationFlowBindingOverrides"),
+            authentication_flow_binding_overrides=item.get(
+                "authenticationFlowBindingOverrides"
+            ),
             authorization_services_enabled=item.get("authorizationServicesEnabled"),
             authorization_settings=item.get("authorizationSettings"),
             base_url=item.get("baseUrl"),
@@ -68,7 +70,9 @@ class ClientRepresentation:
             name=item.get("name"),
             node_re_registration_timeout=item.get("nodeReRegistrationTimeout"),
             not_before=item.get("notBefore"),
-            oauth2_device_authorization_grant_enabled=item.get("oauth2DeviceAuthorizationGrantEnabled"),
+            oauth2_device_authorization_grant_enabled=item.get(
+                "oauth2DeviceAuthorizationGrantEnabled"
+            ),
             optional_client_scopes=item.get("optionalClientScopes"),
             origin=item.get("origin"),
             protocol=item.get("protocol"),

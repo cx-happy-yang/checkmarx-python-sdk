@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
+
 @dataclass
 class Project:
     id: str = None
@@ -34,4 +35,3 @@ class Project:
             tags=item.get("tags"),
             criticality=item.get("criticality"),
         )
-

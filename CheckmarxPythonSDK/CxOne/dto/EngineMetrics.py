@@ -23,9 +23,7 @@ class EngineMetrics:
             total_scanned_files_count=item.get("totalScannedFilesCount"),
             total_scanned_loc=item.get("totalScannedLoc"),
             dom_objects_per_language=item.get("domObjectsPerLanguage"),
-            successful_loc_per_language=item.get(
-                "successfulLocPerLanguage"
-            ),
+            successful_loc_per_language=item.get("successfulLocPerLanguage"),
             failed_loc_per_language=item.get("failedLocPerLanguage"),
             file_count_of_detected_but_not_scanned_languages=item.get(
                 "fileCountOfDetectedButNotScannedLanguages"

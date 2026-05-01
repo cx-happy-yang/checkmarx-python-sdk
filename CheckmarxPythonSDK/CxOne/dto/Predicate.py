@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class Predicate:
     id: str = None
@@ -12,4 +13,3 @@ class Predicate:
     created_at: str = None
     change_origin_type: int = None
     change_origin_name: str = None
-

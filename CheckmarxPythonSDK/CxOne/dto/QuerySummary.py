@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class QuerySummary:
     """
@@ -15,4 +16,3 @@ class QuerySummary:
     query_name: str = None
     severity: str = None
     count: int = None
-

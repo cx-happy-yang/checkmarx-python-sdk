@@ -16,9 +16,6 @@ class BflTree:
         return cls(
             id=item.get("id"),
             bfl=ResultNode.from_dict(item.get("bfl")),
-            results=[
-                SastResult.from_dict(r)
-                for r in (item.get("results") or [])
-            ],
+            results=[SastResult.from_dict(r) for r in (item.get("results") or [])],
             additional_properties=item.get("additionalProperties"),
         )

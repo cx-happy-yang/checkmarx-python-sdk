@@ -11,7 +11,9 @@ class ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation:
     protocol_mapper: ... = None
 
     @classmethod
-    def from_dict(cls, item: dict) -> "ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation":
+    def from_dict(
+        cls, item: dict
+    ) -> "ClientScopeEvaluateResourceProtocolMapperEvaluationRepresentation":
         return cls(
             container_id=item.get("containerId"),
             container_name=item.get("containerName"),

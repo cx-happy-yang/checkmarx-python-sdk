@@ -16,8 +16,5 @@ class ImportItemWithLogs:
             migration_id=item.get("migrationId"),
             status=item.get("status"),
             created_at=item.get("createdAt"),
-            logs=[
-                LogItem.from_dict(log)
-                for log in (item.get("logs") or [])
-            ],
+            logs=[LogItem.from_dict(log) for log in (item.get("logs") or [])],
         )

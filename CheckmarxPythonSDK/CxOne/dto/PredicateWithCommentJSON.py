@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from .CommentJSON import CommentJSON
 
+
 @dataclass
 class PredicateWithCommentJSON:
     id: str = None
@@ -14,4 +15,3 @@ class PredicateWithCommentJSON:
     created_at: str = None
     change_origin_type: int = None
     change_origin_name: str = None
-

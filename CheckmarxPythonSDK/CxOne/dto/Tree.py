@@ -16,8 +16,5 @@ class Tree:
             full_path=item.get("FullPath"),
             name=item.get("name"),
             is_dir=item.get("IsDir"),
-            files=[
-                FileInfo.from_dict(f)
-                for f in (item.get("Files") or [])
-            ],
+            files=[FileInfo.from_dict(f) for f in (item.get("Files") or [])],
         )

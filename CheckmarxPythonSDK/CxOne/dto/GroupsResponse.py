@@ -13,7 +13,6 @@ class GroupsResponse:
         return cls(
             total=item.get("total"),
             groups=[
-                GroupRepresentation.from_dict(g)
-                for g in (item.get("groups") or [])
+                GroupRepresentation.from_dict(g) for g in (item.get("groups") or [])
             ],
         )

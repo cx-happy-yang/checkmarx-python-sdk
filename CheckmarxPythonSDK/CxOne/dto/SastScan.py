@@ -22,8 +22,5 @@ class SastScan:
             allocated_at=item.get("allocatedAt"),
             running_at=item.get("runningAt"),
             engine=item.get("engine"),
-            properties=[
-                Property.from_dict(p)
-                for p in (item.get("properties") or [])
-            ],
+            properties=[Property.from_dict(p) for p in (item.get("properties") or [])],
         )

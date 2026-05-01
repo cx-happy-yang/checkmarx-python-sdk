@@ -44,17 +44,10 @@ class SastResult:
             compliances=item.get("compliances"),
             first_scan_id=item.get("firstScanID"),
             first_found_at=item.get("firstFoundAt"),
-            path_system_id_by_simi_and_files_paths=item.get(
-                "pathSystemID"
-            ),
+            path_system_id_by_simi_and_files_paths=item.get("pathSystemID"),
             status=item.get("status"),
             found_at=item.get("foundAt"),
-            nodes=[
-                ResultNode.from_dict(node)
-                for node in (item.get("nodes") or [])
-            ],
+            nodes=[ResultNode.from_dict(node) for node in (item.get("nodes") or [])],
             state=item.get("state"),
-            change_details=ChangeDetails.from_dict(
-                item.get("changeDetails")
-            ),
+            change_details=ChangeDetails.from_dict(item.get("changeDetails")),
         )

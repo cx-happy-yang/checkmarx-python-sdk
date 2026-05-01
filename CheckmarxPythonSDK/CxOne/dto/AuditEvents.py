@@ -12,6 +12,10 @@ class AuditEvents:
     @classmethod
     def from_dict(cls, item: dict) -> "AuditEvents":
         return cls(
-            links=[AuditEventLink.from_dict(link) for link in (item.get("links") or [])],
-            events=[AuditEvent.from_dict(event) for event in (item.get("events") or [])],
+            links=[
+                AuditEventLink.from_dict(link) for link in (item.get("links") or [])
+            ],
+            events=[
+                AuditEvent.from_dict(event) for event in (item.get("events") or [])
+            ],
         )

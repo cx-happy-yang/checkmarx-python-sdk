@@ -11,9 +11,6 @@ class ResultsResponse:
     @classmethod
     def from_dict(cls, item: dict) -> "ResultsResponse":
         return cls(
-            data=[
-                ResultResponse.from_dict(r)
-                for r in (item.get("data") or [])
-            ],
+            data=[ResultResponse.from_dict(r) for r in (item.get("data") or [])],
             total_count=item.get("totalCount"),
         )

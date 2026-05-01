@@ -12,8 +12,5 @@ class Sessions:
     def from_dict(cls, item: dict) -> "Sessions":
         return cls(
             available=item.get("available"),
-            metadata=[
-                Session.from_dict(s)
-                for s in (item.get("metadata") or [])
-            ],
+            metadata=[Session.from_dict(s) for s in (item.get("metadata") or [])],
         )

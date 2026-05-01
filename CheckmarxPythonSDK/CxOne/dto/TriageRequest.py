@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class TriageRequest:
     resultId: str = None

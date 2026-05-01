@@ -32,9 +32,7 @@ class WebHook:
             id=item.get("id"),
             name=item.get("name"),
             active=item.get("active"),
-            enabled_events=[
-                WebHookEvent(e) for e in (item.get("enabledEvents") or [])
-            ],
+            enabled_events=[WebHookEvent(e) for e in (item.get("enabledEvents") or [])],
             config=WebHookConfig.from_dict(item.get("config")),
             created_at=item.get("createdAt"),
             updated_at=item.get("updatedAt"),

@@ -14,7 +14,5 @@ class ScansCollection:
         return cls(
             total_count=item.get("totalCount"),
             filtered_total_count=item.get("filteredTotalCount"),
-            scans=[
-                Scan.from_dict(s) for s in (item.get("scans") or [])
-            ],
+            scans=[Scan.from_dict(s) for s in (item.get("scans") or [])],
         )

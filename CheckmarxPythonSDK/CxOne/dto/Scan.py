@@ -31,8 +31,7 @@ class Scan:
             id=item.get("id"),
             status=item.get("status"),
             status_details=[
-                StatusDetails.from_dict(d)
-                for d in (item.get("statusDetails") or [])
+                StatusDetails.from_dict(d) for d in (item.get("statusDetails") or [])
             ],
             position_in_queue=item.get("positionInQueue"),
             project_id=item.get("projectId"),

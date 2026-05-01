@@ -13,7 +13,6 @@ class ProjectResponseCollection:
         return cls(
             total_count=item.get("totalCount"),
             projects=[
-                ProjectResponseModel.from_dict(p)
-                for p in (item.get("projects") or [])
+                ProjectResponseModel.from_dict(p) for p in (item.get("projects") or [])
             ],
         )

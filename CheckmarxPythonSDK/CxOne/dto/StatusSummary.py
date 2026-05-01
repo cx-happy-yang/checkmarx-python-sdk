@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class StatusSummary:
     """
@@ -11,4 +12,3 @@ class StatusSummary:
 
     status: str
     count: int
-

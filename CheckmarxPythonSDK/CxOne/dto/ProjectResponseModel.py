@@ -34,7 +34,6 @@ class ProjectResponseModel:
             scm_repo_id=item.get("scmRepoId"),
             total_counters=TotalCounters.from_dict(item),
             engines_data=[
-                EngineData.from_dict(e)
-                for e in (item.get("enginesData") or [])
+                EngineData.from_dict(e) for e in (item.get("enginesData") or [])
             ],
         )

@@ -21,22 +21,14 @@ class ResultsSummary:
     def from_dict(cls, item: dict) -> "ResultsSummary":
         return cls(
             scan_id=item.get("scanId"),
-            sast_counters=SastCounters.from_dict(
-                item.get("sastCounters")
-            ),
-            kics_counters=KicsCounters.from_dict(
-                item.get("kicsCounters")
-            ),
-            sca_counters=ScaCounters.from_dict(
-                item.get("scaCounters")
-            ),
+            sast_counters=SastCounters.from_dict(item.get("sastCounters")),
+            kics_counters=KicsCounters.from_dict(item.get("kicsCounters")),
+            sca_counters=ScaCounters.from_dict(item.get("scaCounters")),
             sca_packages_counters=ScaPackageCounters.from_dict(
                 item.get("scaPackagesCounters")
             ),
             sca_containers_counters=ScaContainersCounters.from_dict(
                 item.get("scaContainersCounters")
             ),
-            api_sec_counters=ApiSecCounters.from_dict(
-                item.get("apiSecCounters")
-            ),
+            api_sec_counters=ApiSecCounters.from_dict(item.get("apiSecCounters")),
         )

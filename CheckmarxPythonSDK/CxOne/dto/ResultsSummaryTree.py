@@ -17,9 +17,6 @@ class ResultsSummaryTree:
             is_leaf=item.get("isLeaf"),
             title=item.get("title"),
             key=item.get("key"),
-            children=[
-                cls.from_dict(child)
-                for child in (item.get("children") or [])
-            ],
+            children=[cls.from_dict(child) for child in (item.get("children") or [])],
             data=item.get("data"),
         )

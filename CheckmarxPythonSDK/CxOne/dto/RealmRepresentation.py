@@ -134,10 +134,16 @@ class RealmRepresentation:
             access_code_lifespan_login=item.get("accessCodeLifespanLogin"),
             access_code_lifespan_user_action=item.get("accessCodeLifespanUserAction"),
             access_token_lifespan=item.get("accessTokenLifespan"),
-            access_token_lifespan_for_implicit_flow=item.get("accessTokenLifespanForImplicitFlow"),
+            access_token_lifespan_for_implicit_flow=item.get(
+                "accessTokenLifespanForImplicitFlow"
+            ),
             account_theme=item.get("accountTheme"),
-            action_token_generated_by_admin_lifespan=item.get("actionTokenGeneratedByAdminLifespan"),
-            action_token_generated_by_user_lifespan=item.get("actionTokenGeneratedByUserLifespan"),
+            action_token_generated_by_admin_lifespan=item.get(
+                "actionTokenGeneratedByAdminLifespan"
+            ),
+            action_token_generated_by_user_lifespan=item.get(
+                "actionTokenGeneratedByUserLifespan"
+            ),
             admin_events_details_enabled=item.get("adminEventsDetailsEnabled"),
             admin_events_enabled=item.get("adminEventsEnabled"),
             admin_theme=item.get("adminTheme"),
@@ -148,8 +154,12 @@ class RealmRepresentation:
             browser_security_headers=item.get("browserSecurityHeaders"),
             brute_force_protected=item.get("bruteForceProtected"),
             client_authentication_flow=item.get("clientAuthenticationFlow"),
-            client_offline_session_idle_timeout=item.get("clientOfflineSessionIdleTimeout"),
-            client_offline_session_max_lifespan=item.get("clientOfflineSessionMaxLifespan"),
+            client_offline_session_idle_timeout=item.get(
+                "clientOfflineSessionIdleTimeout"
+            ),
+            client_offline_session_max_lifespan=item.get(
+                "clientOfflineSessionMaxLifespan"
+            ),
             client_policies=item.get("clientPolicies"),
             client_profiles=item.get("clientProfiles"),
             client_scope_mappings=item.get("clientScopeMappings"),
@@ -196,7 +206,9 @@ class RealmRepresentation:
             oauth2_device_polling_interval=item.get("oauth2DevicePollingInterval"),
             offline_session_idle_timeout=item.get("offlineSessionIdleTimeout"),
             offline_session_max_lifespan=item.get("offlineSessionMaxLifespan"),
-            offline_session_max_lifespan_enabled=item.get("offlineSessionMaxLifespanEnabled"),
+            offline_session_max_lifespan_enabled=item.get(
+                "offlineSessionMaxLifespanEnabled"
+            ),
             otp_policy_algorithm=item.get("otpPolicyAlgorithm"),
             otp_policy_digits=item.get("otpPolicyDigits"),
             otp_policy_initial_counter=item.get("otpPolicyInitialCounter"),
@@ -223,9 +235,13 @@ class RealmRepresentation:
             smtp_server=item.get("smtpServer"),
             ssl_required=item.get("sslRequired"),
             sso_session_idle_timeout=item.get("ssoSessionIdleTimeout"),
-            sso_session_idle_timeout_remember_me=item.get("ssoSessionIdleTimeoutRememberMe"),
+            sso_session_idle_timeout_remember_me=item.get(
+                "ssoSessionIdleTimeoutRememberMe"
+            ),
             sso_session_max_lifespan=item.get("ssoSessionMaxLifespan"),
-            sso_session_max_lifespan_remember_me=item.get("ssoSessionMaxLifespanRememberMe"),
+            sso_session_max_lifespan_remember_me=item.get(
+                "ssoSessionMaxLifespanRememberMe"
+            ),
             supported_locales=item.get("supportedLocales"),
             user_federation_mappers=item.get("userFederationMappers"),
             user_federation_providers=item.get("userFederationProviders"),
@@ -233,24 +249,58 @@ class RealmRepresentation:
             users=item.get("users"),
             verify_email=item.get("verifyEmail"),
             wait_increment_seconds=item.get("waitIncrementSeconds"),
-            web_authn_policy_acceptable_aaguids=item.get("webAuthnPolicyAcceptableAaguids"),
-            web_authn_policy_attestation_conveyance_preference=item.get("webAuthnPolicyAttestationConveyancePreference"),
-            web_authn_policy_authenticator_attachment=item.get("webAuthnPolicyAuthenticatorAttachment"),
-            web_authn_policy_avoid_same_authenticator_register=item.get("webAuthnPolicyAvoidSameAuthenticatorRegister"),
+            web_authn_policy_acceptable_aaguids=item.get(
+                "webAuthnPolicyAcceptableAaguids"
+            ),
+            web_authn_policy_attestation_conveyance_preference=item.get(
+                "webAuthnPolicyAttestationConveyancePreference"
+            ),
+            web_authn_policy_authenticator_attachment=item.get(
+                "webAuthnPolicyAuthenticatorAttachment"
+            ),
+            web_authn_policy_avoid_same_authenticator_register=item.get(
+                "webAuthnPolicyAvoidSameAuthenticatorRegister"
+            ),
             web_authn_policy_create_timeout=item.get("webAuthnPolicyCreateTimeout"),
-            web_authn_policy_passwordless_acceptable_aaguids=item.get("webAuthnPolicyPasswordlessAcceptableAaguids"),
-            web_authn_policy_passwordless_attestation_conveyance_preference=item.get("webAuthnPolicyPasswordlessAttestationConveyancePreference"),
-            web_authn_policy_passwordless_authenticator_attachment=item.get("webAuthnPolicyPasswordlessAuthenticatorAttachment"),
-            web_authn_policy_passwordless_avoid_same_authenticator_register=item.get("webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister"),
-            web_authn_policy_passwordless_create_timeout=item.get("webAuthnPolicyPasswordlessCreateTimeout"),
-            web_authn_policy_passwordless_require_resident_key=item.get("webAuthnPolicyPasswordlessRequireResidentKey"),
-            web_authn_policy_passwordless_rp_entity_name=item.get("webAuthnPolicyPasswordlessRpEntityName"),
-            web_authn_policy_passwordless_rp_id=item.get("webAuthnPolicyPasswordlessRpId"),
-            web_authn_policy_passwordless_signature_algorithms=item.get("webAuthnPolicyPasswordlessSignatureAlgorithms"),
-            web_authn_policy_passwordless_user_verification_requirement=item.get("webAuthnPolicyPasswordlessUserVerificationRequirement"),
-            web_authn_policy_require_resident_key=item.get("webAuthnPolicyRequireResidentKey"),
+            web_authn_policy_passwordless_acceptable_aaguids=item.get(
+                "webAuthnPolicyPasswordlessAcceptableAaguids"
+            ),
+            web_authn_policy_passwordless_attestation_conveyance_preference=item.get(
+                "webAuthnPolicyPasswordlessAttestationConveyancePreference"
+            ),
+            web_authn_policy_passwordless_authenticator_attachment=item.get(
+                "webAuthnPolicyPasswordlessAuthenticatorAttachment"
+            ),
+            web_authn_policy_passwordless_avoid_same_authenticator_register=item.get(
+                "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister"
+            ),
+            web_authn_policy_passwordless_create_timeout=item.get(
+                "webAuthnPolicyPasswordlessCreateTimeout"
+            ),
+            web_authn_policy_passwordless_require_resident_key=item.get(
+                "webAuthnPolicyPasswordlessRequireResidentKey"
+            ),
+            web_authn_policy_passwordless_rp_entity_name=item.get(
+                "webAuthnPolicyPasswordlessRpEntityName"
+            ),
+            web_authn_policy_passwordless_rp_id=item.get(
+                "webAuthnPolicyPasswordlessRpId"
+            ),
+            web_authn_policy_passwordless_signature_algorithms=item.get(
+                "webAuthnPolicyPasswordlessSignatureAlgorithms"
+            ),
+            web_authn_policy_passwordless_user_verification_requirement=item.get(
+                "webAuthnPolicyPasswordlessUserVerificationRequirement"
+            ),
+            web_authn_policy_require_resident_key=item.get(
+                "webAuthnPolicyRequireResidentKey"
+            ),
             web_authn_policy_rp_entity_name=item.get("webAuthnPolicyRpEntityName"),
             web_authn_policy_rp_id=item.get("webAuthnPolicyRpId"),
-            web_authn_policy_signature_algorithms=item.get("webAuthnPolicySignatureAlgorithms"),
-            web_authn_policy_user_verification_requirement=item.get("webAuthnPolicyUserVerificationRequirement"),
+            web_authn_policy_signature_algorithms=item.get(
+                "webAuthnPolicySignatureAlgorithms"
+            ),
+            web_authn_policy_user_verification_requirement=item.get(
+                "webAuthnPolicyUserVerificationRequirement"
+            ),
         )

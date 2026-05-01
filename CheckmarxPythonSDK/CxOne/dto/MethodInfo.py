@@ -23,7 +23,6 @@ class MethodInfo:
             return_type=item.get("returnType"),
             kind=item.get("kind"),
             parameters=[
-                MethodParameter.from_dict(p)
-                for p in (item.get("parameters") or [])
+                MethodParameter.from_dict(p) for p in (item.get("parameters") or [])
             ],
         )

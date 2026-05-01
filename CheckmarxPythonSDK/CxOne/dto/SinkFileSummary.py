@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class SinkFileSummary:
     """
@@ -11,4 +12,3 @@ class SinkFileSummary:
 
     sink_file: str
     count: int
-

@@ -18,8 +18,5 @@ class CategoryType:
             name=item.get("name"),
             sast_id=item.get("sastId"),
             order=item.get("order"),
-            categories=[
-                Category.from_dict(c)
-                for c in (item.get("categories") or [])
-            ],
+            categories=[Category.from_dict(c) for c in (item.get("categories") or [])],
         )

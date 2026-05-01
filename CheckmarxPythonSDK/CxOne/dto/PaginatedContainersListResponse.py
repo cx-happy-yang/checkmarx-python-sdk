@@ -13,10 +13,7 @@ class PaginatedContainersListResponse:
     @classmethod
     def from_dict(cls, item: dict) -> "PaginatedContainersListResponse":
         return cls(
-            data=[
-                CloudInsightContainer.from_dict(c)
-                for c in (item.get("data") or [])
-            ],
+            data=[CloudInsightContainer.from_dict(c) for c in (item.get("data") or [])],
             total=item.get("total"),
             current_page=item.get("currentPage"),
             last_page=item.get("lastPage"),

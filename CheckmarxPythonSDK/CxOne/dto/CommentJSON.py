@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class CommentJSON:
     id: str = None
@@ -7,4 +8,3 @@ class CommentJSON:
     user: str = None
     content: str = None
     is_deleted: bool = None
-

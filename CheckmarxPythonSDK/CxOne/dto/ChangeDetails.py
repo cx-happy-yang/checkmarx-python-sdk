@@ -14,9 +14,7 @@ class ChangeDetails:
     def from_dict(cls, item: dict) -> "ChangeDetails":
         return cls(
             engine_version_changed=item.get("engineVersionChanged"),
-            engine_version_changed_details=item.get(
-                "engineVersionChangeDetails"
-            ),
+            engine_version_changed_details=item.get("engineVersionChangeDetails"),
             query_changed=item.get("queryChanged"),
             query_changed_details=item.get("queryChangeDetails"),
             code_change=item.get("codeChanged"),

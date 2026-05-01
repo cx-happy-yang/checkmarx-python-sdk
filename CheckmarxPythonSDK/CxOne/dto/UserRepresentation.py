@@ -6,6 +6,7 @@ from .SocialLinkRepresentation import SocialLinkRepresentation
 from .UserConsentRepresentation import UserConsentRepresentation
 from .UserProfileMetadata import UserProfileMetadata
 
+
 @dataclass
 class UserRepresentation:
     username: str

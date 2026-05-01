@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from .dto import Composites
 
+
 @dataclass
 class RoleRepresentation:
     id: str

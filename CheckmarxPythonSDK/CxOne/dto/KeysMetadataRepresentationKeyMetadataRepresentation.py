@@ -14,7 +14,9 @@ class KeysMetadataRepresentationKeyMetadataRepresentation:
     use: ... = None
 
     @classmethod
-    def from_dict(cls, item: dict) -> "KeysMetadataRepresentationKeyMetadataRepresentation":
+    def from_dict(
+        cls, item: dict
+    ) -> "KeysMetadataRepresentationKeyMetadataRepresentation":
         return cls(
             algorithm=item.get("algorithm"),
             certificate=item.get("certificate"),
@@ -23,6 +25,8 @@ class KeysMetadataRepresentationKeyMetadataRepresentation:
             provider_priority=item.get("providerPriority"),
             public_key=item.get("publicKey"),
             status=item.get("status"),
-            keys_metadata_representation_key_metadata_representation_type=item.get("type"),
+            keys_metadata_representation_key_metadata_representation_type=item.get(
+                "type"
+            ),
             use=item.get("use"),
         )

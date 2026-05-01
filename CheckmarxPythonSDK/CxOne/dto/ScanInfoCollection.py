@@ -13,9 +13,6 @@ class ScanInfoCollection:
     def from_dict(cls, item: dict) -> "ScanInfoCollection":
         return cls(
             total_count=item.get("totalCount"),
-            scans=[
-                ScanInfo.from_dict(s)
-                for s in (item.get("scans") or [])
-            ],
+            scans=[ScanInfo.from_dict(s) for s in (item.get("scans") or [])],
             missing=item.get("missing") or [],
         )

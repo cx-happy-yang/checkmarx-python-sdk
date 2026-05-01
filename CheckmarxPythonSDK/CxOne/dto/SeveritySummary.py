@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class SeveritySummary:
     """
@@ -11,4 +12,3 @@ class SeveritySummary:
 
     severity: str
     count: int
-

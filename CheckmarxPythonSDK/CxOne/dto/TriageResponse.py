@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class TriageResponse:
     result_id: str = None
@@ -15,4 +16,3 @@ class TriageResponse:
             state=item.get("state"),
             severity=item.get("severity"),
         )
-

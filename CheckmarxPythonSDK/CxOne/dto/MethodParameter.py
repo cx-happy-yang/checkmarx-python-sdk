@@ -15,7 +15,6 @@ class MethodParameter:
     label: str
     documentation: str
 
-
     @classmethod
     def from_dict(cls, item: dict) -> "MethodParameter":
         return cls(

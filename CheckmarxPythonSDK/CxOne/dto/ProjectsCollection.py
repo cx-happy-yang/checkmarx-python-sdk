@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 from .Project import Project
 
+
 @dataclass
 class ProjectsCollection:
     total_count: int = None
@@ -13,8 +14,5 @@ class ProjectsCollection:
         return cls(
             total_count=item.get("totalCount"),
             filtered_total_count=item.get("filteredTotalCount"),
-            projects=[
-                Project.from_dict(p) for p in (item.get("projects") or [])
-            ],
+            projects=[Project.from_dict(p) for p in (item.get("projects") or [])],
         )
-

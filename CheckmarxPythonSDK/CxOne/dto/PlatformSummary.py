@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class PlatformSummary:
     """
@@ -11,4 +12,3 @@ class PlatformSummary:
 
     platform: str
     count: int
-

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class SinkNodeSummary:
     """
@@ -11,4 +12,3 @@ class SinkNodeSummary:
 
     sink_node: str
     count: int
-
