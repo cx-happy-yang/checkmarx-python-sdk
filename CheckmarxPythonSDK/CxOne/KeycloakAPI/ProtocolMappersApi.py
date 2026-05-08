@@ -11,6 +11,7 @@ class ProtocolMappersApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_client_scope_protocol_mappers_model(
         self, realm: str, id1: str, id2: str
@@ -29,10 +30,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("GET", url)
         return ProtocolMapperRepresentation.from_dict(response.json())
 
     def put_client_scope_protocol_mappers_model(
@@ -57,14 +56,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}"
-        )
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("PUT", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_client_scope_protocol_mappers_model(
@@ -84,12 +79,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}"
-        )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/client-scopes/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_client_scope_protocol_mappers_add_models(
@@ -112,14 +103,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id}/protocol-mappers/add-models
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-scopes/{id}/protocol-mappers/add-models"
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/client-scopes/{id}/protocol-mappers/add-models"
+        response = self.api_client.call_api("POST", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 201
 
     def get_client_scope_protocol_mappers_models(
@@ -138,8 +125,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id}/protocol-mappers/models
         """
-        relative_url = f"{api_url}/{realm}/client-scopes/{id}/protocol-mappers/models"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/client-scopes/{id}/protocol-mappers/models"
+        response = self.api_client.call_api("GET", url)
         return [
             ProtocolMapperRepresentation.from_dict(item) for item in response.json()
         ]
@@ -164,12 +151,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id}/protocol-mappers/models
         """
-        relative_url = f"{api_url}/{realm}/client-scopes/{id}/protocol-mappers/models"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/client-scopes/{id}/protocol-mappers/models"
+        response = self.api_client.call_api("POST", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_client_scope_protocol_mappers_protocol(
@@ -189,10 +174,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-scopes/{id}/protocol-mappers/protocol/{protocol}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-scopes/{id}/protocol-mappers/protocol/{protocol}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/client-scopes/{id}/protocol-mappers/protocol/{protocol}"
+        response = self.api_client.call_api("GET", url)
         return [
             ProtocolMapperRepresentation.from_dict(item) for item in response.json()
         ]
@@ -214,10 +197,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-templates/{id1}/protocol-mappers/models/{id2}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/client-templates/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("GET", url)
         return ProtocolMapperRepresentation.from_dict(response.json())
 
     def put_client_template_protocol_mappers_model(
@@ -242,14 +223,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-templates/{id1}/protocol-mappers/models/{id2}"
-        )
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/client-templates/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("PUT", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_client_template_protocol_mappers_model(
@@ -269,12 +246,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-templates/{id1}/protocol-mappers/models/{id2}"
-        )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/client-templates/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_client_template_protocol_mappers_add_models(
@@ -297,14 +270,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id}/protocol-mappers/add-models
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-templates/{id}/protocol-mappers/add-models"
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/client-templates/{id}/protocol-mappers/add-models"
+        response = self.api_client.call_api("POST", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 201
 
     def get_client_template_protocol_mappers_models(
@@ -323,10 +292,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id}/protocol-mappers/models
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-templates/{id}/protocol-mappers/models"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/client-templates/{id}/protocol-mappers/models"
+        response = self.api_client.call_api("GET", url)
         return [
             ProtocolMapperRepresentation.from_dict(item) for item in response.json()
         ]
@@ -351,14 +318,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id}/protocol-mappers/models
         """
-        relative_url = (
-            f"{api_url}/{realm}/client-templates/{id}/protocol-mappers/models"
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/client-templates/{id}/protocol-mappers/models"
+        response = self.api_client.call_api("POST", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_client_template_protocol_mappers_protocol(
@@ -378,8 +341,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/client-templates/{id}/protocol-mappers/protocol/{protocol}
         """
-        relative_url = f"{api_url}/{realm}/client-templates/{id}/protocol-mappers/protocol/{protocol}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/client-templates/{id}/protocol-mappers/protocol/{protocol}"
+        response = self.api_client.call_api("GET", url)
         return [
             ProtocolMapperRepresentation.from_dict(item) for item in response.json()
         ]
@@ -401,8 +364,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id1}/protocol-mappers/models/{id2}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("GET", url)
         return ProtocolMapperRepresentation.from_dict(response.json())
 
     def put_client_protocol_mappers_model(
@@ -427,12 +390,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id1}/protocol-mappers/models/{id2}"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("PUT", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_client_protocol_mappers_model(
@@ -452,10 +413,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id1}/protocol-mappers/models/{id2}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id1}/protocol-mappers/models/{id2}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id1}/protocol-mappers/models/{id2}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_client_protocol_mappers_add_models(
@@ -478,12 +437,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id}/protocol-mappers/add-models
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/protocol-mappers/add-models"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id}/protocol-mappers/add-models"
+        response = self.api_client.call_api("POST", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 201
 
     def get_client_protocol_mappers_models(
@@ -502,8 +459,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id}/protocol-mappers/models
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/protocol-mappers/models"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/protocol-mappers/models"
+        response = self.api_client.call_api("GET", url)
         return [
             ProtocolMapperRepresentation.from_dict(item) for item in response.json()
         ]
@@ -528,12 +485,10 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id}/protocol-mappers/models
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/protocol-mappers/models"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id}/protocol-mappers/models"
+        response = self.api_client.call_api("POST", url,
             json=protocol_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_client_protocol_mappers_protocol(
@@ -553,10 +508,8 @@ class ProtocolMappersApi:
         URL:
             Relative path: /{realm}/clients/{id}/protocol-mappers/protocol/{protocol}
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/protocol-mappers/protocol/{protocol}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/protocol-mappers/protocol/{protocol}"
+        response = self.api_client.call_api("GET", url)
         return [
             ProtocolMapperRepresentation.from_dict(item) for item in response.json()
         ]

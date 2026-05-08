@@ -12,6 +12,7 @@ class CustomFieldsAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_custom_fields(self, api_version: str = "5.0") -> List[CxCustomField]:
         """
@@ -28,10 +29,8 @@ class CustomFieldsAPI(object):
             CxError
         """
         result = []
-        relative_url = "/cxrestapi/customFields"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/customFields"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxCustomField(

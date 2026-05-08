@@ -10,6 +10,7 @@ class AttackDetectionApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def delete_users(self, realm: str) -> bool:
         """
@@ -24,10 +25,8 @@ class AttackDetectionApi:
         URL:
             Relative path: /{realm}/attack-detection/brute-force/users
         """
-        relative_url = f"{api_url}/{realm}/attack-detection/brute-force/users"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/attack-detection/brute-force/users"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_brute_force_user(self, realm: str, user_id: str) -> Dict[str, Any]:
@@ -44,8 +43,8 @@ class AttackDetectionApi:
         URL:
             Relative path: /{realm}/attack-detection/brute-force/users/{userId}
         """
-        relative_url = f"{api_url}/{realm}/attack-detection/brute-force/users/{user_id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/attack-detection/brute-force/users/{user_id}"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def delete_brute_force_user(self, realm: str, user_id: str) -> bool:
@@ -62,8 +61,6 @@ class AttackDetectionApi:
         URL:
             Relative path: /{realm}/attack-detection/brute-force/users/{userId}
         """
-        relative_url = f"{api_url}/{realm}/attack-detection/brute-force/users/{user_id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/attack-detection/brute-force/users/{user_id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204

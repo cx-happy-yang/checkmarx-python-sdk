@@ -28,6 +28,7 @@ class OsaAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_osa_scan_details_for_project(
         self,
@@ -55,20 +56,16 @@ class OsaAPI(object):
             CxError:
         """
         result = []
-        relative_url = "/cxrestapi/osa/scans?projectId={project_id}".format(
-            project_id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/osa/scans?projectId={project_id}"
         optionals = []
         if page:
             optionals.append("page=" + str(page))
         if items_per_page:
             optionals.append("itemsPerPage=" + str(items_per_page))
         if optionals:
-            relative_url += "&"
-            relative_url += "&".join(optionals)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+            url += "&"
+            url += "&".join(optionals)
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxOsaScanDetail(
@@ -146,10 +143,8 @@ class OsaAPI(object):
             CxError:
         """
         result = None
-        relative_url = "/cxrestapi/osa/scans/{scanId}".format(scanId=scan_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/osa/scans/{scan_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxOsaScanDetail(
@@ -197,11 +192,10 @@ class OsaAPI(object):
         """
         result = None
         file_name = os.path.basename(zipped_source_path)
-        relative_url = "/cxrestapi/osa/scans" + "?projectId={project_id}".format(
-            project_id=project_id
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/cxrestapi/osa/scans?projectId={project_id}"
+        response = self.api_client.call_api(
+            "POST",
+            url,
             data={
                 "projectId": str(project_id),
                 "origin": origin if origin else get_headers().get("cxOrigin"),
@@ -237,10 +231,8 @@ class OsaAPI(object):
 
         """
         result = None
-        relative_url = "/cxrestapi/osa/fileextensions"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/osa/fileextensions"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.text
         return result
@@ -266,12 +258,8 @@ class OsaAPI(object):
             CxError:
         """
         result = None
-        relative_url = "/cxrestapi/osa/licenses" + "?scanId={scan_id}".format(
-            scan_id=scan_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/osa/licenses?scanId={scan_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxOsaLicense(
@@ -319,18 +307,16 @@ class OsaAPI(object):
             CxError:
         """
         result = []
-        relative_url = "/cxrestapi/osa/libraries" + "?scanId=" + str(scan_id)
+        url = f"{self.base_url}/cxrestapi/osa/libraries" + "?scanId=" + str(scan_id)
         optionals = []
         if page:
             optionals.append("page=" + str(page))
         if items_per_page:
             optionals.append("itemsPerPage=" + str(items_per_page))
         if optionals:
-            relative_url += "&"
-            relative_url += "&".join(optionals)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+            url += "&"
+            url += "&".join(optionals)
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxOsaLibrary(
@@ -430,9 +416,9 @@ class OsaAPI(object):
 
         """
         result = []
-        relative_url = "/cxrestapi/osa/vulnerabilities"
+        url = f"{self.base_url}/cxrestapi/osa/vulnerabilities"
         if scan_id:
-            relative_url += "?scanId=" + str(scan_id)
+            url += "?scanId=" + str(scan_id)
             optionals = []
             if page:
                 optionals.append("page=" + str(page))
@@ -449,11 +435,9 @@ class OsaAPI(object):
             if until:
                 optionals.append("until=" + str(until))
             if optionals:
-                relative_url += "&"
-                relative_url += "&".join(optionals)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+                url += "&"
+                url += "&".join(optionals)
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxOsaVulnerability(
@@ -520,12 +504,8 @@ class OsaAPI(object):
             CxError:
         """
         result = []
-        relative_url = "/cxrestapi/osa/vulnerabilities/{vulnerabilityId}/comments?projectId={project_id}".format(
-            vulnerabilityId=vulnerability_id, project_id=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/osa/vulnerabilities/{vulnerability_id}/comments?projectId={project_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxOsaVulnerabilityComment(
@@ -557,10 +537,8 @@ class OsaAPI(object):
             CxError:
         """
         result = None
-        relative_url = "/cxrestapi/osa/reports" + "?scanId=" + str(scan_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/osa/reports" + "?scanId=" + str(scan_id)
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxOsaSummaryReport(

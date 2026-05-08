@@ -12,6 +12,7 @@ class ComponentApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_components(
         self, realm: str, name: str = None, parent: str = None, type: str = None
@@ -31,10 +32,8 @@ class ComponentApi:
             Relative path: /{realm}/components
         """
         params = {"name": name, "parent": parent, "type": type}
-        relative_url = f"{api_url}/{realm}/components"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/components"
+        response = self.api_client.call_api("GET", url, params=params)
         return [ComponentRepresentation.from_dict(item) for item in response.json()]
 
     def post_components(
@@ -52,12 +51,10 @@ class ComponentApi:
         URL:
             Relative path: /{realm}/components
         """
-        relative_url = f"{api_url}/{realm}/components"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/components"
+        response = self.api_client.call_api("POST", url,
             json=component_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def get_component(self, realm: str, id: str) -> ComponentRepresentation:
@@ -73,8 +70,8 @@ class ComponentApi:
         URL:
             Relative path: /{realm}/components/{id}
         """
-        relative_url = f"{api_url}/{realm}/components/{id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/components/{id}"
+        response = self.api_client.call_api("GET", url)
         return ComponentRepresentation.from_dict(response.json())
 
     def put_component(
@@ -93,12 +90,10 @@ class ComponentApi:
         URL:
             Relative path: /{realm}/components/{id}
         """
-        relative_url = f"{api_url}/{realm}/components/{id}"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/components/{id}"
+        response = self.api_client.call_api("PUT", url,
             json=component_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_component(self, realm: str, id: str) -> bool:
@@ -114,10 +109,8 @@ class ComponentApi:
         URL:
             Relative path: /{realm}/components/{id}
         """
-        relative_url = f"{api_url}/{realm}/components/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/components/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_sub_component_types(
@@ -138,8 +131,6 @@ class ComponentApi:
             Relative path: /{realm}/components/{id}/sub-component-types
         """
         params = {"type": type}
-        relative_url = f"{api_url}/{realm}/components/{id}/sub-component-types"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/components/{id}/sub-component-types"
+        response = self.api_client.call_api("GET", url, params=params)
         return [ComponentTypeRepresentation.from_dict(item) for item in response.json()]

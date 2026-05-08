@@ -12,6 +12,7 @@ class ClientAttributeCertificateApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_certificate(
         self, realm: str, id: str, attr: str
@@ -30,8 +31,8 @@ class ClientAttributeCertificateApi:
         URL:
             Relative path: /{realm}/clients/{id}/certificates/{attr}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/certificates/{attr}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/certificates/{attr}"
+        response = self.api_client.call_api("GET", url)
         return CertificateRepresentation.from_dict(response.json())
 
     def post_download(
@@ -52,10 +53,8 @@ class ClientAttributeCertificateApi:
         URL:
             Relative path: /{realm}/clients/{id}/certificates/{attr}/download
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/certificates/{attr}/download"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=key_store_config.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/certificates/{attr}/download"
+        response = self.api_client.call_api("POST", url, json=key_store_config.to_dict())
         return response.status_code == 200
 
     def post_generate(
@@ -75,8 +74,8 @@ class ClientAttributeCertificateApi:
         URL:
             Relative path: /{realm}/clients/{id}/certificates/{attr}/generate
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/certificates/{attr}/generate"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/certificates/{attr}/generate"
+        response = self.api_client.call_api("POST", url)
         return CertificateRepresentation.from_dict(response.json())
 
     def post_generate_and_download(
@@ -100,12 +99,8 @@ class ClientAttributeCertificateApi:
         URL:
             Relative path: /{realm}/clients/{id}/certificates/{attr}/generate-and-download
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/certificates/{attr}/generate-and-download"
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=key_store_config.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/certificates/{attr}/generate-and-download"
+        response = self.api_client.call_api("POST", url, json=key_store_config.to_dict())
         return response.status_code == 200
 
     def post_upload(self, realm: str, id: str, attr: str) -> CertificateRepresentation:
@@ -123,8 +118,8 @@ class ClientAttributeCertificateApi:
         URL:
             Relative path: /{realm}/clients/{id}/certificates/{attr}/upload
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/certificates/{attr}/upload"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/certificates/{attr}/upload"
+        response = self.api_client.call_api("POST", url)
         return CertificateRepresentation.from_dict(response.json())
 
     def post_upload_certificate(
@@ -144,8 +139,6 @@ class ClientAttributeCertificateApi:
         URL:
             Relative path: /{realm}/clients/{id}/certificates/{attr}/upload-certificate
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/certificates/{attr}/upload-certificate"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/certificates/{attr}/upload-certificate"
+        response = self.api_client.call_api("POST", url)
         return CertificateRepresentation.from_dict(response.json())

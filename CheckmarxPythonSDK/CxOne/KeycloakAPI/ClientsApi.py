@@ -27,6 +27,7 @@ class ClientsApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_clients(
         self,
@@ -64,10 +65,8 @@ class ClientsApi:
             "search": search,
             "viewableOnly": viewable_only,
         }
-        relative_url = f"{api_url}/{realm}/clients"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients"
+        response = self.api_client.call_api("GET", url, params=params)
         return [ClientRepresentation.from_dict(item) for item in response.json()]
 
     def post_clients(
@@ -86,12 +85,10 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients
         """
-        relative_url = f"{api_url}/{realm}/clients"
-        print(f"Post request to {relative_url}")
+        url = f"{self.base_url}/{realm}/clients"
+        print(f"Post request to {url}")
         print(f"Request body: {client_representation.to_dict()}")
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=client_representation.to_dict(), is_iam=True
-        )
+        response = self.api_client.call_api("POST", url, json=client_representation.to_dict())
         return response.status_code == 201
 
     def get_client_by_realm_by_id(self, realm: str, id: str) -> ClientRepresentation:
@@ -108,8 +105,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}"
+        response = self.api_client.call_api("GET", url)
         return ClientRepresentation.from_dict(response.json())
 
     def put_client(
@@ -129,10 +126,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}"
-        response = self.api_client.put_request(
-            relative_url=relative_url, json=client_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}"
+        response = self.api_client.call_api("PUT", url, json=client_representation.to_dict())
         return response.status_code == 204
 
     def delete_client_by_realm_by_id(self, realm: str, id: str) -> bool:
@@ -161,10 +156,8 @@ class ClientsApi:
                 "which are intended for internal use"
             )
             return False
-        relative_url = f"{api_url}/{realm}/clients/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}"
+        response = self.api_client.call_api("DELETE", url)
         logger.info(f"Delete client {id} successful in realm {realm}")
         return response.status_code == 204
 
@@ -182,8 +175,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/client-secret
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/client-secret"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/client-secret"
+        response = self.api_client.call_api("GET", url)
         return CredentialRepresentation.from_dict(response.json())
 
     def post_client_secret(self, realm: str, id: str) -> CredentialRepresentation:
@@ -200,8 +193,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/client-secret
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/client-secret"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/client-secret"
+        response = self.api_client.call_api("POST", url)
         return CredentialRepresentation.from_dict(response.json())
 
     def get_rotated(self, realm: str, id: str) -> CredentialRepresentation:
@@ -218,8 +211,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/client-secret/rotated
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/client-secret/rotated"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/client-secret/rotated"
+        response = self.api_client.call_api("GET", url)
         return CredentialRepresentation.from_dict(response.json())
 
     def delete_rotated(self, realm: str, id: str) -> bool:
@@ -236,10 +229,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/client-secret/rotated
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/client-secret/rotated"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/client-secret/rotated"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 200
 
     def get_default_client_scopes(
@@ -258,8 +249,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/default-client-scopes
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/default-client-scopes"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/default-client-scopes"
+        response = self.api_client.call_api("GET", url)
         return [ClientScopeRepresentation.from_dict(item) for item in response.json()]
 
     def put_default_client_scope(
@@ -278,10 +269,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/default-client-scopes/{clientScopeId}
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/default-client-scopes/{client_scope_id}"
-        )
-        response = self.api_client.put_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/default-client-scopes/{client_scope_id}"
+        response = self.api_client.call_api("PUT", url)
         return response.status_code == 204
 
     def delete_default_client_scope(
@@ -300,12 +289,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/default-client-scopes/{clientScopeId}
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/default-client-scopes/{client_scope_id}"
-        )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/default-client-scopes/{client_scope_id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_generate_example_access_token(
@@ -327,10 +312,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/evaluate-scopes/generate-example-access-token
         """
         params = {"scope": scope, "userId": user_id}
-        relative_url = f"{api_url}/{realm}/clients/{id}/evaluate-scopes/generate-example-access-token"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/evaluate-scopes/generate-example-access-token"
+        response = self.api_client.call_api("GET", url, params=params)
         return AccessToken.from_dict(response.json())
 
     def get_generate_example_id_token(
@@ -352,12 +335,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/evaluate-scopes/generate-example-id-token
         """
         params = {"scope": scope, "userId": user_id}
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/evaluate-scopes/generate-example-id-token"
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/evaluate-scopes/generate-example-id-token"
+        response = self.api_client.call_api("GET", url, params=params)
         return IDToken.from_dict(response.json())
 
     def get_generate_example_userinfo(
@@ -379,12 +358,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/evaluate-scopes/generate-example-userinfo
         """
         params = {"scope": scope, "userId": user_id}
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/evaluate-scopes/generate-example-userinfo"
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/evaluate-scopes/generate-example-userinfo"
+        response = self.api_client.call_api("GET", url, params=params)
         return response.json()
 
     def get_protocol_mappers(
@@ -406,12 +381,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/evaluate-scopes/protocol-mappers
         """
         params = {"scope": scope}
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/evaluate-scopes/protocol-mappers"
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/evaluate-scopes/protocol-mappers"
+        response = self.api_client.call_api("GET", url, params=params)
         return [
             ProtocolMapperEvaluationRepresentation.from_dict(item)
             for item in response.json()
@@ -437,10 +408,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/evaluate-scopes/scope-mappings/{roleContainerId}/granted
         """
         params = {"scope": scope}
-        relative_url = f"{api_url}/{realm}/clients/{id}/evaluate-scopes/scope-mappings/{role_container_id}/granted"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/evaluate-scopes/scope-mappings/{role_container_id}/granted"
+        response = self.api_client.call_api("GET", url, params=params)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_not_granted(
@@ -463,10 +432,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/evaluate-scopes/scope-mappings/{roleContainerId}/not-granted
         """
         params = {"scope": scope}
-        relative_url = f"{api_url}/{realm}/clients/{id}/evaluate-scopes/scope-mappings/{role_container_id}/not-granted"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/evaluate-scopes/scope-mappings/{role_container_id}/not-granted"
+        response = self.api_client.call_api("GET", url, params=params)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_installation_provider(self, realm: str, id: str, provider_id: str) -> bool:
@@ -483,10 +450,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/installation/providers/{providerId}
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/installation/providers/{provider_id}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/installation/providers/{provider_id}"
+        response = self.api_client.call_api("GET", url)
         return response.status_code == 200
 
     def get_client_management_permissions(
@@ -506,8 +471,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/management/permissions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/management/permissions"
+        response = self.api_client.call_api("GET", url)
         return ManagementPermissionReference.from_dict(response.json())
 
     def put_client_management_permissions(
@@ -531,12 +496,10 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/management/permissions"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id}/management/permissions"
+        response = self.api_client.call_api("PUT", url,
             json=management_permission_reference.to_dict(),
-            is_iam=True,
-        )
+            )
         return ManagementPermissionReference.from_dict(response.json())
 
     def post_nodes(self, realm: str, id: str) -> bool:
@@ -555,8 +518,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/nodes
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/nodes"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/nodes"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def delete_node(self, realm: str, id: str, node: str) -> bool:
@@ -574,10 +537,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/nodes/{node}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/nodes/{node}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/nodes/{node}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_offline_session_count(self, realm: str, id: str) -> Dict[str, Any]:
@@ -595,8 +556,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/offline-session-count
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/offline-session-count"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/offline-session-count"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def get_offline_sessions(
@@ -619,10 +580,8 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/offline-sessions
         """
         params = {"first": first, "max": max}
-        relative_url = f"{api_url}/{realm}/clients/{id}/offline-sessions"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/offline-sessions"
+        response = self.api_client.call_api("GET", url, params=params)
         return [UserSessionRepresentation.from_dict(item) for item in response.json()]
 
     def get_optional_client_scopes(
@@ -641,8 +600,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/optional-client-scopes
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/optional-client-scopes"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/optional-client-scopes"
+        response = self.api_client.call_api("GET", url)
         return [ClientScopeRepresentation.from_dict(item) for item in response.json()]
 
     def put_optional_client_scope(
@@ -661,10 +620,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/optional-client-scopes/{clientScopeId}
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/optional-client-scopes/{client_scope_id}"
-        )
-        response = self.api_client.put_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/optional-client-scopes/{client_scope_id}"
+        response = self.api_client.call_api("PUT", url)
         return response.status_code == 204
 
     def delete_optional_client_scope(
@@ -683,12 +640,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/optional-client-scopes/{clientScopeId}
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/optional-client-scopes/{client_scope_id}"
-        )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/optional-client-scopes/{client_scope_id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_client_push_revocation(self, realm: str, id: str) -> GlobalRequestResult:
@@ -706,8 +659,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/push-revocation
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/push-revocation"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/push-revocation"
+        response = self.api_client.call_api("POST", url)
         return GlobalRequestResult.from_dict(response.json())
 
     def post_registration_access_token(
@@ -726,8 +679,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/registration-access-token
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/registration-access-token"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/registration-access-token"
+        response = self.api_client.call_api("POST", url)
         return ClientRepresentation.from_dict(response.json())
 
     def get_service_account_user(self, realm: str, id: str) -> UserRepresentation:
@@ -744,8 +697,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/service-account-user
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/service-account-user"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/service-account-user"
+        response = self.api_client.call_api("GET", url)
         return UserRepresentation.from_dict(response.json())
 
     def get_session_count(self, realm: str, id: str) -> Dict[str, Any]:
@@ -763,8 +716,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/session-count
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/session-count"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/session-count"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def get_test_nodes_available(self, realm: str, id: str) -> GlobalRequestResult:
@@ -782,8 +735,8 @@ class ClientsApi:
         URL:
             Relative path: /{realm}/clients/{id}/test-nodes-available
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/test-nodes-available"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/test-nodes-available"
+        response = self.api_client.call_api("GET", url)
         return GlobalRequestResult.from_dict(response.json())
 
     def get_client_user_sessions(
@@ -806,8 +759,6 @@ class ClientsApi:
             Relative path: /{realm}/clients/{id}/user-sessions
         """
         params = {"first": first, "max": max}
-        relative_url = f"{api_url}/{realm}/clients/{id}/user-sessions"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/user-sessions"
+        response = self.api_client.call_api("GET", url, params=params)
         return [UserSessionRepresentation.from_dict(item) for item in response.json()]

@@ -21,6 +21,7 @@ class DataRetentionAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def stop_data_retention(self, api_version: str = "1.0") -> bool:
         """
@@ -37,10 +38,8 @@ class DataRetentionAPI(object):
             CxError
         """
         result = False
-        relative_url = "/cxrestapi/sast/dataRetention/stop"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=None, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/dataRetention/stop"
+        response = self.api_client.call_api("POST", url, data=None, headers=get_headers(api_version))
         if response.status_code == ACCEPTED:
             result = True
         return result
@@ -70,7 +69,7 @@ class DataRetentionAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/dataRetention/byDateRange"
+        url = f"{self.base_url}/cxrestapi/sast/dataRetention/byDateRange"
         post_data = json.dumps(
             {
                 "startDate": start_date,
@@ -78,9 +77,7 @@ class DataRetentionAPI(object):
                 "durationLimitInHours": duration_limit_in_hours,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == ACCEPTED:
             if response.text:
                 a_dict = response.json()
@@ -116,16 +113,14 @@ class DataRetentionAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/dataRetention/byNumberOfScans"
+        url = f"{self.base_url}/cxrestapi/sast/dataRetention/byNumberOfScans"
         post_data = json.dumps(
             {
                 "numOfSuccessfulScansToPreserve": number_of_successful_scans_to_preserve,
                 "durationLimitInHours": duration_limit_in_hours,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == ACCEPTED:
             if response.text:
                 a_dict = response.json()
@@ -158,12 +153,8 @@ class DataRetentionAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/dataRetention/{requestId}/status".format(
-            requestId=request_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/dataRetention/{request_id}/status"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxDataRetentionRequestStatus(

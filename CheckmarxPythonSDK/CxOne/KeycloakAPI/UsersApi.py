@@ -20,6 +20,7 @@ class UsersApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_users_by_realm(
         self,
@@ -82,10 +83,8 @@ class UsersApi:
             "search": search,
             "username": username,
         }
-        relative_url = f"{api_url}/{realm}/users"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users"
+        response = self.api_client.call_api("GET", url, params=params)
         return [UserRepresentation.from_dict(item) for item in response.json()]
 
     def create_a_new_user(
@@ -104,10 +103,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users
         """
-        relative_url = f"{api_url}/{realm}/users"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=user_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users"
+        response = self.api_client.call_api("POST", url, json=user_representation.to_dict())
         return response.status_code == 200
 
     def get_users_count(
@@ -154,10 +151,8 @@ class UsersApi:
             "search": search,
             "username": username,
         }
-        relative_url = f"{api_url}/{realm}/users/count"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/count"
+        response = self.api_client.call_api("GET", url, params=params)
         return response.json()
 
     def get_profile(
@@ -175,8 +170,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/profile
         """
-        relative_url = f"{api_url}/{realm}/users/profile"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/profile"
+        response = self.api_client.call_api("GET", url)
         return UPConfig.from_dict(response.json())
 
     def put_profile(
@@ -196,10 +191,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/profile
         """
-        relative_url = f"{api_url}/{realm}/users/profile"
-        response = self.api_client.put_request(
-            relative_url=relative_url, json=up_config.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/profile"
+        response = self.api_client.call_api("PUT", url, json=up_config.to_dict())
         return UPConfig.from_dict(response.json())
 
     def get_metadata(
@@ -217,8 +210,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/profile/metadata
         """
-        relative_url = f"{api_url}/{realm}/users/profile/metadata"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/profile/metadata"
+        response = self.api_client.call_api("GET", url)
         return UserProfileMetadata.from_dict(response.json())
 
     def get_user_by_realm_by_id(
@@ -243,10 +236,8 @@ class UsersApi:
             Relative path: /{realm}/users/{id}
         """
         params = {"userProfileMetadata": user_profile_metadata}
-        relative_url = f"{api_url}/{realm}/users/{id}"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}"
+        response = self.api_client.call_api("GET", url, params=params)
         return UserRepresentation.from_dict(response.json())
 
     def put_user(
@@ -266,10 +257,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}"
-        response = self.api_client.put_request(
-            relative_url=relative_url, json=user_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}"
+        response = self.api_client.call_api("PUT", url, json=user_representation.to_dict())
         return response.status_code == 200
 
     def delete_user_by_realm_by_id(
@@ -290,10 +279,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 200
 
     def get_configured_user_storage_credential_types(
@@ -314,10 +301,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/configured-user-storage-credential-types
         """
-        relative_url = (
-            f"{api_url}/{realm}/users/{id}/configured-user-storage-credential-types"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/configured-user-storage-credential-types"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def get_consents(
@@ -338,8 +323,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/consents
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/consents"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/consents"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def delete_consent(
@@ -362,10 +347,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/consents/{client}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/consents/{client}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/consents/{client}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_credentials(
@@ -385,8 +368,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/credentials
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/credentials"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/credentials"
+        response = self.api_client.call_api("GET", url)
         return [CredentialRepresentation.from_dict(item) for item in response.json()]
 
     def delete_credential(
@@ -409,10 +392,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/credentials/{credentialId}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/credentials/{credential_id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/credentials/{credential_id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_move_after(
@@ -437,8 +418,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/credentials/{credentialId}/moveAfter/{newPreviousCredentialId}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/credentials/{credential_id}/moveAfter/{new_previous_credential_id}"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/credentials/{credential_id}/moveAfter/{new_previous_credential_id}"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def post_move_to_first(
@@ -461,10 +442,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/credentials/{credentialId}/moveToFirst
         """
-        relative_url = (
-            f"{api_url}/{realm}/users/{id}/credentials/{credential_id}/moveToFirst"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/credentials/{credential_id}/moveToFirst"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def put_user_label(
@@ -487,10 +466,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/credentials/{credentialId}/userLabel
         """
-        relative_url = (
-            f"{api_url}/{realm}/users/{id}/credentials/{credential_id}/userLabel"
-        )
-        response = self.api_client.put_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/credentials/{credential_id}/userLabel"
+        response = self.api_client.call_api("PUT", url)
         return response.status_code == 204
 
     def put_disable_credential_types(
@@ -511,8 +488,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/disable-credential-types
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/disable-credential-types"
-        response = self.api_client.put_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/disable-credential-types"
+        response = self.api_client.call_api("PUT", url)
         return response.status_code == 204
 
     def put_execute_actions_email(
@@ -544,10 +521,8 @@ class UsersApi:
             "lifespan": lifespan,
             "redirect_uri": redirect_uri,
         }
-        relative_url = f"{api_url}/{realm}/users/{id}/execute-actions-email"
-        response = self.api_client.put_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/execute-actions-email"
+        response = self.api_client.call_api("PUT", url, params=params)
         return response.status_code == 200
 
     def get_federated_identity(
@@ -568,8 +543,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/federated-identity
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/federated-identity"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/federated-identity"
+        response = self.api_client.call_api("GET", url)
         return [
             FederatedIdentityRepresentation.from_dict(item) for item in response.json()
         ]
@@ -594,8 +569,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/federated-identity/{provider}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/federated-identity/{provider}"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/federated-identity/{provider}"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 200
 
     def delete_federated_identity(
@@ -618,10 +593,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/federated-identity/{provider}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/federated-identity/{provider}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/federated-identity/{provider}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_user_groups(
@@ -655,10 +628,8 @@ class UsersApi:
             "max": max,
             "search": search,
         }
-        relative_url = f"{api_url}/{realm}/users/{id}/groups"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/groups"
+        response = self.api_client.call_api("GET", url, params=params)
         return [GroupRepresentation.from_dict(item) for item in response.json()]
 
     def get_user_groups_count(
@@ -681,10 +652,8 @@ class UsersApi:
             Relative path: /{realm}/users/{id}/groups/count
         """
         params = {"search": search}
-        relative_url = f"{api_url}/{realm}/users/{id}/groups/count"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/groups/count"
+        response = self.api_client.call_api("GET", url, params=params)
         return response.json()
 
     def put_user_group(
@@ -706,8 +675,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/groups/{groupId}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/groups/{group_id}"
-        response = self.api_client.put_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/groups/{group_id}"
+        response = self.api_client.call_api("PUT", url)
         return response.status_code == 204
 
     def delete_user_group(
@@ -729,10 +698,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/groups/{groupId}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/groups/{group_id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/groups/{group_id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_impersonation(
@@ -753,8 +720,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/impersonation
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/impersonation"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/impersonation"
+        response = self.api_client.call_api("POST", url)
         return response.json()
 
     def post_logout(
@@ -776,8 +743,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/logout
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/logout"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/logout"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def get_offline_session(
@@ -800,8 +767,8 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/offline-sessions/{clientUuid}
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/offline-sessions/{client_uuid}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/offline-sessions/{client_uuid}"
+        response = self.api_client.call_api("GET", url)
         return [UserSessionRepresentation.from_dict(item) for item in response.json()]
 
     def put_reset_password(
@@ -821,12 +788,10 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/reset-password
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/reset-password"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/users/{id}/reset-password"
+        response = self.api_client.call_api("PUT", url,
             json=credential_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def put_reset_password_email(
@@ -855,10 +820,8 @@ class UsersApi:
             "client_id": client_id,
             "redirect_uri": redirect_uri,
         }
-        relative_url = f"{api_url}/{realm}/users/{id}/reset-password-email"
-        response = self.api_client.put_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/reset-password-email"
+        response = self.api_client.call_api("PUT", url, params=params)
         return response.status_code == 200
 
     def put_send_verify_email(
@@ -885,10 +848,8 @@ class UsersApi:
             Relative path: /{realm}/users/{id}/send-verify-email
         """
         params = {"client_id": client_id, "redirect_uri": redirect_uri}
-        relative_url = f"{api_url}/{realm}/users/{id}/send-verify-email"
-        response = self.api_client.put_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/send-verify-email"
+        response = self.api_client.call_api("PUT", url, params=params)
         return response.status_code == 200
 
     def get_sessions(
@@ -909,6 +870,6 @@ class UsersApi:
         URL:
             Relative path: /{realm}/users/{id}/sessions
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/sessions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/sessions"
+        response = self.api_client.call_api("GET", url)
         return [UserSessionRepresentation.from_dict(item) for item in response.json()]

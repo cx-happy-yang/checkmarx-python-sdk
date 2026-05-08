@@ -12,6 +12,7 @@ class RoleMapperApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_group_role_mappings(self, realm: str, id: str) -> MappingsRepresentation:
         """
@@ -27,8 +28,8 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/groups/{id}/role-mappings
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/role-mappings"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/groups/{id}/role-mappings"
+        response = self.api_client.call_api("GET", url)
         return MappingsRepresentation.from_dict(response.json())
 
     def get_group_role_mappings_realm(
@@ -47,8 +48,8 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/groups/{id}/role-mappings/realm
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/role-mappings/realm"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/groups/{id}/role-mappings/realm"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def post_group_role_mappings_realm(
@@ -68,15 +69,13 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/groups/{id}/role-mappings/realm
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/role-mappings/realm"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/groups/{id}/role-mappings/realm"
+        response = self.api_client.call_api("POST", url,
             json=[
                 role_representation.to_dict()
                 for role_representation in role_representations
             ],
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_group_role_mappings_realm(
@@ -95,15 +94,13 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/groups/{id}/role-mappings/realm
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/role-mappings/realm"
-        response = self.api_client.delete_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/groups/{id}/role-mappings/realm"
+        response = self.api_client.call_api("DELETE", url,
             json=[
                 role_representation.to_dict()
                 for role_representation in role_representations
             ],
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def get_group_role_mappings_realm_available(
@@ -122,8 +119,8 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/groups/{id}/role-mappings/realm/available
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/role-mappings/realm/available"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/groups/{id}/role-mappings/realm/available"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_group_role_mappings_realm_composite(
@@ -144,10 +141,8 @@ class RoleMapperApi:
             Relative path: /{realm}/groups/{id}/role-mappings/realm/composite
         """
         params = {"briefRepresentation": brief_representation}
-        relative_url = f"{api_url}/{realm}/groups/{id}/role-mappings/realm/composite"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/{id}/role-mappings/realm/composite"
+        response = self.api_client.call_api("GET", url, params=params)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_user_role_mappings(self, realm: str, id: str) -> MappingsRepresentation:
@@ -164,8 +159,8 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/users/{id}/role-mappings
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/role-mappings"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/role-mappings"
+        response = self.api_client.call_api("GET", url)
         return MappingsRepresentation.from_dict(response.json())
 
     def get_user_role_mappings_realm(
@@ -184,8 +179,8 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/users/{id}/role-mappings/realm
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/role-mappings/realm"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/role-mappings/realm"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def post_user_role_mappings_realm(
@@ -205,12 +200,10 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/users/{id}/role-mappings/realm
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/role-mappings/realm"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/users/{id}/role-mappings/realm"
+        response = self.api_client.call_api("POST", url,
             json=[item.to_dict() for item in role_representations],
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_user_role_mappings_realm(
@@ -230,12 +223,10 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/users/{id}/role-mappings/realm
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/role-mappings/realm"
-        response = self.api_client.delete_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/users/{id}/role-mappings/realm"
+        response = self.api_client.call_api("DELETE", url,
             json=[item.to_dict() for item in role_representations],
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def get_user_role_mappings_realm_available(
@@ -254,8 +245,8 @@ class RoleMapperApi:
         URL:
             Relative path: /{realm}/users/{id}/role-mappings/realm/available
         """
-        relative_url = f"{api_url}/{realm}/users/{id}/role-mappings/realm/available"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/users/{id}/role-mappings/realm/available"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_user_role_mappings_realm_composite(
@@ -276,8 +267,6 @@ class RoleMapperApi:
             Relative path: /{realm}/users/{id}/role-mappings/realm/composite
         """
         params = {"briefRepresentation": brief_representation}
-        relative_url = f"{api_url}/{realm}/users/{id}/role-mappings/realm/composite"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/users/{id}/role-mappings/realm/composite"
+        response = self.api_client.call_api("GET", url, params=params)
         return [RoleRepresentation.from_dict(item) for item in response.json()]

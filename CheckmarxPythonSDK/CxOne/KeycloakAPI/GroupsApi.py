@@ -13,6 +13,7 @@ class GroupsApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_groups_by_realm(
         self,
@@ -53,10 +54,8 @@ class GroupsApi:
             "q": q,
             "search": search,
         }
-        relative_url = f"{api_url}/{realm}/groups"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups"
+        response = self.api_client.call_api("GET", url, params=params)
         return [GroupRepresentation.from_dict(item) for item in response.json()]
 
     def post_groups(
@@ -76,10 +75,8 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups
         """
-        relative_url = f"{api_url}/{realm}/groups"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=group_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups"
+        response = self.api_client.call_api("POST", url, json=group_representation.to_dict())
         return response.status_code == 201
 
     def get_groups_count_by_realm(
@@ -100,10 +97,8 @@ class GroupsApi:
             Relative path: /{realm}/groups/count
         """
         params = {"search": search, "top": top}
-        relative_url = f"{api_url}/{realm}/groups/count"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/count"
+        response = self.api_client.call_api("GET", url, params=params)
         return response.json()
 
     def get_group(self, realm: str, id: str) -> GroupRepresentation:
@@ -119,8 +114,8 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups/{id}
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/groups/{id}"
+        response = self.api_client.call_api("GET", url)
         return GroupRepresentation.from_dict(response.json())
 
     def put_group_by_realm_by_id(
@@ -141,10 +136,8 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups/{id}
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}"
-        response = self.api_client.put_request(
-            relative_url=relative_url, json=group_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/{id}"
+        response = self.api_client.call_api("PUT", url, json=group_representation.to_dict())
         return response.status_code == 204
 
     def delete_group_by_realm_by_id(self, realm: str, id: str) -> bool:
@@ -160,10 +153,8 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups/{id}
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_children(
@@ -196,10 +187,8 @@ class GroupsApi:
             "first": first,
             "max": max,
         }
-        relative_url = f"{api_url}/{realm}/groups/{id}/children"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/{id}/children"
+        response = self.api_client.call_api("GET", url, params=params)
         return [GroupRepresentation.from_dict(item) for item in response.json()]
 
     def post_children(
@@ -220,10 +209,8 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups/{id}/children
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/children"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=group_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/{id}/children"
+        response = self.api_client.call_api("POST", url, json=group_representation.to_dict())
         return response.status_code == 201
 
     def get_group_management_permissions(
@@ -243,8 +230,8 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups/{id}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/management/permissions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/groups/{id}/management/permissions"
+        response = self.api_client.call_api("GET", url)
         return ManagementPermissionReference.from_dict(response.json())
 
     def put_group_management_permissions(
@@ -269,12 +256,10 @@ class GroupsApi:
         URL:
             Relative path: /{realm}/groups/{id}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/groups/{id}/management/permissions"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/groups/{id}/management/permissions"
+        response = self.api_client.call_api("PUT", url,
             json=management_permission_reference.to_dict(),
-            is_iam=True,
-        )
+            )
         return ManagementPermissionReference.from_dict(response.json())
 
     def get_members(
@@ -312,8 +297,6 @@ class GroupsApi:
             "first": first,
             "max": max,
         }
-        relative_url = f"{api_url}/{realm}/groups/{id}/members"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/groups/{id}/members"
+        response = self.api_client.call_api("GET", url, params=params)
         return [UserRepresentation.from_dict(item) for item in response.json()]

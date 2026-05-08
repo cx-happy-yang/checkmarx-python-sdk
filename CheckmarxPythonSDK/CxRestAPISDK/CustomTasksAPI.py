@@ -16,6 +16,7 @@ class CustomTasksAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_custom_tasks(self, api_version: str = "1.0") -> List[CxCustomTask]:
         """
@@ -34,10 +35,8 @@ class CustomTasksAPI(object):
 
         """
         result = []
-        relative_url = "/cxrestapi/customTasks"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/customTasks"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_list = response.json()
             result = [
@@ -86,10 +85,8 @@ class CustomTasksAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/customTasks/{id}".format(id=task_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/customTasks/{task_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxCustomTask(
@@ -122,10 +119,8 @@ class CustomTasksAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/customTasks/name/{name}".format(name=task_name)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/customTasks/name/{task_name}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_list = response.json()
             if a_list:

@@ -226,16 +226,6 @@ class ApiClient:
         auth_response.raise_for_status()
         return auth_response.json()["access_token"]
 
-    def create_url(self, relative_url, is_iam) -> str:
-        url = f"{self.configuration.server_base_url}{self.url_prefix}{relative_url}"
-        # is_iam is used for Access Control API
-        if is_iam:
-            http_fqdn_list = self.configuration.token_url.split("/")[0:3]
-            http_fqdn_list.pop(1)
-            access_control_url = "//".join(http_fqdn_list)
-            url = access_control_url.rstrip("/") + "/" + relative_url.lstrip("/")
-        return url
-
     @retry()
     def call_api(
         self,
@@ -269,112 +259,20 @@ class ApiClient:
         check_response(response)
         return response
 
-    def head_request(
-        self,
-        relative_url,
-        auth=None,
-        headers=None,
-        json=None,
-        params=None,
-        is_iam=False,
-    ):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(
-            method="HEAD", url=url, auth=auth, headers=headers, json=json, params=params
-        )
+    def head_request(self, url, auth=None, headers=None, json=None, params=None):
+        return self.call_api(method="HEAD", url=url, auth=auth, headers=headers, json=json, params=params)
 
-    def get_request(
-        self, relative_url, auth=None, headers=None, params=None, is_iam=False
-    ):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(
-            method="GET", url=url, auth=auth, headers=headers, params=params
-        )
+    def get_request(self, url, auth=None, headers=None, params=None):
+        return self.call_api(method="GET", url=url, auth=auth, headers=headers, params=params)
 
-    def post_request(
-        self,
-        relative_url,
-        data=None,
-        files=None,
-        auth=None,
-        headers=None,
-        params=None,
-        json=None,
-        is_iam=False,
-    ):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(
-            method="POST",
-            url=url,
-            data=data,
-            files=files,
-            auth=auth,
-            headers=headers,
-            params=params,
-            json=json,
-        )
+    def post_request(self, url, data=None, files=None, auth=None, headers=None, params=None, json=None):
+        return self.call_api(method="POST", url=url, data=data, files=files, auth=auth, headers=headers, params=params, json=json)
 
-    def put_request(
-        self,
-        relative_url,
-        data=None,
-        files=None,
-        auth=None,
-        headers=None,
-        params=None,
-        json=None,
-        is_iam=False,
-    ):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(
-            method="PUT",
-            url=url,
-            data=data,
-            files=files,
-            auth=auth,
-            headers=headers,
-            params=params,
-            json=json,
-        )
+    def put_request(self, url, data=None, files=None, auth=None, headers=None, params=None, json=None):
+        return self.call_api(method="PUT", url=url, data=data, files=files, auth=auth, headers=headers, params=params, json=json)
 
-    def patch_request(
-        self,
-        relative_url,
-        data=None,
-        auth=None,
-        headers=None,
-        params=None,
-        json=None,
-        is_iam=False,
-    ):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(
-            method="PATCH",
-            url=url,
-            data=data,
-            auth=auth,
-            headers=headers,
-            params=params,
-            json=json,
-        )
+    def patch_request(self, url, data=None, auth=None, headers=None, params=None, json=None):
+        return self.call_api(method="PATCH", url=url, data=data, auth=auth, headers=headers, params=params, json=json)
 
-    def delete_request(
-        self,
-        relative_url,
-        data=None,
-        auth=None,
-        headers=None,
-        params=None,
-        json=None,
-        is_iam=False,
-    ):
-        url = self.create_url(relative_url=relative_url, is_iam=is_iam)
-        return self.call_api(
-            method="DELETE",
-            url=url,
-            data=data,
-            auth=auth,
-            headers=headers,
-            params=params,
-            json=json,
-        )
+    def delete_request(self, url, data=None, auth=None, headers=None, params=None, json=None):
+        return self.call_api(method="DELETE", url=url, data=data, auth=auth, headers=headers, params=params, json=json)

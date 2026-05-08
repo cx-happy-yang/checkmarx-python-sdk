@@ -53,16 +53,12 @@ def construct_user(item):
 
 class AccessControl:
 
-    def __init__(self, api_client: ApiClient = None, is_iam: bool = False):
-        """
-
-        Args:
-            api_client (ApiClient):
-            is_iam (bool)
-        """
+    def __init__(self, api_client: ApiClient = None, ac_url: str = None):
         self.api_client = api_client
-        self.is_iam = is_iam
-        self.sast_ac = "" if is_iam else "/cxrestapi/auth"
+        if ac_url is None:
+            self.ac_url = f"{api_client.configuration.server_base_url.rstrip('/')}/cxrestapi/auth"
+        else:
+            self.ac_url = ac_url
 
     def get_all_assignable_users(self) -> List[User]:
         """
@@ -70,10 +66,8 @@ class AccessControl:
         Returns:
             list[User]
         """
-        relative_url = self.sast_ac + "/AssignableUsers"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/AssignableUsers"
+        response = self.api_client.call_api("GET", url)
         return [construct_user(item) for item in response.json() or []]
 
     def get_all_authentication_providers(self) -> List[AuthenticationProvider]:
@@ -83,10 +77,8 @@ class AccessControl:
             List[AuthenticationProvider]
         """
         result = []
-        relative_url = self.sast_ac + "/AuthenticationProviders"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/AuthenticationProviders"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 AuthenticationProvider(
@@ -126,10 +118,8 @@ class AccessControl:
                 "email": email,
             }
         )
-        relative_url = self.sast_ac + "/Users/FirstAdmin"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users/FirstAdmin"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         if response.status_code == CREATED:
             result = True
         return result
@@ -141,10 +131,8 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/Users/FirstAdminExistence"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users/FirstAdminExistence"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK and response.json().get("firstAdminExists"):
             result = True
         return result
@@ -161,12 +149,10 @@ class AccessControl:
             List[LDAPRoleMapping]
         """
         result = []
-        relative_url = self.sast_ac + "/LDAPRoleMappings"
+        url = self.ac_url + "/LDAPRoleMappings"
         if ldap_server_id:
-            relative_url += "?ldapServerId={id}".format(id=ldap_server_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+            url += "?ldapServerId={id}".format(id=ldap_server_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 LDAPRoleMapping(
@@ -199,7 +185,7 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/LDAPServers/{id}/RoleMappings".format(
+        url = self.ac_url + "/LDAPServers/{id}/RoleMappings".format(
             id=ldap_server_id
         )
         put_data = json.dumps(
@@ -209,9 +195,7 @@ class AccessControl:
                 "ldapGroupDisplayName": ldap_group_display_name,
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         return response.status_code == NO_CONTENT
 
     def delete_ldap_role_mapping(self, ldap_role_mapping_id: int) -> bool:
@@ -224,12 +208,10 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/LDAPRoleMappings/{id}".format(
+        url = self.ac_url + "/LDAPRoleMappings/{id}".format(
             id=ldap_role_mapping_id
         )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def test_ldap_server_connection(
@@ -309,10 +291,8 @@ class AccessControl:
                 "userMembershipAttribute": user_membership_attribute,
             }
         )
-        relative_url = self.sast_ac + "/LDAPServers/TestConnection"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/LDAPServers/TestConnection"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == OK
 
     def get_user_entries_by_search_criteria(
@@ -328,16 +308,14 @@ class AccessControl:
             List[User]
         """
         result = []
-        relative_url = self.sast_ac + "/LDAPServers/{id}/UserEntries".format(
+        url = self.ac_url + "/LDAPServers/{id}/UserEntries".format(
             id=ldap_server_id
         )
         if username_contains_pattern:
-            relative_url += "?userNameContainsPattern={}".format(
+            url += "?userNameContainsPattern={}".format(
                 username_contains_pattern
             )
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 # We can't use construct_user because the response
@@ -366,14 +344,12 @@ class AccessControl:
             List[LDAPGroup]
         """
         result = []
-        relative_url = self.sast_ac + "/LDAPServers/{id}/GroupEntries".format(
+        url = self.ac_url + "/LDAPServers/{id}/GroupEntries".format(
             id=ldap_server_id
         )
         if name_contains_pattern:
-            relative_url += "?nameContainsPattern={}".format(name_contains_pattern)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+            url += "?nameContainsPattern={}".format(name_contains_pattern)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 LDAPGroup(name=item.get("name"), dn=item.get("dn"))
@@ -388,10 +364,8 @@ class AccessControl:
             List[LDAPServer]
         """
         result = []
-        relative_url = self.sast_ac + "/LDAPServers"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/LDAPServers"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 LDAPServer(
@@ -507,7 +481,7 @@ class AccessControl:
         Returns:
             bool
         """
-        relative_url = self.sast_ac + "/LDAPServers"
+        url = self.ac_url + "/LDAPServers"
         post_data = json.dumps(
             {
                 "password": password,
@@ -542,9 +516,7 @@ class AccessControl:
                 "userMembershipAttribute": user_membership_attribute,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == CREATED
 
     def get_ldap_server_by_id(self, ldap_server_id: int) -> LDAPServer:
@@ -557,10 +529,8 @@ class AccessControl:
             LDAPServer
         """
         result = None
-        relative_url = self.sast_ac + "/LDAPServers/{id}".format(id=ldap_server_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/LDAPServers/{id}".format(id=ldap_server_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = LDAPServer(
@@ -677,7 +647,7 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/LDAPServers/{id}".format(id=ldap_server_id)
+        url = self.ac_url + "/LDAPServers/{id}".format(id=ldap_server_id)
         put_data = json.dumps(
             {
                 "password": password,
@@ -712,9 +682,7 @@ class AccessControl:
                 "userMembershipAttribute": user_membership_attribute,
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -729,10 +697,8 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/LDAPServers/{id}".format(id=ldap_server_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/LDAPServers/{id}".format(id=ldap_server_id)
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_ldap_team_mapping(
@@ -748,17 +714,15 @@ class AccessControl:
             List[LDAPTeamMapping]
         """
         result = []
-        relative_url = self.sast_ac + "/LDAPTeamMappings"
+        url = self.ac_url + "/LDAPTeamMappings"
         optionals = []
         if ldap_server_id:
             optionals.append("ldapServerId={id}".format(id=ldap_server_id))
         if team_id:
             optionals.append("teamId={id}".format(id=team_id))
         if optionals:
-            relative_url += "?" + "&".join(optionals)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+            url += "?" + "&".join(optionals)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 LDAPTeamMapping(
@@ -791,7 +755,7 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/LDAPServers/{id}/TeamMappings".format(
+        url = self.ac_url + "/LDAPServers/{id}/TeamMappings".format(
             id=ldap_server_id
         )
         put_data = json.dumps(
@@ -801,9 +765,7 @@ class AccessControl:
                 "ldapGroupDisplayName": ldap_group_display_name,
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         return response.status_code == NO_CONTENT
 
     def delete_ldap_team_mapping(self, ldap_team_mapping_id: int) -> bool:
@@ -816,12 +778,10 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/LDAPTeamMappings/{id}".format(
+        url = self.ac_url + "/LDAPTeamMappings/{id}".format(
             id=ldap_team_mapping_id
         )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_my_profile(self) -> MyProfile:
@@ -831,10 +791,8 @@ class AccessControl:
             MyProfile
         """
         result = None
-        relative_url = self.sast_ac + "/MyProfile"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/MyProfile"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = MyProfile(
@@ -896,10 +854,8 @@ class AccessControl:
                 "localeId": locale_id,
             }
         )
-        relative_url = self.sast_ac + "/MyProfile"
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/MyProfile"
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         return response.status_code == NO_CONTENT
 
     def get_all_oidc_clients(self) -> List[OIDCClient]:
@@ -909,10 +865,8 @@ class AccessControl:
             List[OIDCClient]
         """
         result = []
-        relative_url = self.sast_ac + "/OIDCClients"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/OIDCClients"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 OIDCClient(
@@ -1067,10 +1021,8 @@ class AccessControl:
                 "clientClaimsPrefix": client_claims_prefix,
             }
         )
-        relative_url = self.sast_ac + "/OIDCClients"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/OIDCClients"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         if response.status_code == CREATED:
             result = True
         return result
@@ -1085,10 +1037,8 @@ class AccessControl:
             OIDCClient
         """
         result = None
-        relative_url = self.sast_ac + "/OIDCClients/{id}".format(id=oidc_client_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/OIDCClients/{id}".format(id=oidc_client_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = OIDCClient(
@@ -1242,10 +1192,8 @@ class AccessControl:
             }
         )
 
-        relative_url = self.sast_ac + "/OIDCClients/{id}".format(id=oidc_client_id)
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/OIDCClients/{id}".format(id=oidc_client_id)
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         return response.status_code == NO_CONTENT
 
     def delete_an_oidc_client(self, oidc_client_id: int) -> bool:
@@ -1258,10 +1206,8 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/OIDCClients/{id}".format(id=oidc_client_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/OIDCClients/{id}".format(id=oidc_client_id)
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_all_permissions(self) -> List[Permission]:
@@ -1271,10 +1217,8 @@ class AccessControl:
             List[Permission]
         """
         result = []
-        relative_url = self.sast_ac + "/Permissions"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Permissions"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 Permission(
@@ -1297,10 +1241,8 @@ class AccessControl:
             Permission
         """
         result = None
-        relative_url = self.sast_ac + "/Permissions/{id}".format(id=permission_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Permissions/{id}".format(id=permission_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = Permission(
@@ -1318,10 +1260,8 @@ class AccessControl:
             List[Role]
         """
         result = []
-        relative_url = self.sast_ac + "/Roles"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Roles"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 Role(
@@ -1383,10 +1323,8 @@ class AccessControl:
         post_data = json.dumps(
             {"name": name, "description": description, "permissionIds": permission_ids}
         )
-        relative_url = self.sast_ac + "/Roles"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Roles"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == CREATED
 
     def get_role_by_id(self, role_id: int) -> Role:
@@ -1399,10 +1337,8 @@ class AccessControl:
             Role
         """
         result = None
-        relative_url = self.sast_ac + "/Roles/{id}".format(id=role_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Roles/{id}".format(id=role_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = Role(
@@ -1432,10 +1368,8 @@ class AccessControl:
         put_data = json.dumps(
             {"name": name, "description": description, "permissionIds": permission_ids}
         )
-        relative_url = self.sast_ac + "/Roles/{id}".format(id=role_id)
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Roles/{id}".format(id=role_id)
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -1450,10 +1384,8 @@ class AccessControl:
             Boolean
         """
         result = False
-        relative_url = self.sast_ac + "/Roles/{id}".format(id=role_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Roles/{id}".format(id=role_id)
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_all_saml_identity_providers(self) -> List[SAMLIdentityProvider]:
@@ -1463,10 +1395,8 @@ class AccessControl:
             List[SAMLIdentityProvider]
         """
         result = []
-        relative_url = self.sast_ac + "/SamlIdentityProviders"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SamlIdentityProviders"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 SAMLIdentityProvider(
@@ -1525,9 +1455,10 @@ class AccessControl:
         """
         result = False
         file_name = os.path.basename(certificate_file_path)
-        relative_url = self.sast_ac + "/SamlIdentityProviders"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = self.ac_url + "/SamlIdentityProviders"
+        response = self.api_client.call_api(
+            "POST",
+            url,
             files={"CertificateFile": (file_name, open(certificate_file_path, "rb"))},
             data={
                 "Active": str(active),
@@ -1542,7 +1473,6 @@ class AccessControl:
                 "DefaultTeamId": str(default_team_id),
                 "DefaultRoleId": str(default_role_id),
             },
-            is_iam=self.is_iam,
         )
         return response.status_code == CREATED
 
@@ -1558,12 +1488,10 @@ class AccessControl:
             SAMLIdentityProvider
         """
         result = None
-        relative_url = self.sast_ac + "/SamlIdentityProviders/{id}".format(
+        url = self.ac_url + "/SamlIdentityProviders/{id}".format(
             id=saml_identity_provider_id
         )
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = SAMLIdentityProvider(
@@ -1622,11 +1550,12 @@ class AccessControl:
         """
         result = False
         file_name = os.path.basename(certificate_file)
-        relative_url = self.sast_ac + "/SamlIdentityProviders/{id}".format(
+        url = self.ac_url + "/SamlIdentityProviders/{id}".format(
             id=saml_identity_provider_id
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        response = self.api_client.call_api(
+            "PUT",
+            url,
             files={"CertificateFile": (file_name, open(certificate_file, "rb"))},
             data={
                 "Active": str(active),
@@ -1641,7 +1570,6 @@ class AccessControl:
                 "DefaultTeamId": str(default_team_id),
                 "DefaultRoleId": str(default_role_id),
             },
-            is_iam=self.is_iam,
         )
         return response.status_code == NO_CONTENT
 
@@ -1655,12 +1583,10 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/SamlIdentityProviders/{id}".format(
+        url = self.ac_url + "/SamlIdentityProviders/{id}".format(
             id=saml_identity_provider_id
         )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_details_of_saml_role_mappings(
@@ -1675,12 +1601,10 @@ class AccessControl:
             `list` of `SAMLRoleMapping`
         """
         result = []
-        relative_url = self.sast_ac + "/SamlRoleMappings"
+        url = self.ac_url + "/SamlRoleMappings"
         if saml_identity_provider_id:
-            relative_url += "?samlProviderId={}".format(saml_identity_provider_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+            url += "?samlProviderId={}".format(saml_identity_provider_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 SAMLRoleMapping(
@@ -1724,15 +1648,10 @@ class AccessControl:
                 for item in sample_role_mapping_details
             ]
         )
-        relative_url = (
-            self.sast_ac
-            + "/SamlIdentityProviders/{samlProviderId}/RoleMappings".format(
-                samlProviderId=saml_identity_provider_id
-            )
+        url = self.ac_url + "/SamlIdentityProviders/{samlProviderId}/RoleMappings".format(
+            samlProviderId=saml_identity_provider_id
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -1744,10 +1663,8 @@ class AccessControl:
             byte
         """
         result = None
-        relative_url = self.sast_ac + "/SamlServiceProvider/metadata"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SamlServiceProvider/metadata"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = response.content
         return result
@@ -1759,10 +1676,8 @@ class AccessControl:
             SAMLServiceProvider
         """
         result = None
-        relative_url = self.sast_ac + "/SamlServiceProvider"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SamlServiceProvider"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = SAMLServiceProvider(
@@ -1789,12 +1704,12 @@ class AccessControl:
         """
         result = False
         file_name = os.path.basename(certificate_file)
-        relative_url = self.sast_ac + "/SamlServiceProvider"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = self.ac_url + "/SamlServiceProvider"
+        response = self.api_client.call_api(
+            "PUT",
+            url,
             files={"CertificateFile": (file_name, open(certificate_file, "rb"))},
             data={"CertificatePassword": certificate_password, "Issuer": issuer},
-            is_iam=self.is_iam,
         )
         if response.status_code == NO_CONTENT:
             result = True
@@ -1812,12 +1727,10 @@ class AccessControl:
             List[SAMLTeamMapping]
         """
         result = []
-        relative_url = self.sast_ac + "/SamlTeamMappings"
+        url = self.ac_url + "/SamlTeamMappings"
         if saml_identity_provider_id:
-            relative_url += "?samlProviderId={}".format(saml_identity_provider_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+            url += "?samlProviderId={}".format(saml_identity_provider_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 SAMLTeamMapping(
@@ -1858,12 +1771,10 @@ class AccessControl:
                 for item in saml_team_mapping_details
             ]
         )
-        relative_url = self.sast_ac + "/SamlIdentityProviders/{id}/TeamMappings".format(
+        url = self.ac_url + "/SamlIdentityProviders/{id}/TeamMappings".format(
             id=saml_identity_provider_id
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -1875,10 +1786,8 @@ class AccessControl:
             List[ServiceProvider]
         """
         result = []
-        relative_url = self.sast_ac + "/ServiceProviders"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/ServiceProviders"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 ServiceProvider(
@@ -1898,12 +1807,10 @@ class AccessControl:
             ServiceProvider
         """
         result = None
-        relative_url = self.sast_ac + "/ServiceProviders/{id}".format(
+        url = self.ac_url + "/ServiceProviders/{id}".format(
             id=service_provider_id
         )
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = ServiceProvider(
@@ -1918,10 +1825,8 @@ class AccessControl:
             List[SMTPSetting]
         """
         result = []
-        relative_url = self.sast_ac + "/SMTPSettings"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SMTPSettings"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 SMTPSetting(
@@ -1973,10 +1878,8 @@ class AccessControl:
                 "username": username,
             }
         )
-        relative_url = self.sast_ac + "/SMTPSettings"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SMTPSettings"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == CREATED
 
     def get_smtp_settings_by_id(self, smtp_settings_id: int) -> SMTPSetting:
@@ -1989,10 +1892,8 @@ class AccessControl:
             SMTPSetting
         """
         result = None
-        relative_url = self.sast_ac + "/SMTPSettings/{id}".format(id=smtp_settings_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SMTPSettings/{id}".format(id=smtp_settings_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = SMTPSetting(
@@ -2044,10 +1945,8 @@ class AccessControl:
                 "username": username,
             }
         )
-        relative_url = self.sast_ac + "/SMTPSettings/{id}".format(id=smtp_settings_id)
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SMTPSettings/{id}".format(id=smtp_settings_id)
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         return response.status_code == NO_CONTENT
 
     def delete_smtp_settings(self, smtp_settings_id: int) -> bool:
@@ -2060,10 +1959,8 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/SMTPSettings/{id}".format(id=smtp_settings_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SMTPSettings/{id}".format(id=smtp_settings_id)
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def test_smtp_connection(
@@ -2105,10 +2002,8 @@ class AccessControl:
                 "username": username,
             }
         )
-        relative_url = self.sast_ac + "/SMTPSettings/testconnection"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SMTPSettings/testconnection"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == OK
 
     def get_all_system_locales(self) -> List[SystemLocale]:
@@ -2118,10 +2013,8 @@ class AccessControl:
             List[SystemLocale]
         """
         result = []
-        relative_url = self.sast_ac + "/SystemLocales"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/SystemLocales"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 SystemLocale(
@@ -2144,10 +2037,8 @@ class AccessControl:
             List[User]
         """
         result = []
-        relative_url = self.sast_ac + "/Teams/{id}/Users".format(id=team_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams/{id}/Users".format(id=team_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [construct_user(item) for item in response.json()]
         return result
@@ -2164,10 +2055,8 @@ class AccessControl:
         """
         result = False
         put_data = json.dumps({"userIds": user_ids})
-        relative_url = self.sast_ac + "/Teams/{teamId}/Users".format(teamId=team_id)
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams/{teamId}/Users".format(teamId=team_id)
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -2183,12 +2072,10 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/Teams/{teamId}/Users/{userId}".format(
+        url = self.ac_url + "/Teams/{teamId}/Users/{userId}".format(
             teamId=team_id, userId=user_id
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=None, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("POST", url, data=None)
         return response.status_code == NO_CONTENT
 
     def delete_a_member_from_a_team(self, team_id: int, user_id: int) -> bool:
@@ -2202,12 +2089,10 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/Teams/{teamId}/Users/{userId}".format(
+        url = self.ac_url + "/Teams/{teamId}/Users/{userId}".format(
             teamId=team_id, userId=user_id
         )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_all_teams(self) -> List[Team]:
@@ -2217,10 +2102,8 @@ class AccessControl:
             List[Team]
         """
         result = []
-        relative_url = self.sast_ac + "/Teams"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 Team(
@@ -2264,10 +2147,8 @@ class AccessControl:
         """
         result = False
         post_data = json.dumps({"name": name, "parentId": parent_id})
-        relative_url = self.sast_ac + "/Teams"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == CREATED
 
     def create_teams_recursively(self, team_full_name: str) -> List[int]:
@@ -2306,10 +2187,8 @@ class AccessControl:
             Team
         """
         result = None
-        relative_url = self.sast_ac + "/Teams/{id}".format(id=team_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams/{id}".format(id=team_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = Team(
@@ -2333,10 +2212,8 @@ class AccessControl:
         """
         result = False
         put_data = json.dumps({"name": name, "parentId": parent_id})
-        relative_url = self.sast_ac + "/Teams/{id}".format(id=team_id)
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams/{id}".format(id=team_id)
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -2351,10 +2228,8 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/Teams/{id}".format(id=team_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Teams/{id}".format(id=team_id)
+        response = self.api_client.call_api("DELETE", url)
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -2365,10 +2240,8 @@ class AccessControl:
         Returns:
             bool
         """
-        relative_url = self.sast_ac + "/TokenSigningCertificateGeneration"
-        response = self.api_client.post_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/TokenSigningCertificateGeneration"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == CREATED
 
     def upload_a_new_token_signing_certificate(
@@ -2384,10 +2257,11 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/TokenSigningCertificate"
+        url = self.ac_url + "/TokenSigningCertificate"
         file_name = os.path.basename(certificate_file_path)
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        response = self.api_client.call_api(
+            "POST",
+            url,
             files={
                 "CertificateFile": (
                     file_name,
@@ -2396,7 +2270,6 @@ class AccessControl:
                 )
             },
             data={"CertificatePassword": str(certificate_password)},
-            is_iam=self.is_iam,
         )
         return response.status_code == CREATED
 
@@ -2407,10 +2280,8 @@ class AccessControl:
             List[User]
         """
         result = []
-        relative_url = self.sast_ac + "/Users"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [construct_user(item) for item in response.json()]
         return result
@@ -2498,10 +2369,8 @@ class AccessControl:
                 "localeId": locale_id,
             }
         )
-        relative_url = self.sast_ac + "/Users"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == CREATED
 
     def get_user_by_id(self, user_id: int) -> User:
@@ -2514,10 +2383,8 @@ class AccessControl:
             User
         """
         result = None
-        relative_url = self.sast_ac + "/Users/{id}".format(id=user_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users/{id}".format(id=user_id)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = construct_user(item)
@@ -2582,10 +2449,8 @@ class AccessControl:
                 "localeId": locale_id,
             }
         )
-        relative_url = self.sast_ac + "/Users/{id}".format(id=user_id)
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users/{id}".format(id=user_id)
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -2600,10 +2465,8 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/Users/{id}".format(id=user_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users/{id}".format(id=user_id)
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def migrate_existing_user(
@@ -2675,10 +2538,8 @@ class AccessControl:
                 "localeId": locale_id,
             }
         )
-        relative_url = self.sast_ac + "/Users/migration"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/Users/migration"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         return response.status_code == CREATED
 
     def get_all_windows_domains(self) -> List[WindowsDomain]:
@@ -2688,10 +2549,8 @@ class AccessControl:
             List[WindowsDomain]
         """
         result = []
-        relative_url = self.sast_ac + "/WindowsDomains"
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/WindowsDomains"
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 WindowsDomain(
@@ -2734,10 +2593,8 @@ class AccessControl:
         post_data = json.dumps(
             {"name": name, "FullyQualifiedName": full_qualified_name}
         )
-        relative_url = self.sast_ac + "/WindowsDomains"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, is_iam=self.is_iam
-        )
+        url = self.ac_url + "/WindowsDomains"
+        response = self.api_client.call_api("POST", url, data=post_data, headers={"Content-Type": "application/json"})
         if response.status_code == CREATED:
             result = True
         return result
@@ -2752,12 +2609,10 @@ class AccessControl:
             WindowsDomain
         """
         result = None
-        relative_url = self.sast_ac + "/WindowsDomains/{id}".format(
+        url = self.ac_url + "/WindowsDomains/{id}".format(
             id=windows_domain_id
         )
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             item = response.json()
             result = WindowsDomain(
@@ -2782,12 +2637,10 @@ class AccessControl:
         """
         result = False
         put_data = json.dumps({"name": name, "fullyQualifiedName": full_qualified_name})
-        relative_url = self.sast_ac + "/WindowsDomains/{id}".format(
+        url = self.ac_url + "/WindowsDomains/{id}".format(
             id=windows_domain_id
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers={"Content-Type": "application/json"})
         return response.status_code == NO_CONTENT
 
     def delete_a_windows_domain(self, windows_domain_id: int) -> bool:
@@ -2800,12 +2653,10 @@ class AccessControl:
             bool
         """
         result = False
-        relative_url = self.sast_ac + "/WindowsDomains/{id}".format(
+        url = self.ac_url + "/WindowsDomains/{id}".format(
             id=windows_domain_id
         )
-        response = self.api_client.delete_request(
-            relatvie_url=relative_url, is_iam=self.is_iam
-        )
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == NO_CONTENT
 
     def get_windows_domain_user_entries_by_search_criteria(
@@ -2821,14 +2672,12 @@ class AccessControl:
             List[User]
         """
         result = []
-        relative_url = self.sast_ac + "/WindowsDomains/{id}/UserEntries".format(
+        url = self.ac_url + "/WindowsDomains/{id}/UserEntries".format(
             id=windows_domain_id
         )
         if contains_pattern:
-            relative_url += "?containsPattern={}".format(contains_pattern)
-        response = self.api_client.get_request(
-            relative_url=relative_url, is_iam=self.is_iam
-        )
+            url += "?containsPattern={}".format(contains_pattern)
+        response = self.api_client.call_api("GET", url)
         if response.status_code == OK:
             result = [
                 User(

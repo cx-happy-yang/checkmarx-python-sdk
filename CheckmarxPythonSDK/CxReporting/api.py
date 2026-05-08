@@ -18,6 +18,7 @@ class CxReporting(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def retrieve_the_file_of_a_specific_report(self, report_id: int) -> bytes:
         """
@@ -29,10 +30,8 @@ class CxReporting(object):
             file content (binary string)
         """
         report_content = None
-        relative_url = "/api/reports/{id}".format(id=report_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=headers
-        )
+        url = f"{self.base_url}/api/reports/{report_id}"
+        response = self.api_client.call_api("GET", url, headers=headers)
         if response.status_code == OK:
             report_content = response.content
         return report_content
@@ -52,11 +51,9 @@ class CxReporting(object):
 
         if report_request and not isinstance(report_request, CreateReportDTO):
             return report_id
-        relative_url = "/api/reports"
+        url = f"{self.base_url}/api/reports"
         data = json.dumps(report_request.to_dict())
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=data, headers=headers
-        )
+        response = self.api_client.call_api("POST", url, data=data, headers=headers)
         if response.status_code == CREATED:
             item = response.json()
             report_id = item.get("reportId")
@@ -75,10 +72,8 @@ class CxReporting(object):
                 FINISHED
         """
         report_status = None
-        relative_url = "/api/reports/{id}/status".format(id=report_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=headers
-        )
+        url = f"{self.base_url}/api/reports/{report_id}/status"
+        response = self.api_client.call_api("GET", url, headers=headers)
         if response.status_code == OK:
             item = response.json()
             report_status = item.get("reportStatus")

@@ -15,6 +15,7 @@ class IdentityProvidersApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def post_import_config(self, realm: str) -> Dict[str, Any]:
         """
@@ -29,8 +30,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/import-config
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/import-config"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/import-config"
+        response = self.api_client.call_api("POST", url)
         return response.json()
 
     def get_instances(
@@ -65,10 +66,8 @@ class IdentityProvidersApi:
             "max": max,
             "search": search,
         }
-        relative_url = f"{api_url}/{realm}/identity-provider/instances"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/identity-provider/instances"
+        response = self.api_client.call_api("GET", url, params=params)
         return [
             IdentityProviderRepresentation.from_dict(item) for item in response.json()
         ]
@@ -92,12 +91,10 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/identity-provider/instances"
+        response = self.api_client.call_api("POST", url,
             json=identity_provider_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_instance(self, realm: str, alias: str) -> IdentityProviderRepresentation:
@@ -114,8 +111,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}"
+        response = self.api_client.call_api("GET", url)
         return IdentityProviderRepresentation.from_dict(response.json())
 
     def put_instance(
@@ -139,12 +136,10 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}"
+        response = self.api_client.call_api("PUT", url,
             json=identity_provider_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def delete_instance(self, realm: str, alias: str) -> bool:
@@ -161,10 +156,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 200
 
     def get_export(self, realm: str, alias: str, format: str = None) -> bool:
@@ -183,10 +176,8 @@ class IdentityProvidersApi:
             Relative path: /{realm}/identity-provider/instances/{alias}/export
         """
         params = {"format": format}
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}/export"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/export"
+        response = self.api_client.call_api("GET", url, params=params)
         return response.status_code == 200
 
     def get_instance_management_permissions(
@@ -206,8 +197,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}/management/permissions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/management/permissions"
+        response = self.api_client.call_api("GET", url)
         return ManagementPermissionReference.from_dict(response.json())
 
     def put_instance_management_permissions(
@@ -230,12 +221,10 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}/management/permissions"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/management/permissions"
+        response = self.api_client.call_api("PUT", url,
             json=management_permission_reference.to_dict(),
-            is_iam=True,
-        )
+            )
         return ManagementPermissionReference.from_dict(response.json())
 
     def get_mapper_types(self, realm: str, alias: str) -> bool:
@@ -252,10 +241,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/mapper-types
         """
-        relative_url = (
-            f"{api_url}/{realm}/identity-provider/instances/{alias}/mapper-types"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/mapper-types"
+        response = self.api_client.call_api("GET", url)
         return response.status_code == 200
 
     def get_mappers(
@@ -274,8 +261,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/mappers
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}/mappers"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/mappers"
+        response = self.api_client.call_api("GET", url)
         return [
             IdentityProviderMapperRepresentation.from_dict(item)
             for item in response.json()
@@ -301,12 +288,10 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/mappers
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/instances/{alias}/mappers"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/mappers"
+        response = self.api_client.call_api("POST", url,
             json=identity_provider_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_mapper(
@@ -326,10 +311,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/mappers/{id}
         """
-        relative_url = (
-            f"{api_url}/{realm}/identity-provider/instances/{alias}/mappers/{id}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/mappers/{id}"
+        response = self.api_client.call_api("GET", url)
         return IdentityProviderMapperRepresentation.from_dict(response.json())
 
     def put_mapper(
@@ -354,14 +337,10 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/mappers/{id}
         """
-        relative_url = (
-            f"{api_url}/{realm}/identity-provider/instances/{alias}/mappers/{id}"
-        )
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/mappers/{id}"
+        response = self.api_client.call_api("PUT", url,
             json=identity_provider_mapper_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_mapper(self, realm: str, alias: str, id: str) -> bool:
@@ -379,12 +358,8 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/instances/{alias}/mappers/{id}
         """
-        relative_url = (
-            f"{api_url}/{realm}/identity-provider/instances/{alias}/mappers/{id}"
-        )
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/identity-provider/instances/{alias}/mappers/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_identity_provider_provider(
@@ -403,6 +378,6 @@ class IdentityProvidersApi:
         URL:
             Relative path: /{realm}/identity-provider/providers/{provider_id}
         """
-        relative_url = f"{api_url}/{realm}/identity-provider/providers/{provider_id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/identity-provider/providers/{provider_id}"
+        response = self.api_client.call_api("GET", url)
         return response.json()

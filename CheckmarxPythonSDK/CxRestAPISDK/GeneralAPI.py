@@ -21,16 +21,15 @@ class GeneralAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_server_license_data(self, api_version: str = "4.0") -> CxServerLicenseData:
         """
         Returns the CxSAST server's license data
         """
         result = None
-        relative_url = "/cxrestapi/serverLicenseData"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/serverLicenseData"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             json = response.json()
             result = CxServerLicenseData(
@@ -67,10 +66,8 @@ class GeneralAPI(object):
             }
         """
         result = None
-        relative_url = "/cxrestapi/system/version"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/system/version"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -344,10 +341,8 @@ class GeneralAPI(object):
         ]
 """
         result = None
-        relative_url = "/cxrestapi/sast/resultStates"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/resultStates"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -381,10 +376,8 @@ class GeneralAPI(object):
             "names": [item.to_dict() for item in translation_inputs],
             "permission": permission,
         }
-        relative_url = "/cxrestapi/sast/resultStates"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=post_data, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/resultStates"
+        response = self.api_client.call_api("POST", url, json=post_data, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json().get("id")
         return result
@@ -418,10 +411,8 @@ class GeneralAPI(object):
             "names": [item.to_dict() for item in translation_inputs],
             "permission": permission,
         }
-        relative_url = "/cxrestapi/sast/resultStates/{id}".format(id=state_id)
-        response = self.api_client.patch_request(
-            relative_url=relative_url, json=patch_data, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/resultStates/{state_id}"
+        response = self.api_client.call_api("PATCH", url, json=patch_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def delete_result_state(self, state_id: str, api_version: str = "4.0") -> bool:
@@ -433,10 +424,8 @@ class GeneralAPI(object):
         Returns:
             bool
         """
-        relative_url = "/cxrestapi/sast/resultStates/{id}".format(id=state_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/resultStates/{state_id}"
+        response = self.api_client.call_api("DELETE", url, headers=get_headers(api_version))
         return response.status_code == ACCEPTED
 
     def get_all_scheduled_jobs(self, api_version: str = "4.0") -> List[dict]:
@@ -450,10 +439,8 @@ class GeneralAPI(object):
             example:
             [{'projectId': 8, 'projectName': 'jvl_git', 'scanDays': ['Sunday'], 'scanTime': '12:00 上午'}]
         """
-        relative_url = "/cxrestapi/sast/scheduledJobs"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/scheduledJobs"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         return response.status_code == OK
 
     def get_user_persistence_data_for_current_user(
@@ -474,14 +461,12 @@ class GeneralAPI(object):
             if item and not isinstance(item, str):
                 raise ValueError("all member in persistence_keys should be a str")
         result = None
-        relative_url = "/cxrestapi/userPersistence?"
-        relative_url += "&".join(
+        url = f"{self.base_url}/cxrestapi/userPersistence?"
+        url += "&".join(
             ["persistenceKeys={}".format(item) for item in persistence_keys]
         )
 
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -507,11 +492,9 @@ class GeneralAPI(object):
                 raise ValueError(
                     "member in parameter persistence_items should be CxUserPersistence"
                 )
-        relative_url = "/cxrestapi/userPersistence"
+        url = f"{self.base_url}/cxrestapi/userPersistence"
         data = [item.to_dict() for item in persistence_items]
-        response = self.api_client.patch_request(
-            relative_url=relative_url, json=data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PATCH", url, json=data, headers=get_headers(api_version))
         return response.status_code == OK
 
     def get_audit_trail_for_roles(
@@ -538,12 +521,8 @@ class GeneralAPI(object):
             ]
         """
         result = None
-        relative_url = "/cxrestapi/sast/roles/auditTrail?fromDate={fromDate}&toDate={toDate}".format(
-            fromDate=from_date, toDate=to_date
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/roles/auditTrail?fromDate={from_date}&toDate={to_date}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -572,12 +551,8 @@ class GeneralAPI(object):
                 ]
         """
         result = None
-        relative_url = "/cxrestapi/sast/teams/auditTrail?fromDate={fromDate}&toDate={toDate}".format(
-            fromDate=from_date, toDate=to_date
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/teams/auditTrail?fromDate={from_date}&toDate={to_date}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -609,12 +584,8 @@ class GeneralAPI(object):
                 ]
         """
         result = None
-        relative_url = "/cxrestapi/sast/presets/auditTrail?fromDate={fromDate}&toDate={toDate}".format(
-            fromDate=from_date, toDate=to_date
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/presets/auditTrail?fromDate={from_date}&toDate={to_date}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -662,13 +633,8 @@ class GeneralAPI(object):
                 "parameter update_type should be a member of list "
                 '["ALL", "ASSIGN", "RESULT_COMMENT", "RESULT_SEVERITY", "RESULT_STATE"]'
             )
-        relative_url = (
-            "/cxrestapi/sast/results/auditTrail?updateType={updateType}&fromDate={fromDate}"
-            "&toDate={toDate}"
-        ).format(updateType=update_type, fromDate=from_date, toDate=to_date)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/results/auditTrail?updateType={update_type}&fromDate={from_date}&toDate={to_date}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result

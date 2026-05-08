@@ -39,6 +39,7 @@ class ProjectsAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_project_details(
         self,
@@ -67,16 +68,12 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/projects?showAlsoDeletedProjects={}".format(
-            show_also_deleted_projects
-        )
+        url = f"{self.base_url}/cxrestapi/projects?showAlsoDeletedProjects={show_also_deleted_projects}"
         if project_name:
-            relative_url += "&projectName={}".format(project_name)
+            url += "&projectName={}".format(project_name)
         if team_id:
-            relative_url += "&teamId={}".format(team_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+            url += "&teamId={}".format(team_id)
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [construct_cx_project(item) for item in response.json()]
         return result
@@ -108,13 +105,11 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/projects"
+        url = f"{self.base_url}/cxrestapi/projects"
         post_data = json.dumps(
             {"name": project_name, "owningTeam": team_id, "isPublic": is_public}
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
             d = response.json()
             result = CxCreateProjectResponse(
@@ -172,10 +167,8 @@ class ProjectsAPI(object):
 
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}".format(id=project_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = construct_cx_project(response.json())
         return result
@@ -206,7 +199,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}".format(id=project_id)
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}"
         if custom_fields and not isinstance(custom_fields, (list, tuple)):
             raise ValueError(
                 "parameter custom_fields should be a list of CxCustomField"
@@ -218,9 +211,7 @@ class ProjectsAPI(object):
                 "CustomFields": [item.to_dict() for item in custom_fields],
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
         # In Python http module, HTTP status ACCEPTED is 202
         return response.status_code == NO_CONTENT
 
@@ -244,11 +235,9 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}".format(id=project_id)
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}"
         patch_data = json.dumps({"name": project_name, "owningTeam": team_id})
-        response = self.api_client.patch_request(
-            relative_url=relative_url, data=patch_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PATCH", url, data=patch_data, headers=get_headers(api_version))
         # In Python http module, HTTP status ACCEPTED is 202
         return response.status_code == NO_CONTENT
 
@@ -275,13 +264,9 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}".format(id=project_id)
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}"
         delete_data = json.dumps({"deleteRunningScans": delete_running_scans})
-        response = self.api_client.delete_request(
-            relative_url=relative_url,
-            data=delete_data,
-            headers=get_headers(api_version),
-        )
+        response = self.api_client.call_api("DELETE", url, data=delete_data, headers=get_headers(api_version))
         # In Python http module, HTTP status ACCEPTED is 202
         return response.status_code == ACCEPTED
 
@@ -356,11 +341,9 @@ class ProjectsAPI(object):
 
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}/branch".format(id=project_id)
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/branch"
         post_data = json.dumps({"name": branched_project_name})
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
             a_dict = response.json()
             result = CxCreateProjectResponse(
@@ -376,10 +359,8 @@ class ProjectsAPI(object):
         self, branch_project_id: int, api_version: str = "4.0"
     ) -> str:
         result = False
-        relative_url = "/cxrestapi/projects/branch/{}".format(branch_project_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version=api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/branch/{branch_project_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version=api_version))
         if response.status_code == OK:
             item = response.json()
             result = item["status"]["id"] == 2
@@ -404,10 +385,8 @@ class ProjectsAPI(object):
 
         """
         result = None
-        relative_url = "/cxrestapi/issueTrackingSystems"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/issueTrackingSystems"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxIssueTrackingSystem(
@@ -453,12 +432,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/issueTrackingSystems/{id}/metadata".format(
-            id=issue_tracking_system_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/issueTrackingSystems/{issue_tracking_system_id}/metadata"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_list = response.json().get("projects")
             if a_list:
@@ -521,12 +496,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/excludeSettings".format(
-            id=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/excludeSettings"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxProjectExcludeSettings(
@@ -568,9 +539,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/excludeSettings".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/excludeSettings"
         put_data = json.dumps(
             {
                 "excludeFoldersPattern": (
@@ -583,9 +552,7 @@ class ProjectsAPI(object):
                 ),
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
         return response.status_code == OK
 
     def get_remote_source_settings_for_git_by_project_id(
@@ -607,12 +574,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/git".format(
-            id=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/git"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxGitSettings(
@@ -678,9 +641,7 @@ class ProjectsAPI(object):
                 "'none', 'credentials', 'PAT', 'ssh'] "
             )
 
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/git".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/git"
         post_data = json.dumps(
             {
                 "url": url,
@@ -692,9 +653,7 @@ class ProjectsAPI(object):
                 "privateKey": private_key,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_remote_source_settings_for_svn_by_project_id(
@@ -716,12 +675,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/svn".format(
-            id=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/svn"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxSVNSettings(
@@ -775,9 +730,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/svn".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/svn"
         post_data = json.dumps(
             {
                 "uri": {
@@ -792,9 +745,7 @@ class ProjectsAPI(object):
                 "privateKey": private_key,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_remote_source_settings_for_tfs_by_project_id(
@@ -816,12 +767,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/tfs".format(
-            id=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/tfs"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxTFSSettings(
@@ -868,9 +815,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/remoteSettings/tfs".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/tfs"
         post_data = json.dumps(
             {
                 "credentials": {"userName": username, "password": password},
@@ -878,9 +823,7 @@ class ProjectsAPI(object):
                 "paths": paths,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_remote_source_settings_for_custom_by_project_id(
@@ -903,14 +846,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/custom".format(
-                id=project_id
-            )
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/custom"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxCustomRemoteSourceSettings(
@@ -953,11 +890,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/custom".format(
-                id=project_id
-            )
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/custom"
         post_data = json.dumps(
             {
                 "path": path,
@@ -965,9 +898,7 @@ class ProjectsAPI(object):
                 "credentials": {"userName": username, "password": password},
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_remote_source_settings_for_shared_by_project_id(
@@ -989,14 +920,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/shared".format(
-                id=project_id
-            )
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/shared"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxSharedRemoteSourceSettingsResponse(
@@ -1036,20 +961,14 @@ class ProjectsAPI(object):
             CxError
         """
         result = False
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/shared".format(
-                id=project_id
-            )
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/shared"
         post_data = json.dumps(
             {
                 "paths": paths,
                 "credentials": {"userName": username, "password": password},
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == NO_CONTENT:
             result = True
         return result
@@ -1073,14 +992,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/perforce".format(
-                id=project_id
-            )
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/perforce"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxPerforceSettings(
@@ -1131,11 +1044,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/perforce".format(
-                id=project_id
-            )
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/perforce"
         post_data = json.dumps(
             {
                 "credentials": {
@@ -1147,9 +1056,7 @@ class ProjectsAPI(object):
                 "browseMode": browse_mode,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_remote_source_setting_to_git_using_ssh(
@@ -1179,20 +1086,11 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/git/ssh".format(
-                id=project_id
-            )
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/git/ssh"
         file_name = os.path.basename(private_key_file_path)
         with open(private_key_file_path, "rb") as a_file:
             file_content = a_file.read()
-        response = self.api_client.post_request(
-            relative_url=relative_url,
-            data={"url": url, "branch": branch},
-            files={"privateKey": (file_name, file_content, "text/plain")},
-            headers=get_headers(api_version),
-        )
+        response = self.api_client.call_api("POST", url, data={"url": url, "branch": branch}, files={"privateKey": (file_name, file_content, "text/plain")}, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_remote_source_setting_to_svn_using_ssh(
@@ -1226,24 +1124,9 @@ class ProjectsAPI(object):
             CxError
         """
         # TODO check, when have svn + ssh
-        relative_url = (
-            "/cxrestapi/projects/{id}/sourceCode/remoteSettings/svn/ssh".format(
-                id=project_id
-            )
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/svn/ssh"
         file_name = os.path.basename(private_key_file_path)
-        response = self.api_client.post_request(
-            relative_url=relative_url,
-            data={"absoluteUrl": absolute_url, "port": str(port), "paths": str(paths)},
-            files={
-                "privateKey": (
-                    file_name,
-                    open(private_key_file_path, "rb"),
-                    "text/plain",
-                )
-            },
-            headers=get_headers(api_version),
-        )
+        response = self.api_client.call_api("POST", url, data={"absoluteUrl": absolute_url, "port": str(port), "paths": str(paths)}, files={"privateKey": (file_name, open(private_key_file_path, "rb"), "text/plain")}, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def upload_source_code_zip_file(
@@ -1265,21 +1148,9 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}/sourceCode/attachments".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/attachments"
         file_name = os.path.basename(zip_file_path)
-        response = self.api_client.post_request(
-            relative_url=relative_url,
-            files={
-                "zippedSource": (
-                    file_name,
-                    open(zip_file_path, "rb"),
-                    "application/zip",
-                )
-            },
-            headers=get_headers(api_version),
-        )
+        response = self.api_client.call_api("POST", url, files={"zippedSource": (file_name, open(zip_file_path, "rb"), "application/zip")}, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_data_retention_settings_by_project_id(
@@ -1301,13 +1172,9 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/projects/{id}/dataRetentionSettings".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/dataRetentionSettings"
         post_data = json.dumps({"scansToKeep": scans_to_keep})
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_issue_tracking_system_as_jira_by_id(
@@ -1340,9 +1207,7 @@ class ProjectsAPI(object):
             CxError
         """
         # TODO, check when have jira
-        relative_url = "/cxrestapi/projects/{id}/issueTrackingSettings/jira".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/issueTrackingSettings/jira"
         post_data = json.dumps(
             {
                 "issueTrackingSystemId": issue_tracking_system_id,
@@ -1356,9 +1221,7 @@ class ProjectsAPI(object):
                 },
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_all_preset_details(self, api_version: str = "1.0") -> List[CxPreset]:
@@ -1378,10 +1241,8 @@ class ProjectsAPI(object):
 
         """
         result = []
-        relative_url = "/cxrestapi/sast/presets"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/presets"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxPreset(
@@ -1429,10 +1290,8 @@ class ProjectsAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/presets/{id}".format(id=preset_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/presets/{preset_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxPreset(
@@ -1476,9 +1335,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/sast/project/{id}/queueSettings".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/sast/project/{project_id}/queueSettings"
         post_data = json.dumps(
             {
                 "queueKeepMode": queue_keep_mode,
@@ -1487,9 +1344,7 @@ class ProjectsAPI(object):
                 "identicalCodeOnly": identical_code_only,
             }
         )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def update_project_queue_setting(
@@ -1521,9 +1376,7 @@ class ProjectsAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/sast/project/{id}/queueSettings".format(
-            id=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/sast/project/{project_id}/queueSettings"
         put_data = json.dumps(
             {
                 "queueKeepMode": queue_keep_mode,
@@ -1532,9 +1385,7 @@ class ProjectsAPI(object):
                 "identicalCodeOnly": identical_code_only,
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def set_project_next_scheduled_scan_to_be_excluded_from_no_code_change_detection(
@@ -1549,12 +1400,8 @@ class ProjectsAPI(object):
         Returns:
 
         """
-        relative_url = "/cxrestapi/projects/{id}/forceScanOnNoCodeChanges".format(
-            id=project_id
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=None, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/forceScanOnNoCodeChanges"
+        response = self.api_client.call_api("POST", url, data=None, headers=get_headers(api_version))
         return response.status_code == OK
 
     def precheck_team(self, team_id: int, api_version: str = "1.0") -> dict:
@@ -1573,10 +1420,8 @@ class ProjectsAPI(object):
             }
         """
         result = None
-        relative_url = "/cxrestapi/projects/precheck/teams/{id}".format(id=team_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/precheck/teams/{team_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -1603,10 +1448,8 @@ class ProjectsAPI(object):
             }
         """
         result = None
-        relative_url = "/cxrestapi/projects/branch/{id}".format(id=project_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/branch/{project_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result
@@ -1623,12 +1466,8 @@ class ProjectsAPI(object):
         Returns:
             bool
         """
-        relative_url = "/cxrestapi/projects/{id}/forceScanOnNoCodeChanges".format(
-            id=project_id
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url, data={}, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/forceScanOnNoCodeChanges"
+        response = self.api_client.call_api("POST", url, data={}, headers=get_headers(api_version))
         return response.status_code == OK
 
     def get_path_filter(self, project_id: int, api_version: str = "5.0") -> str:
@@ -1642,12 +1481,8 @@ class ProjectsAPI(object):
             str
         """
         result = None
-        relative_url = "/cxrestapi/projects/{projectId}/sourceCode/pathFilter".format(
-            projectId=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/pathFilter"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result.get("pathFilter")
@@ -1665,13 +1500,9 @@ class ProjectsAPI(object):
         Returns:
             bool
         """
-        relative_url = "/cxrestapi/projects/{projectId}/sourceCode/pathFilter".format(
-            projectId=project_id
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/pathFilter"
         data = json.dumps({"pathFilter": path_filter})
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PUT", url, data=data, headers=get_headers(api_version))
         return response.status_code == OK
 
     def get_project_validity_for_running_incremental_scan(
@@ -1696,12 +1527,8 @@ class ProjectsAPI(object):
             }
         """
         result = None
-        relative_url = "/cxrestapi/projects/{id}/incrementalScanValidityStatus".format(
-            id=project_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/projects/{project_id}/incrementalScanValidityStatus"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = response.json()
         return result

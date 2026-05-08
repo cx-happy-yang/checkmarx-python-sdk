@@ -14,6 +14,7 @@ class RolesApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_client_roles(
         self,
@@ -47,10 +48,8 @@ class RolesApi:
             "max": max,
             "search": search,
         }
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/roles"
+        response = self.api_client.call_api("GET", url, params=params)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def post_client_roles(
@@ -70,10 +69,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=role_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/roles"
+        response = self.api_client.call_api("POST", url, json=role_representation.to_dict())
         return response.status_code == 201
 
     def get_client_role(
@@ -93,8 +90,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}"
+        response = self.api_client.call_api("GET", url)
         return RoleRepresentation.from_dict(response.json())
 
     def put_client_role(
@@ -119,10 +116,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}"
-        response = self.api_client.put_request(
-            relative_url=relative_url, json=role_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}"
+        response = self.api_client.call_api("PUT", url, json=role_representation.to_dict())
         return response.status_code == 204
 
     def delete_client_role(self, realm: str, id: str, role_name: str) -> bool:
@@ -140,10 +135,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_client_role_composites(
@@ -163,8 +156,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/composites
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}/composites"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/composites"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def post_client_role_composites(
@@ -189,15 +182,13 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/composites
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}/composites"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/composites"
+        response = self.api_client.call_api("POST", url,
             json=[
                 role_representation.to_dict()
                 for role_representation in role_representations
             ],
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_client_role_composites(
@@ -222,15 +213,13 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/composites
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}/composites"
-        response = self.api_client.delete_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/composites"
+        response = self.api_client.call_api("DELETE", url,
             json=[
                 role_representation.to_dict()
                 for role_representation in role_representations
             ],
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def get_client_role_composites_client(
@@ -251,8 +240,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/composites/clients/{clientUuid}
         """
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}/composites/clients/{client_uuid}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/composites/clients/{client_uuid}"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_client_role_composites_realm(
@@ -272,10 +261,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/composites/realm
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/roles/{role_name}/composites/realm"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/composites/realm"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_client_role_groups(
@@ -309,10 +296,8 @@ class RolesApi:
             "first": first,
             "max": max,
         }
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}/groups"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/groups"
+        response = self.api_client.call_api("GET", url, params=params)
         return [GroupRepresentation.from_dict(item) for item in response.json()]
 
     def get_client_role_management_permissions(
@@ -332,10 +317,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/management/permissions
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/roles/{role_name}/management/permissions"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/management/permissions"
+        response = self.api_client.call_api("GET", url)
         return ManagementPermissionReference.from_dict(response.json())
 
     def put_client_role_management_permissions(
@@ -360,14 +343,10 @@ class RolesApi:
         URL:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/management/permissions
         """
-        relative_url = (
-            f"{api_url}/{realm}/clients/{id}/roles/{role_name}/management/permissions"
-        )
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/management/permissions"
+        response = self.api_client.call_api("PUT", url,
             json=management_permission_reference.to_dict(),
-            is_iam=True,
-        )
+            )
         return ManagementPermissionReference.from_dict(response.json())
 
     def get_client_role_users(
@@ -390,10 +369,8 @@ class RolesApi:
             Relative path: /{realm}/clients/{id}/roles/{role_name}/users
         """
         params = {"first": first, "max": max}
-        relative_url = f"{api_url}/{realm}/clients/{id}/roles/{role_name}/users"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients/{id}/roles/{role_name}/users"
+        response = self.api_client.call_api("GET", url, params=params)
         return [UserRepresentation.from_dict(item) for item in response.json()]
 
     def get_roles_by_realm(
@@ -426,10 +403,8 @@ class RolesApi:
             "max": max,
             "search": search,
         }
-        relative_url = f"{api_url}/{realm}/roles"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles"
+        response = self.api_client.call_api("GET", url, params=params)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def post_roles_by_realm(
@@ -448,10 +423,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles
         """
-        relative_url = f"{api_url}/{realm}/roles"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=role_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles"
+        response = self.api_client.call_api("POST", url, json=role_representation.to_dict())
         return response.status_code == 201
 
     def get_role_by_realm_by_role_name(
@@ -470,8 +443,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/roles/{role_name}"
+        response = self.api_client.call_api("GET", url)
         return RoleRepresentation.from_dict(response.json())
 
     def put_role_by_realm_by_role_name(
@@ -491,10 +464,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}"
-        response = self.api_client.put_request(
-            relative_url=relative_url, json=role_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles/{role_name}"
+        response = self.api_client.call_api("PUT", url, json=role_representation.to_dict())
         return response.status_code == 204
 
     def delete_role_by_realm_by_role_name(self, realm: str, role_name: str) -> bool:
@@ -511,10 +482,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles/{role_name}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_role_composites_by_realm_by_role_name(
@@ -533,8 +502,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/composites
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/composites"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/roles/{role_name}/composites"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def post_role_composites_by_realm_by_role_name(
@@ -554,10 +523,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/composites
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/composites"
-        response = self.api_client.post_request(
-            relative_url=relative_url, json=role_representation.to_dict(), is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles/{role_name}/composites"
+        response = self.api_client.call_api("POST", url, json=role_representation.to_dict())
         return response.status_code == 201
 
     def delete_role_composites_by_realm_by_role_name(
@@ -576,10 +543,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/composites
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/composites"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles/{role_name}/composites"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_role_composites_client_by_realm_by_role_name_by_client_uuid(
@@ -599,10 +564,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/composites/clients/{clientUuid}
         """
-        relative_url = (
-            f"{api_url}/{realm}/roles/{role_name}/composites/clients/{client_uuid}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/roles/{role_name}/composites/clients/{client_uuid}"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_role_composites_realm_by_realm_by_role_name(
@@ -621,8 +584,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/composites/realm
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/composites/realm"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/roles/{role_name}/composites/realm"
+        response = self.api_client.call_api("GET", url)
         return [RoleRepresentation.from_dict(item) for item in response.json()]
 
     def get_role_groups_by_realm_by_role_name(
@@ -654,10 +617,8 @@ class RolesApi:
             "first": first,
             "max": max,
         }
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/groups"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles/{role_name}/groups"
+        response = self.api_client.call_api("GET", url, params=params)
         return [GroupRepresentation.from_dict(item) for item in response.json()]
 
     def get_role_management_permissions_by_realm_by_role_name(
@@ -676,8 +637,8 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/management/permissions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/roles/{role_name}/management/permissions"
+        response = self.api_client.call_api("GET", url)
         return ManagementPermissionReference.from_dict(response.json())
 
     def put_role_management_permissions_by_realm_by_role_name(
@@ -700,12 +661,10 @@ class RolesApi:
         URL:
             Relative path: /{realm}/roles/{role_name}/management/permissions
         """
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/management/permissions"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/roles/{role_name}/management/permissions"
+        response = self.api_client.call_api("PUT", url,
             json=management_permission_reference.to_dict(),
-            is_iam=True,
-        )
+            )
         return ManagementPermissionReference.from_dict(response.json())
 
     def get_role_users_by_realm_by_role_name(
@@ -731,8 +690,6 @@ class RolesApi:
             Relative path: /{realm}/roles/{role_name}/users
         """
         params = {"first": first, "max": max}
-        relative_url = f"{api_url}/{realm}/roles/{role_name}/users"
-        response = self.api_client.get_request(
-            relative_url=relative_url, params=params, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/roles/{role_name}/users"
+        response = self.api_client.call_api("GET", url, params=params)
         return [UserRepresentation.from_dict(item) for item in response.json()]

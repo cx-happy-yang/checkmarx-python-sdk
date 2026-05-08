@@ -54,6 +54,7 @@ class EnginesAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_engine_server_details(
         self, api_version: str = "5.0"
@@ -72,10 +73,8 @@ class EnginesAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/engineServers"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/engineServers"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [construct_engine_server(item) for item in response.json()]
         return result
@@ -138,7 +137,7 @@ class EnginesAPI(object):
 
         post_data = json.dumps(
             {
-                "dedications": [item.to_dict() for item in dedications],
+                "dedications": [item.to_dict() for item in dedications] if dedications else [],
                 "name": name,
                 "uri": uri,
                 "minLoc": min_loc,
@@ -147,10 +146,8 @@ class EnginesAPI(object):
                 "maxScans": max_scans,
             }
         )
-        relative_url = "/cxrestapi/sast/engineServers"
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/engineServers"
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
             a_dict = response.json()
             result = CxEngineServer(
@@ -180,10 +177,8 @@ class EnginesAPI(object):
             NotFoundError
             CxError
         """
-        relative_url = "/cxrestapi/sast/engineServers/{id}".format(id=engine_id)
-        response = self.api_client.delete_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/engineServers/{engine_id}"
+        response = self.api_client.call_api("DELETE", url, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_engine_details(
@@ -205,10 +200,8 @@ class EnginesAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/engineServers/{id}".format(id=engine_id)
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/engineServers/{engine_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             item = response.json()
             result = construct_engine_server(item)
@@ -261,10 +254,10 @@ class EnginesAPI(object):
                     raise ValueError(
                         "member of dedications should be CxEngineDedication"
                     )
-        relative_url = "/cxrestapi/sast/engineServers/{id}".format(id=engine_id)
+        url = f"{self.base_url}/cxrestapi/sast/engineServers/{engine_id}"
         put_data = json.dumps(
             {
-                "dedications": [item.to_dict() for item in dedications],
+                "dedications": [item.to_dict() for item in dedications] if dedications else [],
                 "name": name,
                 "uri": uri,
                 "minLoc": min_loc,
@@ -273,9 +266,7 @@ class EnginesAPI(object):
                 "maxScans": max_scans,
             }
         )
-        response = self.api_client.put_request(
-            relative_url=relative_url, data=put_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxEngineServer(
@@ -330,7 +321,7 @@ class EnginesAPI(object):
                     raise ValueError(
                         "member of dedications should be CxEngineDedication"
                     )
-        relative_url = "/cxrestapi/sast/engineServers/{id}".format(id=engine_id)
+        url = f"{self.base_url}/cxrestapi/sast/engineServers/{engine_id}"
         data = {}
         if name:
             data.update({"name": name})
@@ -347,9 +338,7 @@ class EnginesAPI(object):
         if dedications:
             data.update({"dedications": [item.to_dict() for item in dedications]})
         patch_data = json.dumps(data)
-        response = self.api_client.patch_request(
-            relative_url=relative_url, data=patch_data, headers=get_headers(api_version)
-        )
+        response = self.api_client.call_api("PATCH", url, data=patch_data, headers=get_headers(api_version))
         return response.status_code == NO_CONTENT
 
     def get_all_engine_configurations(
@@ -371,10 +360,8 @@ class EnginesAPI(object):
 
         """
         result = []
-        relative_url = "/cxrestapi/sast/engineConfigurations"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/engineConfigurations"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             result = [
                 CxEngineConfiguration(
@@ -418,12 +405,8 @@ class EnginesAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/sast/engineConfigurations/{id}".format(
-            id=configuration_id
-        )
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers(api_version)
-        )
+        url = f"{self.base_url}/cxrestapi/sast/engineConfigurations/{configuration_id}"
+        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
             result = CxEngineConfiguration(

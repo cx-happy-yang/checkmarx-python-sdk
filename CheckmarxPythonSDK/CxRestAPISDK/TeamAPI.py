@@ -16,6 +16,7 @@ class TeamAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_teams(self) -> List[CxTeam]:
         """
@@ -30,10 +31,8 @@ class TeamAPI(object):
             CxError
         """
         result = []
-        relative_url = "/cxrestapi/auth/teams"
-        response = self.api_client.get_request(
-            relative_url=relative_url, headers=get_headers()
-        )
+        url = f"{self.base_url}/cxrestapi/auth/teams"
+        response = self.api_client.call_api("GET", url, headers=get_headers())
         if response.status_code == OK:
             result = [
                 CxTeam(
@@ -105,11 +104,9 @@ class TeamAPI(object):
             CxError
         """
         result = None
-        relative_url = "/cxrestapi/auth/teams"
+        url = f"{self.base_url}/cxrestapi/auth/teams"
         post_data = json.dumps({"name": team_name, "parentId": parent_id})
-        response = self.api_client.post_request(
-            relative_url=relative_url, data=post_data, headers=get_headers()
-        )
+        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers())
         if response.status_code == CREATED:
             # The create team API returns the location of the new team
             # in the Location header. E.g.: /cxrestapi/auth/Teams/8

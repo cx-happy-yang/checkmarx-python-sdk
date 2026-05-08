@@ -14,6 +14,7 @@ class ClientInitialAccessApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_clients_initial_access(
         self, realm: str
@@ -29,8 +30,8 @@ class ClientInitialAccessApi:
         URL:
             Relative path: /{realm}/clients-initial-access
         """
-        relative_url = f"{api_url}/{realm}/clients-initial-access"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/clients-initial-access"
+        response = self.api_client.call_api("GET", url)
         return [
             ClientInitialAccessPresentation.from_dict(item) for item in response.json()
         ]
@@ -54,12 +55,10 @@ class ClientInitialAccessApi:
         URL:
             Relative path: /{realm}/clients-initial-access
         """
-        relative_url = f"{api_url}/{realm}/clients-initial-access"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/clients-initial-access"
+        response = self.api_client.call_api("POST", url,
             json=client_initial_access_create_presentation.to_dict(),
-            is_iam=True,
-        )
+            )
         return ClientInitialAccessPresentation.from_dict(response.json())
 
     def delete_clients_initial_acces(self, realm: str, id: str) -> bool:
@@ -75,8 +74,6 @@ class ClientInitialAccessApi:
         URL:
             Relative path: /{realm}/clients-initial-access/{id}
         """
-        relative_url = f"{api_url}/{realm}/clients-initial-access/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/clients-initial-access/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204

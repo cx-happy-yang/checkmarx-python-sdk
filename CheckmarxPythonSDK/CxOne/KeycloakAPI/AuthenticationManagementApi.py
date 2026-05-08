@@ -24,6 +24,7 @@ class AuthenticationManagementApi:
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = f"{api_client.configuration.iam_base_url.rstrip('/')}{api_url}"
 
     def get_authenticator_providers(self, realm: str) -> List[Dict[str, Any]]:
         """
@@ -38,8 +39,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/authenticator-providers
         """
-        relative_url = f"{api_url}/{realm}/authentication/authenticator-providers"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/authenticator-providers"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def get_client_authenticator_providers(self, realm: str) -> List[Dict[str, Any]]:
@@ -55,10 +56,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/client-authenticator-providers
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/client-authenticator-providers"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/client-authenticator-providers"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def post_authentication_config(
@@ -79,12 +78,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/config
         """
-        relative_url = f"{api_url}/{realm}/authentication/config"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/config"
+        response = self.api_client.call_api("POST", url,
             json=authenticator_config_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_config_description(
@@ -103,10 +100,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/config-description/{providerId}
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/config-description/{provider_id}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/config-description/{provider_id}"
+        response = self.api_client.call_api("GET", url)
         return AuthenticatorConfigInfoRepresentation.from_dict(response.json())
 
     def get_authentication_config(
@@ -125,8 +120,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/config/{id}
         """
-        relative_url = f"{api_url}/{realm}/authentication/config/{id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/config/{id}"
+        response = self.api_client.call_api("GET", url)
         return AuthenticatorConfigRepresentation.from_dict(response.json())
 
     def put_authentication_config(
@@ -149,12 +144,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/config/{id}
         """
-        relative_url = f"{api_url}/{realm}/authentication/config/{id}"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/config/{id}"
+        response = self.api_client.call_api("PUT", url,
             json=authenticator_config_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_config(self, realm: str, id: str) -> bool:
@@ -171,10 +164,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/config/{id}
         """
-        relative_url = f"{api_url}/{realm}/authentication/config/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/authentication/config/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_executions(
@@ -195,12 +186,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions
         """
-        relative_url = f"{api_url}/{realm}/authentication/executions"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/executions"
+        response = self.api_client.call_api("POST", url,
             json=authentication_execution_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_execution(self, realm: str, execution_id: str) -> bool:
@@ -217,8 +206,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions/{executionId}
         """
-        relative_url = f"{api_url}/{realm}/authentication/executions/{execution_id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/executions/{execution_id}"
+        response = self.api_client.call_api("GET", url)
         return response.status_code == 200
 
     def delete_execution(self, realm: str, execution_id: str) -> bool:
@@ -235,10 +224,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions/{executionId}
         """
-        relative_url = f"{api_url}/{realm}/authentication/executions/{execution_id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/authentication/executions/{execution_id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_execution_config(
@@ -261,14 +248,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions/{executionId}/config
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/executions/{execution_id}/config"
-        )
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/executions/{execution_id}/config"
+        response = self.api_client.call_api("POST", url,
             json=authenticator_config_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def get_execution_config(
@@ -288,10 +271,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions/{executionId}/config/{id}
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/executions/{execution_id}/config/{id}"
-        )
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/executions/{execution_id}/config/{id}"
+        response = self.api_client.call_api("GET", url)
         return AuthenticatorConfigRepresentation.from_dict(response.json())
 
     def post_execution_lower_priority(self, realm: str, execution_id: str) -> bool:
@@ -308,10 +289,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions/{executionId}/lower-priority
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/executions/{execution_id}/lower-priority"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/executions/{execution_id}/lower-priority"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def post_execution_raise_priority(self, realm: str, execution_id: str) -> bool:
@@ -328,10 +307,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/executions/{executionId}/raise-priority
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/executions/{execution_id}/raise-priority"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/executions/{execution_id}/raise-priority"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def get_flows(self, realm: str) -> List[AuthenticationFlowRepresentation]:
@@ -347,8 +324,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/flows"
+        response = self.api_client.call_api("GET", url)
         return [
             AuthenticationFlowRepresentation.from_dict(item) for item in response.json()
         ]
@@ -371,12 +348,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows"
-        response = self.api_client.post_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/flows"
+        response = self.api_client.call_api("POST", url,
             json=authentication_flow_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def post_copy(self, realm: str, flow_alias: str) -> bool:
@@ -394,8 +369,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{flowAlias}/copy
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows/{flow_alias}/copy"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/flows/{flow_alias}/copy"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 200
 
     def get_executions(self, realm: str, flow_alias: str) -> bool:
@@ -412,8 +387,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{flowAlias}/executions
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows/{flow_alias}/executions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/flows/{flow_alias}/executions"
+        response = self.api_client.call_api("GET", url)
         return response.status_code == 200
 
     def put_executions(
@@ -436,12 +411,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{flowAlias}/executions
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows/{flow_alias}/executions"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/flows/{flow_alias}/executions"
+        response = self.api_client.call_api("PUT", url,
             json=authentication_execution_info_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def post_execution(self, realm: str, flow_alias: str) -> bool:
@@ -458,10 +431,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{flowAlias}/executions/execution
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/flows/{flow_alias}/executions/execution"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/flows/{flow_alias}/executions/execution"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 200
 
     def post_flow(self, realm: str, flow_alias: str) -> bool:
@@ -478,10 +449,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{flowAlias}/executions/flow
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/flows/{flow_alias}/executions/flow"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/flows/{flow_alias}/executions/flow"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 200
 
     def get_flow(self, realm: str, id: str) -> AuthenticationFlowRepresentation:
@@ -498,8 +467,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{id}
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows/{id}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/flows/{id}"
+        response = self.api_client.call_api("GET", url)
         return AuthenticationFlowRepresentation.from_dict(response.json())
 
     def put_flow(
@@ -522,12 +491,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{id}
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows/{id}"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/flows/{id}"
+        response = self.api_client.call_api("PUT", url,
             json=authentication_flow_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 200
 
     def delete_flow(self, realm: str, id: str) -> bool:
@@ -544,10 +511,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/flows/{id}
         """
-        relative_url = f"{api_url}/{realm}/authentication/flows/{id}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/authentication/flows/{id}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def get_form_action_providers(self, realm: str) -> List[Dict[str, Any]]:
@@ -563,8 +528,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/form-action-providers
         """
-        relative_url = f"{api_url}/{realm}/authentication/form-action-providers"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/form-action-providers"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def get_form_providers(self, realm: str) -> List[Dict[str, Any]]:
@@ -580,8 +545,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/form-providers
         """
-        relative_url = f"{api_url}/{realm}/authentication/form-providers"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/form-providers"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def get_per_client_config_description(self, realm: str) -> Dict[str, Any]:
@@ -597,8 +562,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/per-client-config-description
         """
-        relative_url = f"{api_url}/{realm}/authentication/per-client-config-description"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/per-client-config-description"
+        response = self.api_client.call_api("GET", url)
         return response.json()
 
     def post_register_required_action(self, realm: str) -> bool:
@@ -614,8 +579,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/register-required-action
         """
-        relative_url = f"{api_url}/{realm}/authentication/register-required-action"
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/register-required-action"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def get_required_actions(
@@ -633,8 +598,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/required-actions
         """
-        relative_url = f"{api_url}/{realm}/authentication/required-actions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/required-actions"
+        response = self.api_client.call_api("GET", url)
         return [
             RequiredActionProviderRepresentation.from_dict(item)
             for item in response.json()
@@ -656,8 +621,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/required-actions/{alias}
         """
-        relative_url = f"{api_url}/{realm}/authentication/required-actions/{alias}"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/required-actions/{alias}"
+        response = self.api_client.call_api("GET", url)
         return RequiredActionProviderRepresentation.from_dict(response.json())
 
     def put_required_action(
@@ -680,12 +645,10 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/required-actions/{alias}
         """
-        relative_url = f"{api_url}/{realm}/authentication/required-actions/{alias}"
-        response = self.api_client.put_request(
-            relative_url=relative_url,
+        url = f"{self.base_url}/{realm}/authentication/required-actions/{alias}"
+        response = self.api_client.call_api("PUT", url,
             json=required_action_provider_representation.to_dict(),
-            is_iam=True,
-        )
+            )
         return response.status_code == 204
 
     def delete_required_action(self, realm: str, alias: str) -> bool:
@@ -702,10 +665,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/required-actions/{alias}
         """
-        relative_url = f"{api_url}/{realm}/authentication/required-actions/{alias}"
-        response = self.api_client.delete_request(
-            relative_url=relative_url, is_iam=True
-        )
+        url = f"{self.base_url}/{realm}/authentication/required-actions/{alias}"
+        response = self.api_client.call_api("DELETE", url)
         return response.status_code == 204
 
     def post_required_action_lower_priority(self, realm: str, alias: str) -> bool:
@@ -722,10 +683,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/required-actions/{alias}/lower-priority
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/required-actions/{alias}/lower-priority"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/required-actions/{alias}/lower-priority"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def post_required_action_raise_priority(self, realm: str, alias: str) -> bool:
@@ -742,10 +701,8 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/required-actions/{alias}/raise-priority
         """
-        relative_url = (
-            f"{api_url}/{realm}/authentication/required-actions/{alias}/raise-priority"
-        )
-        response = self.api_client.post_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/required-actions/{alias}/raise-priority"
+        response = self.api_client.call_api("POST", url)
         return response.status_code == 201
 
     def get_unregistered_required_actions(self, realm: str) -> List[str]:
@@ -761,6 +718,6 @@ class AuthenticationManagementApi:
         URL:
             Relative path: /{realm}/authentication/unregistered-required-actions
         """
-        relative_url = f"{api_url}/{realm}/authentication/unregistered-required-actions"
-        response = self.api_client.get_request(relative_url=relative_url, is_iam=True)
+        url = f"{self.base_url}/{realm}/authentication/unregistered-required-actions"
+        response = self.api_client.call_api("GET", url)
         return response.json()
