@@ -29,7 +29,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
     def create_new_preset(self, query_ids: List[str], name: str) -> dict:
@@ -72,21 +72,21 @@ class CxPortalWebService(object):
         response = self.suds_client.execute(
             "CreateNewPreset", sessionId="0", presrt=cx_preset_detail
         )
-        preset = response.preset
+        preset = getattr(response, "preset", None)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "preset": (
                 {
-                    "queryIds": preset["queryIds"]["long"],
-                    "id": preset["id"],
-                    "name": preset["name"],
-                    "owningteam": preset["owningteam"],
-                    "isPublic": preset["isPublic"],
-                    "owner": preset["owner"],
-                    "isUserAllowToUpdate": preset["isUserAllowToUpdate"],
-                    "isUserAllowToDelete": preset["isUserAllowToDelete"],
-                    "IsDuplicate": preset["IsDuplicate"],
+                    "queryIds": getattr(getattr(preset, "queryIds", None), "long", []),
+                    "id": preset.id,
+                    "name": preset.name,
+                    "owningteam": preset.owningteam,
+                    "isPublic": preset.isPublic,
+                    "owner": getattr(preset, "owner", None),
+                    "isUserAllowToUpdate": preset.isUserAllowToUpdate,
+                    "isUserAllowToDelete": preset.isUserAllowToDelete,
+                    "IsDuplicate": preset.IsDuplicate,
                 }
                 if preset
                 else None
@@ -294,7 +294,7 @@ class CxPortalWebService(object):
 
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "ID": response["ID"],
         }
 
@@ -310,7 +310,7 @@ class CxPortalWebService(object):
         response = self.suds_client.execute("DeletePreset", sessionId="0", id=preset_id)
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
     def delete_project(self, project_id: int) -> dict:
@@ -327,7 +327,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
     def delete_projects(self, project_ids: List[int], flag: str = "None") -> dict:
@@ -351,7 +351,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "Flags": response["Flags"],
             "IsConfirmation": response["IsConfirmation"],
             "NumOfDeletedProjects": response["NumOfDeletedProjects"],
@@ -372,8 +372,8 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
-            "OverridenCorpQueryNames": response["OverridenCorpQueryNames"]["string"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
+            "OverridenCorpQueryNames": getattr(response["OverridenCorpQueryNames"], "string", []),
             "Preset": response["Preset"],
         }
 
@@ -393,8 +393,8 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
-            "Queries": response["Queries"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
+            "Queries": getattr(response, "Queries", None),
         }
 
     def get_associated_group_list(self) -> dict:
@@ -420,7 +420,7 @@ class CxPortalWebService(object):
         group_list = response.GroupList
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "GroupList": (
                 [
                     {
@@ -428,7 +428,7 @@ class CxPortalWebService(object):
                         "GroupName": item["GroupName"],
                         "Guid": item["Guid"],
                         "ID": item["ID"],
-                        "Path": item["Path"],
+                        "Path": getattr(item, "Path", None),
                         "Type": item["Type"],
                     }
                     for item in group_list.Group
@@ -454,9 +454,15 @@ class CxPortalWebService(object):
             oldScanId=old_scan_id,
             newScanId=new_scan_id,
         )
+        results_obj = getattr(response, "Results", None)
+        items = (
+            getattr(results_obj, "CxWSSingleResultCompareData", [])
+            if results_obj is not None
+            else []
+        )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "Results": [
                 {
                     "QueryId": item.QueryId,
@@ -483,7 +489,7 @@ class CxPortalWebService(object):
                     "ComparedToScanPathId": item.ComparedToScanPathId,
                     "QueryName": item.QueryName,
                 }
-                for item in response["Results"]["CxWSSingleResultCompareData"]
+                for item in items
             ],
         }
 
@@ -501,7 +507,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "requestId": response["requestId"],
             "importQueryStatus": response["importQueryStatus"],
         }
@@ -545,12 +551,12 @@ class CxPortalWebService(object):
         path = response.Path
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "Path": (
                 {
-                    "AssignedUser": path["AssignedUser"],
-                    "Comment": path["Comment"],
-                    "Nodes": path["Nodes"],
+                    "AssignedUser": getattr(path, "AssignedUser", None),
+                    "Comment": getattr(path, "Comment", None),
+                    "Nodes": getattr(path, "Nodes", None),
                     "PathId": path["PathId"],
                     "Severity": path["Severity"],
                     "SimilarityId": path["SimilarityId"],
@@ -656,7 +662,7 @@ class CxPortalWebService(object):
         categories = response.QueriesCategories.CxQueryCategory
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "QueriesCategories": (
                 [
                     {
@@ -700,7 +706,7 @@ class CxPortalWebService(object):
                         ),
                         "Cwe": query.Cwe,
                         "CxDescriptionID": query.CxDescriptionID,
-                        "EngineMetadata": query.EngineMetadata,
+                        "EngineMetadata": getattr(query, "EngineMetadata", None),
                         "IsEncrypted": query.IsEncrypted,
                         "IsExecutable": query.IsExecutable,
                         "Name": query.Name,
@@ -718,7 +724,7 @@ class CxPortalWebService(object):
                 queries = []
             qg = {
                 "Description": query_group.Description,
-                "Impacts": query_group.Impacts,
+                "Impacts": getattr(query_group, "Impacts", None),
                 "IsEncrypted": query_group.IsEncrypted,
                 "IsReadOnly": query_group.IsReadOnly,
                 "Language": query_group.Language,
@@ -739,7 +745,7 @@ class CxPortalWebService(object):
             query_groups.append(qg)
         return {
             "IsSuccesfull": response.IsSuccesfull,
-            "ErrorMessage": response.ErrorMessage,
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "QueryGroups": query_groups,
         }
 
@@ -796,7 +802,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response.IsSuccesfull,
-            "ErrorMessage": response.ErrorMessage,
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "QueryDescription": response.QueryDescription,
         }
 
@@ -835,13 +841,10 @@ class CxPortalWebService(object):
             example:
              "happy yang"
         """
-        comments_history = (
-            self.get_path_comments_history(scan_id, path_id, label_type="Remark")
-            .get("Path")
-            .get("Comment")
-        )
+        path_data = self.get_path_comments_history(scan_id, path_id, label_type="Remark").get("Path")
+        comments_history = path_data.get("Comment") if path_data else None
 
-        if "ÿ" not in comments_history:
+        if not comments_history or "ÿ" not in comments_history:
             return None
 
         a_list = comments_history.split("ÿ")[0:-1]
@@ -863,7 +866,7 @@ class CxPortalWebService(object):
         preset_list = response.PresetList
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "PresetList": (
                 [
                     {
@@ -920,11 +923,11 @@ class CxPortalWebService(object):
         project_list = response.projectList
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "ProjectList": (
                 [
                     {
-                        "Company": item["Company"],
+                        "Company": getattr(item, "Company", None),
                         "Group": item["Group"],
                         "IsPublic": item["IsPublic"],
                         "LastScanDate": item["LastScanDate"],
@@ -932,7 +935,7 @@ class CxPortalWebService(object):
                         "Permission": item["Permission"],
                         "Preset": item["Preset"],
                         "ProjectName": item["ProjectName"],
-                        "ServiceProvider": item["ServiceProvider"],
+                        "ServiceProvider": getattr(item, "ServiceProvider", None),
                         "TotalOsaScans": item["TotalOsaScans"],
                         "TotalScans": item["TotalScans"],
                         "projectID": item["projectID"],
@@ -960,7 +963,7 @@ class CxPortalWebService(object):
         item = response.Path
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "Path": {
                 "AssignedUser": item["AssignedUser"],
                 "Comment": item["Comment"],
@@ -1000,7 +1003,7 @@ class CxPortalWebService(object):
         scan_results_list = response.Results.CxWSSingleResultData
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "ScanResults": (
                 [
                     {
@@ -1107,8 +1110,8 @@ class CxPortalWebService(object):
         response = self.suds_client.execute("GetUserProfileData", sessionID="0")
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
-            "ProfileData": response["ProfileData"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
+            "ProfileData": getattr(response, "ProfileData", None),
         }
 
     def get_version_number(self) -> dict:
@@ -1120,7 +1123,7 @@ class CxPortalWebService(object):
         response = self.suds_client.execute("GetVersionNumber")
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "Version": response["Version"],
         }
 
@@ -1159,7 +1162,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "requestId": response["requestId"],
             "importQueryStatus": response["importQueryStatus"],
         }
@@ -1185,7 +1188,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "requestId": response["requestId"],
             "importQueryStatus": response["importQueryStatus"],
         }
@@ -1204,7 +1207,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
     def postpone_scan(self, scan_id: int) -> dict:
@@ -1221,7 +1224,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
     def unlock_scan(self, scan_id: int) -> dict:
@@ -1238,7 +1241,7 @@ class CxPortalWebService(object):
         )
         return {
             "IsSuccesfull": response["IsSuccesfull"],
-            "ErrorMessage": response["ErrorMessage"],
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
 
@@ -1485,4 +1488,4 @@ def postpone_scan(scan_id: int) -> dict:
 
 
 def unlock_scan(scan_id: int) -> dict:
-    return CxPortalWebService.unlock_scan(scan_id=scan_id)
+    return CxPortalWebService().unlock_scan(scan_id=scan_id)

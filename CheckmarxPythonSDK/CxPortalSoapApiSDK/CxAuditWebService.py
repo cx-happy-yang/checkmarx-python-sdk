@@ -18,20 +18,20 @@ class CxAuditWebService(object):
         response = self.suds_client.execute("GetFilesExtensions", sessionId="0")
         return {
             "IsSuccesfull": response.IsSuccesfull,
-            "ErrorMessage": response.ErrorMessage,
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
             "fileExtensionsSetList": [
                 {
                     "Group": item.Group,
                     "IsPublic": item.IsPublic,
                     "Language": item.Language,
                     "OwningTeamId": item.OwningTeamId,
-                    "OwningTeamName": item.OwningTeamName,
-                    "OwningUser": item.OwningUser,
+                    "OwningTeamName": getattr(item, "OwningTeamName", None),
+                    "OwningUser": getattr(item, "OwningUser", None),
                     "Status": item.Status,
                     "Symbol": item.Symbol,
                     "Value": item.Value,
                 }
-                for item in response.fileExtensionsSetList.FileExtension
+                for item in (response.fileExtensionsSetList.FileExtension if response.fileExtensionsSetList else [])
             ],
         }
 
@@ -39,13 +39,18 @@ class CxAuditWebService(object):
         response = self.suds_client.execute(
             "GetSourceCodeForScan", sessionID="0", scanId=scan_id
         )
+        source_container = getattr(response, "sourceCodeContainer", None)
         return {
             "IsSuccesfull": response.IsSuccesfull,
-            "ErrorMessage": response.ErrorMessage,
-            "sourceCodeContainer": {
-                "FileName": response.sourceCodeContainer.FileName,
-                "ZippedFile": response.sourceCodeContainer.ZippedFile,
-            },
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
+            "sourceCodeContainer": (
+                {
+                    "FileName": source_container.FileName,
+                    "ZippedFile": source_container.ZippedFile,
+                }
+                if source_container
+                else None
+            ),
         }
 
     def upload_queries(self, query_groups: dict) -> dict:
@@ -119,7 +124,7 @@ class CxAuditWebService(object):
         )
         return {
             "IsSuccesfull": response.IsSuccesfull,
-            "ErrorMessage": response.ErrorMessage,
+            "ErrorMessage": getattr(response, "ErrorMessage", None),
         }
 
 

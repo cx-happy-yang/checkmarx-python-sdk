@@ -75,11 +75,13 @@ def retry(max_retries: int = 1):
                     return response
                 # in 9.2 and previous version message id "12563" means invalid token,
                 # from 9.3, it says Invalid_Token in error message
-                if not response.IsSuccesfull and (
-                    response.ErrorMessage is None
-                    or "12563" in response.ErrorMessage
-                    or "Invalid_Token" in response.ErrorMessage
-                ):
+                error_msg = getattr(response, "ErrorMessage", None)
+                is_token_error = error_msg is not None and (
+                    "12563" in error_msg or "Invalid_Token" in error_msg
+                )
+                if not response.IsSuccesfull and not is_token_error:
+                    return response
+                if not response.IsSuccesfull and is_token_error:
                     self.token_manager.refresh_token()
                     self.session.headers["Authorization"] = (
                         f"Bearer {self.token_manager.get_token()}"
@@ -111,4 +113,4 @@ class SudsClient(ApiClient):
 
     @retry(max_retries=2)
     def execute(self, operation_name: str, *args, **kwargs):
-        return self._client.service[operation_name](*args, **kwargs)
+        return getattr(self._client.service, operation_name)(*args, **kwargs)
