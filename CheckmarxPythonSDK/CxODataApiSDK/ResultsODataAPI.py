@@ -10,6 +10,7 @@ class ResultsODataAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = self.api_client.configuration.server_base_url
 
     def get_results_for_a_specific_scan_id(self, scan_id: int) -> List[dict]:
         """
@@ -32,10 +33,8 @@ class ResultsODataAPI(object):
             }
             ]
         """
-
-        url = "/Cxwebinterface/odata/v1/Scans({ScanId})/Results".format(ScanId=scan_id)
-
-        response = self.api_client.get_request(relative_url=url)
+        url = f"{self.base_url}/Cxwebinterface/odata/v1/Scans({scan_id})/Results"
+        response = self.api_client.call_api(method="GET", url=url)
         return response.json().get("value")
 
     def get_the_query_that_was_run_for_a_particular_unique_scan_result(
@@ -54,13 +53,11 @@ class ResultsODataAPI(object):
         Returns:
             str
         """
-        relative_url = (
-            "/Cxwebinterface/odata/v1/Results(Id={id},ScanId={ScanId})".format(
-                id=result_id, ScanId=scan_id
-            )
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Results(Id={result_id},ScanId={scan_id})"
+            f"?$expand=Query($select=Name)"
         )
-        relative_url += "?$expand=Query($select=Name)"
-        response = self.api_client.get_request(relative_url=relative_url)
+        response = self.api_client.call_api(method="GET", url=url)
         query_list = response.json().get("value")
 
         if not query_list:
@@ -95,16 +92,16 @@ class ResultsODataAPI(object):
             ]
         """
         # have to put ScanId in url, otherwise would have deserialization error
-        relative_url = "/Cxwebinterface/odata/v1/Scans({id})/Results".format(id=scan_id)
-        relative_url += (
-            "?$select=Id,ScanId,QueryId,SimilarityId,PathId&$expand=Query($select=Name;"
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Scans({scan_id})/Results"
+            f"?$select=Id,ScanId,QueryId,SimilarityId,PathId&$expand=Query($select=Name;"
+            f"$expand=QueryGroup($select=Name,LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
         )
-        relative_url += "$expand=QueryGroup($select=Name,LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
 
         if filter_false_positive:
-            relative_url += "&$filter=State/Id eq 1 or State/Id eq 4"
+            url += "&$filter=State/Id eq 1 or State/Id eq 4"
 
-        response = self.api_client.get_request(relative_url=relative_url)
+        response = self.api_client.call_api(method="GET", url=url)
         item_list = response.json().get("value")
 
         results = [
@@ -223,18 +220,15 @@ class ResultsODataAPI(object):
         """
 
         # have to put ScanId in url, otherwise would have deserialization error
-        url = "/Cxwebinterface/odata/v1/Scans({id})/Results?".format(id=scan_id)
-
-        url += (
-            "&$expand=Query($select=Name;$expand=QueryGroup($select=Name,"
-            " LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
+        similarity_id_list = ",".join([str(item) for item in similarity_ids])
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Scans({scan_id})/Results?"
+            f"&$expand=Query($select=Name;$expand=QueryGroup($select=Name,"
+            f" LanguageName)),State($select=Name),Scan($select=Origin,LOC)"
+            f"&$filter=SimilarityId in ({similarity_id_list})"
         )
 
-        url += "&$filter=SimilarityId in ({similarity_id_list})".format(
-            similarity_id_list=",".join([str(item) for item in similarity_ids])
-        )
-
-        response = self.api_client.get_request(relative_url=url)
+        response = self.api_client.call_api(method="GET", url=url)
         item_list = response.json().get("value")
 
         results = [
@@ -297,19 +291,22 @@ class ResultsODataAPI(object):
             "URGENT": 3,
             "PROPOSED_NOT_EXPLOITABLE": 4,
         }
-        state_id_list = [state_index_map.get(item) for item in result_states]
-
-        relative_url = "/Cxwebinterface/odata/v1/Scans({id})/Results".format(id=scan_id)
-        relative_url += "?$select=Id&$filter=State/Id in ({state_id_list})".format(
-            state_id_list=",".join([str(item) for item in state_id_list])
+        state_id_list = ",".join(
+            [str(state_index_map.get(item)) for item in result_states]
         )
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json().get("value")
-        return len(item_list)
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Scans({scan_id})/Results"
+            f"?$select=Id&$filter=State/Id in ({state_id_list})"
+        )
+        response = self.api_client.call_api(method="GET", url=url)
+        return len(response.json().get("value"))
 
     def get_similarity_ids_of_a_scan(self, scan_id: int) -> List[dict]:
-        relative_url = f"/Cxwebinterface/odata/v1/Scans({scan_id})/Results?$select=SimilarityId,PathId"
-        response = self.api_client.get_request(relative_url=relative_url)
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Scans({scan_id})/Results"
+            f"?$select=SimilarityId,PathId"
+        )
+        response = self.api_client.call_api(method="GET", url=url)
         return response.json().get("value")
 
 

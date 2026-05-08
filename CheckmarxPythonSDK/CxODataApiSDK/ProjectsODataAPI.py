@@ -11,6 +11,7 @@ class ProjectsODataAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
+        self.base_url = self.api_client.configuration.server_base_url
 
     def get_top_n_projects_by_risk_score(self, number_of_projects: int) -> List[dict]:
         """
@@ -52,15 +53,12 @@ class ProjectsODataAPI(object):
               },
             ]
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects"
-        relative_url += (
-            "?$expand=LastScan&$orderby=LastScan/RiskScore%20desc&$top={n}".format(
-                n=number_of_projects
-            )
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$expand=LastScan&$orderby=LastScan/RiskScore%20desc&$top={number_of_projects}"
         )
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_top_n_projects_by_last_scan_duration(
         self, number_of_projects: int
@@ -102,15 +100,12 @@ class ProjectsODataAPI(object):
              }
              }]
         """
-
-        relative_url = (
-            "/Cxwebinterface/odata/v1/Projects?$expand=LastScan&$orderby=LastScan"
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$expand=LastScan&$orderby=LastScan/ScanDuration%20desc&$top={number_of_projects}"
         )
-        relative_url += "/ScanDuration%20desc&$top={n}".format(n=number_of_projects)
-
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_all_projects_with_their_last_scan_and_the_high_vulnerabilities(self):
         """
@@ -157,14 +152,13 @@ class ProjectsODataAPI(object):
                      'QueryVersionId': 56089346},]
             }]
         """
-        relative_url = (
-            "/Cxwebinterface/odata/v1/Projects?$expand=LastScan($expand=Results($filter="
-            "Severity%20eq%20CxDataRepository.Severity%27High%27))"
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$expand=LastScan($expand=Results($filter="
+            f"Severity%20eq%20CxDataRepository.Severity%27High%27))"
         )
-
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_projects_that_have_high_vulnerabilities_in_the_last_scan(
         self,
@@ -210,16 +204,13 @@ class ProjectsODataAPI(object):
                      'QueryVersionId': 56089346},]
             }]
         """
-
-        relative_url = (
-            "/Cxwebinterface/odata/v1/Projects?$expand=LastScan($expand=Results)&"
-            "$filter=LastScan/Results/"
-            "any(r:%20r/Severity%20eq%20CxDataRepository.Severity%27High%27)"
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$expand=LastScan($expand=Results)"
+            f"&$filter=LastScan/Results/any(r:%20r/Severity%20eq%20CxDataRepository.Severity%27High%27)"
         )
-
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_the_number_of_issues_vulnerabilities_within_a_predefined_time_range_for_all_projects_in_a_team(
         self, team_id: int, start_date: str, end_date: str
@@ -270,24 +261,19 @@ class ProjectsODataAPI(object):
                 ]
             }]
         """
-
         # OwningTeamId is of type string in 8.9 and previous versions, but from 9.0 the type changed to int
         if get_version_number_as_int() < 900:
             team_id = "%27" + str(team_id) + "%27"
 
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$filter=OwningTeamId%20eq%20{team_id}".format(
-            team_id=team_id
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$filter=OwningTeamId%20eq%20{team_id}"
+            f"&$expand=Scans($expand=ResultSummary;$select=Id,ScanRequestedOn,ResultSummary;"
+            f"$filter=ScanRequestedOn%20gt%20{start_date}%20and"
+            f"%20ScanRequestedOn%20lt%20{end_date})"
         )
-        relative_url += "&$expand=Scans($expand=ResultSummary;$select=Id,ScanRequestedOn,ResultSummary;"
-        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(
-            start_date=start_date
-        )
-        relative_url += "%20ScanRequestedOn%20lt%20{end_date})".format(
-            end_date=end_date
-        )
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_count_of_the_projects_in_the_system(self) -> int:
         """
@@ -296,12 +282,9 @@ class ProjectsODataAPI(object):
         Returns:
             count (int)
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects/$count"
-
-        response = self.api_client.get_request(relative_url=relative_url)
-        # value = response.json()
-        # return value
-        return int(response.content.decode(response.apparent_encoding))
+        url = f"{self.base_url}/Cxwebinterface/odata/v1/Projects/$count"
+        response = self.api_client.call_api(method="GET", url=url)
+        return int(response.text)
 
     def get_all_projects_with_a_custom_field_that_has_a_specific_value(
         self, field_name: str, field_value: str
@@ -328,13 +311,12 @@ class ProjectsODataAPI(object):
                 }
             ]
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$filter=CustomFields/"
-        relative_url += "any(f: f/FieldName eq '{field_name}' and f/FieldValue eq '{field_value}')".format(
-            field_name=field_name, field_value=field_value
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$filter=CustomFields/any(f: f/FieldName eq '{field_name}' and f/FieldValue eq '{field_value}')"
         )
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_all_projects_with_a_custom_field_as_well_as_the_custom_field_information(
         self, field_name: str
@@ -365,16 +347,12 @@ class ProjectsODataAPI(object):
                     }
                 ]
         """
-        relative_url = "/cxwebinterface/odata/v1/Projects?$expand=CustomFields"
-        relative_url += (
-            "&$filter=CustomFields/any(f: f/FieldName eq '{field_name}')".format(
-                field_name=field_name
-            )
+        url = (
+            f"{self.base_url}/cxwebinterface/odata/v1/Projects"
+            f"?$expand=CustomFields&$filter=CustomFields/any(f: f/FieldName eq '{field_name}')"
         )
-
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_presets_associated_with_each_project(self) -> List[dict]:
         """
@@ -400,11 +378,9 @@ class ProjectsODataAPI(object):
                     }
                 ]
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$expand=Preset"
-
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        url = f"{self.base_url}/Cxwebinterface/odata/v1/Projects?$expand=Preset"
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_all_projects_that_are_set_up_with_a_non_standard_configuration(self):
         """
@@ -430,12 +406,9 @@ class ProjectsODataAPI(object):
                     }
                 ]
         """
-        relative_url = (
-            "/Cxwebinterface/odata/v1/Projects?$filter=EngineConfigurationId%20gt%201"
-        )
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        url = f"{self.base_url}/Cxwebinterface/odata/v1/Projects?$filter=EngineConfigurationId%20gt%201"
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
     def get_all_projects_id_name(self) -> List[dict]:
         """
@@ -449,15 +422,13 @@ class ProjectsODataAPI(object):
                 }
             ]
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$select=Id,Name"
-        response = self.api_client.get_request(relative_url=relative_url)
+        url = f"{self.base_url}/Cxwebinterface/odata/v1/Projects?$select=Id,Name"
+        response = self.api_client.call_api(method="GET", url=url)
         item_list = response.json().get("value")
-        project_id_name_list = [
+        return [
             {"ProjectId": item.get("Id"), "ProjectName": item.get("Name")}
             for item in item_list
         ]
-
-        return project_id_name_list
 
     def get_all_projects_id_name_and_team_id_name(self) -> List[dict]:
         """
@@ -465,9 +436,11 @@ class ProjectsODataAPI(object):
         Returns:
 
         """
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$select=Id,Name,OwningTeamId&$expand=OwningTeam"
-        "($select=FullName)"
-        response = self.api_client.get_request(relative_url=relative_url)
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$select=Id,Name,OwningTeamId&$expand=OwningTeam($select=FullName)"
+        )
+        response = self.api_client.call_api(method="GET", url=url)
         item_list = response.json().get("value")
         return [
             {
@@ -509,18 +482,16 @@ class ProjectsODataAPI(object):
         if get_version_number_as_int() < 900:
             team_id = "%27" + str(team_id) + "%27"
 
-        relative_url = "/Cxwebinterface/odata/v1/Projects?$select=Id,Name"
-        relative_url += "&$filter=OwningTeamId%20eq%20{team_id}".format(team_id=team_id)
-        relative_url += "&$expand=Scans($select=Id;"
-        relative_url += "$filter=ScanRequestedOn%20gt%20{start_date}%20and".format(
-            start_date=start_date
+        url = (
+            f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
+            f"?$select=Id,Name"
+            f"&$filter=OwningTeamId%20eq%20{team_id}"
+            f"&$expand=Scans($select=Id;"
+            f"$filter=ScanRequestedOn%20gt%20{start_date}%20and"
+            f"%20ScanRequestedOn%20lt%20{end_date};$orderby=Id)"
         )
-        relative_url += "%20ScanRequestedOn%20lt%20{end_date};$orderby=Id)".format(
-            end_date=end_date
-        )
-        response = self.api_client.get_request(relative_url=relative_url)
-        item_list = response.json()
-        return item_list.get("value")
+        response = self.api_client.call_api(method="GET", url=url)
+        return response.json().get("value")
 
 
 def get_top_n_projects_by_risk_score(number_of_projects: int) -> List[dict]:
