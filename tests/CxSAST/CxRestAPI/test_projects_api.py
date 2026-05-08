@@ -264,11 +264,8 @@ def test_upload_source_code_zip_file():
 
 
 def test_set_data_retention_settings_by_project_id():
-    project_name = "JVL_local_zip"
+    project_id = get_project_id()
     projects_api = ProjectsAPI()
-    project_id = projects_api.get_project_id_by_project_name_and_team_full_name(project_name, team_full_name)
-    if project_id is None:
-        pytest.skip("Project 'JVL_local_zip' does not exist")
     result = projects_api.set_data_retention_settings_by_project_id(project_id, 20)
     assert result is True
 
@@ -336,12 +333,9 @@ def test_precheck_team():
 
 
 def test_get_project_branching_status():
-    branched_project_name = "jvl_local_2024_06_24_branch"
-    project_name = "jvl_local"
+    branched_project_name = "pytest_branch_status_tmp"
     projects_api = ProjectsAPI()
-    project_id = projects_api.get_project_id_by_project_name_and_team_full_name(project_name, team_full_name)
-    if project_id is None:
-        pytest.skip("Source project 'jvl_local' does not exist")
+    project_id = get_project_id()
     projects_api.delete_project_if_exists_by_project_name_and_team_full_name(
         branched_project_name, team_full_name
     )
@@ -349,6 +343,7 @@ def test_get_project_branching_status():
     branched_project_id = response.id
     result = projects_api.get_project_branching_status(branched_project_id)
     assert result is not None
+    projects_api.delete_project_by_id(branched_project_id)
 
 
 def test_force_scan_on_no_code_changes():
