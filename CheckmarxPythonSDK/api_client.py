@@ -29,10 +29,9 @@ def create_session(configuration: Configuration) -> httpx.Client:
             ctx.load_verify_locations(configuration.verify)
         verify = ctx
     return httpx.Client(
-        verify=verify,
         cert=configuration.cert,
         proxy=configuration.proxy,
-        transport=httpx.HTTPTransport(retries=3),
+        transport=httpx.HTTPTransport(retries=3, verify=verify),
     )
 
 

@@ -284,7 +284,7 @@ class ProjectsODataAPI(object):
         """
         url = f"{self.base_url}/Cxwebinterface/odata/v1/Projects/$count"
         response = self.api_client.call_api(method="GET", url=url)
-        return int(response.text)
+        return int(response.text.lstrip("﻿"))
 
     def get_all_projects_with_a_custom_field_that_has_a_specific_value(
         self, field_name: str, field_value: str
