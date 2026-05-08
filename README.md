@@ -163,8 +163,108 @@ any Checkmarx Python SDK function.
 
 # Connect to multiple systems at the same time
 
-Now each API class has been refactored to accept an api_client(class ApiClient) with configuration (class Configuration).
-You can pass different api_client with different configuration for each API class.
+Each API class accepts an `api_client` (`ApiClient`) with a `configuration` (`Configuration`).
+You can pass different `ApiClient` instances with different `Configuration` objects to each API class, allowing simultaneous connections to multiple CxOne tenants or environments.
+
+## Using `Configuration` and `ApiClient` directly
+
+Instead of relying on a config file or environment variables, you can construct the `Configuration` object in code and pass it directly to any API class.
+
+### CxOne — refresh_token grant type
+
+```python
+from CheckmarxPythonSDK.configuration import Configuration
+from CheckmarxPythonSDK.api_client import ApiClient
+from CheckmarxPythonSDK.CxOne.projectsAPI import ProjectsAPI
+from CheckmarxPythonSDK.CxOne.scansAPI import ScansAPI
+
+tenant_name = "my-tenant"
+access_control_url = "https://iam.checkmarx.net"
+
+configuration = Configuration(
+    server_base_url="https://ast.checkmarx.net",
+    iam_base_url=access_control_url,
+    token_url=f"{access_control_url}/auth/realms/{tenant_name}/protocol/openid-connect/token",
+    tenant_name=tenant_name,
+    grant_type="refresh_token",
+    client_id="ast-app",
+    api_key="<your-refresh-token>",
+)
+
+api_client = ApiClient(configuration=configuration)
+
+projects_api = ProjectsAPI(api_client=api_client)
+scans_api = ScansAPI(api_client=api_client)
+
+projects = projects_api.get_all_projects()
+```
+
+### CxOne — client_credentials grant type
+
+```python
+from CheckmarxPythonSDK.configuration import Configuration
+from CheckmarxPythonSDK.api_client import ApiClient
+from CheckmarxPythonSDK.CxOne.projectsAPI import ProjectsAPI
+
+tenant_name = "my-tenant"
+access_control_url = "https://iam.checkmarx.net"
+
+configuration = Configuration(
+    server_base_url="https://ast.checkmarx.net",
+    iam_base_url=access_control_url,
+    token_url=f"{access_control_url}/auth/realms/{tenant_name}/protocol/openid-connect/token",
+    tenant_name=tenant_name,
+    grant_type="client_credentials",
+    client_id="<your-client-id>",
+    client_secret="<your-client-secret>",
+)
+
+api_client = ApiClient(configuration=configuration)
+projects_api = ProjectsAPI(api_client=api_client)
+
+projects = projects_api.get_all_projects()
+```
+
+### Connecting to two tenants simultaneously
+
+```python
+from CheckmarxPythonSDK.configuration import Configuration
+from CheckmarxPythonSDK.api_client import ApiClient
+from CheckmarxPythonSDK.CxOne.projectsAPI import ProjectsAPI
+
+def make_api_client(tenant_name: str, refresh_token: str) -> ApiClient:
+    access_control_url = "https://iam.checkmarx.net"
+    configuration = Configuration(
+        server_base_url="https://ast.checkmarx.net",
+        iam_base_url=access_control_url,
+        token_url=f"{access_control_url}/auth/realms/{tenant_name}/protocol/openid-connect/token",
+        tenant_name=tenant_name,
+        grant_type="refresh_token",
+        client_id="ast-app",
+        api_key=refresh_token,
+    )
+    return ApiClient(configuration=configuration)
+
+client_a = make_api_client("tenant-a", "<refresh-token-a>")
+client_b = make_api_client("tenant-b", "<refresh-token-b>")
+
+projects_a = ProjectsAPI(api_client=client_a).get_all_projects()
+projects_b = ProjectsAPI(api_client=client_b).get_all_projects()
+```
+
+### Optional `Configuration` parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `timeout` | `int` | `60` | HTTP request timeout in seconds |
+| `verify` | `bool` or `str` | `True` | TLS verification. `False` to disable, or a path to a CA bundle / self-signed cert `.pem` file |
+| `cert` | `str` | `None` | Path to a client certificate file |
+| `proxy` | `str` | `None` | Proxy URL, e.g. `"http://proxy.example.com:8080"` |
+| `logging_level` | `str` | `"ERROR"` | `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL` |
+| `max_retries` | `int` | `3` | Number of HTTP retries on transient failures |
+| `rate_limit_capacity` | `int` | `20000` | Token-bucket capacity (max burst requests) |
+| `rate_limit_period` | `int` | `300` | Period in seconds over which capacity refills |
+| `rate_limit_refill_rate` | `float` | `None` | Tokens per second; auto-calculated from capacity/period if `None` |
 
 # CxSAST self-signed certificate
 For CxSAST self-signed certificate, you can use the verify in configuration as a string, which is a path to the public 
