@@ -166,7 +166,7 @@ any Checkmarx Python SDK function.
 Each API class accepts an `api_client` (`ApiClient`) with a `configuration` (`Configuration`).
 You can pass different `ApiClient` instances with different `Configuration` objects to each API class, allowing simultaneous connections to multiple CxOne tenants or environments.
 
-See [examples/cxone_direct_configuration.py](https://github.com/checkmarx-ts/checkmarx-python-sdk/blob/master/examples/cxone_direct_configuration.py) for runnable examples covering `refresh_token`, `client_credentials`, and multi-tenant usage.
+See [examples/cxone_direct_configuration.py](examples/cxone_direct_configuration.py) for runnable examples covering `refresh_token`, `client_credentials`, and multi-tenant usage.
 
 ### `Configuration` parameters
 
