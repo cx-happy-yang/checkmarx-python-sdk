@@ -262,8 +262,11 @@ class ProjectsODataAPI(object):
             }]
         """
         # OwningTeamId is of type string in 8.9 and previous versions, but from 9.0 the type changed to int
-        if get_version_number_as_int() < 900:
-            team_id = "%27" + str(team_id) + "%27"
+        try:
+            if get_version_number_as_int() < 900:
+                team_id = "%27" + str(team_id) + "%27"
+        except Exception:
+            pass  # SOAP unavailable; assume >= 9.0, team_id stays as int
 
         url = (
             f"{self.base_url}/Cxwebinterface/odata/v1/Projects"
@@ -479,8 +482,11 @@ class ProjectsODataAPI(object):
             ]
         """
         # OwningTeamId is of type string in 8.9 and previous versions, but from 9.0 the type changed to int
-        if get_version_number_as_int() < 900:
-            team_id = "%27" + str(team_id) + "%27"
+        try:
+            if get_version_number_as_int() < 900:
+                team_id = "%27" + str(team_id) + "%27"
+        except Exception:
+            pass  # SOAP unavailable; assume >= 9.0, team_id stays as int
 
         url = (
             f"{self.base_url}/Cxwebinterface/odata/v1/Projects"

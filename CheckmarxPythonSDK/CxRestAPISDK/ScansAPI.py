@@ -238,7 +238,7 @@ class ScansAPI(object):
             )
         if only_completed_scans:
             all_scans_for_this_project = filter(
-                lambda scan: scan.finished_scan_status.value == "Completed",
+                lambda scan: scan.finished_scan_status.value in ("Completed", None),
                 all_scans_for_this_project,
             )
 
