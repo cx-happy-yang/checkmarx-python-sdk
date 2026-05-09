@@ -17,16 +17,19 @@ from CheckmarxPythonSDK.utilities.compat import (
 
 
 def create_session(configuration: Configuration) -> httpx.Client:
-    if configuration.verify is False:
+    raw_verify = configuration.verify
+    if isinstance(raw_verify, str):
+        raw_verify = False if raw_verify.lower() == "false" else (True if raw_verify.lower() == "true" else raw_verify)
+    if raw_verify is False:
         verify = False
     else:
         ctx = ssl.create_default_context()
         ctx.minimum_version = ssl.TLSVersion.TLSv1_2
         ctx.maximum_version = ssl.TLSVersion.TLSv1_3
-        if configuration.verify is True:
+        if raw_verify is True:
             ctx.load_verify_locations(certifi.where())
         else:
-            ctx.load_verify_locations(configuration.verify)
+            ctx.load_verify_locations(raw_verify)
         verify = ctx
     return httpx.Client(
         cert=configuration.cert,
