@@ -11,7 +11,7 @@ class ProjectsODataAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
-        self.base_url = self.api_client.configuration.server_base_url
+        self.base_url = self.api_client.configuration.server_base_url.rstrip("/")
 
     def get_top_n_projects_by_risk_score(self, number_of_projects: int) -> List[dict]:
         """

@@ -30,9 +30,10 @@ def construct_configuration() -> Configuration:
     config = old_config
     if new_config.get("base_url") != "http://localhost:79":
         config = new_config
+    base_url = config.get("base_url", "").rstrip("/")
     return Configuration(
-        server_base_url=config.get("base_url"),
-        token_url=f"{config.get('base_url')}/cxrestapi/auth/identity/connect/token",
+        server_base_url=base_url,
+        token_url=f"{base_url}/cxrestapi/auth/identity/connect/token",
         username=config.get("username"),
         password=config.get("password"),
         grant_type="password",

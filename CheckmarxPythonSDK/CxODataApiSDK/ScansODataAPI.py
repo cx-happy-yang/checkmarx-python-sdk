@@ -10,7 +10,7 @@ class ScansODataAPI(object):
             configuration = construct_configuration()
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
-        self.base_url = self.api_client.configuration.server_base_url
+        self.base_url = self.api_client.configuration.server_base_url.rstrip("/")
 
     def get_all_data_for_a_specific_scan_id(self, scan_id: int) -> dict:
         """
