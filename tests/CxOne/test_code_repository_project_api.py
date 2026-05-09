@@ -1,4 +1,5 @@
 import os
+import pytest
 from CheckmarxPythonSDK.CxOne import (
     import_code_repository,
     retrieve_import_status,
@@ -15,9 +16,12 @@ from CheckmarxPythonSDK.CxOne.dto import (
 
 
 def test_import_code_repository():
+    github_token = os.getenv("GITHUB_TOKEN")
+    if not github_token:
+        pytest.skip("GITHUB_TOKEN environment variable not set")
     github_org = "cx-happy-yang"
     scm_import_input = SCMImportInput(
-        scm=Scm(token=os.getenv("GITHUB_TOKEN")),
+        scm=Scm(token=github_token),
         organization=ScmOrganization(orgIdentity=github_org, monitorForNewProjects=False),
         defaultProjectSettings=ProjectSettings(
             webhookEnabled=False,

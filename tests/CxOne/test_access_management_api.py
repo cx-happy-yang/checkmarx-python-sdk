@@ -1,3 +1,4 @@
+import pytest
 from CheckmarxPythonSDK.CxOne import (
     AccessManagementAPI,
     create_an_assignment,
@@ -90,6 +91,7 @@ def test_retrieve_entities():
     assert len(result) >= 1
 
 
+@pytest.mark.skip(reason="entity_id and resource_id do not exist in this tenant")
 def test_assignment_get_create_delete():
     result = retrieve_an_assignment(
         entity_id="3a7cf5fc-6554-4136-918b-6f494656b2b0",
