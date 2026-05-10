@@ -61,8 +61,7 @@ class CxOsaLibrary:
             severity=CxOsaSeverity.from_dict(item.get("severity") or {}),
             risk_score=item.get("riskScore"),
             locations=[
-                CxOsaLocation.from_dict(loc)
-                for loc in (item.get("locations") or [])
+                CxOsaLocation.from_dict(loc) for loc in (item.get("locations") or [])
             ],
             code_usage_status=item.get("codeUsageStatus"),
             code_reference_count=item.get("codeReferenceCount"),

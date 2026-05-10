@@ -1,7 +1,9 @@
 # encoding: utf-8
 from dataclasses import dataclass, field
 from typing import List, Optional
-from .CxIssueTrackingSystemFieldAllowedValue import CxIssueTrackingSystemFieldAllowedValue
+from .CxIssueTrackingSystemFieldAllowedValue import (
+    CxIssueTrackingSystemFieldAllowedValue,
+)
 
 
 @dataclass

@@ -15,6 +15,7 @@ class CxCreateProjectResponse:
     @classmethod
     def from_dict(cls, item: dict) -> "CxCreateProjectResponse":
         from .CxLink import CxLink
+
         return cls(
             id=item.get("id"),
             link=CxLink.from_dict(item.get("link") or {}),

@@ -30,7 +30,9 @@ class CustomFieldsAPI(object):
         """
         result = []
         url = f"{self.base_url}/cxrestapi/customFields"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [
                 CxCustomField(

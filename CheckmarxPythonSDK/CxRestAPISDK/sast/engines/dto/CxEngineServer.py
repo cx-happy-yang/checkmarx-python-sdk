@@ -45,7 +45,6 @@ class CxEngineServer:
                 "offlineReasonMessageParameters"
             ),
             dedications=[
-                CxEngineDedication.from_dict(d)
-                for d in (item.get("dedications") or [])
+                CxEngineDedication.from_dict(d) for d in (item.get("dedications") or [])
             ],
         )

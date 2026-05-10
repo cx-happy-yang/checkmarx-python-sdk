@@ -33,6 +33,7 @@ class CxScanQueueDetail:
     @classmethod
     def from_dict(cls, item: dict) -> "CxScanQueueDetail":
         from .CxScanStage import CxScanStage
+
         return cls(
             id=item.get("id"),
             stage=CxScanStage.from_dict(item.get("stage") or {}),

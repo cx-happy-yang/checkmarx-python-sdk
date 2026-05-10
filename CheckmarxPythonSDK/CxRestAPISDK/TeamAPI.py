@@ -98,7 +98,9 @@ class TeamAPI(object):
         result = None
         url = f"{self.base_url}/cxrestapi/auth/teams"
         post_data = json.dumps({"name": team_name, "parentId": parent_id})
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers())
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers()
+        )
         if response.status_code == CREATED:
             # The create team API returns the location of the new team
             # in the Location header. E.g.: /cxrestapi/auth/Teams/8

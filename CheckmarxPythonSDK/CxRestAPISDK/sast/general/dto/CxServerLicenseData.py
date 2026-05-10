@@ -58,9 +58,7 @@ class CxServerLicenseData:
             max_loc=item.get("maxLOC"),
             max_users=item.get("maxUsers"),
             osa_expiration_date=(
-                None
-                if not osa_exp
-                else parse_expiration_date(osa_exp)
+                None if not osa_exp else parse_expiration_date(osa_exp)
             ),
             projects_allowed=item.get("projectsAllowed"),
             supported_languages=[

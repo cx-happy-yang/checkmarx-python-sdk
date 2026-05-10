@@ -43,12 +43,9 @@ class CxProject:
                 uri=ssl.get("uri"),
             ),
             custom_fields=[
-                CxCustomField.from_dict(cf)
-                for cf in (item.get("customFields") or [])
+                CxCustomField.from_dict(cf) for cf in (item.get("customFields") or [])
             ],
-            links=[
-                CxLink.from_dict(lnk) for lnk in (item.get("links") or [])
-            ],
+            links=[CxLink.from_dict(lnk) for lnk in (item.get("links") or [])],
             owner=item.get("owner"),
             is_deprecated=item.get("isDeprecated"),
             project_queue_settings=CxProjectQueueSetting.from_dict(

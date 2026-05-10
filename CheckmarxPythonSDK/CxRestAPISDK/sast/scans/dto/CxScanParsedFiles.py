@@ -12,10 +12,14 @@ class CxScanParsedFiles:
     @classmethod
     def from_dict(cls, item: dict) -> "CxScanParsedFiles":
         raw = item.get("scannedFilesPerLanguage") or {}
-        metrics = [
-            CxScanParsedFilesMetric.from_dict(language=key, item=value)
-            for key, value in raw.items()
-        ] if isinstance(raw, dict) else list(raw)
+        metrics = (
+            [
+                CxScanParsedFilesMetric.from_dict(language=key, item=value)
+                for key, value in raw.items()
+            ]
+            if isinstance(raw, dict)
+            else list(raw)
+        )
         return cls(
             id=item.get("id"),
             scanned_files_per_language=metrics,

@@ -44,7 +44,9 @@ class ConfigurationAPI(object):
         """
         result = []
         url = f"{self.base_url}/cxrestapi/configurationsExtended/{group}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [
                 CxSASTConfig(
@@ -98,5 +100,7 @@ class ConfigurationAPI(object):
                 for item in temp_list
             ]
         )
-        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PUT", url, data=put_data, headers=get_headers(api_version)
+        )
         return response.status_code == OK

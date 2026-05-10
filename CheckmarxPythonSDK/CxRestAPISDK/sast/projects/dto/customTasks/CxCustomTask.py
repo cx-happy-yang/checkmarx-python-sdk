@@ -18,6 +18,7 @@ class CxCustomTask:
     @classmethod
     def from_dict(cls, item: dict) -> "CxCustomTask":
         from ..CxLink import CxLink
+
         return cls(
             id=item.get("id"),
             name=item.get("name"),

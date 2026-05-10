@@ -15,7 +15,5 @@ class CxScanResultAttackVector:
         return cls(
             result_id=item.get("resultId"),
             best_fix_location_node=item.get("bestFixLocationNode"),
-            nodes=[
-                CxScanResultNode.from_dict(n) for n in (item.get("nodes") or [])
-            ],
+            nodes=[CxScanResultNode.from_dict(n) for n in (item.get("nodes") or [])],
         )

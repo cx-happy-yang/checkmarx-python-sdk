@@ -12,6 +12,7 @@ class CxSharedRemoteSourceSettingsResponse:
     @classmethod
     def from_dict(cls, item: dict) -> "CxSharedRemoteSourceSettingsResponse":
         from .CxLink import CxLink
+
         return cls(
             paths=item.get("paths"),
             link=CxLink.from_dict(item.get("link") or {}),

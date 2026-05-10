@@ -28,7 +28,9 @@ class GeneralAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/serverLicenseData"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxServerLicenseData.from_dict(response.json())
         return result
@@ -45,7 +47,9 @@ class GeneralAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/system/version"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -320,7 +324,9 @@ class GeneralAPI(object):
 """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/resultStates"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -355,7 +361,9 @@ class GeneralAPI(object):
             "permission": permission,
         }
         url = f"{self.base_url}/cxrestapi/sast/resultStates"
-        response = self.api_client.call_api("POST", url, json=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, json=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json().get("id")
         return result
@@ -390,7 +398,9 @@ class GeneralAPI(object):
             "permission": permission,
         }
         url = f"{self.base_url}/cxrestapi/sast/resultStates/{state_id}"
-        response = self.api_client.call_api("PATCH", url, json=patch_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PATCH", url, json=patch_data, headers=get_headers(api_version)
+        )
         return response.status_code == NO_CONTENT
 
     def delete_result_state(self, state_id: str, api_version: str = "4.0") -> bool:
@@ -403,7 +413,9 @@ class GeneralAPI(object):
             bool
         """
         url = f"{self.base_url}/cxrestapi/sast/resultStates/{state_id}"
-        response = self.api_client.call_api("DELETE", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "DELETE", url, headers=get_headers(api_version)
+        )
         return response.status_code == ACCEPTED
 
     def get_all_scheduled_jobs(self, api_version: str = "4.0") -> List[dict]:
@@ -418,7 +430,9 @@ class GeneralAPI(object):
             [{'projectId': 8, 'projectName': 'jvl_git', 'scanDays': ['Sunday'], 'scanTime': '12:00 上午'}]
         """
         url = f"{self.base_url}/cxrestapi/sast/scheduledJobs"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         return response.status_code == OK
 
     def get_user_persistence_data_for_current_user(
@@ -444,7 +458,9 @@ class GeneralAPI(object):
             ["persistenceKeys={}".format(item) for item in persistence_keys]
         )
 
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -472,7 +488,9 @@ class GeneralAPI(object):
                 )
         url = f"{self.base_url}/cxrestapi/userPersistence"
         data = [item.to_dict() for item in persistence_items]
-        response = self.api_client.call_api("PATCH", url, json=data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PATCH", url, json=data, headers=get_headers(api_version)
+        )
         return response.status_code == OK
 
     def get_audit_trail_for_roles(
@@ -500,7 +518,9 @@ class GeneralAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/roles/auditTrail?fromDate={from_date}&toDate={to_date}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -530,7 +550,9 @@ class GeneralAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/teams/auditTrail?fromDate={from_date}&toDate={to_date}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -563,7 +585,9 @@ class GeneralAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/presets/auditTrail?fromDate={from_date}&toDate={to_date}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -612,7 +636,9 @@ class GeneralAPI(object):
                 '["ALL", "ASSIGN", "RESULT_COMMENT", "RESULT_SEVERITY", "RESULT_STATE"]'
             )
         url = f"{self.base_url}/cxrestapi/sast/results/auditTrail?updateType={update_type}&fromDate={from_date}&toDate={to_date}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result

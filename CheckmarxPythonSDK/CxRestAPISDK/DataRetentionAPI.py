@@ -37,7 +37,9 @@ class DataRetentionAPI(object):
         """
         result = False
         url = f"{self.base_url}/cxrestapi/sast/dataRetention/stop"
-        response = self.api_client.call_api("POST", url, data=None, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=None, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             result = True
         return result
@@ -75,7 +77,9 @@ class DataRetentionAPI(object):
                 "durationLimitInHours": duration_limit_in_hours,
             }
         )
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             if response.text:
                 result = CxDefineDataRetentionResponse.from_dict(response.json())
@@ -111,7 +115,9 @@ class DataRetentionAPI(object):
                 "durationLimitInHours": duration_limit_in_hours,
             }
         )
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             if response.text:
                 result = CxDefineDataRetentionResponse.from_dict(response.json())
@@ -138,7 +144,9 @@ class DataRetentionAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/dataRetention/{request_id}/status"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxDataRetentionRequestStatus.from_dict(response.json())
         return result

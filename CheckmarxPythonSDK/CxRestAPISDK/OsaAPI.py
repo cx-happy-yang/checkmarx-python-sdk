@@ -65,7 +65,9 @@ class OsaAPI(object):
         if optionals:
             url += "&"
             url += "&".join(optionals)
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [CxOsaScanDetail.from_dict(item) for item in response.json()]
         return result
@@ -124,7 +126,9 @@ class OsaAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/osa/scans/{scan_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxOsaScanDetail.from_dict(response.json())
         return result
@@ -196,7 +200,9 @@ class OsaAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/osa/fileextensions"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.text
         return result
@@ -223,7 +229,9 @@ class OsaAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/osa/licenses?scanId={scan_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [CxOsaLicense.from_dict(item) for item in response.json()]
         return result
@@ -265,7 +273,9 @@ class OsaAPI(object):
         if optionals:
             url += "&"
             url += "&".join(optionals)
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [CxOsaLibrary.from_dict(item) for item in response.json()]
         return result
@@ -328,7 +338,9 @@ class OsaAPI(object):
             if optionals:
                 url += "&"
                 url += "&".join(optionals)
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [CxOsaVulnerability.from_dict(item) for item in response.json()]
         return result
@@ -371,9 +383,13 @@ class OsaAPI(object):
         """
         result = []
         url = f"{self.base_url}/cxrestapi/osa/vulnerabilities/{vulnerability_id}/comments?projectId={project_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
-            result = [CxOsaVulnerabilityComment.from_dict(item) for item in response.json()]
+            result = [
+                CxOsaVulnerabilityComment.from_dict(item) for item in response.json()
+            ]
         return result
 
     def get_osa_scan_summary_report(
@@ -397,7 +413,9 @@ class OsaAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/osa/reports" + "?scanId=" + str(scan_id)
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxOsaSummaryReport.from_dict(response.json())
         return result

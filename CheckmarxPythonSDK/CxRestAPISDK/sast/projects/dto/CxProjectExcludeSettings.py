@@ -17,6 +17,7 @@ class CxProjectExcludeSettings:
     @classmethod
     def from_dict(cls, item: dict) -> "CxProjectExcludeSettings":
         from .CxLink import CxLink
+
         return cls(
             project_id=item.get("projectId"),
             exclude_folders_pattern=item.get("excludeFoldersPattern"),

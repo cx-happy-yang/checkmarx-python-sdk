@@ -116,7 +116,9 @@ class ScansAPI(object):
         if optionals:
             url += "?" + "&".join(optionals)
 
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [self.construct_scan(item) for item in response.json()]
         return result
@@ -234,7 +236,9 @@ class ScansAPI(object):
                 "customFields": custom_fields,
             }
         )
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == CREATED:
             a_dict = response.json()
             result = CxCreateNewScanResponse.from_dict(a_dict)
@@ -260,7 +264,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = self.construct_scan(item)
@@ -288,7 +294,9 @@ class ScansAPI(object):
         """
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}"
         patch_data = json.dumps({"comment": comment})
-        response = self.api_client.call_api("PATCH", url, data=patch_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PATCH", url, data=patch_data, headers=get_headers(api_version)
+        )
         return response.status_code == NO_CONTENT
 
     def delete_scan_by_scan_id(self, scan_id: int, api_version: str = "1.0") -> bool:
@@ -309,7 +317,9 @@ class ScansAPI(object):
             CxError
         """
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}"
-        response = self.api_client.call_api("DELETE", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "DELETE", url, headers=get_headers(api_version)
+        )
         return response.status_code == ACCEPTED
 
     def get_statistics_results_by_scan_id(
@@ -333,7 +343,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/resultsStatistics"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = CxStatisticsResult(
@@ -370,7 +382,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scansQueue/{scan_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = self.construct_scan_queue_detail(item)
@@ -397,7 +411,9 @@ class ScansAPI(object):
         """
         url = f"{self.base_url}/cxrestapi/sast/scansQueue/{scan_id}"
         patch_data = json.dumps({"status": "Canceled"})
-        response = self.api_client.call_api("PATCH", url, data=patch_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PATCH", url, data=patch_data, headers=get_headers(api_version)
+        )
         return response.status_code == OK
 
     def cancel_scan(self, scan_id: int, api_version: str = "1.2"):
@@ -427,7 +443,9 @@ class ScansAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/scansQueue"
         if project_id:
             url += "?projectId=" + str(project_id)
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = [
                 self.construct_scan_queue_detail(item) for item in response.json()
@@ -454,7 +472,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scanSettings/{project_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxScanSettings.from_dict(response.json())
         return result
@@ -524,7 +544,9 @@ class ScansAPI(object):
                 "postScanActionArguments": post_scan_action_arguments,
             }
         )
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_dict = response.json()
             result = CxCreateScanSettingsResponse.from_dict(a_dict)
@@ -598,7 +620,9 @@ class ScansAPI(object):
                 "postScanActionArguments": post_scan_action_arguments,
             }
         )
-        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PUT", url, data=put_data, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_dict = response.json()
             result = CxCreateScanSettingsResponse.from_dict(a_dict)
@@ -641,7 +665,9 @@ class ScansAPI(object):
                 "scheduleTime": schedule_time,
             }
         )
-        response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PUT", url, data=put_data, headers=get_headers(api_version)
+        )
         return response.status_code == NO_CONTENT
 
     def assign_ticket_to_scan_results(
@@ -666,7 +692,9 @@ class ScansAPI(object):
         """
         url = f"{self.base_url}/cxrestapi/sast/results/tickets"
         post_data = json.dumps({"resultsId": [results_id], "ticketId": ticket_id})
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers(api_version)
+        )
         return response.status_code == NO_CONTENT
 
     def publish_last_scan_results_to_management_and_orchestration_by_project_id(
@@ -690,7 +718,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/projects/{project_id}/publisher/policyFindings"
-        response = self.api_client.call_api("POST", url, data=None, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=None, headers=get_headers(api_version)
+        )
         if response.status_code == CREATED:
             a_dict = response.json()
             result = CxPolicyFindingResponse.from_dict(a_dict)
@@ -717,7 +747,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/projects/{project_id}/publisher/policyFindings/status"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_dict = response.json()
             result = CxPolicyFindingsStatus.from_dict(a_dict)
@@ -740,7 +772,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/results/{path_id}/shortDescription"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json().get("shortDescription")
         return result
@@ -768,7 +802,9 @@ class ScansAPI(object):
         result = None
         url = f"{self.base_url}/cxrestapi/reports/sastScan"
         post_data = json.dumps({"reportType": report_type, "scanId": scan_id})
-        response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, data=post_data, headers=get_headers(api_version)
+        )
         if response.status_code == ACCEPTED:
             a_dict = response.json()
             result = CxRegisterScanReportResponse(
@@ -798,7 +834,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/reports/sastScan/{report_id}/status"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             a_dict = response.json()
             result = CxScanReportStatus.from_dict(a_dict)
@@ -823,7 +861,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/reports/sastScan/{report_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             # write r.content to file with "wb" mode
             result = response.content
@@ -876,7 +916,9 @@ class ScansAPI(object):
         """
         result = []
         url = f"{self.base_url}/cxrestapi/sast/results/attack-vectors?scanId={scan_id}&queryVersion={query_version_code}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             vectors = response.json().get("attackVectors")
             result = [construct_attack_vector(ac) for ac in vectors]
@@ -900,7 +942,9 @@ class ScansAPI(object):
         url += "?scanId={scanId}&queryVersion={queryVersion}".format(
             scanId=scan_id, queryVersion=query_version_code
         )
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             attack_vectors_by_bfl = response.json().get("attackVectorsByBFL")
             result = [
@@ -951,7 +995,9 @@ class ScansAPI(object):
                 "comment": comment,
             }
         )
-        response = self.api_client.call_api("PATCH", url, data=data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PATCH", url, data=data, headers=get_headers(api_version)
+        )
         return response.status_code == OK
 
     def create_new_scan_with_settings(
@@ -1050,7 +1096,9 @@ class ScansAPI(object):
                 pass
         files = {k: v for k, v in fields.items() if isinstance(v, tuple)}
         data = {k: v for k, v in fields.items() if not isinstance(v, tuple)}
-        response = self.api_client.call_api("POST", url, files=files, data=data, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "POST", url, files=files, data=data, headers=get_headers(api_version)
+        )
         if response.status_code == CREATED:
             a_dict = response.json()
             result = CxCreateNewScanResponse.from_dict(a_dict)
@@ -1070,8 +1118,12 @@ class ScansAPI(object):
             CxScanResultLabelsFields
         """
         result = None
-        url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/results/{result_id}/labels"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        url = (
+            f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/results/{result_id}/labels"
+        )
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxScanResultLabelsFields.from_dict(response.json())
         return result
@@ -1088,7 +1140,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/logs"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.content
         return result
@@ -1107,7 +1161,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/statistics"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = CxScanStatistics.from_dict(response.json())
         return result
@@ -1126,7 +1182,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/parsedFiles"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = CxScanParsedFiles.from_dict(item)
@@ -1146,7 +1204,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/failedQueries"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = CxScanFailedQueries.from_dict(item)
@@ -1166,7 +1226,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/failedGeneralQueries"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = CxScanFailedGeneralQueries.from_dict(item)
@@ -1186,7 +1248,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/succeededGeneralQueries"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             item = response.json()
             result = CxScanSucceededGeneralQueries.from_dict(item)
@@ -1221,7 +1285,9 @@ class ScansAPI(object):
 
         url = f"{self.base_url}/cxrestapi/sast/resultPathCommentsHistory?id={scan_id}&pathId={path_id}&commentToDisplay={comment_to_display}"
 
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -1237,7 +1303,9 @@ class ScansAPI(object):
 
         """
         url = f"{self.base_url}/cxrestapi/sast/lockScan?id={scan_id}"
-        response = self.api_client.call_api("PUT", url, data=None, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PUT", url, data=None, headers=get_headers(api_version)
+        )
         return response.status_code == OK
 
     def unlock_scan(self, scan_id: int, api_version: str = "4.0") -> bool:
@@ -1251,7 +1319,9 @@ class ScansAPI(object):
 
         """
         url = f"{self.base_url}/cxrestapi/sast/unLockScan?id={scan_id}"
-        response = self.api_client.call_api("PUT", url, data=None, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "PUT", url, data=None, headers=get_headers(api_version)
+        )
         return response.status_code == OK
 
     def get_scan_result_labels_action_fields(
@@ -1283,7 +1353,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/actionResults/{path_id}/labels"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -1331,7 +1403,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{old_scan_id}/compareResultsTo/{new_scan_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
             result = result.get("results")
@@ -1360,7 +1434,9 @@ class ScansAPI(object):
         """
         result = None
         url = f"{self.base_url}/cxrestapi/sast/scans/{old_scan_id}/compareSummaryTo/{new_scan_id}"
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
@@ -1408,7 +1484,9 @@ class ScansAPI(object):
             optional.append("&scanStatus={scanStatus}".format(scanStatus=scan_status))
         if optional:
             url += "?" + "&".join(optional)
-        response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
+        response = self.api_client.call_api(
+            "GET", url, headers=get_headers(api_version)
+        )
         if response.status_code == OK:
             result = response.json()
         return result
