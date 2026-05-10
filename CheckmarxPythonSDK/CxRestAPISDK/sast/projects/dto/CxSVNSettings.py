@@ -1,6 +1,6 @@
 # encoding: utf-8
-
-import json
+from .CxLink import CxLink
+from .CxURI import CxURI
 
 
 class CxSVNSettings(object):
@@ -11,22 +11,21 @@ class CxSVNSettings(object):
     def __init__(
         self, uri, paths, use_ssh=None, link=None, credentials=None, private_key=None
     ):
-        """
-
-        Args:
-            uri (:obj:`CxURI`):
-            paths (:obj:`list` of :obj:`str`):
-            use_ssh (boolean):
-            link (:obj:`CxLink`):
-            credentials (:obj:`CxCredential`):
-            private_key (str):
-        """
         self.uri = uri
         self.paths = paths
         self.use_ssh = use_ssh
         self.link = link
         self.credentials = credentials
         self.private_key = private_key
+
+    @classmethod
+    def from_dict(cls, item: dict) -> "CxSVNSettings":
+        return cls(
+            uri=CxURI.from_dict(item.get("uri") or {}),
+            paths=item.get("paths", []),
+            use_ssh=item.get("useSsh"),
+            link=CxLink.from_dict(item.get("link") or {}),
+        )
 
     def to_dict(self):
         data = {

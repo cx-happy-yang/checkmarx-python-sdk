@@ -9,24 +9,19 @@ from .TeamAPI import TeamAPI
 from .sast.projects.dto import (
     CxCreateProjectResponse,
     CxIssueTrackingSystemDetail,
-    CxIssueTrackingSystemField,
     CxSharedRemoteSourceSettingsResponse,
     CxGitSettings,
-    CxIssueTrackingSystemType,
-    CxIssueTrackingSystemFieldAllowedValue,
     CxIssueTrackingSystem,
-    CxLink,
     CxCustomRemoteSourceSettings,
     CxProjectExcludeSettings,
     CxSVNSettings,
-    CxURI,
     CxPerforceSettings,
     CxTFSSettings,
     CxPreset,
     CxCustomField,
     CxIssueTrackingSystemJiraField,
 )
-from .sast.projects.dto import CxProject, construct_cx_project
+from .sast.projects.dto import CxProject
 
 
 class ProjectsAPI(object):
@@ -77,7 +72,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            result = [construct_cx_project(item) for item in response.json()]
+            result = [CxProject.from_dict(item) for item in response.json()]
         return result
 
     def create_project_with_default_configuration(
@@ -169,7 +164,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            result = construct_cx_project(response.json())
+            result = CxProject.from_dict(response.json())
         return result
 
     def update_project_by_id(
@@ -433,46 +428,10 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_list = response.json().get("projects")
-            if a_list:
-                a_dict = a_list[0]
-                issue_types = a_dict.get("issueTypes")
-                issue_type = issue_types[0] if issue_types else {}
-                fields = issue_type.get("fields")
-                field = fields[0] if fields else {}
-                allowed_values = field.get("allowedValues", []) or []
-
-                result = {
-                    "projects": [
-                        CxIssueTrackingSystemDetail(
-                            tracking_system_detail_id=a_dict.get("id"),
-                            name=a_dict.get("name"),
-                            issue_types=[
-                                CxIssueTrackingSystemType(
-                                    issue_tracking_system_type_id=issue_type.get("id"),
-                                    name=issue_type.get("name"),
-                                    sub_task=issue_type.get("subtask"),
-                                    fields=[
-                                        CxIssueTrackingSystemField(
-                                            tracking_system_field_id=field.get("id"),
-                                            name=field.get("name"),
-                                            multiple=field.get("multiple"),
-                                            required=field.get("required"),
-                                            supported=field.get("supported"),
-                                            allowed_values=[
-                                                CxIssueTrackingSystemFieldAllowedValue(
-                                                    allowed_value_id=item.get("id"),
-                                                    name=item.get("name"),
-                                                )
-                                                for item in allowed_values
-                                            ],
-                                        )
-                                    ],
-                                )
-                            ],
-                        )
-                    ]
-                }
+            projects = response.json().get("projects") or []
+            result = {
+                "projects": [CxIssueTrackingSystemDetail.from_dict(p) for p in projects]
+            }
         return result
 
     def get_project_exclude_settings_by_project_id(
@@ -572,16 +531,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxGitSettings(
-                url=a_dict.get("url"),
-                branch=a_dict.get("branch"),
-                use_ssh=a_dict.get("useSsh"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxGitSettings.from_dict(response.json())
         return result
 
     def set_remote_source_setting_to_git(
@@ -677,19 +627,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxSVNSettings(
-                uri=CxURI(
-                    absolute_url=(a_dict.get("uri", {}) or {}).get("absoluteUrl"),
-                    port=(a_dict.get("uri", {}) or {}).get("port"),
-                ),
-                paths=a_dict.get("paths", []),
-                use_ssh=a_dict.get("useSsh", False),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxSVNSettings.from_dict(response.json())
         return result
 
     def set_remote_source_settings_to_svn(
@@ -773,18 +711,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxTFSSettings(
-                uri=CxURI(
-                    absolute_url=(a_dict.get("uri", {}) or {}).get("absoluteUrl"),
-                    port=(a_dict.get("uri", {}) or {}).get("port"),
-                ),
-                paths=a_dict.get("paths"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxTFSSettings.from_dict(response.json())
         return result
 
     def set_remote_source_settings_to_tfs(
@@ -856,15 +783,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxCustomRemoteSourceSettings(
-                path=a_dict.get("path"),
-                pulling_command_id=a_dict.get("pullingCommandId"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCustomRemoteSourceSettings.from_dict(response.json())
         return result
 
     def set_remote_source_setting_for_custom_by_project_id(
@@ -1003,19 +922,7 @@ class ProjectsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxPerforceSettings(
-                uri=CxURI(
-                    absolute_url=(a_dict.get("uri", {}) or {}).get("absoluteUrl"),
-                    port=(a_dict.get("uri", {}) or {}).get("port"),
-                ),
-                paths=a_dict.get("paths"),
-                browse_mode=a_dict.get("browseMode"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxPerforceSettings.from_dict(response.json())
         return result
 
     def set_remote_source_settings_to_perforce(

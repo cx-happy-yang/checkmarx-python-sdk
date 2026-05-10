@@ -32,6 +32,17 @@ class CxStatisticsResult(object):
         self.info_severity = info_severity
         self.statistics_calculation_date = statistics_calculation_date
 
+    @classmethod
+    def from_dict(cls, item: dict) -> "CxStatisticsResult":
+        return cls(
+            critical_severity=item.get("criticalSeverity"),
+            high_severity=item.get("highSeverity"),
+            medium_severity=item.get("mediumSeverity"),
+            low_severity=item.get("lowSeverity"),
+            info_severity=item.get("infoSeverity"),
+            statistics_calculation_date=item.get("statisticsCalculationDate"),
+        )
+
     def __str__(self):
         return """CxStatisticsResult(
                     critical_severity: {},

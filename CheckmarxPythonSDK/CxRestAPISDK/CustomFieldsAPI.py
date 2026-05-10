@@ -34,14 +34,7 @@ class CustomFieldsAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            result = [
-                CxCustomField(
-                    custom_field_id=item.get("id"),
-                    name=item.get("name"),
-                    is_mandatory=item.get("isMandatory"),
-                )
-                for item in response.json()
-            ]
+            result = [CxCustomField.from_dict(item) for item in response.json()]
         return result
 
     def get_custom_field_id_by_name(self, custom_field_name: str) -> int:

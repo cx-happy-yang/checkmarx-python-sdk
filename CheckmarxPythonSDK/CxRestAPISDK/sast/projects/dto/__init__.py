@@ -28,15 +28,3 @@ from .presets.CxPreset import CxPreset
 from .customFields.CxCustomField import CxCustomField
 from .customTasks.CxCustomTask import CxCustomTask
 from .CxProjectQueueSetting import CxProjectQueueSetting
-
-
-def construct_cx_project(item):
-    """
-
-    Args:
-        item (dict):
-
-    Returns:
-        `CxProject`
-    """
-    return CxProject.from_dict(item)

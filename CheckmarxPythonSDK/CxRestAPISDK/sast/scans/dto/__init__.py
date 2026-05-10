@@ -39,27 +39,3 @@ from .CxSchedulingSettings import CxSchedulingSettings
 from .CxStatisticsResult import CxStatisticsResult
 from .CxStatus import CxStatus
 from .CxStatusDetail import CxStatusDetail
-
-
-def construct_scan_result_node(item):
-    """
-
-    Args:
-        item (dict):
-
-    Returns:
-
-    """
-    return CxScanResultNode.from_dict(item)
-
-
-def construct_attack_vector(ac):
-    """
-
-    Args:
-        ac (dict): attack vector dictionary
-
-    Returns:
-
-    """
-    return CxScanResultAttackVector.from_dict(ac)

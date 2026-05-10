@@ -48,14 +48,7 @@ class ConfigurationAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            result = [
-                CxSASTConfig(
-                    key=item.get("key"),
-                    value=item.get("value"),
-                    description=item.get("description"),
-                )
-                for item in response.json()
-            ]
+            result = [CxSASTConfig.from_dict(item) for item in response.json()]
         return result
 
     def update_cx_component_configuration_settings(

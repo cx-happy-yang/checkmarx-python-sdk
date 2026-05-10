@@ -31,8 +31,6 @@ from .sast.scans.dto import (
     CxEmailNotification,
     CxLanguage,
     CxScanResultAttackVectorByBFL,
-    construct_attack_vector,
-    construct_scan_result_node,
     CxScanResultLabelsFields,
     CxScanStatistics,
     CxScanFileCountOfLanguage,
@@ -59,19 +57,6 @@ class ScansAPI(object):
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
         self.base_url = api_client.configuration.server_base_url.rstrip("/")
-
-    @staticmethod
-    def construct_scan(item: dict) -> CxScanDetail:
-        """
-        construct scan object
-
-        Args:
-            item （dict):
-
-        Returns:
-            :obj:`CxScanDetail`
-        """
-        return CxScanDetail.from_dict(item)
 
     def get_all_scans_for_project(
         self,
@@ -120,7 +105,7 @@ class ScansAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            result = [self.construct_scan(item) for item in response.json()]
+            result = [CxScanDetail.from_dict(item) for item in response.json()]
         return result
 
     def get_last_scan_id_of_a_project(
@@ -269,7 +254,7 @@ class ScansAPI(object):
         )
         if response.status_code == OK:
             item = response.json()
-            result = self.construct_scan(item)
+            result = CxScanDetail.from_dict(item)
         return result
 
     def add_or_update_a_comment_by_scan_id(
@@ -347,20 +332,8 @@ class ScansAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            item = response.json()
-            result = CxStatisticsResult(
-                critical_severity=item.get("criticalSeverity"),
-                high_severity=item.get("highSeverity"),
-                medium_severity=item.get("mediumSeverity"),
-                low_severity=item.get("lowSeverity"),
-                info_severity=item.get("infoSeverity"),
-                statistics_calculation_date=item.get("statisticsCalculationDate"),
-            )
+            result = CxStatisticsResult.from_dict(response.json())
         return result
-
-    @staticmethod
-    def construct_scan_queue_detail(item):
-        return CxScanQueueDetail.from_dict(item)
 
     def get_scan_queue_details_by_scan_id(
         self, scan_id: int, api_version: str = "1.0"
@@ -387,7 +360,7 @@ class ScansAPI(object):
         )
         if response.status_code == OK:
             item = response.json()
-            result = self.construct_scan_queue_detail(item)
+            result = CxScanQueueDetail.from_dict(item)
         return result
 
     def update_queued_scan_status_by_scan_id(
@@ -447,9 +420,7 @@ class ScansAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            result = [
-                self.construct_scan_queue_detail(item) for item in response.json()
-            ]
+            result = [CxScanQueueDetail.from_dict(item) for item in response.json()]
         return result
 
     def get_scan_settings_by_project_id(
@@ -806,11 +777,7 @@ class ScansAPI(object):
             "POST", url, data=post_data, headers=get_headers(api_version)
         )
         if response.status_code == ACCEPTED:
-            a_dict = response.json()
-            result = CxRegisterScanReportResponse(
-                report_id=a_dict.get("reportId"),
-                links=a_dict.get("links"),
-            )
+            result = CxRegisterScanReportResponse.from_dict(response.json())
         return result
 
     def get_report_status_by_id(
@@ -921,7 +888,7 @@ class ScansAPI(object):
         )
         if response.status_code == OK:
             vectors = response.json().get("attackVectors")
-            result = [construct_attack_vector(ac) for ac in vectors]
+            result = [CxScanResultAttackVector.from_dict(ac) for ac in vectors]
         return result
 
     def get_scan_results_for_a_specific_query_group_by_best_fix_location(

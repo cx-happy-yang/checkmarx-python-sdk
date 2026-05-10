@@ -3,7 +3,6 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxRestAPISDK.config import construct_configuration, get_headers
 from CheckmarxPythonSDK.utilities.compat import OK
 from .sast.projects.dto import CxCustomTask
-from .sast.projects.dto import CxLink
 
 
 class CustomTasksAPI(object):
@@ -40,20 +39,7 @@ class CustomTasksAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_list = response.json()
-            result = [
-                CxCustomTask(
-                    custom_task_id=item.get("id"),
-                    name=item.get("name"),
-                    custom_task_type=item.get("type"),
-                    data=item.get("data"),
-                    link=CxLink(
-                        (item.get("link", {}) or {}).get("rel"),
-                        (item.get("link", {}) or {}).get("uri"),
-                    ),
-                )
-                for item in a_list
-            ]
+            result = [CxCustomTask.from_dict(item) for item in response.json()]
         return result
 
     def get_custom_task_id_by_name(self, task_name: str) -> int:
@@ -92,17 +78,7 @@ class CustomTasksAPI(object):
             "GET", url, headers=get_headers(api_version)
         )
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxCustomTask(
-                custom_task_id=a_dict.get("id"),
-                name=a_dict.get("name"),
-                custom_task_type=a_dict.get("type"),
-                data=a_dict.get("data"),
-                link=CxLink(
-                    (a_dict.get("link", {}) or {}).get("rel"),
-                    (a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCustomTask.from_dict(response.json())
         return result
 
     def get_custom_task_by_name(
@@ -130,15 +106,5 @@ class CustomTasksAPI(object):
         if response.status_code == OK:
             a_list = response.json()
             if a_list:
-                a_dict = a_list[0]
-                result = CxCustomTask(
-                    custom_task_id=a_dict.get("id"),
-                    name=a_dict.get("name"),
-                    custom_task_type=a_dict.get("type"),
-                    data=a_dict.get("data"),
-                    link=CxLink(
-                        (a_dict.get("link", {}) or {}).get("rel"),
-                        (a_dict.get("link", {}) or {}).get("uri"),
-                    ),
-                )
+                result = CxCustomTask.from_dict(a_list[0])
         return result

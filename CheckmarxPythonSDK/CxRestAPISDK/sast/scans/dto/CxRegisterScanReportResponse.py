@@ -22,3 +22,10 @@ class CxRegisterScanReportResponse:
 
     report_id: Optional[int] = None
     links: Optional[object] = None
+
+    @classmethod
+    def from_dict(cls, item: dict) -> "CxRegisterScanReportResponse":
+        return cls(
+            report_id=item.get("reportId"),
+            links=item.get("links"),
+        )
