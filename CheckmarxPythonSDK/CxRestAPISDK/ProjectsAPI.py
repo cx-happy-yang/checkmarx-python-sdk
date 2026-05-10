@@ -111,14 +111,7 @@ class ProjectsAPI(object):
         )
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
-            d = response.json()
-            result = CxCreateProjectResponse(
-                d.get("id"),
-                CxLink(
-                    rel=(d.get("link", {}) or {}).get("rel"),
-                    uri=(d.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCreateProjectResponse.from_dict(response.json())
         return result
 
     def get_project_id_by_project_name_and_team_full_name(
@@ -345,14 +338,7 @@ class ProjectsAPI(object):
         post_data = json.dumps({"name": branched_project_name})
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
-            a_dict = response.json()
-            result = CxCreateProjectResponse(
-                project_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCreateProjectResponse.from_dict(response.json())
         return result
 
     def get_branch_project_status(
@@ -388,15 +374,7 @@ class ProjectsAPI(object):
         url = f"{self.base_url}/cxrestapi/issueTrackingSystems"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            result = [
-                CxIssueTrackingSystem(
-                    tracking_system_id=item.get("id"),
-                    name=item.get("name"),
-                    tracking_system_type=item.get("type"),
-                    url=item.get("url"),
-                )
-                for item in response.json()
-            ]
+            result = [CxIssueTrackingSystem.from_dict(item) for item in response.json()]
         return result
 
     def get_issue_tracking_system_id_by_name(self, name: str) -> int:
@@ -499,16 +477,7 @@ class ProjectsAPI(object):
         url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/excludeSettings"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxProjectExcludeSettings(
-                project_id=a_dict.get("projectId"),
-                exclude_folders_pattern=a_dict.get("excludeFoldersPattern"),
-                exclude_files_pattern=a_dict.get("excludeFilesPattern"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxProjectExcludeSettings.from_dict(response.json())
         return result
 
     def set_project_exclude_settings_by_project_id(
@@ -923,14 +892,7 @@ class ProjectsAPI(object):
         url = f"{self.base_url}/cxrestapi/projects/{project_id}/sourceCode/remoteSettings/shared"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxSharedRemoteSourceSettingsResponse(
-                paths=a_dict.get("paths"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxSharedRemoteSourceSettingsResponse.from_dict(response.json())
         return result
 
     def set_remote_source_settings_to_shared(
@@ -1244,18 +1206,7 @@ class ProjectsAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/presets"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            result = [
-                CxPreset(
-                    preset_id=item.get("id"),
-                    name=item.get("name"),
-                    owner_name=item.get("ownerName"),
-                    link=CxLink(
-                        rel=(item.get("link", {}) or {}).get("rel"),
-                        uri=(item.get("link", {}) or {}).get("uri"),
-                    ),
-                )
-                for item in response.json()
-            ]
+            result = [CxPreset.from_dict(item) for item in response.json()]
         return result
 
     def get_preset_id_by_name(self, preset_name: str) -> int:
@@ -1293,17 +1244,7 @@ class ProjectsAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/presets/{preset_id}"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxPreset(
-                preset_id=a_dict.get("id"),
-                name=a_dict.get("name"),
-                owner_name=a_dict.get("ownerName"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-                query_ids=a_dict.get("queryIds"),
-            )
+            result = CxPreset.from_dict(response.json())
         return result
 
     def set_project_queue_setting(

@@ -3,45 +3,11 @@ from typing import List
 from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxRestAPISDK.config import construct_configuration, get_headers
 from CheckmarxPythonSDK.utilities.compat import OK, NO_CONTENT, CREATED
-from .sast.projects.dto import CxLink
 from .sast.engines.dto import (
     CxEngineServer,
     CxEngineConfiguration,
     CxEngineDedication,
-    CxEngineServerStatus,
 )
-
-
-def construct_engine_server(item):
-    return CxEngineServer(
-        engine_server_id=item.get("id"),
-        name=item.get("name"),
-        uri=item.get("uri"),
-        min_loc=item.get("minLoc"),
-        max_loc=item.get("maxLoc"),
-        max_scans=item.get("maxScans"),
-        cx_version=item.get("cxVersion"),
-        operating_system=item.get("operatingSystem"),
-        status=CxEngineServerStatus(
-            status_id=(item.get("status", {}) or {}).get("id"),
-            value=(item.get("status", {}) or {}).get("value"),
-        ),
-        link=CxLink(
-            rel=(item.get("link", {}) or {}).get("rel"),
-            uri=(item.get("link", {}) or {}).get("uri"),
-        ),
-        offline_reason_code=item.get("offlineReasonCode"),
-        offline_reason_message=item.get("offlineReasonMessage"),
-        offline_reason_message_parameters=item.get("offlineReasonMessageParameters"),
-        dedications=[
-            CxEngineDedication(
-                item_type=va.get("itemType"),
-                item_id=va.get("itemId"),
-                item_name=va.get("itemName"),
-            )
-            for va in item.get("dedications", [{}])
-        ],
-    )
 
 
 class EnginesAPI(object):
@@ -76,7 +42,7 @@ class EnginesAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/engineServers"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            result = [construct_engine_server(item) for item in response.json()]
+            result = [CxEngineServer.from_dict(item) for item in response.json()]
         return result
 
     def get_engine_id_by_name(self, engine_name: str) -> int:
@@ -149,14 +115,7 @@ class EnginesAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/engineServers"
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
-            a_dict = response.json()
-            result = CxEngineServer(
-                engine_server_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxEngineServer.from_dict(response.json())
         return result
 
     def unregister_engine_by_engine_id(
@@ -203,8 +162,7 @@ class EnginesAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/engineServers/{engine_id}"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            item = response.json()
-            result = construct_engine_server(item)
+            result = CxEngineServer.from_dict(response.json())
         return result
 
     def update_engine_server(
@@ -268,14 +226,7 @@ class EnginesAPI(object):
         )
         response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxEngineServer(
-                engine_server_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxEngineServer.from_dict(response.json())
         return result
 
     def update_an_engine_server_by_edit_single_field(
@@ -363,12 +314,7 @@ class EnginesAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/engineConfigurations"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            result = [
-                CxEngineConfiguration(
-                    engine_configuration_id=item.get("id"), name=item.get("name")
-                )
-                for item in response.json()
-            ]
+            result = [CxEngineConfiguration.from_dict(item) for item in response.json()]
         return result
 
     def get_engine_configuration_id_by_name(
@@ -408,8 +354,5 @@ class EnginesAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/engineConfigurations/{configuration_id}"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxEngineConfiguration(
-                engine_configuration_id=a_dict.get("id"), name=a_dict.get("name")
-            )
+            result = CxEngineConfiguration.from_dict(response.json())
         return result

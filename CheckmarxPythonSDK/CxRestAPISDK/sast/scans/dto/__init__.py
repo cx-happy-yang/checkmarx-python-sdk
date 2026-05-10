@@ -50,19 +50,7 @@ def construct_scan_result_node(item):
     Returns:
 
     """
-    return CxScanResultNode(
-        node_id=item.get("id"),
-        order=item.get("order"),
-        short_name=item.get("shortName"),
-        full_name=item.get("fullName"),
-        file_name=item.get("fileName"),
-        folder=item.get("folder"),
-        line=item.get("line"),
-        column=item.get("column"),
-        length=item.get("length"),
-        method_line=item.get("methodLine"),
-        source_url=item.get("sourceUrl"),
-    )
+    return CxScanResultNode.from_dict(item)
 
 
 def construct_attack_vector(ac):
@@ -74,8 +62,4 @@ def construct_attack_vector(ac):
     Returns:
 
     """
-    return CxScanResultAttackVector(
-        result_id=ac.get("resultId"),
-        best_fix_location_node=ac.get("bestFixLocationNode"),
-        nodes=[construct_scan_result_node(item) for item in ac.get("nodes")],
-    )
+    return CxScanResultAttackVector.from_dict(ac)

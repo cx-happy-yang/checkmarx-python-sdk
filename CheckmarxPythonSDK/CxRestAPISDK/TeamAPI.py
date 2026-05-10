@@ -34,15 +34,7 @@ class TeamAPI(object):
         url = f"{self.base_url}/cxrestapi/auth/teams"
         response = self.api_client.call_api("GET", url, headers=get_headers())
         if response.status_code == OK:
-            result = [
-                CxTeam(
-                    item.get("id"),
-                    item.get("name"),
-                    item.get("fullName"),
-                    item.get("parentId"),
-                )
-                for item in response.json()
-            ]
+            result = [CxTeam.from_dict(item) for item in response.json()]
         return result
 
     def get_team_id_by_team_full_name(self, team_full_name: str) -> int:

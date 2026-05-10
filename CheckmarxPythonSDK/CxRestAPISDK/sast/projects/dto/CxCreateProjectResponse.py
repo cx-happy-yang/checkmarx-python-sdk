@@ -1,20 +1,21 @@
 # encoding: utf-8
+from dataclasses import dataclass
+from typing import Optional
 
 
-class CxCreateProjectResponse(object):
+@dataclass
+class CxCreateProjectResponse:
     """
     the response data, when create a project
     """
 
-    def __init__(self, project_id, link):
-        """
+    id: Optional[int] = None
+    link: Optional[object] = None
 
-        Args:
-            project_id (int):
-            link (:obj:`CxLink`):
-        """
-        self.id = project_id
-        self.link = link
-
-    def __str__(self):
-        return "CxCreateProjectResponse(id={}, link={})".format(self.id, self.link)
+    @classmethod
+    def from_dict(cls, item: dict) -> "CxCreateProjectResponse":
+        from .CxLink import CxLink
+        return cls(
+            id=item.get("id"),
+            link=CxLink.from_dict(item.get("link") or {}),
+        )

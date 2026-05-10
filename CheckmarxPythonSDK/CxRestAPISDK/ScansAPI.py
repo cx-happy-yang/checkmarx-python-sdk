@@ -71,85 +71,7 @@ class ScansAPI(object):
         Returns:
             :obj:`CxScanDetail`
         """
-        return CxScanDetail(
-            scan_id=item.get("id"),
-            project=CxProject(
-                project_id=item.get("project", {}).get("id"),
-                name=item.get("project", {}).get("name"),
-                links=[item.get("project", {}).get("link")],
-            ),
-            status=CxStatus(
-                status_id=item.get("status", {}).get("id"),
-                name=item.get("status", {}).get("name"),
-                details=CxStatusDetail(
-                    stage=item.get("status", {}).get("details", {}).get("stage"),
-                    step=item.get("status", {}).get("details", {}).get("step"),
-                ),
-            ),
-            scan_type=CxScanType(
-                scan_type_id=item.get("scanType", {}).get("id"),
-                value=item.get("scanType", {}).get("value"),
-            ),
-            comment=item.get("comment"),
-            date_and_time=CxDateAndTime(
-                started_on=(item.get("dateAndTime", {}) or {}).get("startedOn"),
-                finished_on=(item.get("dateAndTime", {}) or {}).get("finishedOn"),
-                engine_started_on=(item.get("dateAndTime", {}) or {}).get(
-                    "engineStartedOn"
-                ),
-                engine_finished_on=(item.get("dateAndTime", {}) or {}).get(
-                    "engineFinishedOn"
-                ),
-            ),
-            results_statistics=CxResultsStatistics(
-                link=(item.get("resultsStatistics", {}) or {}).get("link")
-            ),
-            scan_state=CxScanState(
-                path=(item.get("scanState", {}) or {}).get("path"),
-                source_id=(item.get("scanState", {}) or {}).get("sourceId"),
-                files_count=(item.get("scanState", {}) or {}).get("filesCount"),
-                lines_of_code=(item.get("scanState", {}) or {}).get("linesOfCode"),
-                failed_lines_of_code=(item.get("scanState", {}) or {}).get(
-                    "failedLinesOfCode"
-                ),
-                cx_version=(item.get("scanState", {}) or {}).get("cxVersion"),
-                language_state_collection=[
-                    CxLanguageState(
-                        language_id=language_state.get("languageID"),
-                        language_name=language_state.get("languageName"),
-                        language_hash=language_state.get("languageHash"),
-                        state_creation_date=language_state.get("stateCreationDate"),
-                    )
-                    for language_state in (
-                        (item.get("scanState", {}) or {}).get(
-                            "languageStateCollection", {}
-                        )
-                        or {}
-                    )
-                ],
-            ),
-            owner=item.get("owner"),
-            origin=item.get("origin"),
-            origin_url=item.get("originURL"),
-            initiator_name=item.get("initiatorName"),
-            owning_team_id=item.get("owningTeamId"),
-            is_public=item.get("isPublic"),
-            is_locked=item.get("isLocked"),
-            is_incremental=item.get("isIncremental"),
-            scan_risk=item.get("scanRisk"),
-            scan_risk_severity=item.get("scanRiskSeverity"),
-            engine_server=CxEngineServer(
-                engine_server_id=(item.get("engineServer", {}) or {}).get("id"),
-                name=(item.get("engineServer", {}) or {}).get("name"),
-                link=(item.get("engineServer", {}) or {}).get("link"),
-            ),
-            finished_scan_status=CxFinishedScanStatus(
-                scan_status_id=(item.get("finishedScanStatus", {}) or {}).get("id"),
-                value=(item.get("finishedScanStatus", {}) or {}).get("value"),
-            ),
-            partial_scan_reasons=item.get("partialScanReasons"),
-            custom_fields=item.get("customFields"),
-        )
+        return CxScanDetail.from_dict(item)
 
     def get_all_scans_for_project(
         self,
@@ -315,13 +237,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == CREATED:
             a_dict = response.json()
-            result = CxCreateNewScanResponse(
-                scan_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCreateNewScanResponse.from_dict(a_dict)
         return result
 
     def get_sast_scan_details_by_scan_id(
@@ -432,57 +348,7 @@ class ScansAPI(object):
 
     @staticmethod
     def construct_scan_queue_detail(item):
-        return CxScanQueueDetail(
-            scan_queue_detail_id=item.get("id"),
-            stage=CxScanStage(
-                scan_stage_id=(item.get("stage", {}) or {}).get("id"),
-                value=(item.get("stage", {}) or {}).get("value"),
-            ),
-            stage_details=item.get("stageDetails"),
-            step_details=item.get("stepDetails"),
-            project=CxProject(
-                project_id=(item.get("project", {}) or {}).get("id"),
-                name=(item.get("project", {}) or {}).get("name"),
-                links=[
-                    CxLink(
-                        rel=((item.get("project", {}) or {}).get("link", {}) or {}).get(
-                            "rel"
-                        ),
-                        uri=((item.get("project", {}) or {}).get("link", {}) or {}).get(
-                            "uri"
-                        ),
-                    )
-                ],
-            ),
-            engine=CxEngineServer(
-                engine_server_id=(item.get("engine", {}) or {}).get("id"),
-                link=CxLink(
-                    rel=((item.get("engine", {}) or {}).get("link", {}) or {}).get(
-                        "rel"
-                    ),
-                    uri=((item.get("engine", {}) or {}).get("link", {}) or {}).get(
-                        "uri"
-                    ),
-                ),
-            ),
-            languages=[
-                CxLanguage(language_id=language.get("id"), name=language.get("name"))
-                for language in (item.get("languages", []) or [])
-            ],
-            team_id=item.get("teamId"),
-            date_created=item.get("dateCreated"),
-            queued_on=item.get("queuedOn"),
-            engine_started_on=item.get("engineStartedOn"),
-            completed_on=item.get("completedOn"),
-            loc=item.get("loc"),
-            is_incremental=item.get("isIncremental"),
-            is_public=item.get("isPublic"),
-            origin=item.get("origin"),
-            queue_position=item.get("queuePosition"),
-            total_percent=item.get("totalPercent"),
-            stage_percent=item.get("stagePercent"),
-            initiator=item.get("initiator"),
-        )
+        return CxScanQueueDetail.from_dict(item)
 
     def get_scan_queue_details_by_scan_id(
         self, scan_id: int, api_version: str = "1.0"
@@ -590,65 +456,7 @@ class ScansAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/scanSettings/{project_id}"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxScanSettings(
-                project=CxProject(
-                    project_id=(a_dict.get("project", {}) or {}).get("id"),
-                    links=[
-                        CxLink(
-                            rel=(a_dict.get("project", {}) or {})
-                            .get("link", {})
-                            .get("rel"),
-                            uri=(a_dict.get("project", {}) or {})
-                            .get("link", {})
-                            .get("uri"),
-                        )
-                    ],
-                ),
-                preset=CxPreset(
-                    preset_id=(a_dict.get("preset", {}) or {}).get("id"),
-                    link=CxLink(
-                        rel=(a_dict.get("preset", {}) or {}).get("link", {}).get("rel"),
-                        uri=(a_dict.get("preset", {}) or {}).get("link", {}).get("uri"),
-                    ),
-                ),
-                engine_configuration=CxEngineConfiguration(
-                    engine_configuration_id=(
-                        a_dict.get("engineConfiguration", {}) or {}
-                    ).get("id"),
-                    link=CxLink(
-                        rel=(a_dict.get("engineConfiguration", {}) or {})
-                        .get("link", {})
-                        .get("rel"),
-                        uri=(a_dict.get("engineConfiguration", {}) or {})
-                        .get("link", {})
-                        .get("uri"),
-                    ),
-                ),
-                post_scan_action_data=a_dict.get("postScanActionData"),
-                post_scan_action_name=a_dict.get("postScanActionName"),
-                post_scan_action=a_dict.get("postScanAction"),
-                email_notifications=CxEmailNotification(
-                    failed_scan=(a_dict.get("emailNotifications", {}) or {}).get(
-                        "failedScan"
-                    ),
-                    before_scan=(a_dict.get("emailNotifications", {}) or {}).get(
-                        "beforeScan"
-                    ),
-                    after_scan=(a_dict.get("emailNotifications", {}) or {}).get(
-                        "afterScan"
-                    ),
-                ),
-                post_scan_action_conditions=CxPostScanActionConditions(
-                    run_only_when_new_results=(
-                        a_dict.get("postScanActionConditions", {}) or {}
-                    ).get("runOnlyWhenNewResults"),
-                    run_only_when_new_results_min_severity=(
-                        a_dict.get("postScanActionConditions", {}) or {}
-                    ).get("runOnlyWhenNewResultsMinSeverity"),
-                ),
-                post_scan_action_arguments=a_dict.get("postScanActionArguments"),
-            )
+            result = CxScanSettings.from_dict(response.json())
         return result
 
     def define_sast_scan_settings(
@@ -719,13 +527,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
-            result = CxCreateScanSettingsResponse(
-                scan_setting_response_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCreateScanSettingsResponse.from_dict(a_dict)
         return result
 
     def update_sast_scan_settings(
@@ -799,13 +601,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("PUT", url, data=put_data, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
-            result = CxCreateScanSettingsResponse(
-                scan_setting_response_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCreateScanSettingsResponse.from_dict(a_dict)
         return result
 
     def define_sast_scan_scheduling_settings(
@@ -897,13 +693,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("POST", url, data=None, headers=get_headers(api_version))
         if response.status_code == CREATED:
             a_dict = response.json()
-            result = CxPolicyFindingResponse(
-                policy_finding_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxPolicyFindingResponse.from_dict(a_dict)
         return result
 
     def get_the_publish_last_scan_results_to_management_and_orchestration_status(
@@ -930,24 +720,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
-            result = CxPolicyFindingsStatus(
-                project=CxProject(
-                    project_id=(a_dict.get("project", {}) or {}).get("id"),
-                ),
-                scan=CxCreateNewScanResponse(
-                    scan_id=(a_dict.get("scan", {}) or {}).get("id"),
-                    link=CxLink(
-                        rel=((a_dict.get("scan", {}) or {}).get("link", {}) or {}).get(
-                            "rel"
-                        ),
-                        uri=((a_dict.get("scan", {}) or {}).get("link", {}) or {}).get(
-                            "uri"
-                        ),
-                    ),
-                ),
-                status=a_dict.get("status"),
-                last_sync=a_dict.get("lastSync"),
-            )
+            result = CxPolicyFindingsStatus.from_dict(a_dict)
         return result
 
     def get_short_vulnerability_description_for_a_scan_result(
@@ -1000,24 +773,7 @@ class ScansAPI(object):
             a_dict = response.json()
             result = CxRegisterScanReportResponse(
                 report_id=a_dict.get("reportId"),
-                links=CxRegisterScanReportResponse.Links(
-                    report=CxLink(
-                        rel=(
-                            (a_dict.get("links", {}) or {}).get("report", {}) or {}
-                        ).get("rel"),
-                        uri=(
-                            (a_dict.get("links", {}) or {}).get("report", {}) or {}
-                        ).get("uri"),
-                    ),
-                    status=CxLink(
-                        rel=(
-                            (a_dict.get("links", {}) or {}).get("status", {}) or {}
-                        ).get("rel"),
-                        uri=(
-                            (a_dict.get("links", {}) or {}).get("status", {}) or {}
-                        ).get("uri"),
-                    ),
-                ),
+                links=a_dict.get("links"),
             )
         return result
 
@@ -1045,17 +801,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             a_dict = response.json()
-            result = CxScanReportStatus(
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-                content_type=a_dict.get("contentType"),
-                status=CxScanReportStatus.Status(
-                    status_id=(a_dict.get("status", {}) or {}).get("id"),
-                    value=(a_dict.get("status", {}) or {}).get("value"),
-                ),
-            )
+            result = CxScanReportStatus.from_dict(a_dict)
         return result
 
     def get_report_by_id(self, report_id: int, api_version: str = "1.0") -> bytes:
@@ -1158,17 +904,7 @@ class ScansAPI(object):
         if response.status_code == OK:
             attack_vectors_by_bfl = response.json().get("attackVectorsByBFL")
             result = [
-                CxScanResultAttackVectorByBFL(
-                    scan_id=ac_bfl.get("scanId"),
-                    query_version_code=ac_bfl.get("queryVersion"),
-                    best_fix_location_node=construct_scan_result_node(
-                        ac_bfl.get("bestFixLocationNode")
-                    ),
-                    attack_vectors=[
-                        construct_attack_vector(ac)
-                        for ac in ac_bfl.get("attackVectors")
-                    ],
-                )
+                CxScanResultAttackVectorByBFL.from_dict(ac_bfl)
                 for ac_bfl in attack_vectors_by_bfl
             ]
         return result
@@ -1317,13 +1053,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("POST", url, files=files, data=data, headers=get_headers(api_version))
         if response.status_code == CREATED:
             a_dict = response.json()
-            result = CxCreateNewScanResponse(
-                scan_id=a_dict.get("id"),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxCreateNewScanResponse.from_dict(a_dict)
         return result
 
     def get_scan_result_labels_fields(
@@ -1343,13 +1073,7 @@ class ScansAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/results/{result_id}/labels"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxScanResultLabelsFields(
-                state=a_dict.get("state"),
-                severity=a_dict.get("severity"),
-                user_assignment=a_dict.get("userAssignment"),
-                comment=a_dict.get("comment"),
-            )
+            result = CxScanResultLabelsFields.from_dict(response.json())
         return result
 
     def get_scan_logs(self, scan_id: int, api_version: str = "5.0") -> bytes:
@@ -1385,66 +1109,7 @@ class ScansAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/scans/{scan_id}/statistics"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            item = response.json()
-            result = CxScanStatistics(
-                statistics_id=item.get("id"),
-                scan_id=item.get("scanId"),
-                scan_status=item.get("scanStatus"),
-                product_version=item.get("productVersion"),
-                engine_version=item.get("engineVersion"),
-                memory_peak_in_mb=item.get("memoryPeakInMB"),
-                virtual_memory_peak_in_mb=item.get("virtualMemoryPeakInMB"),
-                is_incremental_scan=item.get("isIncrementalScan"),
-                results_count=item.get("resultsCount"),
-                total_unscanned_files_count=item.get("totalUnScannedFilesCount"),
-                file_count_of_detected_but_not_scanned_languages=[
-                    CxScanFileCountOfLanguage(
-                        language=key,
-                        file_count=value,
-                    )
-                    for key, value in item.get(
-                        "fileCountOfDetectedButNotScannedLanguages", {}
-                    ).items()
-                ],
-                total_filtered_parsed_loc=item.get("totalFilteredParsedLOC"),
-                total_unfiltered_parsed_loc=item.get("totalUnFilteredParsedLOC"),
-                language_statistics=[
-                    CxLanguageStatistic(
-                        language=key,
-                        parsed_successfully_count=value.get("parsedFiles", {}).get(
-                            "parsedSuccessfullyCount"
-                        ),
-                        parsed_unsuccessfully_count=value.get("parsedFiles", {}).get(
-                            "parsedUnsuccessfullyCount"
-                        ),
-                        parsed_partially_count=value.get("parsedFiles", {}).get(
-                            "parsedPartiallyCount"
-                        ),
-                        successful_loc=value.get("scannedLOCPerLanguage", {}).get(
-                            "successfulLOC"
-                        ),
-                        unsuccessful_loc=value.get("scannedLOCPerLanguage", {}).get(
-                            "unsuccessfulLOC"
-                        ),
-                        scanned_successfully_loc_percentage=value.get(
-                            "scannedLOCPerLanguage", {}
-                        ).get("scannedSuccessfullyLOCPercentage"),
-                        count_of_dom_objects=value.get("countOfDomObjects"),
-                    )
-                    for key, value in item.get("languageStatistics", {}).items()
-                ],
-                path_filter_pattern=item.get("pathFilterPattern"),
-                failed_queries_count=item.get("failedQueriesCount"),
-                succeeded_general_queries_count=item.get("generalQueries", {}).get(
-                    "succeededGeneralQueriesCount"
-                ),
-                failed_general_queries_count=item.get("generalQueries", {}).get(
-                    "failedGeneralQueriesCount"
-                ),
-                failed_stages=item.get("failedStages"),
-                engine_operating_system=item.get("engineOperatingSystem"),
-                engine_pack_version=item.get("enginePackVersion"),
-            )
+            result = CxScanStatistics.from_dict(response.json())
         return result
 
     def get_parsed_files_metrics_of_a_scan(
@@ -1464,18 +1129,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             item = response.json()
-            result = CxScanParsedFiles(
-                scan_id=item.get("id"),
-                scanned_files_per_language=[
-                    CxScanParsedFilesMetric(
-                        language=key,
-                        parsed_successfully=value.get("parsedSuccessfully"),
-                        parsed_unsuccessfully=value.get("parsedUnsuccessfully"),
-                        parsed_partially=value.get("parsedPartially"),
-                    )
-                    for key, value in item.get("scannedFilesPerLanguage", {}).items()
-                ],
-            )
+            result = CxScanParsedFiles.from_dict(item)
         return result
 
     def get_failed_queries_metrics_of_a_scan(
@@ -1495,9 +1149,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             item = response.json()
-            result = CxScanFailedQueries(
-                scan_id=item.get("id"), failed_queries=item.get("failedQueries")
-            )
+            result = CxScanFailedQueries.from_dict(item)
         return result
 
     def get_failed_general_queries_metrics_of_a_scan(
@@ -1517,10 +1169,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             item = response.json()
-            result = CxScanFailedGeneralQueries(
-                scan_id=item.get("id"),
-                failed_general_queries=item.get("failedGeneralQueries"),
-            )
+            result = CxScanFailedGeneralQueries.from_dict(item)
         return result
 
     def get_succeeded_general_queries_metrics_of_a_scan(
@@ -1540,10 +1189,7 @@ class ScansAPI(object):
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
             item = response.json()
-            result = CxScanSucceededGeneralQueries(
-                scan_id=item.get("id"),
-                general_queries_result_count=item.get("generalQueriesResultCount"),
-            )
+            result = CxScanSucceededGeneralQueries.from_dict(item)
         return result
 
     def get_result_path_comments_history(

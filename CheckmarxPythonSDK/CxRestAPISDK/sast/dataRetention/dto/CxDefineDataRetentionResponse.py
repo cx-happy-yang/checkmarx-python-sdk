@@ -1,22 +1,20 @@
 # encoding: utf-8
+from dataclasses import dataclass
+from typing import Optional
 
 
-class CxDefineDataRetentionResponse(object):
+@dataclass
+class CxDefineDataRetentionResponse:
     """
     define data retention response
     """
 
-    def __init__(self, data_retention_response_id, link):
-        """
+    id: Optional[int] = None
+    link: Optional[object] = None
 
-        Args:
-            data_retention_response_id (int):
-            link (:obj:`CxLink`):
-        """
-        self.id = data_retention_response_id
-        self.link = link
-
-    def __str__(self):
-        return "CxDefineDataRetentionResponse(id={}, link={})".format(
-            self.id, self.link
+    @classmethod
+    def from_dict(cls, item: dict) -> "CxDefineDataRetentionResponse":
+        return cls(
+            id=item.get("id"),
+            link=item.get("link"),
         )

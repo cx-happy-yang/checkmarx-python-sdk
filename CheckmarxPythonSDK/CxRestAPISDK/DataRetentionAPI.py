@@ -3,11 +3,9 @@ from CheckmarxPythonSDK.api_client import ApiClient
 from CheckmarxPythonSDK.CxRestAPISDK.config import construct_configuration, get_headers
 from datetime import date, datetime, timedelta
 from CheckmarxPythonSDK.utilities.compat import OK, ACCEPTED
-from .sast.projects.dto import CxLink
 from .sast.dataRetention.dto import (
     CxDefineDataRetentionResponse,
     CxDataRetentionRequestStatus,
-    CxDataRetentionRequestStatusStage,
 )
 
 
@@ -80,14 +78,7 @@ class DataRetentionAPI(object):
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == ACCEPTED:
             if response.text:
-                a_dict = response.json()
-                result = CxDefineDataRetentionResponse(
-                    data_retention_response_id=a_dict.get("id"),
-                    link=CxLink(
-                        rel=(a_dict.get("link", {}) or {}).get("rel"),
-                        uri=(a_dict.get("link", {}) or {}).get("uri"),
-                    ),
-                )
+                result = CxDefineDataRetentionResponse.from_dict(response.json())
         return result
 
     def define_data_retention_by_number_of_scans(
@@ -123,14 +114,7 @@ class DataRetentionAPI(object):
         response = self.api_client.call_api("POST", url, data=post_data, headers=get_headers(api_version))
         if response.status_code == ACCEPTED:
             if response.text:
-                a_dict = response.json()
-                result = CxDefineDataRetentionResponse(
-                    data_retention_response_id=a_dict.get("id"),
-                    link=CxLink(
-                        rel=(a_dict.get("link", {}) or {}).get("rel"),
-                        uri=(a_dict.get("link", {}) or {}).get("uri"),
-                    ),
-                )
+                result = CxDefineDataRetentionResponse.from_dict(response.json())
         return result
 
     def get_data_retention_request_status(
@@ -156,18 +140,7 @@ class DataRetentionAPI(object):
         url = f"{self.base_url}/cxrestapi/sast/dataRetention/{request_id}/status"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            a_dict = response.json()
-            result = CxDataRetentionRequestStatus(
-                status_id=a_dict.get("id"),
-                stage=CxDataRetentionRequestStatusStage(
-                    stage_id=(a_dict.get("stage", {}) or {}).get("id"),
-                    value=(a_dict.get("stage", {}) or {}).get("value"),
-                ),
-                link=CxLink(
-                    rel=(a_dict.get("link", {}) or {}).get("rel"),
-                    uri=(a_dict.get("link", {}) or {}).get("uri"),
-                ),
-            )
+            result = CxDataRetentionRequestStatus.from_dict(response.json())
         return result
 
     def define_data_retention_by_rolling_date(

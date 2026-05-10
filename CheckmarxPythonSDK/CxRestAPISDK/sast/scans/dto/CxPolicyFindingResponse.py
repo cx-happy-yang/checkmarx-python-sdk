@@ -1,20 +1,20 @@
 # encoding: utf-8
+from dataclasses import dataclass
+from typing import Optional
 
 
-class CxPolicyFindingResponse(object):
+@dataclass
+class CxPolicyFindingResponse:
     """
     policy finding response
     """
 
-    def __init__(self, policy_finding_id, link):
-        """
+    id: Optional[int] = None
+    link: Optional[object] = None
 
-        Args:
-            policy_finding_id (int):
-            link (:obj:`CxLink`):
-        """
-        self.id = policy_finding_id
-        self.link = link
-
-    def __str__(self):
-        return "CxPolicyFindingResponse(id={}, link={})".format(self.id, self.link)
+    @classmethod
+    def from_dict(cls, item: dict) -> "CxPolicyFindingResponse":
+        return cls(
+            id=item.get("id"),
+            link=item.get("link"),
+        )

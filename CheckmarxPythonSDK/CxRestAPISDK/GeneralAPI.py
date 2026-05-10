@@ -5,7 +5,6 @@ from CheckmarxPythonSDK.CxRestAPISDK.config import construct_configuration, get_
 from CheckmarxPythonSDK.utilities.compat import OK, NO_CONTENT, ACCEPTED
 from .sast.general.dto import (
     CxServerLicenseData,
-    CxSupportedLanguage,
     CxTranslationInput,
     CxUserPersistence,
 )
@@ -31,28 +30,7 @@ class GeneralAPI(object):
         url = f"{self.base_url}/cxrestapi/serverLicenseData"
         response = self.api_client.call_api("GET", url, headers=get_headers(api_version))
         if response.status_code == OK:
-            json = response.json()
-            result = CxServerLicenseData(
-                current_audit_users=json["currentAuditUsers"],
-                current_projects_count=json["currentProjectsCount"],
-                current_users=json["currentUsers"],
-                edition=json["edition"],
-                expiration_date=json["expirationDate"],
-                hid=json["hid"],
-                is_osa_enabled=json["isOsaEnabled"],
-                max_audit_users=json["maxAuditUsers"],
-                max_concurrent_scans=json["maxConcurrentScans"],
-                max_loc=json["maxLOC"],
-                max_users=json["maxUsers"],
-                osa_expiration_date=json["osaExpirationDate"],
-                projects_allowed=json["projectsAllowed"],
-                supported_languages=[
-                    CxSupportedLanguage(
-                        is_supported=item["isSupported"], language=item["language"]
-                    )
-                    for item in json["supportedLanguages"]
-                ],
-            )
+            result = CxServerLicenseData.from_dict(response.json())
         return result
 
     def get_server_system_version(self, api_version: str = "1.1") -> dict:
